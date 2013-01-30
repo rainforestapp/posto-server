@@ -1,0 +1,109 @@
+# all tables should have no UPDATEs allowed
+# all tables should include:
+#   - created_date
+
+users
+  fb_id
+
+user_logins
+  user_id
+  app
+  date
+
+user_stripe_customers # insert entry with nil to revoke customer
+  user_id
+  stripe_id
+
+card_designs
+  author_user_id
+  source_card_design
+  app
+  design_type
+  top_caption
+  bottom_caption
+  top_caption_font
+  bottom_caption_font
+  original_photo
+  original_full_photo
+  edited_photo
+  edited_full_photo
+
+card_orders
+  sender_user_id
+
+card_order_states
+  state
+    # created, pending_addresses, pending_printing, pending_mailing, pending_payment, failed/finished
+    # failed can be due to fb token expiration, no response for address
+
+card_printings
+  card_order_id
+  recipient_user_id
+  print_number # number to show on card, start from 1000
+
+card_printing_states
+  state # same as order states?
+
+card_scans
+  card_printing_id
+  scan_date
+
+card_scan_authors
+  card_scan_id
+  user_id
+
+card_photos
+  author_user_id
+  guid
+  width
+  height
+  orientation
+  photo_type (original, edited)
+
+card_collection_entries
+  card_design_id
+  source_type :scan, :order
+  source_id
+  app
+
+address_requests
+  user_id
+  requester_id
+
+# Add entry once we've polled long enough
+# effects: 
+#   - start prompting for address again in app
+#   - partial fill of order, fail order if no more non-expired address requests
+address_request_expirations
+  address_request_id
+  duration_limit # time we waited for this request
+
+address_request_pollings
+  address_request_id
+  poll_date
+
+fb_sessions
+  user_id
+  token
+  last_seen
+
+transactions
+  order_id
+
+transaction_line_items
+  description
+  price
+
+addresses
+  line 1
+  line 2
+  zip
+  state
+  country
+  last_scanned
+  last_shipped
+  last_ordered
+
+# big sync:
+# - collection entries
+# - card scan authors (send card_scan_ids to client)
