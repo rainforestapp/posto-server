@@ -1,14 +1,34 @@
+addons:
+memcache
+honeybadger
+graphite
+cloudinary or blitline for images?
+codeship for CI?
+sendgrid for email
+papertrail instead of supergrep?
+SSL
+
 # all tables should have no UPDATEs allowed
 # all tables should include:
 #   - created_date
 
 users
   fb_id
+  first_name
+  middle_name
+  last_name
+  name
+  gender
 
 user_logins
   user_id
-  app
+  app_id
   date
+
+apps
+
+  app_id
+  app_name # lulcards
 
 user_stripe_customers # insert entry with nil to revoke customer
   user_id
@@ -17,7 +37,7 @@ user_stripe_customers # insert entry with nil to revoke customer
 card_designs
   author_user_id
   source_card_design
-  app
+  app_id
   design_type
   top_caption
   bottom_caption
@@ -30,6 +50,7 @@ card_designs
 
 card_orders
   sender_user_id
+  app_id
 
 card_order_states
   state
@@ -46,6 +67,7 @@ card_printing_states
 
 card_scans
   card_printing_id
+  app_id
   scan_date
 
 card_scan_authors
@@ -54,6 +76,7 @@ card_scan_authors
 
 card_photos
   author_user_id
+  app_id
   guid
   width
   height
@@ -64,11 +87,32 @@ card_collection_entries
   card_design_id
   source_type :scan, :order
   source_id
-  app
+  app_id
+
+recipient_addresses
+  user_id
+  address_response_id
+
+address_responses
+  response_source_type # fb message
+  response_source_id # key for message, etc
+  response_raw_text # raw message response, no stopwords
+  response_cleaned_text # manually cleaned up response
+  address_api_response_id
+
+address_api_response
+  address_api_type
+  address_api_response_payload_id
+
+liveaddress_api_response_payloads
+  < paste from api docs >
 
 address_requests
   user_id
   requester_id
+  app_id
+  address_request_channel # :facebook
+  address_request_payload # json, message: ,etc
 
 # Add entry once we've polled long enough
 # effects: 
@@ -76,33 +120,32 @@ address_requests
 #   - partial fill of order, fail order if no more non-expired address requests
 address_request_expirations
   address_request_id
-  duration_limit # time we waited for this request
+  duration_hit # time we waited for this request
+  duration_limit # limit which was exceeded when waiting for this request
 
 address_request_pollings
   address_request_id
-  poll_date
+  previous_address_request_polling_id # previous polling entry
+  poll_date # time at which poll occured
+  poll_index # intra-request index of poll
 
 fb_sessions
   user_id
   token
   last_seen
 
+fb_session_states
+  state # active, expired
+
 transactions
   order_id
+  charged_stripe_customer_id
+  response
+  result # OK, failed
 
 transaction_line_items
   description
   price
-
-addresses
-  line 1
-  line 2
-  zip
-  state
-  country
-  last_scanned
-  last_shipped
-  last_ordered
 
 # big sync:
 # - collection entries
