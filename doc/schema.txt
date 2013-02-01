@@ -29,7 +29,7 @@ apps
   app_id
   app_name # lulcards
 
-user_stripe_customers # insert entry with nil to revoke customer
+stripe_customers # insert entry with nil to revoke customer
   user_id
   stripe_id
 
@@ -91,22 +91,17 @@ card_collection_entries
 
 recipient_addresses
   user_id
-  address_response_id
+  address_api_response_id
 
 address_responses
   response_source_type # fb message
   response_source_id # key for message, etc
   response_raw_text # raw message response, no stopwords
-  response_cleaned_text # manually cleaned up response
-  address_api_response_id
 
-address_api_response
-  address_api_type
-  address_api_response_payload_id
-
-liveaddress_api_response_payloads
-  request params
-  < paste response from api docs >
+address_api_responses
+  arguments
+  response
+  api_type
 
 address_requests
   user_id
@@ -115,7 +110,7 @@ address_requests
   address_request_channel # :facebook
   address_request_payload # json, message: ,etc
 
-sent_address_requests # insert when we send to facebook, check table to decide if expired
+address_request_states # insert when we send to facebook, check table to decide if expired
   address_request_id
   state # OK, Failed, other?
 
@@ -134,19 +129,19 @@ address_request_pollings
   poll_date # time at which poll occured
   poll_index # intra-request index of poll
 
-fb_sessions
+facebook_tokens
   user_id
   token
-  last_seen
 
-fb_session_states
+facebook_token_states
   state # active, expired
 
 transactions
   order_id
-  charged_stripe_customer_id
+  charged_customer_type
+  charged_customer_id
   response
-  result # OK, failed
+  status # OK, failed
 
 transaction_line_items
   description
