@@ -147,6 +147,10 @@ transaction_line_items
   description
   price
 
+api_keys
+  user_id
+  token
+
 # big sync:
 # - collection entries
 # - card scan authors (send card_scan_ids to client)

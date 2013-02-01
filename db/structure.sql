@@ -139,6 +139,21 @@ CREATE TABLE address_responses (
 
 
 --
+-- Name: api_keys; Type: TABLE; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE TABLE api_keys (
+    api_key_id bigint DEFAULT next_id() NOT NULL,
+    user_id bigint NOT NULL,
+    token character varying(255) NOT NULL,
+    expires_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    meta hstore
+);
+
+
+--
 -- Name: apps; Type: TABLE; Schema: posto0; Owner: -; Tablespace: 
 --
 
@@ -505,6 +520,14 @@ ALTER TABLE ONLY address_responses
 
 
 --
+-- Name: api_keys_pkey; Type: CONSTRAINT; Schema: posto0; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY api_keys
+    ADD CONSTRAINT api_keys_pkey PRIMARY KEY (api_key_id);
+
+
+--
 -- Name: apps_pkey; Type: CONSTRAINT; Schema: posto0; Owner: -; Tablespace: 
 --
 
@@ -723,6 +746,20 @@ CREATE INDEX index_address_responses_on_address_request_id ON address_responses 
 --
 
 CREATE INDEX index_address_responses_on_response_sender_user_id ON address_responses USING btree (response_sender_user_id);
+
+
+--
+-- Name: index_api_keys_on_token; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_api_keys_on_token ON api_keys USING btree (token);
+
+
+--
+-- Name: index_api_keys_on_user_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_api_keys_on_user_id ON api_keys USING btree (user_id);
 
 
 --
@@ -1030,3 +1067,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130201221451');
 INSERT INTO schema_migrations (version) VALUES ('20130201222100');
 
 INSERT INTO schema_migrations (version) VALUES ('20130201222919');
+
+INSERT INTO schema_migrations (version) VALUES ('20130201225054');
