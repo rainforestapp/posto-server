@@ -1,0 +1,91 @@
+158
+  factory girl
+  - don't use create every time (use build first)
+
+85 
+  yaml config
+  drop under config, load inside of application.rb via ENV.update YAML.load
+  fiagro gem
+
+380
+  dalli
+    after_update :method, Rails.cache.delete if XXX_changed?
+
+16
+  virtual attributes
+  attr_accessible
+  present? == !blank?
+  try lets you call on objects that may be nil
+  tap
+  chronic gem for relative dates
+  pluck
+  first_or_create!
+  Model.where
+
+48
+  rails c
+    --sandbox transaction
+  app.get
+  app is object from integration testing
+  app.cookies
+  app.assigns
+  helper.
+  helper.controller = controller ; controller.params = {}
+  reload!
+  .irbrc  can define methods
+  hirb for active record tables
+
+355
+  arel
+    use :'s instead of question marks
+    named scopes
+    Time.zone.now not Time.now!
+    .arel_table
+    predications.rb
+    matches == "like"
+      how to know arel/visitors
+    Array.wrap wraps with array if necessary
+
+354 squeel
+
+348
+  rails-api gem
+
+350 
+  rest api versioning
+    format.json { render json: foo }
+  versionist gem
+  rocket_pants
+
+  routes namespace :api, defaults: { format: :json }
+  in controller: respond_to :json
+  in methods: respond_with
+
+  local subclass
+    class Foo < ::Foo
+    end
+
+  scope module: :v1, constraints:, see source
+
+352
+  securing API
+  SecureRandom.hex
+  head :unauthorized unless api_key
+  authenticate_or_request_with_http_token
+ 
+322
+  rabl
+
+345 hstore
+  schema_format :sql
+  rails g hstore:setup
+  create index on foo using GIN(foo)
+
+72 
+  adding environment
+
+321
+  http caching
+
+402
+  better_errors

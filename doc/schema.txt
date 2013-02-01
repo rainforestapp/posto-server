@@ -26,7 +26,6 @@ user_logins
   date
 
 apps
-
   app_id
   app_name # lulcards
 
@@ -60,6 +59,7 @@ card_order_states
 card_printings
   card_order_id
   recipient_user_id
+  printed_image
   print_number # number to show on card, start from 1000
 
 card_printing_states
@@ -74,14 +74,14 @@ card_scan_authors
   card_scan_id
   user_id
 
-card_photos
+card_images
   author_user_id
   app_id
   guid
   width
   height
   orientation
-  photo_type (original, edited)
+  image_type (original, edited)
 
 card_collection_entries
   card_design_id
@@ -105,7 +105,8 @@ address_api_response
   address_api_response_payload_id
 
 liveaddress_api_response_payloads
-  < paste from api docs >
+  request params
+  < paste response from api docs >
 
 address_requests
   user_id
@@ -113,6 +114,10 @@ address_requests
   app_id
   address_request_channel # :facebook
   address_request_payload # json, message: ,etc
+
+sent_address_requests # insert when we send to facebook, check table to decide if expired
+  address_request_id
+  state # OK, Failed, other?
 
 # Add entry once we've polled long enough
 # effects: 

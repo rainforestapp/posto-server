@@ -20,9 +20,22 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+group :test do
+  gem "factory_girl_rails"
+end
+
+group :development do
+  gem "better_errors"
+end
+
 gem 'jquery-rails'
 
 gem "koala"
+
+gem 'wirble'
+
+gem 'activerecord-postgres-hstore'
+
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

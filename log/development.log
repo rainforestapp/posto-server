@@ -1,0 +1,189 @@
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+
+
+Started GET "/assets/rails.png" for 127.0.0.1 at 2013-01-30 12:18:45 -0800
+Connecting to database specified by database.yml
+Served asset /rails.png - 200 OK (4ms)
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+  [1m[36m (20.8ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying(255) NOT NULL) [0m
+  [1m[35m (3.7ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
+  [1m[36m (0.6ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to AddIdGeneratorFunction (20130201080909)
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mCREATE OR REPLACE FUNCTION posto0.next_id(OUT result bigint) AS $$
+DECLARE
+ our_epoch bigint := 1314220021721;
+ seq_id bigint;
+ now_millis bigint;
+ shard_id int := 5;
+BEGIN
+ SELECT nextval('posto0.table_id_seq') %% 1024 INTO seq_id;
+
+ SELECT FLOOR(EXTRACT(EPOCH FROM clock_timestamp()) * 1000) INTO now_millis;
+ result := (now_millis - our_epoch) << 23;
+ result := result | (shard_id << 10);
+ result := result | (seq_id);
+END;
+$$ LANGUAGE PLPGSQL;
+[0m
+PG::Error: ERROR:  schema "posto0" does not exist
+: CREATE OR REPLACE FUNCTION posto0.next_id(OUT result bigint) AS $$
+DECLARE
+    our_epoch bigint := 1314220021721;
+    seq_id bigint;
+    now_millis bigint;
+    shard_id int := 5;
+BEGIN
+    SELECT nextval('posto0.table_id_seq') %% 1024 INTO seq_id;
+
+    SELECT FLOOR(EXTRACT(EPOCH FROM clock_timestamp()) * 1000) INTO now_millis;
+    result := (now_millis - our_epoch) << 23;
+    result := result | (shard_id << 10);
+    result := result | (seq_id);
+END;
+$$ LANGUAGE PLPGSQL;
+
+  [1m[35m (0.1ms)[0m  ROLLBACK
+Connecting to database specified by database.yml
+  [1m[36m (0.5ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to AddIdGeneratorFunction (20130201080909)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (3.0ms)[0m  [1mcreate schema posto0[0m
+  [1m[35m (20.5ms)[0m  CREATE OR REPLACE FUNCTION posto0.next_id(OUT result bigint) AS $$
+DECLARE
+ our_epoch bigint := 1314220021721;
+ seq_id bigint;
+ now_millis bigint;
+ shard_id int := 5;
+BEGIN
+ SELECT nextval('posto0.table_id_seq') %% 1024 INTO seq_id;
+
+ SELECT FLOOR(EXTRACT(EPOCH FROM clock_timestamp()) * 1000) INTO now_millis;
+ result := (now_millis - our_epoch) << 23;
+ result := result | (shard_id << 10);
+ result := result | (seq_id);
+END;
+$$ LANGUAGE PLPGSQL;
+
+  [1m[36m (1.0ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20130201080909')[0m
+  [1m[35m (0.6ms)[0m  COMMIT
+Connecting to database specified by database.yml
+  [1m[36m (0.5ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to AddIdGeneratorFunction (20130201080909)
+  [1m[35m (0.8ms)[0m  SELECT version FROM schema_migrations ORDER BY version
+Connecting to database specified by database.yml
+  [1m[36m (0.5ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to AddIdGeneratorFunction (20130201080909)
+  [1m[35m (0.7ms)[0m  SELECT version FROM schema_migrations ORDER BY version
+Connecting to database specified by database.yml
+  [1m[36m (0.5ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to AddIdGeneratorFunction (20130201080909)
+  [1m[35m (0.7ms)[0m  SELECT version FROM schema_migrations ORDER BY version
+Connecting to database specified by database.yml
+  [1m[36m (0.6ms)[0m  [1mSELECT version FROM schema_migrations[0m
+Connecting to database specified by database.yml
+  [1m[36m (0.5ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+  [1m[35m (0.4ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
+Migrating to AddIdGeneratorFunction (20130201080909)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.5ms)[0m   DROP FUNCTION posto0.next_id();
+
+PG::Error: ERROR:  function posto0.next_id() does not exist
+:     DROP FUNCTION posto0.next_id();
+
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+Connecting to database specified by database.yml
+  [1m[36m (0.5ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+  [1m[35m (0.4ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
+Migrating to AddIdGeneratorFunction (20130201080909)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (1.6ms)[0m  DELETE FROM "schema_migrations" WHERE "schema_migrations"."version" = '20130201080909'
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.5ms)[0m  SELECT version FROM schema_migrations ORDER BY version
+Connecting to database specified by database.yml
+  [1m[36m (0.5ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to AddIdGeneratorFunction (20130201080909)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.5ms)[0m  [1mcreate schema posto0[0m
+PG::Error: ERROR:  schema "posto0" already exists
+: create schema posto0
+  [1m[35m (0.3ms)[0m  ROLLBACK
+Connecting to database specified by database.yml
+  [1m[36m (0.5ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to AddIdGeneratorFunction (20130201080909)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mcreate or replace sequence posto0.table_id_seq[0m
+PG::Error: ERROR:  syntax error at or near "sequence"
+LINE 1: create or replace sequence posto0.table_id_seq
+                          ^
+: create or replace sequence posto0.table_id_seq
+  [1m[35m (0.4ms)[0m  ROLLBACK
+Connecting to database specified by database.yml
+  [1m[36m (0.5ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to AddIdGeneratorFunction (20130201080909)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.4ms)[0m  [1mcreate sequence posto0.table_id_seq[0m
+PG::Error: ERROR:  relation "table_id_seq" already exists
+: create sequence posto0.table_id_seq
+  [1m[35m (0.2ms)[0m  ROLLBACK
+Connecting to database specified by database.yml
+  [1m[36m (0.4ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to AddIdGeneratorFunction (20130201080909)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (4.1ms)[0m  [1mCREATE OR REPLACE FUNCTION posto0.next_id(OUT result bigint) AS $$
+DECLARE
+ our_epoch bigint := 1314220021721;
+ seq_id bigint;
+ now_millis bigint;
+ shard_id int := 5;
+BEGIN
+ SELECT nextval('posto0.table_id_seq') % 1024 INTO seq_id;
+
+ SELECT FLOOR(EXTRACT(EPOCH FROM clock_timestamp()) * 1000) INTO now_millis;
+ result := (now_millis - our_epoch) << 23;
+ result := result | (shard_id << 10);
+ result := result | (seq_id);
+END;
+$$ LANGUAGE PLPGSQL;
+[0m
+  [1m[35m (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20130201080909')
+  [1m[36m (0.9ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.7ms)[0m  SELECT version FROM schema_migrations ORDER BY version
+Connecting to database specified by database.yml
+  [1m[36m (0.5ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+  [1m[35m (0.4ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
+Migrating to AddIdGeneratorFunction (20130201080909)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.6ms)[0m   DROP FUNCTION posto0.next_id();
+
+  [1m[36m (0.7ms)[0m  [1mDELETE FROM "schema_migrations" WHERE "schema_migrations"."version" = '20130201080909'[0m
+  [1m[35m (1.6ms)[0m  COMMIT
+  [1m[36m (0.5ms)[0m  [1mSELECT version FROM schema_migrations ORDER BY version[0m
+Connecting to database specified by database.yml
+  [1m[36m (0.5ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to AddIdGeneratorFunction (20130201080909)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (1.7ms)[0m  [1mCREATE OR REPLACE FUNCTION posto0.next_id(OUT result bigint) AS $$
+DECLARE
+ our_epoch bigint := 1314220021721;
+ seq_id bigint;
+ now_millis bigint;
+ shard_id int := 0;
+BEGIN
+ SELECT nextval('posto0.table_id_seq') % 1024 INTO seq_id;
+
+ SELECT FLOOR(EXTRACT(EPOCH FROM clock_timestamp()) * 1000) INTO now_millis;
+ result := (now_millis - our_epoch) << 23;
+ result := result | (shard_id << 10);
+ result := result | (seq_id);
+END;
+$$ LANGUAGE PLPGSQL;
+[0m
+  [1m[35m (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20130201080909')
+  [1m[36m (1.8ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.7ms)[0m  SELECT version FROM schema_migrations ORDER BY version
