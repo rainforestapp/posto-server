@@ -7,6 +7,7 @@ class CreateRecipientAddresses < ActiveRecord::Migration
     create_sharded_table :recipient_addresses do |t|
       t.integer :recipient_user_id, null: false, limit: 8
       t.integer :address_api_response_id, null: false, limit: 8
+      t.boolean :latest, null: false
 
       t.timestamps
     end

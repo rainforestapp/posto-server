@@ -9,6 +9,7 @@ class CreateAddressRequestPollings < ActiveRecord::Migration
       t.integer :previous_address_request_polling_id, limit: 8
       t.datetime :poll_date, null: false
       t.integer :poll_index, null: false
+      t.boolean :latest, null: false
 
       t.timestamps
     end

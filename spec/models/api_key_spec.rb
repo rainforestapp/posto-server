@@ -1,5 +1,19 @@
 require 'spec_helper'
 
 describe ApiKey do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "should set expiration in the future" do
+    api_key = create(:api_key)
+    api_key.expires_at.should be > Time.zone.now
+    api_key.should_not be_expired
+  end
+
+  it "should initialize token to random hex" do
+    api_key = create(:api_key)
+    api_key.token.size.should == 32
+  end
+
+  it "should be expired if expiration is past" do
+    api_key = create(:expired_api_key)
+    api_key.should be_expired
+  end
 end

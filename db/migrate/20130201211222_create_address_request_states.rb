@@ -7,6 +7,7 @@ class CreateAddressRequestStates < ActiveRecord::Migration
     create_sharded_table :address_request_states do |t|
       t.integer :address_request_id, null: false, limit: 8
       t.string :state, null: false
+      t.boolean :latest, null: false
 
       t.timestamps
     end

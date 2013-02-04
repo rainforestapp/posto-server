@@ -84,6 +84,7 @@ CREATE TABLE address_request_pollings (
     previous_address_request_polling_id bigint,
     poll_date timestamp without time zone NOT NULL,
     poll_index integer NOT NULL,
+    latest boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     meta hstore
@@ -98,6 +99,7 @@ CREATE TABLE address_request_states (
     address_request_state_id bigint DEFAULT next_id() NOT NULL,
     address_request_id bigint NOT NULL,
     state character varying(255) NOT NULL,
+    latest boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     meta hstore
@@ -147,6 +149,7 @@ CREATE TABLE api_keys (
     user_id bigint NOT NULL,
     token character varying(255) NOT NULL,
     expires_at timestamp without time zone NOT NULL,
+    latest boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     meta hstore
@@ -236,6 +239,7 @@ CREATE TABLE card_order_states (
     card_order_state_id bigint DEFAULT next_id() NOT NULL,
     card_order_id bigint NOT NULL,
     state character varying(255) NOT NULL,
+    latest boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     meta hstore
@@ -276,6 +280,7 @@ CREATE TABLE card_printing_states (
     card_printing_state_id bigint DEFAULT next_id() NOT NULL,
     card_printing_id bigint NOT NULL,
     state character varying(255) NOT NULL,
+    latest boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     meta hstore
@@ -335,6 +340,7 @@ CREATE TABLE facebook_token_states (
     facebook_token_state_id bigint DEFAULT next_id() NOT NULL,
     facebook_token_id bigint NOT NULL,
     state character varying(255) NOT NULL,
+    latest boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     meta hstore
@@ -363,6 +369,7 @@ CREATE TABLE recipient_addresses (
     recipient_address_id bigint DEFAULT next_id() NOT NULL,
     recipient_user_id bigint NOT NULL,
     address_api_response_id bigint NOT NULL,
+    latest boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     meta hstore
@@ -385,6 +392,7 @@ CREATE TABLE schema_migrations (
 CREATE TABLE stripe_customers (
     stripe_customer_id integer DEFAULT next_id() NOT NULL,
     user_id bigint NOT NULL,
+    latest boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     meta hstore
@@ -445,6 +453,29 @@ CREATE TABLE user_logins (
     user_login_id bigint DEFAULT next_id() NOT NULL,
     user_id bigint NOT NULL,
     app_id bigint NOT NULL,
+    latest boolean NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    meta hstore
+);
+
+
+--
+-- Name: user_profiles; Type: TABLE; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE TABLE user_profiles (
+    user_profile_id bigint DEFAULT next_id() NOT NULL,
+    user_id bigint NOT NULL,
+    name character varying(255),
+    first_name character varying(255),
+    last_name character varying(255),
+    location character varying(255),
+    middle_name character varying(255),
+    birthday timestamp without time zone,
+    gender character varying(255),
+    email character varying(255),
+    latest boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     meta hstore
@@ -457,14 +488,7 @@ CREATE TABLE user_logins (
 
 CREATE TABLE users (
     user_id bigint DEFAULT next_id() NOT NULL,
-    facebook_id character varying(255),
-    name character varying(255),
-    first_name character varying(255),
-    last_name character varying(255),
-    location character varying(255),
-    middle_name character varying(255),
-    birthday timestamp without time zone,
-    gender character varying(255),
+    facebook_id character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     meta hstore
@@ -661,6 +685,14 @@ ALTER TABLE ONLY transactions
 
 ALTER TABLE ONLY user_logins
     ADD CONSTRAINT user_logins_pkey PRIMARY KEY (user_login_id);
+
+
+--
+-- Name: user_profiles_pkey; Type: CONSTRAINT; Schema: posto0; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY user_profiles
+    ADD CONSTRAINT user_profiles_pkey PRIMARY KEY (user_profile_id);
 
 
 --
@@ -987,6 +1019,34 @@ CREATE INDEX index_user_logins_on_user_id ON user_logins USING btree (user_id);
 
 
 --
+-- Name: index_user_profiles_on_email; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_user_profiles_on_email ON user_profiles USING btree (email);
+
+
+--
+-- Name: index_user_profiles_on_last_name; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_user_profiles_on_last_name ON user_profiles USING btree (last_name);
+
+
+--
+-- Name: index_user_profiles_on_name; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_user_profiles_on_name ON user_profiles USING btree (name);
+
+
+--
+-- Name: index_user_profiles_on_user_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_user_profiles_on_user_id ON user_profiles USING btree (user_id);
+
+
+--
 -- Name: index_users_on_facebook_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
@@ -1069,3 +1129,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130201222100');
 INSERT INTO schema_migrations (version) VALUES ('20130201222919');
 
 INSERT INTO schema_migrations (version) VALUES ('20130201225054');
+
+INSERT INTO schema_migrations (version) VALUES ('20130202000801');

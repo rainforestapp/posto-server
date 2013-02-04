@@ -8,6 +8,7 @@ class CreateApiKeys < ActiveRecord::Migration
       t.integer :user_id, null: false, limit: 8
       t.string :token, null: false
       t.datetime :expires_at, null: false
+      t.boolean :latest, null: false
 
       t.timestamps
     end

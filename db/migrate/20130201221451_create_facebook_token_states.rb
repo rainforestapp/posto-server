@@ -7,6 +7,7 @@ class CreateFacebookTokenStates < ActiveRecord::Migration
     create_sharded_table :facebook_token_states do |t|
       t.integer :facebook_token_id, null: false, limit: 8
       t.string :state, null: false
+      t.boolean :latest, null: false
 
       t.timestamps
     end

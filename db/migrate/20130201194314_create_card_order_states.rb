@@ -7,6 +7,7 @@ class CreateCardOrderStates < ActiveRecord::Migration
     create_sharded_table :card_order_states do |t|
       t.integer :card_order_id, null: false, limit: 8
       t.string :state, null: false
+      t.boolean :latest, null: false
 
       t.timestamps
     end
