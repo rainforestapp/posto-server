@@ -5,7 +5,7 @@ module HasAuditedState
     def has_audited_state_through(model, params = {})
       as_name = params[:as] || :state
 
-      has_append_only model
+      has_one_audited model
 
       self.send(:define_method, as_name) do
         (self.send(model) || self.send(model.to_s.pluralize.to_sym).create!).state.to_sym

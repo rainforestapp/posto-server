@@ -1,10 +1,10 @@
 class User < ActiveRecord::Base
   include AppendOnlyModel
-  include HasAppendOnly
+  include HasOneAudited
 
-  has_append_only :user_profile
-  has_append_only :api_key
-  has_append_only :facebook_token
+  has_one_audited :user_profile
+  has_one_audited :api_key
+  has_one_audited :facebook_token
 
   def self.first_or_create_with_facebook_token(facebook_token, *args)
     options = args.extract_options!
