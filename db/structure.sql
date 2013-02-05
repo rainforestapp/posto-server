@@ -746,10 +746,24 @@ CREATE INDEX index_address_request_pollings_on_address_request_id ON address_req
 
 
 --
+-- Name: index_address_request_pollings_on_latest; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_address_request_pollings_on_latest ON address_request_pollings USING btree (latest);
+
+
+--
 -- Name: index_address_request_states_on_address_request_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_address_request_states_on_address_request_id ON address_request_states USING btree (address_request_id);
+
+
+--
+-- Name: index_address_request_states_on_latest; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_address_request_states_on_latest ON address_request_states USING btree (latest);
 
 
 --
@@ -778,6 +792,13 @@ CREATE INDEX index_address_responses_on_address_request_id ON address_responses 
 --
 
 CREATE INDEX index_address_responses_on_response_sender_user_id ON address_responses USING btree (response_sender_user_id);
+
+
+--
+-- Name: index_api_keys_on_latest; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_api_keys_on_latest ON api_keys USING btree (latest);
 
 
 --
@@ -886,6 +907,13 @@ CREATE INDEX index_card_order_states_on_card_order_id ON card_order_states USING
 
 
 --
+-- Name: index_card_order_states_on_latest; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_card_order_states_on_latest ON card_order_states USING btree (latest);
+
+
+--
 -- Name: index_card_orders_on_sender_user_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
@@ -897,6 +925,13 @@ CREATE INDEX index_card_orders_on_sender_user_id ON card_orders USING btree (sen
 --
 
 CREATE INDEX index_card_printing_states_on_card_printing_id ON card_printing_states USING btree (card_printing_id);
+
+
+--
+-- Name: index_card_printing_states_on_latest; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_card_printing_states_on_latest ON card_printing_states USING btree (latest);
 
 
 --
@@ -963,6 +998,13 @@ CREATE INDEX index_facebook_token_states_on_facebook_token_id ON facebook_token_
 
 
 --
+-- Name: index_facebook_token_states_on_latest; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_facebook_token_states_on_latest ON facebook_token_states USING btree (latest);
+
+
+--
 -- Name: index_facebook_tokens_on_user_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
@@ -977,10 +1019,24 @@ CREATE INDEX index_recipient_addresses_on_address_api_response_id ON recipient_a
 
 
 --
+-- Name: index_recipient_addresses_on_latest; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_recipient_addresses_on_latest ON recipient_addresses USING btree (latest);
+
+
+--
 -- Name: index_recipient_addresses_on_recipient_user_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_recipient_addresses_on_recipient_user_id ON recipient_addresses USING btree (recipient_user_id);
+
+
+--
+-- Name: index_stripe_customers_on_latest; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_stripe_customers_on_latest ON stripe_customers USING btree (latest);
 
 
 --
@@ -1012,6 +1068,13 @@ CREATE INDEX index_transactions_on_card_order_id ON transactions USING btree (ca
 
 
 --
+-- Name: index_user_logins_on_latest; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_user_logins_on_latest ON user_logins USING btree (latest);
+
+
+--
 -- Name: index_user_logins_on_user_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
@@ -1030,6 +1093,13 @@ CREATE INDEX index_user_profiles_on_email ON user_profiles USING btree (email);
 --
 
 CREATE INDEX index_user_profiles_on_last_name ON user_profiles USING btree (last_name);
+
+
+--
+-- Name: index_user_profiles_on_latest; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_user_profiles_on_latest ON user_profiles USING btree (latest);
 
 
 --

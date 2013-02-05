@@ -12,7 +12,7 @@ class CreateAddressRequestStates < ActiveRecord::Migration
       t.timestamps
     end
 
-    [:address_request_id].each do |c|
+    [:address_request_id, :latest].each do |c|
        add_index :address_request_states, c
     end
   end

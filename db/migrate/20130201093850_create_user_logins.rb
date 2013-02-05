@@ -13,6 +13,7 @@ class CreateUserLogins < ActiveRecord::Migration
     end
 
     add_index :user_logins, :user_id
+    add_index :user_logins, :latest
   end
 
   def down

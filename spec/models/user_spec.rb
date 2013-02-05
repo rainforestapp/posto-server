@@ -59,6 +59,28 @@ describe User do
     user.user_profile.reload.should be_latest
   end
 
+  it "should add to facebook token records" do
+    user = User.first_or_create_with_facebook_token("token1", api: stub_api_with_profile(default_profile))
+    facebook_token_record = user.facebook_token
+    facebook_token_record.token.should == "token1"
+    facebook_token_record.state.should == :active
+    user = User.first_or_create_with_facebook_token("token1", api: stub_api_with_profile(default_profile))
+    user.reload.facebook_token.should == facebook_token_record
+    user = User.first_or_create_with_facebook_token("token2", api: stub_api_with_profile(default_profile))
+    user.reload.facebook_token.token.should == "token2"
+  end
+
+  it "should mark facebook token record as expired" do
+    user = User.first_or_create_with_facebook_token("token1", api: stub_api_with_profile(default_profile))
+    facebook_token_record = user.facebook_token
+    facebook_token_record.state.should == :active
+    evil_api = double("api").tap do |api|
+      api.stub(:get_object).and_raise(Koala::Facebook::AuthenticationError.new(401, ""))
+    end
+
+    facebook_token_record.reload.state.should == :expired
+  end
+
   it "should generate api key and expire after regenerated" do
     user = create(:user)
     user.api_key.should be nil

@@ -14,6 +14,7 @@ class CreateUserStripeCustomers < ActiveRecord::Migration
 
     add_index :stripe_customers, :user_id
     add_index :stripe_customers, :stripe_customer_id
+    add_index :stripe_customers, :latest
   end
 
   def down

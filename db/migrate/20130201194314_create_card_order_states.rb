@@ -12,7 +12,7 @@ class CreateCardOrderStates < ActiveRecord::Migration
       t.timestamps
     end
 
-    [:card_order_id].each do |c|
+    [:card_order_id, :latest].each do |c|
        add_index :card_order_states, c
     end
   end

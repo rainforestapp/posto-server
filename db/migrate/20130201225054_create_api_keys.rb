@@ -13,7 +13,7 @@ class CreateApiKeys < ActiveRecord::Migration
       t.timestamps
     end
 
-    [:user_id, :token].each do |c|
+    [:user_id, :token, :latest].each do |c|
        add_index :api_keys, c
     end
   end

@@ -1,4 +1,7 @@
 class FacebookTokenState < ActiveRecord::Base
   include AppendOnlyModel
-  #attr_accessible :facebook_token_id, :state
+  include AuditedStateModel
+
+  belongs_to_and_marks_latest_within :facebook_token
+  valid_states :active, :expired
 end

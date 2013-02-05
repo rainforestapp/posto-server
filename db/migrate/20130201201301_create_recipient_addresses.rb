@@ -12,7 +12,7 @@ class CreateRecipientAddresses < ActiveRecord::Migration
       t.timestamps
     end
 
-    [:recipient_user_id, :address_api_response_id].each do |c|
+    [:recipient_user_id, :address_api_response_id, :latest].each do |c|
        add_index :recipient_addresses, c
     end
   end

@@ -12,7 +12,7 @@ class CreateFacebookTokenStates < ActiveRecord::Migration
       t.timestamps
     end
 
-    [:facebook_token_id].each do |c|
+    [:facebook_token_id, :latest].each do |c|
        add_index :facebook_token_states, c
     end
   end

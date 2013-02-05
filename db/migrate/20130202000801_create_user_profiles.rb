@@ -19,7 +19,7 @@ class CreateUserProfiles < ActiveRecord::Migration
       t.timestamps
     end
 
-    [:user_id, :name, :last_name, :email].each do |c|
+    [:user_id, :name, :last_name, :email, :latest].each do |c|
        add_index :user_profiles, c
     end
 

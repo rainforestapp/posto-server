@@ -12,7 +12,7 @@ class CreateCardPrintingStates < ActiveRecord::Migration
       t.timestamps
     end
 
-    [:card_printing_id].each do |c|
+    [:card_printing_id, :latest].each do |c|
        add_index :card_printing_states, c
     end
   end
