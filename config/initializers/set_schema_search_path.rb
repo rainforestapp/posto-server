@@ -1,3 +1,4 @@
-if ActiveRecord::Base.connection.raw_connection.host
+begin
   ActiveRecord::Base.connection.schema_search_path = "posto0"
+rescue nil
 end
