@@ -15,6 +15,8 @@ class CreateCardOrderStates < ActiveRecord::Migration
     [:card_order_id, :latest].each do |c|
        add_index :card_order_states, c
     end
+
+    execute "create index card_order_states_state_latest_idx on card_order_states (state, latest) where latest = 't'"
   end
 
   def down

@@ -15,6 +15,8 @@ class CreateFacebookTokenStates < ActiveRecord::Migration
     [:facebook_token_id, :latest].each do |c|
        add_index :facebook_token_states, c
     end
+
+    execute "create index facebook_token_states_state_latest_idx on facebook_token_states (state, latest) where latest = 't'"
   end
 
   def down

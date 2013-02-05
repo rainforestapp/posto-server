@@ -13,7 +13,8 @@ class CreateUserLogins < ActiveRecord::Migration
     end
 
     add_index :user_logins, :user_id
-    add_index :user_logins, :latest
+
+    execute "create index user_login_user_id_latest_idx on user_logins (user_id, latest) where latest = 't'"
   end
 
   def down

@@ -711,10 +711,24 @@ CREATE INDEX address_req_polling_previous_idx ON address_request_pollings USING 
 
 
 --
+-- Name: address_request_states_state_latest_idx; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX address_request_states_state_latest_idx ON address_request_states USING btree (state, latest) WHERE (latest = true);
+
+
+--
 -- Name: address_response_source_idx; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
 CREATE INDEX address_response_source_idx ON address_responses USING btree (response_source_type, response_source_id);
+
+
+--
+-- Name: api_key_states_user_id_latest_idx; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX api_key_states_user_id_latest_idx ON api_keys USING btree (user_id, latest) WHERE (latest = true);
 
 
 --
@@ -729,6 +743,27 @@ CREATE INDEX arguments_idx ON address_api_responses USING gin (arguments);
 --
 
 CREATE UNIQUE INDEX card_collection_entry_unique_idx ON card_collection_entries USING btree (card_design_id, app_id, collection_type);
+
+
+--
+-- Name: card_order_states_state_latest_idx; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX card_order_states_state_latest_idx ON card_order_states USING btree (state, latest) WHERE (latest = true);
+
+
+--
+-- Name: card_printing_states_state_latest_idx; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX card_printing_states_state_latest_idx ON card_printing_states USING btree (state, latest) WHERE (latest = true);
+
+
+--
+-- Name: facebook_token_states_state_latest_idx; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX facebook_token_states_state_latest_idx ON facebook_token_states USING btree (state, latest) WHERE (latest = true);
 
 
 --
@@ -1005,6 +1040,13 @@ CREATE INDEX index_facebook_token_states_on_latest ON facebook_token_states USIN
 
 
 --
+-- Name: index_facebook_tokens_on_token; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_facebook_tokens_on_token ON facebook_tokens USING btree (token);
+
+
+--
 -- Name: index_facebook_tokens_on_user_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
@@ -1065,13 +1107,6 @@ CREATE INDEX index_transaction_line_items_on_transaction_id ON transaction_line_
 --
 
 CREATE INDEX index_transactions_on_card_order_id ON transactions USING btree (card_order_id);
-
-
---
--- Name: index_user_logins_on_latest; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_user_logins_on_latest ON user_logins USING btree (latest);
 
 
 --
@@ -1142,6 +1177,13 @@ CREATE INDEX transaction_customer_idx ON transactions USING btree (charged_custo
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: user_login_user_id_latest_idx; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX user_login_user_id_latest_idx ON user_logins USING btree (user_id, latest) WHERE (latest = true);
 
 
 --

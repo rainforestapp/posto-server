@@ -15,6 +15,8 @@ class CreateCardPrintingStates < ActiveRecord::Migration
     [:card_printing_id, :latest].each do |c|
        add_index :card_printing_states, c
     end
+
+    execute "create index card_printing_states_state_latest_idx on card_printing_states (state, latest) where latest = 't'"
   end
 
   def down

@@ -15,6 +15,8 @@ class CreateAddressRequestStates < ActiveRecord::Migration
     [:address_request_id, :latest].each do |c|
        add_index :address_request_states, c
     end
+
+    execute "create index address_request_states_state_latest_idx on address_request_states (state, latest) where latest = 't'"
   end
 
   def down
