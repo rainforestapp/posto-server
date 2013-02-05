@@ -40,3 +40,5 @@ gem 'activerecord-postgres-hstore'
 gem "rabl"
 
 gem "oj"
+
+gem "honeybadger"
