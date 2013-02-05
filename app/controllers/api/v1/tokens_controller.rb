@@ -7,7 +7,7 @@ module Api
         token = params[:token]
         facebook_token = params[:facebook_token]
 
-        api_key = ApiKey.where(:token => token).first
+        api_key = token && ApiKey.where(:token => token).first
 
         if api_key
           if api_key.expired?
