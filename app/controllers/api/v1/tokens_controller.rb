@@ -27,6 +27,7 @@ module Api
 
         if api_key
           @api_key = api_key
+          api_key.user.add_login!
           respond_with(@api_key)
         else
           head :unauthorized

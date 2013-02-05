@@ -44,6 +44,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def add_login!
+    UserLogin.where(user_id: self.user_id, app_id: App.lulcards.app_id).create!
+  end
+
   def renew_api_key!
     ApiKey.where(user_id: self.user_id).create!
   end
