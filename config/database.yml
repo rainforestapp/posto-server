@@ -5,7 +5,6 @@ development:
   pool: 5
   username: postgres
   password: h
-  schema_search_path: posto0
 
 test:
   adapter: postgresql
@@ -14,4 +13,3 @@ test:
   pool: 5
   username: postgres
   password: h
-  schema_search_path: posto0
