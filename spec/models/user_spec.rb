@@ -31,27 +31,43 @@ describe User do
   end
 
   it "should create a user with a facebook token" do
-    token = "AAACEdEose0cBAAPSIS3teDWUrk0pesxwoOk0PjGzYReaZAdYzb2ITFrmtiK7cP3DBZCFWsMcGkFZBVVL1ZCMQUSRUFV172XnCZCkYFJDEPwZDZD"
-
-    user = User.first_or_create_with_facebook_token(token, api: stub_api_with_profile(default_profile))
+    user = User.first_or_create_with_facebook_token("", api: stub_api_with_profile(default_profile))
     original_user_id = user.user_id
     user.facebook_id.should == "403143"
-    user = User.first_or_create_with_facebook_token(token, api: stub_api_with_profile(default_profile))
+    user = User.first_or_create_with_facebook_token("", api: stub_api_with_profile(default_profile))
     user.user_id.should == original_user_id
   end
 
   it "should update profile" do
-    token = "AAACEdEose0cBAAPSIS3teDWUrk0pesxwoOk0PjGzYReaZAdYzb2ITFrmtiK7cP3DBZCFWsMcGkFZBVVL1ZCMQUSRUFV172XnCZCkYFJDEPwZDZD"
-
-    user = User.first_or_create_with_facebook_token(token, api: stub_api_with_profile(default_profile))
-    user.user_profile.email.should == "gfodor@gmail.com"
+    user = User.first_or_create_with_facebook_token("", api: stub_api_with_profile(default_profile))
+    user.reload.user_profile.email.should == "gfodor@gmail.com"
     first_profile = user.user_profile
     first_profile.should be_latest
+    first_profile.birthday.to_s.should == "1981-05-23 00:00:00 UTC"
+    first_profile.name.should == "Greg Fodor"
+    first_profile.first_name.should == "Greg"
+    first_profile.last_name.should == "Fodor"
+    first_profile.location.should == "Redwood City, California"
+    first_profile.middle_name.should == "Bub"
+    first_profile.gender.should == "male"
+    first_profile.email.should == "gfodor@gmail.com" 
 
     UserProfile.update_all("latest = 'f'", "user_id = #{user.user_profile.user_id}")
-    User.first_or_create_with_facebook_token(token, api: stub_api_with_profile(profile_with(email: "gfodor2@gmail.com")))
+    User.first_or_create_with_facebook_token("", api: stub_api_with_profile(profile_with(email: "gfodor2@gmail.com")))
     user.reload.user_profile.email.should == "gfodor2@gmail.com"
     first_profile.reload.should_not be_latest
     user.user_profile.reload.should be_latest
+  end
+
+  it "should generate api key and expire after regenerated" do
+    user = create(:user)
+    user.api_key.should be nil
+    user.renew_api_key!
+    user.reload.api_key.should_not be_nil
+    current_api_key = user.api_key
+    user.renew_api_key!
+    current_api_key.reload.should_not be_active
+    user.reload.api_key.should_not be_nil
+    user.reload.api_key.should be_active
   end
 end

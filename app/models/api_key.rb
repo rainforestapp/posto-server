@@ -4,8 +4,8 @@ class ApiKey < ActiveRecord::Base
   #attr_accessible :token, :user_id
   belongs_to :user
 
-  after_initialize :create_token
-  after_initialize :initialize_expiration
+  before_create :create_token
+  before_create :initialize_expiration
 
   mark_latest_within_scope :user_id
 
@@ -19,5 +19,13 @@ class ApiKey < ActiveRecord::Base
 
   def expired?
     Time.zone.now > self.expires_at
+  end
+
+  def renewable?
+    self.expired? || Time.zone.now > self.expires_at - CONFIG[:api_key_renewal_days]
+  end
+
+  def active?
+    self.user.api_key == self
   end
 end
