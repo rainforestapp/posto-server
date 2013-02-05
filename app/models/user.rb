@@ -1,14 +1,15 @@
 class User < ActiveRecord::Base
   include AppendOnlyModel
+  include HasAppendOnly
 
-  has_one :user_profile, order: "created_at desc"
-  has_one :api_key, order: "created_at desc"
-  has_one :facebook_token, order: "created_at desc"
+  has_append_only :user_profile
+  has_append_only :api_key
+  has_append_only :facebook_token
 
   def self.first_or_create_with_facebook_token(facebook_token, *args)
     options = args.extract_options!
     api = options[:api] || Koala::Facebook::API.new(facebook_token)
-    user = nil
+    facebook_token_record = FacebookToken.where(:token => facebook_token).first
 
     begin
       profile = api.get_object("me?fields=name,first_name,middle_name,last_name,location,gender,email,birthday")
@@ -22,7 +23,7 @@ class User < ActiveRecord::Base
       birthday = nil
       birthday = Chronic.parse(profile["birthday"] + " 00:00:00") if profile["birthday"]
 
-      FacebookToken.where(:user_id => user.user_id, :token => facebook_token).first_or_create!
+      facebook_token_record = FacebookToken.where(:user_id => user.user_id, :token => facebook_token).first_or_create!
 
       user.tap do |user|
         UserProfile.where(user_id: user.user_id,
@@ -36,9 +37,7 @@ class User < ActiveRecord::Base
                           email: profile["email"]).first_or_create!
       end
     rescue Koala::Facebook::AuthenticationError => e
-      if user && user.facebook_token && user.facebook_token.token == facebook_token
-        user.facebook_token = :expired 
-      end
+      facebook_token_record.state = :expired if facebook_token_record
 
       # TODO log authentication error
       return nil

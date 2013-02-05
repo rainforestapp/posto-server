@@ -1,6 +1,7 @@
 class FacebookToken < ActiveRecord::Base
   include AppendOnlyModel
   include HasAuditedState
+  include HasAppendOnly
 
   belongs_to :user
 

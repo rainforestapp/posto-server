@@ -9,7 +9,7 @@ FactoryGirl.define do
     user
 
     factory :expired_api_key do
-      expires_at Time.zone.now - 100
+      expires_at Time.zone.now - 100.days
     end
 
     factory :renewable_api_key do

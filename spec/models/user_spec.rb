@@ -74,10 +74,12 @@ describe User do
     user = User.first_or_create_with_facebook_token("token1", api: stub_api_with_profile(default_profile))
     facebook_token_record = user.facebook_token
     facebook_token_record.state.should == :active
+
     evil_api = double("api").tap do |api|
       api.stub(:get_object).and_raise(Koala::Facebook::AuthenticationError.new(401, ""))
     end
 
+    user = User.first_or_create_with_facebook_token("token1", api: evil_api)
     facebook_token_record.reload.state.should == :expired
   end
 

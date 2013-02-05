@@ -6,7 +6,7 @@ module AuditedStateModel
       validates :state, inclusion: { in: states }
 
       after_initialize do
-        self.state = states[0]
+        self.state ||= states[0]
       end
     end
   end

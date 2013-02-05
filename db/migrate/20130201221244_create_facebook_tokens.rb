@@ -11,7 +11,7 @@ class CreateFacebookTokens < ActiveRecord::Migration
       t.timestamps
     end
 
-    [:user_id].each do |c|
+    [:user_id, :token].each do |c|
        add_index :facebook_tokens, c
     end
   end

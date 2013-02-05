@@ -15,7 +15,6 @@ end
 
 group :test do
   gem "factory_girl_rails"
-  gem 'rspec-rails'
   gem "faker"
 end
 
@@ -25,6 +24,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'rspec-rails'
 end
 
 gem 'jquery-rails'

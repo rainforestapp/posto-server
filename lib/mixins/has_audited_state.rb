@@ -5,15 +5,16 @@ module HasAuditedState
     def has_audited_state_through(model, params = {})
       as_name = params[:as] || :state
 
-      has_one model, order: "created_at desc"
+      has_append_only model
 
       self.send(:define_method, as_name) do
-        (self.send(model) || self.send("create_#{model}")).state.to_sym
+        (self.send(model) || self.send(model.to_s.pluralize.to_sym).create!).state.to_sym
       end
 
       self.send(:define_method, "#{as_name}=") do |state|
         return if self.send(as_name) == state.to_sym
-        self.send("create_#{model}", state: state.to_s)
+        assoc_name = model.to_s.pluralize.to_sym
+        self.send(assoc_name).create!(state: state.to_sym)
         state.to_sym
       end
     end
