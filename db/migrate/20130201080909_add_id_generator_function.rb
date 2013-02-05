@@ -1,6 +1,6 @@
 class AddIdGeneratorFunction < ActiveRecord::Migration
   def up
-    execute "create schema posto0"
+    #execute "create schema posto0"
     execute "create sequence posto0.table_id_seq"
 
     execute <<-END
