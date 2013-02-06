@@ -6,6 +6,7 @@ Posto::Application.routes.draw do
       resources :tokens
       resource :current_user, controller: "CurrentUser"
       resources :config, controller: "Conf"
+      resources :photo_upload_tokens
     end
   end
 end
