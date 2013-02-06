@@ -15,34 +15,6 @@ SET client_min_messages = warning;
 CREATE SCHEMA posto0;
 
 
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
---
--- Name: hstore; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA posto0;
-
-
---
--- Name: EXTENSION hstore; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
-
-
 SET search_path = posto0, pg_catalog;
 
 --
@@ -522,19 +494,6 @@ CREATE TABLE users (
     meta hstore
 );
 
-
-SET search_path = public, pg_catalog;
-
---
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE schema_migrations (
-    version character varying(255) NOT NULL
-);
-
-
-SET search_path = posto0, pg_catalog;
 
 --
 -- Name: address_api_responses_pkey; Type: CONSTRAINT; Schema: posto0; Owner: -; Tablespace: 
@@ -1225,15 +1184,6 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 --
 
 CREATE INDEX user_login_user_id_latest_idx ON user_logins USING btree (user_id, latest) WHERE (latest = true);
-
-
-SET search_path = public, pg_catalog;
-
---
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
 
 
 --

@@ -5,6 +5,7 @@ Posto::Application.routes.draw do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: :true) do
       resources :tokens
       resource :current_user, controller: "CurrentUser"
+      resource :config, controller: "Conf"
     end
   end
 end

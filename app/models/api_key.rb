@@ -11,7 +11,7 @@ class ApiKey < ActiveRecord::Base
   end
 
   def initialize_expiration
-    self.expires_at ||= DateTime.current + CONFIG[:api_key_expiration_days].days
+    self.expires_at ||= DateTime.current + CONFIG.api_key_expiration_days.days
   end
 
   def expired?
@@ -19,7 +19,7 @@ class ApiKey < ActiveRecord::Base
   end
 
   def renewable?
-    self.expired? || Time.zone.now > self.expires_at - CONFIG[:api_key_renewal_days]
+    self.expired? || Time.zone.now > self.expires_at - CONFIG.api_key_renewal_days
   end
 
   def active?
