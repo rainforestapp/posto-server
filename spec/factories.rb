@@ -25,6 +25,7 @@ FactoryGirl.define do
   factory :recipient_address do
     recipient_user
     address_api_response
+    address_request
 
     factory :expired_recipient_address do
       created_at 100.days.ago

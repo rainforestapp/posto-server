@@ -372,7 +372,8 @@ CREATE TABLE recipient_addresses (
     latest boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    meta hstore
+    meta hstore,
+    address_request_id bigint NOT NULL
 );
 
 
@@ -1061,6 +1062,13 @@ CREATE INDEX index_recipient_addresses_on_address_api_response_id ON recipient_a
 
 
 --
+-- Name: index_recipient_addresses_on_address_request_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_recipient_addresses_on_address_request_id ON recipient_addresses USING btree (address_request_id);
+
+
+--
 -- Name: index_recipient_addresses_on_latest; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
@@ -1247,3 +1255,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130202000801');
 INSERT INTO schema_migrations (version) VALUES ('20130207015553');
 
 INSERT INTO schema_migrations (version) VALUES ('20130207021025');
+
+INSERT INTO schema_migrations (version) VALUES ('20130207055445');

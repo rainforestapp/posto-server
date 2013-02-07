@@ -3,5 +3,5 @@ class AddressRequestState < ActiveRecord::Base
   include AuditedStateModel
 
   belongs_to_and_marks_latest_within :address_request
-  valid_states :pending, :sent, :expired, :failed
+  valid_states :outgoing, :sent, :closed, :expired, :failed
 end

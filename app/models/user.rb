@@ -7,6 +7,9 @@ class User < ActiveRecord::Base
   has_one_audited :facebook_token
   has_one_audited :recipient_address, foreign_key: "recipient_user_id"
 
+  has_many :sent_address_requests, foreign_key: "request_sender_user_id", class_name: "AddressRequest", order: "created_at desc"
+  has_many :received_address_requests, foreign_key: "request_recipient_user_id", class_name: "AddressRequest", order: "created_at desc"
+
   def self.first_or_create_with_facebook_token(facebook_token, *args)
     options = args.extract_options!
     api = options[:api] || Koala::Facebook::API.new(facebook_token)
@@ -57,12 +60,23 @@ class User < ActiveRecord::Base
     recipient_address.try(:mailable?)
   end
 
-  def has_pending_request?
-    false
+  def has_pending_address_request?
+    received_address_requests.first.try(:pending?)
   end
 
-  def requires_request_permission?
-    !has_mailable_address? && !has_pending_request?
+  def requires_address_request?
+    !has_mailable_address? && !has_pending_address_request?
+  end
+
+  def send_address_request(*args)
+    options = args.extract_options!
+
+    self.sent_address_requests.create!(
+      request_recipient_user: options[:recipient],
+      app: options[:app],
+      address_request_medium: options[:medium],
+      address_request_payload: args[0]
+    )
   end
 end
 
