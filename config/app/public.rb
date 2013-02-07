@@ -15,6 +15,7 @@ CONFIG = SampleableConfig.define do
   card_fee 100
   max_cards_to_send 9
   max_photo_byte_size 24 * 1024 * 1024
+  recipient_address_expiration_days 90
 
   shuffle_captions do
     variant 1, true

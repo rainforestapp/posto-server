@@ -39,7 +39,7 @@ describe SampleableConfig do
     biz_count = 0
     bad_count = 0
 
-    1.upto(100000) do |seed|
+    1.upto(10000) do |seed|
       sample = config.to_sampled_config(seed)
 
       if sample.foo == "bar"
@@ -51,8 +51,8 @@ describe SampleableConfig do
       end
     end
 
-    bar_count.should be > 85000
-    biz_count.should be < 15000
+    bar_count.should be > 8500
+    biz_count.should be < 1500
     bad_count.should be 0
   end
 

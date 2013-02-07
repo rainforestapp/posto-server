@@ -5,6 +5,8 @@ module AppendOnlyModel
     before_update(lambda do
       raise "Immutable model #{self} trying to be updated"
     end)
+
+    serialize :meta, ActiveRecord::Coders::Hstore
   end
 
   module ClassMethods

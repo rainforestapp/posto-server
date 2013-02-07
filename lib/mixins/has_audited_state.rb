@@ -8,14 +8,15 @@ module HasAuditedState
       has_one_audited model
 
       self.send(:define_method, as_name) do
-        (self.send(model) || self.send(model.to_s.pluralize.to_sym).create!).state.to_sym
+        (self.send(model) || self.send(model.to_s.pluralize.to_sym).create!).state
       end
 
       self.send(:define_method, "#{as_name}=") do |state|
-        return if self.send(as_name) == state.to_sym
+        state = state.to_sym
+        return if self.send(as_name) == state
         assoc_name = model.to_s.pluralize.to_sym
-        self.send(assoc_name).create!(state: state.to_sym)
-        state.to_sym
+        self.send(assoc_name).create!(state: state)
+        state
       end
     end
   end

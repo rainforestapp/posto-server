@@ -1,4 +1,8 @@
 class AddressApiResponse < ActiveRecord::Base
   include AppendOnlyModel
-  #attr_accessible :api_type, :arguments, :response
+
+  has_many :recipient_addresses
+
+  serialize :arguments, ActiveRecord::Coders::Hstore
+  serialize :response, ActiveRecord::Coders::Hstore
 end

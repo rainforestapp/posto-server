@@ -3,11 +3,7 @@ module AuditedStateModel
 
   module ClassMethods
     def valid_states(*states)
-      validates :state, inclusion: { in: states }
-
-      after_initialize do
-        self.state ||= states[0]
-      end
+      symbolize :state, in: states, default:states[0], validate: true
     end
   end
 end

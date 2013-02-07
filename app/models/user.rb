@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_one_audited :user_profile
   has_one_audited :api_key
   has_one_audited :facebook_token
+  has_one_audited :recipient_address, foreign_key: "recipient_user_id"
 
   def self.first_or_create_with_facebook_token(facebook_token, *args)
     options = args.extract_options!
@@ -50,6 +51,10 @@ class User < ActiveRecord::Base
 
   def renew_api_key!
     ApiKey.where(user_id: self.user_id).create!
+  end
+
+  def has_mailable_address?
+    recipient_address.try(:mailable?)
   end
 end
 
