@@ -8,7 +8,7 @@ module Api
 
         respond_to do |format|
           format.json do
-            render :json => config
+            render json: config
           end
         end
       end

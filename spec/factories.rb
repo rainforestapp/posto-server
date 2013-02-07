@@ -1,8 +1,25 @@
 FactoryGirl.define do
   sequence(:facebook_id) { |n| 300000 + n }
 
-  factory :user, aliases: [:recipient_user] do
+  factory :app do
+    name { Faker::Lorem.word }
+  end
+
+  factory :user, 
+    aliases: [:recipient_user, :request_sender_user, :request_recipient_user] do
     facebook_id { generate(:facebook_id) }
+  end
+
+  factory :address_request do
+    request_sender_user
+    request_recipient_user
+    address_request_medium :facebook_message
+    address_request_payload { { message: Faker::Lorem.sentence } }
+    app
+
+    factory :expirable_address_request do
+      created_at 100.days.ago
+    end
   end
 
   factory :recipient_address do
@@ -10,7 +27,7 @@ FactoryGirl.define do
     address_api_response
 
     factory :expired_recipient_address do
-      created_at Time.zone.now - 100.days
+      created_at 100.days.ago
     end
   end
 
@@ -26,11 +43,11 @@ FactoryGirl.define do
     user
 
     factory :expired_api_key do
-      expires_at Time.zone.now - 100.days
+      expires_at 100.days.ago
     end
 
     factory :renewable_api_key do
-      expires_at Time.zone.now + 8.days
+      expires_at 8.days.from_now
     end
   end
 end

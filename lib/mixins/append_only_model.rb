@@ -3,10 +3,19 @@ module AppendOnlyModel
 
   included do
     before_update(lambda do
-      raise "Immutable model #{self} trying to be updated"
+      raise "Immutable model #{self} trying to be updated" unless @_saving_metadata
     end)
 
     serialize :meta, ActiveRecord::Coders::Hstore
+  end
+
+  def append_to_metadata!(new_metadata)
+    current_metadata = self.meta || {}
+    @_saving_metadata = true
+    self.meta = current_metadata.merge(new_metadata)
+    self.save
+    @_saving_metadata = false
+    self.meta
   end
 
   module ClassMethods

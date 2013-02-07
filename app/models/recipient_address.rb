@@ -1,7 +1,7 @@
 class RecipientAddress < ActiveRecord::Base
   include AppendOnlyModel
   
-  belongs_to_and_marks_latest_within :recipient_user, :class_name => "User"
+  belongs_to_and_marks_latest_within :recipient_user, class_name: "User"
   belongs_to :address_api_response
 
   def expired?

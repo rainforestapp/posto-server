@@ -10,13 +10,13 @@ class User < ActiveRecord::Base
   def self.first_or_create_with_facebook_token(facebook_token, *args)
     options = args.extract_options!
     api = options[:api] || Koala::Facebook::API.new(facebook_token)
-    facebook_token_record = FacebookToken.where(:token => facebook_token).first
+    facebook_token_record = FacebookToken.where(token: facebook_token).first
 
     begin
       profile = api.get_object("me?fields=name,first_name,middle_name,last_name,location,gender,email,birthday")
       facebook_id = profile["id"]
 
-      user = User.where(:facebook_id => facebook_id).first_or_create!
+      user = User.where(facebook_id: facebook_id).first_or_create!
 
       location = nil
       location = profile["location"]["name"] if profile["location"]
@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
       birthday = nil
       birthday = Chronic.parse(profile["birthday"] + " 00:00:00") if profile["birthday"]
 
-      facebook_token_record = FacebookToken.where(:user_id => user.user_id, :token => facebook_token).first_or_create!
+      facebook_token_record = FacebookToken.where(user_id: user.user_id, token: facebook_token).first_or_create!
 
       user.tap do |user|
         UserProfile.where(user_id: user.user_id,
@@ -55,6 +55,14 @@ class User < ActiveRecord::Base
 
   def has_mailable_address?
     recipient_address.try(:mailable?)
+  end
+
+  def has_pending_request?
+    false
+  end
+
+  def requires_request_permission?
+    !has_mailable_address? && !has_pending_request?
   end
 end
 

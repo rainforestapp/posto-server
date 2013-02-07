@@ -1,4 +1,7 @@
 class AddressRequestState < ActiveRecord::Base
   include AppendOnlyModel
-  #attr_accessible :address_request_id, :state
+  include AuditedStateModel
+
+  belongs_to_and_marks_latest_within :address_request
+  valid_states :pending, :sent, :expired, :failed
 end

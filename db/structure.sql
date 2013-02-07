@@ -112,8 +112,8 @@ CREATE TABLE address_request_states (
 
 CREATE TABLE address_requests (
     address_request_id bigint DEFAULT next_id() NOT NULL,
-    sender_user_id bigint NOT NULL,
-    recipient_user_id bigint NOT NULL,
+    request_sender_user_id bigint NOT NULL,
+    request_recipient_user_id bigint NOT NULL,
     app_id bigint NOT NULL,
     address_request_medium character varying(255) NOT NULL,
     address_request_payload hstore NOT NULL,
@@ -133,10 +133,10 @@ CREATE TABLE address_responses (
     response_sender_user_id bigint NOT NULL,
     response_source_type character varying(255) NOT NULL,
     response_source_id character varying(255) NOT NULL,
-    response_raw_text character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    meta hstore
+    meta hstore,
+    response_data hstore
 );
 
 
@@ -252,7 +252,7 @@ CREATE TABLE card_order_states (
 
 CREATE TABLE card_orders (
     card_order_id bigint DEFAULT next_id() NOT NULL,
-    sender_user_id bigint NOT NULL,
+    order_sender_user_id bigint NOT NULL,
     app_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -805,14 +805,14 @@ CREATE INDEX index_address_request_states_on_latest ON address_request_states US
 -- Name: index_address_requests_on_recipient_user_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_address_requests_on_recipient_user_id ON address_requests USING btree (recipient_user_id);
+CREATE INDEX index_address_requests_on_recipient_user_id ON address_requests USING btree (request_recipient_user_id);
 
 
 --
 -- Name: index_address_requests_on_sender_user_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_address_requests_on_sender_user_id ON address_requests USING btree (sender_user_id);
+CREATE INDEX index_address_requests_on_sender_user_id ON address_requests USING btree (request_sender_user_id);
 
 
 --
@@ -952,7 +952,7 @@ CREATE INDEX index_card_order_states_on_latest ON card_order_states USING btree 
 -- Name: index_card_orders_on_sender_user_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_card_orders_on_sender_user_id ON card_orders USING btree (sender_user_id);
+CREATE INDEX index_card_orders_on_sender_user_id ON card_orders USING btree (order_sender_user_id);
 
 
 --
@@ -1243,3 +1243,7 @@ INSERT INTO schema_migrations (version) VALUES ('20130201222919');
 INSERT INTO schema_migrations (version) VALUES ('20130201225054');
 
 INSERT INTO schema_migrations (version) VALUES ('20130202000801');
+
+INSERT INTO schema_migrations (version) VALUES ('20130207015553');
+
+INSERT INTO schema_migrations (version) VALUES ('20130207021025');
