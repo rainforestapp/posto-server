@@ -80,8 +80,36 @@ class User < ActiveRecord::Base
     )
   end
 
-  def has_active_stripe_card?
-    self.try(:stripe_customer).try(:has_active_card?)
+  def payment_info_state
+    return :none unless self.stripe_customer
+    self.stripe_customer.payment_info_state
+  end
+
+  def set_stripe_payment_info_with_token(token)
+    stripe_customer_name = "User"
+    stripe_customer_name = "#{self.user_profile.last_name}, #{self.user_profile.first_name}" if self.user_profile
+    stripe_customer_name += " ##{self.user_id}/#{self.facebook_id}"
+
+    pending_customer = Stripe::Customer.create(description: stripe_customer_name, card: token)
+    pending_customer.save
+
+    if pending_customer.active_card && pending_customer.active_card["cvc_check"] == "fail"
+      begin
+        pending_customer.delete
+      ensure
+        raise StripeCvcCheckFailException.new
+      end
+    end
+
+    self.stripe_customer.try(:delete_from_stripe!)
+    self.stripe_customers.create!(stripe_id: pending_customer["id"])
+    self.stripe_customer.stripe_card = StripeCard.find_or_create_by_stripe_card_info(pending_customer.active_card)
+  end
+
+  def remove_stripe_payment_info!
+    return if self.payment_info_state == :none
+    self.stripe_customer.try(:delete_from_stripe!)
+    self.stripe_customer.stripe_card = nil
   end
 end
 

@@ -17,6 +17,7 @@ CONFIG = SampleableConfig.define do
   max_photo_byte_size 24 * 1024 * 1024
   recipient_address_expiration_days 90
   address_request_expiration_days 7
+  stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
 
   shuffle_captions do
     variant 1, true

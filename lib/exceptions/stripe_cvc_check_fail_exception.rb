@@ -1,0 +1,2 @@
+class StripeCvcCheckFailException < Exception
+end
