@@ -24,9 +24,15 @@ CONFIG = SampleableConfig.define do
   end
 
   permission_caption do
-    variant 1, "needed", "Chat and Inbox access is needed to ask your recipients for their addresses."
-    variant 1, "used", "Chat and Inbox access is used to ask your recipients for their addresses."
-    variant 1, "required", "Chat and Inbox permissions are required to ask your recipients for their addresses."
+    variant 1, "is_needed", "Chat and Inbox access is needed to ask your friends for their addresses."
+    variant 1, "is_needed_spam", "Access is used to ask for addresses.\nWe promise we won't spam."
+    variant 1, "without_asking", "We'll never post anything to Facebook without asking first."
+    #
+    #variant 1, "we_need_you", "We need access so you can ask your friends for their addresses."
+    #variant 1, "we_need_us", "We need permission to ask your friends for their addresses. We won't spam."
+    #variant 1, "we_need_tell", "We need Chat & Inbox permissions so your friends can provide their addresses."
+    #variant 1, "lets_you_ask", "Chat & Inbox permissions let you ask for your friends' addresses."
+    #variant 1, "we_send", "We send Facebook messages to ask for addresses. We promise we won't spam."
   end
 
   facebook_allow_messages do

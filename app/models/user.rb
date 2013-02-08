@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_one_audited :user_profile
   has_one_audited :api_key
   has_one_audited :facebook_token
+  has_one_audited :stripe_customer
   has_one_audited :recipient_address, foreign_key: "recipient_user_id"
 
   has_many :sent_address_requests, foreign_key: "request_sender_user_id", class_name: "AddressRequest", order: "created_at desc"
@@ -77,6 +78,10 @@ class User < ActiveRecord::Base
       address_request_medium: options[:medium],
       address_request_payload: args[0]
     )
+  end
+
+  def has_active_stripe_card?
+    self.try(:stripe_customer).try(:has_active_card?)
   end
 end
 

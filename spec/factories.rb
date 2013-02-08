@@ -51,4 +51,21 @@ FactoryGirl.define do
       expires_at 8.days.from_now
     end
   end
+
+  factory :stripe_customer do
+    user
+    stripe_id { Faker::Lorem.characters(32) }
+  end
+
+  factory :stripe_card do
+    exp_month { Random.new.rand(11) + 1 }
+    exp_year { 2020 + Random.new.rand(20) }
+    fingerprint { Faker::Lorem.characters(32) }
+    last4 { "%04d" % Random.new.rand(9999) }
+    card_type { [:amex, :visa, :master, :unknown].sample }
+
+    factory :expired_stripe_card do
+      exp_year 2011
+    end
+  end
 end

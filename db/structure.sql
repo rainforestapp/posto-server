@@ -387,16 +387,64 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: stripe_customers; Type: TABLE; Schema: posto0; Owner: -; Tablespace: 
+-- Name: stripe_cards; Type: TABLE; Schema: posto0; Owner: -; Tablespace: 
 --
 
-CREATE TABLE stripe_customers (
-    stripe_customer_id integer DEFAULT next_id() NOT NULL,
-    user_id bigint NOT NULL,
+CREATE TABLE stripe_cards (
+    stripe_card_id bigint DEFAULT next_id() NOT NULL,
+    exp_month integer NOT NULL,
+    exp_year integer NOT NULL,
+    fingerprint character varying(255) NOT NULL,
+    last4 character varying(255) NOT NULL,
+    card_type character varying(255) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    meta hstore
+);
+
+
+--
+-- Name: stripe_customer_card_states; Type: TABLE; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE TABLE stripe_customer_card_states (
+    stripe_customer_card_state_id bigint DEFAULT next_id() NOT NULL,
+    stripe_customer_card_id bigint NOT NULL,
+    state character varying(255) NOT NULL,
     latest boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     meta hstore
+);
+
+
+--
+-- Name: stripe_customer_cards; Type: TABLE; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE TABLE stripe_customer_cards (
+    stripe_customer_card_id bigint DEFAULT next_id() NOT NULL,
+    stripe_customer_id bigint NOT NULL,
+    stripe_card_id bigint NOT NULL,
+    latest boolean NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    meta hstore
+);
+
+
+--
+-- Name: stripe_customers; Type: TABLE; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE TABLE stripe_customers (
+    stripe_customer_id bigint DEFAULT next_id() NOT NULL,
+    user_id bigint NOT NULL,
+    latest boolean NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    meta hstore,
+    stripe_id character varying(255) NOT NULL
 );
 
 
@@ -654,6 +702,30 @@ ALTER TABLE ONLY facebook_tokens
 
 ALTER TABLE ONLY recipient_addresses
     ADD CONSTRAINT recipient_addresses_pkey PRIMARY KEY (recipient_address_id);
+
+
+--
+-- Name: stripe_cards_pkey; Type: CONSTRAINT; Schema: posto0; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY stripe_cards
+    ADD CONSTRAINT stripe_cards_pkey PRIMARY KEY (stripe_card_id);
+
+
+--
+-- Name: stripe_customer_card_states_pkey; Type: CONSTRAINT; Schema: posto0; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY stripe_customer_card_states
+    ADD CONSTRAINT stripe_customer_card_states_pkey PRIMARY KEY (stripe_customer_card_state_id);
+
+
+--
+-- Name: stripe_customer_cards_pkey; Type: CONSTRAINT; Schema: posto0; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY stripe_customer_cards
+    ADD CONSTRAINT stripe_customer_cards_pkey PRIMARY KEY (stripe_customer_card_id);
 
 
 --
@@ -1083,6 +1155,34 @@ CREATE INDEX index_recipient_addresses_on_recipient_user_id ON recipient_address
 
 
 --
+-- Name: index_stripe_cards_on_fingerprint; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_stripe_cards_on_fingerprint ON stripe_cards USING btree (fingerprint);
+
+
+--
+-- Name: index_stripe_customer_card_states_on_stripe_customer_card_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_stripe_customer_card_states_on_stripe_customer_card_id ON stripe_customer_card_states USING btree (stripe_customer_card_id);
+
+
+--
+-- Name: index_stripe_customer_cards_on_stripe_card_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_stripe_customer_cards_on_stripe_card_id ON stripe_customer_cards USING btree (stripe_card_id);
+
+
+--
+-- Name: index_stripe_customer_cards_on_stripe_customer_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_stripe_customer_cards_on_stripe_customer_id ON stripe_customer_cards USING btree (stripe_customer_id);
+
+
+--
 -- Name: index_stripe_customers_on_latest; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
@@ -1094,6 +1194,13 @@ CREATE INDEX index_stripe_customers_on_latest ON stripe_customers USING btree (l
 --
 
 CREATE INDEX index_stripe_customers_on_stripe_customer_id ON stripe_customers USING btree (stripe_customer_id);
+
+
+--
+-- Name: index_stripe_customers_on_stripe_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_stripe_customers_on_stripe_id ON stripe_customers USING btree (stripe_id);
 
 
 --
@@ -1257,3 +1364,7 @@ INSERT INTO schema_migrations (version) VALUES ('20130207015553');
 INSERT INTO schema_migrations (version) VALUES ('20130207021025');
 
 INSERT INTO schema_migrations (version) VALUES ('20130207055445');
+
+INSERT INTO schema_migrations (version) VALUES ('20130207205907');
+
+INSERT INTO schema_migrations (version) VALUES ('20130208004347');

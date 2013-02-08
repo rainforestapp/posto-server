@@ -7,6 +7,10 @@ Posto::Application.routes.draw do
       resource :current_user, controller: "CurrentUser"
       resources :config, controller: "Conf"
       resources :photo_upload_tokens
+
+      resource :users do
+        resources :facebook, controller: "Users"
+      end
     end
   end
 end
