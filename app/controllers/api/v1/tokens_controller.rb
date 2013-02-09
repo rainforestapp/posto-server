@@ -4,7 +4,7 @@ module Api
       respond_to :json
 
       def create
-        token = params[:token]
+        token = params[:posto_token]
         facebook_token = params[:facebook_token]
 
         api_key = token && ApiKey.where(:token => token).first

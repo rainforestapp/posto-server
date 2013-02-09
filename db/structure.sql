@@ -1155,10 +1155,10 @@ CREATE INDEX index_recipient_addresses_on_recipient_user_id ON recipient_address
 
 
 --
--- Name: index_stripe_cards_on_fingerprint; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+-- Name: index_stripe_cards_on_fingerprint_and_exp_month_and_exp_year; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_stripe_cards_on_fingerprint ON stripe_cards USING btree (fingerprint);
+CREATE UNIQUE INDEX index_stripe_cards_on_fingerprint_and_exp_month_and_exp_year ON stripe_cards USING btree (fingerprint, exp_month, exp_year);
 
 
 --
@@ -1368,3 +1368,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130207055445');
 INSERT INTO schema_migrations (version) VALUES ('20130207205907');
 
 INSERT INTO schema_migrations (version) VALUES ('20130208004347');
+
+INSERT INTO schema_migrations (version) VALUES ('20130209031219');

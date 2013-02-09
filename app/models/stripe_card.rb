@@ -15,7 +15,9 @@ class StripeCard < ActiveRecord::Base
   }
 
   def self.find_or_create_by_stripe_card_info(card_info)
-    StripeCard.where(fingerprint: card_info["fingerprint"]).first_or_create!(
+    StripeCard.where(fingerprint: card_info["fingerprint"],
+                     exp_month: card_info["exp_month"],
+                     exp_year: card_info["exp_year"]).first_or_create!(
       fingerprint: card_info["fingerprint"],
       last4: card_info["last4"],
       card_type: CARD_TYPE_MAP[card_info["type"]] || :unknown,
