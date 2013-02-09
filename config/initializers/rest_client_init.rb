@@ -6,9 +6,15 @@ if Rails.env == "development"
       define_method s_method do |*args|
         params ||= {}
         params = args.last if args.last.kind_of?(Hash)
-        params["authorization"] = 'Token token="thisisabackdoor"'
+        headers = {}
+        headers[:authorization] = 'Token token="thisisabackdoor"'
+        headers[:content_type] = 'application/json'
 
-        self.send(method, params)
+        if method == :get
+          self.send(method, params.merge(headers))
+        else
+          self.send(method, params, headers)
+        end
       end
     end
   end

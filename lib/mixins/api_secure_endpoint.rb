@@ -2,10 +2,12 @@ module ApiSecureEndpoint
   extend ActiveSupport::Concern
 
   included do
+    skip_before_filter :verify_authenticity_token, if: lambda { |c| c.request.format == 'application/json' }
+
     before_filter(lambda do
       authenticate_or_request_with_http_token do |token, options|
         if Rails.env == "development" && token == "thisisabackdoor"
-          @current_user = User.where(facebook_id: "403143")
+          @current_user = User.where(facebook_id: "403143").first
           return true
         end
 
