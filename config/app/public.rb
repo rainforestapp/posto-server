@@ -1,6 +1,10 @@
 require "sampleable_config"
 
 CONFIG = SampleableConfig.define do
+  kill_switch false
+  really_kill_switch false
+  kill_message "Lulcard is unavailable."
+
   api_key_expiration_days 30
   api_key_renewal_days 15
 
