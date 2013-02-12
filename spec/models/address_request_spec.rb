@@ -65,10 +65,10 @@ describe AddressRequest do
     app = create(:app)
     recipient.should_not have_pending_address_request
 
-    request = sender.send_address_request({ message: "foo" }, 
-                                            recipient: recipient, 
-                                            app: app, 
-                                            medium: :facebook_message)
+    request = sender.send_address_request!({ message: "foo" }, 
+                                             recipient: recipient, 
+                                             app: app, 
+                                             medium: :facebook_message)
 
     recipient.should have_pending_address_request
     request.app.should == app
@@ -77,10 +77,10 @@ describe AddressRequest do
     request.address_request_payload["message"].should == "foo"
 
     expect {
-      sender.send_address_request({ message: "foo" }, 
-                                              recipient: recipient, 
-                                              app: app, 
-                                              medium: :facebook_message)
+      sender.send_address_request!({ message: "foo" }, 
+                                     recipient: recipient, 
+                                     app: app, 
+                                     medium: :facebook_message)
     }.to raise_error("Pending address request already exists for #{recipient}")
   end
 end

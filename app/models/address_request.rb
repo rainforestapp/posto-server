@@ -3,7 +3,7 @@ class AddressRequest < ActiveRecord::Base
   include HasOneAudited
   include HasAuditedState
 
-  attr_accessible :request_recipient_user, :app, :address_request_medium, :address_request_payload
+  attr_accessible :request_recipient_user, :app, :address_request_medium, :address_request_payload, :state
 
   belongs_to :request_sender_user, class_name: "User"
   belongs_to :request_recipient_user, class_name: "User"

@@ -73,14 +73,14 @@ class User < ActiveRecord::Base
     !has_mailable_address? && !has_pending_address_request?
   end
 
-  def send_address_request(*args)
+  def send_address_request!(*args)
     options = args.extract_options!
 
     self.sent_address_requests.create!(
       request_recipient_user: options[:recipient],
       app: options[:app],
       address_request_medium: options[:medium],
-      address_request_payload: args[0]
+      address_request_payload: args[0],
     )
   end
 
@@ -117,7 +117,7 @@ class User < ActiveRecord::Base
   end
 
   def create_order_from_payload!(payload, *args)
-    ensure_order_payload_valid!(payload, *args)
+    ensure_order_payload_valid(payload, *args)
     app = App.by_name(payload["app"])
     card_order = self.card_orders.create!(app: app,
                                           quoted_total_price: payload["quoted_total_price"])
@@ -150,13 +150,22 @@ class User < ActiveRecord::Base
       payload["recipients"].each do |recipient|
         recipient_user = User.where(facebook_id: recipient["facebook_id"]).first_or_create!
         card_order.card_printings.create!(recipient_user: recipient_user)
+
+        if recipient_user.requires_address_request?
+          address_request = self.send_address_request!({ message: recipient["address_request_message"] },
+                                                         recipient: recipient_user,
+                                                         app: app,
+                                                         medium: :facebook_message)
+
+          address_request_state = :sent if recipient["sent_address_request"]
+        end
       end
     end
   end
 
   private 
 
-  def ensure_order_payload_valid!(payload, *args)
+  def ensure_order_payload_valid(payload, *args)
     errors = []
     options = args.extract_options!
 
