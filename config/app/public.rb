@@ -15,6 +15,7 @@ CONFIG = SampleableConfig.define do
   tap_to_edit_bottom_caption "scroll for more"
   server_debug false
   fb_permissions ["email", "read_mailbox", "xmpp_login", "friends_location", "user_location"]
+  fb_fields ["gender", "birthday"]
   processing_fee 99
   card_fee 100
   max_cards_to_send 9

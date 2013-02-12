@@ -70,9 +70,6 @@ class AddressRequest < ActiveRecord::Base
   end
 
   def ensure_no_other_pending_request_for_recipient
-    if self.request_recipient_user.nil?
-      puts self.attributes.inspect
-    end
     if self.request_recipient_user.has_pending_address_request?
       raise "Pending address request already exists for #{self.request_recipient_user}"
     end

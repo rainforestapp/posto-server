@@ -50,8 +50,7 @@ class User < ActiveRecord::Base
   end
 
   def add_login!
-    # TODO statsd or something less heavyweight
-    #UserLogin.where(user_id: self.user_id, app_id: App.lulcards.app_id).create!
+    UserLogin.where(user_id: self.user_id, app_id: App.lulcards.app_id).create!
   end
 
   def renew_api_key!

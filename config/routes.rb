@@ -10,7 +10,10 @@ Posto::Application.routes.draw do
         end
       end
 
-      resources :config, controller: "Conf"
+      resources :apps do
+        resources :config, controller: "Conf"
+      end
+
       resources :photo_upload_tokens
 
       resource :users do
