@@ -5,4 +5,9 @@ class App < ActiveRecord::Base
   def self.lulcards
     @lulcards ||= App.where(name: "lulcards").first_or_create!
   end
+
+  def self.by_name(name)
+    raise "Bad app name" unless name == "lulcards"
+    self.lulcards
+  end
 end

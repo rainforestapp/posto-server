@@ -195,20 +195,17 @@ CREATE TABLE card_designs (
     author_user_id bigint NOT NULL,
     source_card_design_id bigint,
     app_id bigint NOT NULL,
-    design_type integer,
+    design_type character varying(255) NOT NULL,
     top_caption character varying(255),
     bottom_caption character varying(255),
     top_caption_font_size character varying(255),
     bottom_caption_font_size character varying(255),
-    original_photo_image_id integer,
-    original_full_photo_image_id integer,
-    edited_photo_image_id integer,
-    editied_full_photo_image_id integer,
-    printable_image_id integer,
-    printable_full_image_id integer,
+    original_full_photo_image_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    meta hstore
+    meta hstore,
+    composed_full_photo_image_id bigint NOT NULL,
+    edited_full_photo_image_id bigint NOT NULL
 );
 
 
@@ -223,8 +220,8 @@ CREATE TABLE card_images (
     uuid character varying(255) NOT NULL,
     width integer NOT NULL,
     height integer NOT NULL,
-    orientation integer NOT NULL,
-    image_type integer NOT NULL,
+    orientation character varying(255) NOT NULL,
+    image_type character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     meta hstore
@@ -256,7 +253,8 @@ CREATE TABLE card_orders (
     app_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    meta hstore
+    meta hstore,
+    quoted_total_price integer NOT NULL
 );
 
 
@@ -295,7 +293,6 @@ CREATE TABLE card_printings (
     card_printing_id bigint DEFAULT next_id() NOT NULL,
     card_order_id bigint NOT NULL,
     recipient_user_id bigint NOT NULL,
-    printed_image_id bigint NOT NULL,
     print_number bigint DEFAULT nextval('card_printing_print_number_seq'::regclass) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -945,17 +942,17 @@ CREATE INDEX index_card_designs_on_author_user_id ON card_designs USING btree (a
 
 
 --
--- Name: index_card_designs_on_edited_photo_image_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+-- Name: index_card_designs_on_composed_full_photo_image_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_card_designs_on_edited_photo_image_id ON card_designs USING btree (edited_photo_image_id);
+CREATE INDEX index_card_designs_on_composed_full_photo_image_id ON card_designs USING btree (composed_full_photo_image_id);
 
 
 --
--- Name: index_card_designs_on_editied_full_photo_image_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+-- Name: index_card_designs_on_edited_full_photo_image_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_card_designs_on_editied_full_photo_image_id ON card_designs USING btree (editied_full_photo_image_id);
+CREATE INDEX index_card_designs_on_edited_full_photo_image_id ON card_designs USING btree (edited_full_photo_image_id);
 
 
 --
@@ -963,27 +960,6 @@ CREATE INDEX index_card_designs_on_editied_full_photo_image_id ON card_designs U
 --
 
 CREATE INDEX index_card_designs_on_original_full_photo_image_id ON card_designs USING btree (original_full_photo_image_id);
-
-
---
--- Name: index_card_designs_on_original_photo_image_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_card_designs_on_original_photo_image_id ON card_designs USING btree (original_photo_image_id);
-
-
---
--- Name: index_card_designs_on_printable_full_image_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_card_designs_on_printable_full_image_id ON card_designs USING btree (printable_full_image_id);
-
-
---
--- Name: index_card_designs_on_printable_image_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_card_designs_on_printable_image_id ON card_designs USING btree (printable_image_id);
 
 
 --
@@ -1054,13 +1030,6 @@ CREATE INDEX index_card_printings_on_card_order_id ON card_printings USING btree
 --
 
 CREATE INDEX index_card_printings_on_print_number ON card_printings USING btree (print_number);
-
-
---
--- Name: index_card_printings_on_printed_image_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_card_printings_on_printed_image_id ON card_printings USING btree (printed_image_id);
 
 
 --
@@ -1370,3 +1339,17 @@ INSERT INTO schema_migrations (version) VALUES ('20130207205907');
 INSERT INTO schema_migrations (version) VALUES ('20130208004347');
 
 INSERT INTO schema_migrations (version) VALUES ('20130209031219');
+
+INSERT INTO schema_migrations (version) VALUES ('20130212072043');
+
+INSERT INTO schema_migrations (version) VALUES ('20130212074734');
+
+INSERT INTO schema_migrations (version) VALUES ('20130212101646');
+
+INSERT INTO schema_migrations (version) VALUES ('20130212104621');
+
+INSERT INTO schema_migrations (version) VALUES ('20130212105206');
+
+INSERT INTO schema_migrations (version) VALUES ('20130212110533');
+
+INSERT INTO schema_migrations (version) VALUES ('20130212111110');

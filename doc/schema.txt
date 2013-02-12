@@ -53,7 +53,7 @@ card_orders
 
 card_order_states
   state
-    # created, pending_addresses, pending_printing, pending_mailing, pending_payment, failed/finished
+    # created, pending_addresses, pending_payment, pending_printing, pending_mailing, failed/finished
     # failed can be due to fb token expiration, no response for address
 
 card_printings
@@ -81,7 +81,7 @@ card_images
   width
   height
   orientation
-  image_type (original, edited)
+  image_type (original, edited, composed, printed)
 
 card_collection_entries
   card_design_id

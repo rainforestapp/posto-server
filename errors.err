@@ -1,0 +1,7 @@
+config/application.rb:14:    # Settings in config/environments/* take precedence over those specified here.
+config/application.rb:29:    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
+config/boot.rb:3:# Set up gems listed in the Gemfile.
+config/environments/development.rb:2:  # Settings specified here will take precedence over those in config/application.rb
+config/environments/princess.rb:2:  # Settings specified here will take precedence over those in config/application.rb
+config/environments/production.rb:2:  # Settings specified here will take precedence over those in config/application.rb
+config/environments/test.rb:2:  # Settings specified here will take precedence over those in config/application.rb

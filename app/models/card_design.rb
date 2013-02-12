@@ -1,4 +1,19 @@
 class CardDesign < ActiveRecord::Base
   include AppendOnlyModel
-  attr_accessible :app_id, :author_user_id, :bottom_caption, :bottom_caption_font_size, :design_type, :edited_photo_image_id, :editied_full_photo_image_id, :original_full_photo_image_id, :original_photo_image_id, :printable_full_image_id, :printable_image_id, :source_card_design_id, :top_caption, :top_caption_font_size
+
+  attr_accessible :app, :author_user, 
+                  :bottom_caption, :bottom_caption_font_size, 
+                  :top_caption, :top_caption_font_size,
+                  :design_type, 
+                  :original_full_photo_image, :edited_full_photo_image, :composed_full_photo_image, 
+                  :source_card_design_id
+
+  belongs_to :app
+  belongs_to :author_user, class_name: "User"
+  belongs_to :original_full_photo_image, class_name: "CardImage"
+  belongs_to :edited_full_photo_image, class_name: "CardImage"
+  belongs_to :composed_full_photo_image, class_name: "CardImage"
+  belongs_to :source_card_design, class_name: "CardDesign"
+
+  symbolize :design_type, in: [:lulcards_alpha], validates: true
 end

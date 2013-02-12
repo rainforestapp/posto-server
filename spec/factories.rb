@@ -8,6 +8,10 @@ FactoryGirl.define do
   factory :user, 
     aliases: [:recipient_user, :request_sender_user, :request_recipient_user] do
     facebook_id { generate(:facebook_id) }
+
+    factory :greg_user do
+      facebook_id "403143"
+    end
   end
 
   factory :address_request do
