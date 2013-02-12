@@ -20,6 +20,6 @@ describe ApiKey do
   it "should be renewed if expiration is within renewal days" do
     api_key = create(:renewable_api_key)
     api_key.should_not be_expired
-    api_key.should_not be_renewable
+    api_key.should be_renewable
   end
 end
