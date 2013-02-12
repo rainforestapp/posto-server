@@ -7,8 +7,7 @@ class CardImage < ActiveRecord::Base
   belongs_to :app
 
   symbolize :image_type, 
-            in: [:original_full_photo, :edited_full_photo, :composed_full_photo,
-                 :printable_front, :printable_back],
+            in: [:original_full_photo, :edited_full_photo, :composed_full_photo, :card_front, :card_back],
             validates: true
 
   symbolize :orientation, 

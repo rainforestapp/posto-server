@@ -7,6 +7,7 @@ class CardPrinting < ActiveRecord::Base
 
   belongs_to :card_order
   belongs_to :recipient_user, class_name: "User"
+  has_one_audited :card_printing_composition
 
   before_save(on: :create) do
     self.print_number = self.class.connection.select_value <<-END

@@ -259,6 +259,21 @@ CREATE TABLE card_orders (
 
 
 --
+-- Name: card_printing_compositions; Type: TABLE; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE TABLE card_printing_compositions (
+    card_printing_composition_id bigint DEFAULT next_id() NOT NULL,
+    card_printing_id bigint NOT NULL,
+    card_front_image_id bigint NOT NULL,
+    card_back_image_id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    meta hstore
+);
+
+
+--
 -- Name: card_printing_print_number_seq; Type: SEQUENCE; Schema: posto0; Owner: -
 --
 
@@ -646,6 +661,14 @@ ALTER TABLE ONLY card_orders
 
 
 --
+-- Name: card_printing_compositions_pkey; Type: CONSTRAINT; Schema: posto0; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY card_printing_compositions
+    ADD CONSTRAINT card_printing_compositions_pkey PRIMARY KEY (card_printing_composition_id);
+
+
+--
 -- Name: card_printing_states_pkey; Type: CONSTRAINT; Schema: posto0; Owner: -; Tablespace: 
 --
 
@@ -1005,6 +1028,27 @@ CREATE INDEX index_card_orders_on_sender_user_id ON card_orders USING btree (ord
 
 
 --
+-- Name: index_card_printing_compositions_on_card_back_image_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_card_printing_compositions_on_card_back_image_id ON card_printing_compositions USING btree (card_back_image_id);
+
+
+--
+-- Name: index_card_printing_compositions_on_card_front_image_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_card_printing_compositions_on_card_front_image_id ON card_printing_compositions USING btree (card_front_image_id);
+
+
+--
+-- Name: index_card_printing_compositions_on_card_printing_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_card_printing_compositions_on_card_printing_id ON card_printing_compositions USING btree (card_printing_id);
+
+
+--
 -- Name: index_card_printing_states_on_card_printing_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
@@ -1353,3 +1397,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130212105206');
 INSERT INTO schema_migrations (version) VALUES ('20130212110533');
 
 INSERT INTO schema_migrations (version) VALUES ('20130212111110');
+
+INSERT INTO schema_migrations (version) VALUES ('20130212112802');
