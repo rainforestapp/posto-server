@@ -24,6 +24,9 @@ CONFIG = SampleableConfig.define do
   address_request_expiration_days 7
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
 
+  order_submitted_header "Thanks!"
+  order_submitted_message "We'll notify you when your order is mailed. You can check its status from the Account page."
+
   shuffle_captions do
     variant 1, true
     variant 1, false

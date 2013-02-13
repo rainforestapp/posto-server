@@ -205,7 +205,7 @@ CREATE TABLE card_designs (
     updated_at timestamp without time zone NOT NULL,
     meta hstore,
     composed_full_photo_image_id bigint NOT NULL,
-    edited_full_photo_image_id bigint NOT NULL
+    edited_full_photo_image_id bigint
 );
 
 
@@ -269,7 +269,8 @@ CREATE TABLE card_printing_compositions (
     card_back_image_id bigint NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    meta hstore
+    meta hstore,
+    card_preview_image_id bigint NOT NULL
 );
 
 
@@ -1042,6 +1043,13 @@ CREATE INDEX index_card_printing_compositions_on_card_front_image_id ON card_pri
 
 
 --
+-- Name: index_card_printing_compositions_on_card_preview_image_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_card_printing_compositions_on_card_preview_image_id ON card_printing_compositions USING btree (card_preview_image_id);
+
+
+--
 -- Name: index_card_printing_compositions_on_card_printing_id; Type: INDEX; Schema: posto0; Owner: -; Tablespace: 
 --
 
@@ -1399,3 +1407,7 @@ INSERT INTO schema_migrations (version) VALUES ('20130212110533');
 INSERT INTO schema_migrations (version) VALUES ('20130212111110');
 
 INSERT INTO schema_migrations (version) VALUES ('20130212112802');
+
+INSERT INTO schema_migrations (version) VALUES ('20130213001128');
+
+INSERT INTO schema_migrations (version) VALUES ('20130213002328');

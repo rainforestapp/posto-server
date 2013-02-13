@@ -134,7 +134,8 @@ class User < ActiveRecord::Base
             card_image_params = card_image_params.merge(app: app, 
                                                         image_type: image_type.to_sym)
 
-            card_image = self.authored_card_images.create!(card_image_params)
+            card_image = CardImage.where(uuid: card_image_params["uuid"]).first
+            card_image ||= self.authored_card_images.create!(card_image_params)
             image_ids["#{image_type}_image"] = card_image
           end
         end
@@ -204,7 +205,7 @@ class User < ActiveRecord::Base
       sent = recipient["sent_address_request"]
       message = recipient["address_request_message"]
 
-      recipient_user = User.first_or_create!(facebook_id: facebook_id)
+      recipient_user = User.where(facebook_id: facebook_id).first_or_create!
 
       if recipient_user.requires_address_request? 
         unless recipient["granted_address_request_permission"] || recipient["sent_address_request"]

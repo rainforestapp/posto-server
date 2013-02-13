@@ -4,10 +4,13 @@ Posto::Application.routes.draw do
   namespace :api, defaults: { format: 'json' } do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: :true) do
       resources :tokens
+
       resource :current_user, controller: "CurrentUser" do
         resource :payment_info do
           resources :tokens, controller: "PaymentToken"
         end
+
+        resources :card_orders
       end
 
       resources :apps do

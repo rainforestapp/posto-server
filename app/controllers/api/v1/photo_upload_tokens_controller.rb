@@ -6,6 +6,8 @@ module Api
         bucket = s3.buckets["posto-uploads"]
         uuid = SecureRandom.hex
 
+        # TODO log this somewhere that this device took this token
+
         key = "#{uuid[0...2]}/#{uuid[2...4]}/#{uuid[4...6]}/#{uuid}.jpg"
 
         post = bucket.presigned_post(key: key)
