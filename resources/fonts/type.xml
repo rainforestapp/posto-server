@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<typemap>
+
+  <type
+     format="ttf"
+     name="HelveticaNeue"
+     fullname="Helvetica Neue"
+     family="Helvetica Neue"
+     glyphs="resources/fonts/HelveticaNeue.ttf"
+     />
+
+  <type
+     format="ttf"
+     name="HelveticaNeueB"
+     fullname="Helvetica Neue Bold"
+     family="Helvetica Neue"
+     glyphs="resources/fonts/HelveticaNeueBold.ttf"
+     />
+
+  <type
+     format="ttf"
+     name="HelveticaNeueBI"
+     fullname="Helvetica Neue Bold Italic"
+     family="Helvetica Neue"
+     glyphs="resources/fonts/HelveticaNeueBoldItalic.ttf"
+     />
+
+  <type
+     format="ttf"
+     name="HelveticaNeueCBk"
+     fullname="Helvetica Neue Condensed Black"
+     family="Helvetica Neue"
+     glyphs="resources/fonts/HelveticaNeueCondensedBlack.ttf"
+     />
+
+  <type
+     format="ttf"
+     name="HelveticaNeueCB"
+     fullname="Helvetica Neue Condensed Bold"
+     family="Helvetica Neue"
+     glyphs="resources/fonts/HelveticaNeueCondensedBold.ttf"
+     />
+
+  <type
+     format="ttf"
+     name="HelveticaNeueI"
+     fullname="Helvetica Neue Italic"
+     family="Helvetica Neue"
+     glyphs="resources/fonts/HelveticaNeueItalic.ttf"
+     />
+
+  <type
+     format="ttf"
+     name="HelveticaNeueL"
+     fullname="Helvetica Neue Light"
+     family="Helvetica Neue"
+     glyphs="resources/fonts/HelveticaNeueLight.ttf"
+     />
+
+  <type
+     format="ttf"
+     name="HelveticaNeueLI"
+     fullname="Helvetica Neue Light Italic"
+     family="Helvetica Neue"
+     glyphs="resources/fonts/HelveticaNeueLightItalic.ttf"
+     />
+
+  <type
+     format="ttf"
+     name="HelveticaNeueM"
+     fullname="Helvetica Neue Medium"
+     family="Helvetica Neue"
+     glyphs="resources/fonts/HelveticaNeueMedium.ttf"
+     />
+
+  <type
+     format="ttf"
+     name="HelveticaNeueUltraLight"
+     fullname="Helvetica Neue UltraLight"
+     family="Helvetica Neue"
+     glyphs="resources/fonts/HelveticaNeueUltraLight.ttf"
+     />
+
+  <type
+     format="ttf"
+     name="HelveticaNeueUltraLightI"
+     fullname="Helvetica Neue UltraLight Italic"
+     family="Helvetica Neue"
+     glyphs="resources/fonts/HelveticaNeueUltraLightItalic.ttf"
+     />
+
+</typemap>

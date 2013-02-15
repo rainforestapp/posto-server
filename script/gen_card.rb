@@ -10,6 +10,10 @@ composite_file = "composite.jpg"
 front_scan_key = "jfsiFkdsuvD"
 back_scan_key = "fKdiBfkAjfod"
 qr_path = "http://lulcards.com/s/"
+# http://graph.facebook.com/id/picture?width=200&height=200
+fb_profile_file = "sender_fb_profile.jpg"
+fb_name = "Greg Fodor"
+sent_text = "Sent on 2/3/13"
 
 composite = Magick::Image.read(composite_file).first
 cols = composite.columns
@@ -42,8 +46,34 @@ back_qr = RQRCode::QRCode.new(qr_path + back_scan_key, size: 4, level: :h)
 back_qr_png = back_qr.to_img.resize(150,150).save("back_qr.png")
 back_qr_image = Magick::Image.read("back_qr.png").first
 
+fb_profile = Magick::Image.read(fb_profile_file).first
+fb_profile.resize_to_fill!(150,150)
+
 back_template.composite!(wallet_card, 20, 20, Magick::DstOverCompositeOp)
 back_template.composite!(back_qr_image, 94, 811, Magick::DstOverCompositeOp)
+back_template.composite!(fb_profile, 1135, 576, Magick::OverCompositeOp)
+
+back_with_text = Magick::Draw.new
+
+use_big_font = fb_name.size <= 20
+name_y_offset = use_big_font ? 620 : 610
+sent_y_offset = use_big_font ? 660 : 650
+
+back_with_text.annotate(back_template, 0, 0, 1310, name_y_offset, fb_name) do
+  self.fill = "#FFFFFF"
+  self.stroke = 'transparent'
+  self.pointsize = use_big_font ? 48 : 32
+  self.font_family = "HelveticaNeueL"
+  self.text_align(Magick::LeftAlign)
+end
+
+back_with_text.annotate(back_template, 0, 0, 1310, sent_y_offset, sent_text) do
+  self.fill = "#FC933E"
+  self.stroke = 'transparent'
+  self.pointsize = 28
+  self.font_family = "HelveticaNeueL"
+  self.text_align(Magick::LeftAlign)
+end
 
 front.write("front_rgb.png")
 back_template.write("back_rgb.png")
@@ -52,7 +82,7 @@ back_template.write("back_rgb.png")
 `rm back_qr.png`
 
 # CMYK at end
-`convert front_rgb.png -profile srgb.icc -profile USWebUncoated.icc front.jpg`
-`convert back_rgb.png -profile srgb.icc -profile USWebUncoated.icc back.jpg`
+#`convert front_rgb.png -profile srgb.icc -profile USWebUncoated.icc front.jpg`
+#`convert back_rgb.png -profile srgb.icc -profile USWebUncoated.icc back.jpg`
 #`rm front_rgb.png`
 #`rm back_rgb.png`
