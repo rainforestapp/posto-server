@@ -158,7 +158,7 @@ class User < ActiveRecord::Base
                                                          app: app,
                                                          medium: :facebook_message)
 
-          address_request_state = :sent if recipient["sent_address_request"]
+          address_request.state = :sent if recipient["sent_address_request"]
         end
       end
     end

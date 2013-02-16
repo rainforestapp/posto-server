@@ -48,3 +48,10 @@ gem "aws-sdk"
 gem "symbolize", :require => "symbolize/active_record"
 
 gem "stripe"
+
+gem "rmagick"
+
+gem "rqrcode"
+
+gem "rqrcode_png"
+
