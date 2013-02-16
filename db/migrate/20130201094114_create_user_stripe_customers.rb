@@ -4,7 +4,7 @@ class CreateUserStripeCustomers < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :stripe_customers do |t|
+    create_posto_table :stripe_customers do |t|
       t.integer :user_id, limit: 8, null: false
       t.string :stripe_customer_id, null: false
       t.boolean :latest, null: false

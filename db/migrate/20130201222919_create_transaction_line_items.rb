@@ -4,7 +4,7 @@ class CreateTransactionLineItems < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :transaction_line_items do |t|
+    create_posto_table :transaction_line_items do |t|
       t.integer :transaction_id, null: false, limit: 8
       t.string :description, null: false
       t.integer :price_units, null: false

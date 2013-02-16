@@ -4,7 +4,7 @@ class CreateCardOrders < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :card_orders do |t|
+    create_posto_table :card_orders do |t|
       t.integer :sender_user_id, null: false, limit:8
       t.integer :app_id, null:false, limit:8
 

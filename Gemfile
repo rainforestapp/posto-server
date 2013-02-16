@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.11'
 
-gem 'pg', '~>0.13.2'
+gem "mysql2"
 
 gem 'squeel'
 
@@ -34,8 +34,6 @@ gem "chronic"
 gem "koala"
 
 gem 'wirble'
-
-gem 'activerecord-postgres-hstore'
 
 gem "rabl"
 

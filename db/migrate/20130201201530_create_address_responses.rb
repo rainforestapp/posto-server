@@ -4,7 +4,7 @@ class CreateAddressResponses < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :address_responses do |t|
+    create_posto_table :address_responses do |t|
       t.integer :address_request_id, null: false, limit: 8
       t.integer :response_sender_user_id, null: false, limit: 8
       t.string :response_source_type, null: false

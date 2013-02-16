@@ -4,7 +4,7 @@ class CreateCardCollectionEntries < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :card_collection_entries do |t|
+    create_posto_table :card_collection_entries do |t|
       t.integer :card_design_id, null: false, limit: 8
       t.string :source_type, null: false
       t.integer :source_id, null: false, limit: 8

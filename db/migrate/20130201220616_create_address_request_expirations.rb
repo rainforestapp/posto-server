@@ -4,7 +4,7 @@ class CreateAddressRequestExpirations < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :address_request_expirations do |t|
+    create_posto_table :address_request_expirations do |t|
       t.integer :address_request_id, null: false, limit: 8
       t.integer :duration_hit_hours, null: false
       t.integer :duration_limit_hours, null: false

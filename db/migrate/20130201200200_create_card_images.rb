@@ -4,7 +4,7 @@ class CreateCardImages < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :card_images do |t|
+    create_posto_table :card_images do |t|
       t.integer :author_user_id, null: false, limit: 8
       t.integer :app_id, null: false, limit: 8
       t.string :uuid, null: false

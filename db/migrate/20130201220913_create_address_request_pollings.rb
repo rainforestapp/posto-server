@@ -4,7 +4,7 @@ class CreateAddressRequestPollings < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :address_request_pollings do |t|
+    create_posto_table :address_request_pollings do |t|
       t.integer :address_request_id, null: false, limit: 8
       t.integer :previous_address_request_polling_id, limit: 8
       t.datetime :poll_date, null: false

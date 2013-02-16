@@ -4,7 +4,7 @@ class CreateUserProfiles < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :user_profiles do |t|
+    create_posto_table :user_profiles do |t|
       t.integer :user_id, null: false, limit: 8
       t.string :name
       t.string :first_name

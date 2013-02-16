@@ -4,7 +4,7 @@ class CreateFacebookTokenStates < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :facebook_token_states do |t|
+    create_posto_table :facebook_token_states do |t|
       t.integer :facebook_token_id, null: false, limit: 8
       t.string :state, null: false
       t.boolean :latest, null: false
@@ -15,8 +15,6 @@ class CreateFacebookTokenStates < ActiveRecord::Migration
     [:facebook_token_id, :latest].each do |c|
        add_index :facebook_token_states, c
     end
-
-    execute "create index facebook_token_states_state_latest_idx on facebook_token_states (state, latest) where latest = 't'"
   end
 
   def down

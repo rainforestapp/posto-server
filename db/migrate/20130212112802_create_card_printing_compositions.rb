@@ -4,7 +4,7 @@ class CreateCardPrintingCompositions < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :card_printing_compositions do |t|
+    create_posto_table :card_printing_compositions do |t|
       t.integer :card_printing_id, null: false, limit: 8
       t.integer :card_front_image_id, null: false, limit: 8
       t.integer :card_back_image_id, null: false, limit: 8

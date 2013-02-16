@@ -22,9 +22,6 @@ GEM
       activesupport (= 3.2.11)
       arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
-    activerecord-postgres-hstore (0.5.3)
-      rails
-      rake
     activeresource (3.2.11)
       activemodel (= 3.2.11)
       activesupport (= 3.2.11)
@@ -85,9 +82,9 @@ GEM
     mime-types (1.21)
     multi_json (1.5.1)
     multipart-post (1.1.5)
+    mysql2 (0.3.11)
     nokogiri (1.5.6)
     oj (2.0.3)
-    pg (0.13.2)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
@@ -171,7 +168,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-postgres-hstore
   aws-sdk
   better_errors
   chronic
@@ -181,8 +177,8 @@ DEPENDENCIES
   honeybadger
   jquery-rails
   koala
+  mysql2
   oj
-  pg (~> 0.13.2)
   rabl
   rails (= 3.2.11)
   rest-client

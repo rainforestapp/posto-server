@@ -4,7 +4,7 @@ class CreateUsers < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :users do |t|
+    create_posto_table :users do |t|
       t.string :facebook_id, null: false
       t.string :name, null: false
       t.string :first_name

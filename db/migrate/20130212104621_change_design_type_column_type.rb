@@ -1,9 +1,9 @@
 class ChangeDesignTypeColumnType < ActiveRecord::Migration
   def up
-    execute 'alter table card_designs alter column design_type type varchar(255)'
+    execute 'alter table card_designs modify column design_type varchar(255) not null'
   end
 
   def down
-    execute 'alter table card_designs alter column design_type type integer'
+    execute 'alter table card_designs modify column design_type integer not null'
   end
 end

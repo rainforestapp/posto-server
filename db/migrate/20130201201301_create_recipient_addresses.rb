@@ -4,7 +4,7 @@ class CreateRecipientAddresses < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :recipient_addresses do |t|
+    create_posto_table :recipient_addresses do |t|
       t.integer :recipient_user_id, null: false, limit: 8
       t.integer :address_api_response_id, null: false, limit: 8
       t.boolean :latest, null: false

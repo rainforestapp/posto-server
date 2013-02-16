@@ -4,11 +4,11 @@ class CreateTransactions < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :transactions do |t|
+    create_posto_table :transactions do |t|
       t.integer :card_order_id, null: false, limit: 8
       t.string :charged_customer_type, null: false
       t.integer :charged_customer_id, null: false, limit: 8
-      t.hstore :response, null: false
+      t.text :response, null: false
       t.string :status, null: false
 
       t.timestamps

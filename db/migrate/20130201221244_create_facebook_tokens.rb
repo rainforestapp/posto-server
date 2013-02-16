@@ -4,7 +4,7 @@ class CreateFacebookTokens < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :facebook_tokens do |t|
+    create_posto_table :facebook_tokens do |t|
       t.integer :user_id, null: false, limit: 8
       t.string :token, null: false
 

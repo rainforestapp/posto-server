@@ -3,10 +3,10 @@ module HasOneAudited
 
   module ClassMethods
     def has_one_audited(*args)
-      options = args.extract_options!
-      options.merge!(order: 'created_at desc')
-
       model = args[0]
+
+      options = args.extract_options!
+      options.merge!(order: "#{model}_id desc")
 
       has_many model.to_s.pluralize.to_sym, options
 

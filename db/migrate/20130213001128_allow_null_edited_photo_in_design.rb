@@ -1,9 +1,9 @@
 class AllowNullEditedPhotoInDesign < ActiveRecord::Migration
   def up
-    execute 'alter table card_designs alter column edited_full_photo_image_id drop not null'
+    execute 'alter table card_designs modify column edited_full_photo_image_id bigint'
   end
 
   def down
-    execute 'alter table card_designs alter column edited_full_photo_image_id set not null'
+    execute 'alter table card_designs modify column edited_full_photo_image_id bigint'
   end
 end

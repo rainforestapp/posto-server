@@ -4,7 +4,7 @@ class CreateCardScanAuthors < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :card_scan_authors do |t|
+    create_posto_table :card_scan_authors do |t|
       t.integer :card_scan_id, null: false, limit: 8
       t.integer :author_user_id, null: false, limit: 8
 

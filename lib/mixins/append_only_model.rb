@@ -6,7 +6,7 @@ module AppendOnlyModel
       raise "Immutable model #{self} trying to be updated" unless @_saving_metadata
     end)
 
-    serialize :meta, ActiveRecord::Coders::Hstore
+    serialize :meta, JSON
   end
 
   def append_to_metadata!(new_metadata)

@@ -11,7 +11,7 @@ class CardPrinting < ActiveRecord::Base
 
   before_save(on: :create) do
     self.print_number = self.class.connection.select_value <<-END
-      select nextval('card_printing_print_number_seq'::regclass)
+      select coalesce(max(print_number), 0) + 1 from card_printings
     END
   end
 

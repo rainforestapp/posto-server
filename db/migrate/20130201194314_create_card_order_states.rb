@@ -4,7 +4,7 @@ class CreateCardOrderStates < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :card_order_states do |t|
+    create_posto_table :card_order_states do |t|
       t.integer :card_order_id, null: false, limit: 8
       t.string :state, null: false
       t.boolean :latest, null: false
@@ -15,8 +15,6 @@ class CreateCardOrderStates < ActiveRecord::Migration
     [:card_order_id, :latest].each do |c|
        add_index :card_order_states, c
     end
-
-    execute "create index card_order_states_state_latest_idx on card_order_states (state, latest) where latest = 't'"
   end
 
   def down

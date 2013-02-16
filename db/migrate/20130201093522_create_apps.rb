@@ -4,7 +4,7 @@ class CreateApps < ActiveRecord::Migration
   include MigrationHelpers
 
   def up
-    create_sharded_table :apps do |t|
+    create_posto_table :apps do |t|
       t.string :name
 
       t.timestamps
