@@ -3,6 +3,6 @@ class AddressApiResponse < ActiveRecord::Base
 
   has_many :recipient_addresses
 
-  serialize :arguments, JSON
-  serialize :response, JSON
+  serialize :arguments, Hash
+  serialize :response, Hash
 end

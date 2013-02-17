@@ -30,7 +30,7 @@ describe AddressRequest do
     request = create(:address_request)
     request.mark_as_failed!(errors: "Foo")
     request.state.should == :failed
-    request.meta["errors"].should == "Foo"
+    request.meta[:errors].should == "Foo"
   end
 
   it "should add response" do
@@ -74,7 +74,7 @@ describe AddressRequest do
     request.app.should == app
     request.request_recipient_user.should == recipient
     request.address_request_medium.should == :facebook_message
-    request.address_request_payload["message"].should == "foo"
+    request.address_request_payload[:message].should == "foo"
 
     expect {
       sender.send_address_request!({ message: "foo" }, 

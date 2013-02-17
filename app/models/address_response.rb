@@ -7,5 +7,5 @@ class AddressResponse < ActiveRecord::Base
   belongs_to :response_sender_user, class_name: "User"
   symbolize :response_source_type, in: [:facebook_message], validate: true
 
-  serialize :response_data, JSON
+  serialize :response_data, Hash
 end

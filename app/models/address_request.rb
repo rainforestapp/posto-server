@@ -16,7 +16,7 @@ class AddressRequest < ActiveRecord::Base
   has_one_audited :address_request_polling
 
   symbolize :address_request_medium, in: [:facebook_message], validate: true
-  serialize :address_request_payload, JSON
+  serialize :address_request_payload, Hash
 
   before_create :ensure_no_other_pending_request_for_recipient
 
