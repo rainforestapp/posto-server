@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+
+require "config/environment"
+require "timeout"
+
+swf = AWS::SimpleWorkflow
+domain = swf.domains[Rails.env == "production" || Rails.env == "princess" ? "posto-prod" : "posto-dev"]
+
+@finished = false
+@processing = false
+
+trap("SIGINT") do
+  exit 0 unless @processing
+  @finished = true
+
+  begin
+    Timeout::timeout(10) do
+      while @processing
+        sleep 0.1
+      end
+
+      exit 0
+    end
+  rescue Exception => e
+    exit 1
+  end
+end
+
+domain.activity_tasks.poll("posto-worker") do |activity_task|
+  begin
+    @processing = true
+
+    puts activity_task.activity_type
+    puts activity_task.input
+    puts activity_task.task_token
+  ensure
+    @processing = false
+  end
+end

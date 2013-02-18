@@ -52,4 +52,3 @@ gem "rmagick"
 gem "rqrcode"
 
 gem "rqrcode_png"
-
