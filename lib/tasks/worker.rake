@@ -39,19 +39,22 @@ namespace :worker do
 
     @finished = false
     @processing = false
+    @mutex = Mutex.new
 
     trap("SIGINT") do
-      puts "exit"
-      exit 0 unless @processing
-      @finished = true
+      @mutex.synchronize do
+        exit 0 unless @processing
+      end
 
       begin
-        Timeout::timeout(10) do
-          while @processing
-            sleep 0.1
+        Timeout::timeout(60) do
+          loop do
+            @mutex.synchronize do
+              exit 0 unless @processing
+            end
+            
+            sleep 5
           end
-
-          exit 0
         end
       rescue Exception => e
         exit 1
@@ -60,16 +63,20 @@ namespace :worker do
 
     domain.activity_tasks.poll("posto-worker") do |activity_task|
       begin
-        @processing = true
+        @mutex.synchronize do
+          @processing = true
+        end
+
         class_name, activity_method = activity_task.activity_type.name.split(".")
         args = decode_from_java(JSON.parse(activity_task.input))
         worker = Kernel.const_get(class_name.to_sym).new
         worker.task_token = activity_task.task_token if worker.respond_to?(:task_token=)
         result = worker.send(activity_method.underscore.to_sym, args)
-        puts "sending #{encode_to_java(result).to_json}"
         activity_task.complete!(result: encode_to_java(result).to_json)
       ensure
-        @processing = false
+        @mutex.synchronize do
+          @processing = false
+        end
       end
     end
   end
