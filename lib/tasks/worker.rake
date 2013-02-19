@@ -72,7 +72,11 @@ namespace :worker do
         worker = Kernel.const_get(class_name.to_sym).new
         worker.task_token = activity_task.task_token if worker.respond_to?(:task_token=)
         result = worker.send(activity_method.underscore.to_sym, args)
-        activity_task.complete!(result: encode_to_java(result).to_json)
+
+        # AWS::SimpleWorkflow::Client.new().respond_activity_task_completed(:task_token => task_token)
+        unless worker.try(:manual?)
+          activity_task.complete!(result: encode_to_java(result).to_json)
+        end
       ensure
         @mutex.synchronize do
           @processing = false

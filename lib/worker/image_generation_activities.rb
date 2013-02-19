@@ -1,8 +1,9 @@
 class ImageGenerationActivities
-  attr_accessor :task_token
+  def generate_preview_images(card_order_id)
+    puts "gen preview #{card_order_id}"
+  end
 
-  def generate_preview_images(test_map)
-    puts "got: #{test_map}"
-    [9384,3984,948]
+  def generate_postcard_images(card_order_id)
+    puts "gen postcard #{card_order_id}"
   end
 end
