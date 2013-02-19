@@ -14,23 +14,20 @@ namespace :worker do
     value = data
 
     if data.kind_of?(Hash)
-      java_type = "java.util.Map"
+      ["java.util.Map", value]
     elsif data.kind_of?(Array)
-      java_type = "java.util.List"
-      value = data.map { |v| encode_to_java(v) }
+      ["java.util.List", data.map { |v| encode_to_java(v) }]
     elsif data.kind_of?(Fixnum)
-      java_type = "java.lang.Long"
+      ["java.lang.Long", data]
     elsif data.kind_of?(Float)
-      java_type = "java.lang.Double"
-    elsif data.kind_of?(String)
-      java_type = "java.lang.String"
-    elsif data.nil?
-      java_type = "java.lang.Object"
+      ["java.lang.Double", data]
+    #elsif data.kind_of?(String)
+    #  java_type = "java.lang.String"
+    #elsif data.nil?
+    #  java_type = "java.lang.Object"
     else
-      puts "Can't convert to java: #{data}"
+      value
     end
-
-    [java_type, value]
   end
 
   task :start => :environment do
@@ -61,26 +58,43 @@ namespace :worker do
       end
     end
 
-    domain.activity_tasks.poll("posto-worker") do |activity_task|
+    loop do 
       begin
-        @mutex.synchronize do
-          @processing = true
-        end
+        activity_task = domain.activity_tasks.poll_for_single_task("posto-worker")
 
-        class_name, activity_method = activity_task.activity_type.name.split(".")
-        args = decode_from_java(JSON.parse(activity_task.input))
-        worker = Kernel.const_get(class_name.to_sym).new
-        worker.task_token = activity_task.task_token if worker.respond_to?(:task_token=)
-        result = worker.send(activity_method.underscore.to_sym, args)
+        if activity_task
+          begin
+            @mutex.synchronize do
+              @processing = true
+            end
 
-        # AWS::SimpleWorkflow::Client.new().respond_activity_task_completed(:task_token => task_token)
-        unless worker.try(:manual?)
-          activity_task.complete!(result: encode_to_java(result).to_json)
+            class_name, activity_method = activity_task.activity_type.name.split(".")
+            args = decode_from_java(JSON.parse(activity_task.input))
+            worker = Kernel.const_get(class_name.to_sym).new
+            worker.task_token = activity_task.task_token if worker.respond_to?(:task_token=)
+            result = worker.send(activity_method.underscore.to_sym, *args)
+
+            # AWS::SimpleWorkflow::Client.new().respond_activity_task_completed(:task_token => task_token)
+            unless worker.respond_to?(:manual?) && worker.manual?
+              activity_task.complete!(result: encode_to_java(result).to_json)
+            end
+          rescue AWS::SimpleWorkflow::ActivityTask::CancelRequestedError
+            activity_task.cancel! unless activity_task.responded?
+          rescue StandardError => e
+            unless activity_task.responded?
+              reason = "UNTRAPPED ERROR #{e.message}"
+              details = e.backtrace.join("\n")
+              activity_task.fail!(:reason => reason, :details => details)
+            end
+            raise e
+          ensure
+            @mutex.synchronize do
+              @processing = false
+            end
+          end
         end
-      ensure
-        @mutex.synchronize do
-          @processing = false
-        end
+      rescue Timeout::Error
+        retry
       end
     end
   end
