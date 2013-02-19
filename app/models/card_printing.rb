@@ -16,4 +16,8 @@ class CardPrinting < ActiveRecord::Base
   end
 
   has_audited_state_through :card_printing_state
+
+  def printable?
+    self.card_printing_composition && self.recipient_user.has_mailable_address?
+  end
 end

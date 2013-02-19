@@ -187,6 +187,18 @@ CREATE TABLE `card_orders` (
   KEY `index_card_orders_on_sender_user_id` (`order_sender_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `card_preview_compositions` (
+  `card_preview_composition_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `card_design_id` bigint(20) NOT NULL,
+  `card_preview_image_id` bigint(20) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `meta` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`card_preview_composition_id`),
+  KEY `index_card_preview_compositions_on_card_design_id` (`card_design_id`),
+  KEY `index_card_preview_compositions_on_card_preview_image_id` (`card_preview_image_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `card_printing_compositions` (
   `card_printing_composition_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `card_printing_id` bigint(20) NOT NULL,
@@ -195,12 +207,10 @@ CREATE TABLE `card_printing_compositions` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `meta` text COLLATE utf8_unicode_ci,
-  `card_preview_image_id` bigint(20) NOT NULL,
   PRIMARY KEY (`card_printing_composition_id`),
   KEY `index_card_printing_compositions_on_card_printing_id` (`card_printing_id`),
   KEY `index_card_printing_compositions_on_card_front_image_id` (`card_front_image_id`),
-  KEY `index_card_printing_compositions_on_card_back_image_id` (`card_back_image_id`),
-  KEY `index_card_printing_compositions_on_card_preview_image_id` (`card_preview_image_id`)
+  KEY `index_card_printing_compositions_on_card_back_image_id` (`card_back_image_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `card_printing_states` (
@@ -514,3 +524,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130212112802');
 INSERT INTO schema_migrations (version) VALUES ('20130213001128');
 
 INSERT INTO schema_migrations (version) VALUES ('20130213002328');
+
+INSERT INTO schema_migrations (version) VALUES ('20130219100148');
