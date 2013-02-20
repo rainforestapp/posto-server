@@ -69,13 +69,30 @@ namespace :worker do
             end
 
             class_name, activity_method = activity_task.activity_type.name.split(".")
+            activity_method = activity_method.underscore
             args = decode_from_java(JSON.parse(activity_task.input))
             worker = Kernel.const_get(class_name.to_sym).new
             worker.task_token = activity_task.task_token if worker.respond_to?(:task_token=)
-            result = worker.send(activity_method.underscore.to_sym, *args)
+            is_manual = worker.respond_to?(:manual?) && worker.manual?
+            is_execute_once = worker.respond_to?(:execute_once?) && worker.execute_once?
+            result = nil
+
+            if is_execute_once
+              execution = ActivityExecution.where(method: activity_method, worker:class_name,
+                                                  arguments: YAML.dump(args)).first
+
+              unless execution
+                result = worker.send(activity_method.to_sym, *args)
+              end
+            else
+              result = worker.send(activity_method.to_sym, *args)
+            end
+
+            ActivityExecution.where(method: activity_method, worker:class_name,
+                                    arguments: YAML.dump(args)).create!
 
             # AWS::SimpleWorkflow::Client.new().respond_activity_task_completed(:task_token => task_token)
-            unless worker.respond_to?(:manual?) && worker.manual?
+            unless is_manual
               activity_task.complete!(result: encode_to_java(result).to_json)
             end
           rescue AWS::SimpleWorkflow::ActivityTask::CancelRequestedError

@@ -1,4 +1,8 @@
 class EmailActivities
+  def execute_once?
+    true
+  end
+
   def send_email_of_address_request_completed(address_request_id)
     puts "send address req completed email"
   end

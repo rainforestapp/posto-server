@@ -1,6 +1,7 @@
 class AmazingMailActivities
   def submit_images_to_amazing_mail(card_order_id)
     puts "submit to amazing mail #{card_order_id}"
+    # Returns *queued* image import ids
     ["4444","5555"]
   end
 

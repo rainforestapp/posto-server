@@ -1,4 +1,8 @@
 class NotificationActivities
+  def execute_once?
+    true
+  end
+
   def send_notification_of_address_request_completed(address_request_id)
     puts "send address req completed notification"
   end

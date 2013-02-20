@@ -2,24 +2,24 @@ require "set"
 
 class ModelQueryActivities
   def get_outgoing_request_ids_for_card_order(card_order_id)
-    get_request_ids_for_state_for_order(card_order_id, :outgoing)
+    get_request_ids_for_state_for_order(card_order_id, :outgoing).to_a.sort
   end
 
   def get_sent_request_ids_for_card_order(card_order_id)
-    get_request_ids_for_state_for_order(card_order_id, :sent)
+    get_request_ids_for_state_for_order(card_order_id, :sent).to_a.sort
   end
 
   def get_printable_card_printing_ids(card_order_id)
-    puts "print ids #{card_order_id}"
-    [2123, 2456]
+    printings = CardOrder.find(card_order_id).card_printings
+    printings.select(&:printable?).map(&:card_printing_id).sort
   end
 
   def mark_order_as_cancelled(card_order_id)
-    puts "cancel #{card_order_id}"
+    CardOrder.find(card_order_id).mark_as_cancelled!
   end
 
-  def mark_order_as_complete(card_order_id)
-    puts "complete #{card_order_id}"
+  def mark_order_as_finished(card_order_id)
+    CardOrder.find(card_order_id).mark_as_finished!
   end
 
   private

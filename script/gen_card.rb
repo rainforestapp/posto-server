@@ -4,6 +4,7 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment.rb")
 require "rmagick"
 
 BORDER_SIZE = 0.05
+#convert front_rgb.png -profile sRGB_v4_ICC_preference.icc  -profile USWebUncoated.icc -quality 100 -colorspace cmyk front.pdf
 
 template_path = "resources/postcards/lulcards/1"
 composite_file = "composite.jpg"

@@ -10,4 +10,13 @@ class CardOrder < ActiveRecord::Base
   has_many :card_printings
 
   has_audited_state_through :card_order_state
+
+  def mark_as_failed!
+    self.card_printings.each(&:mark_as_failed!)
+    self.state = :failed
+  end
+
+  def mark_as_finished!
+    self.state = :finished
+  end
 end
