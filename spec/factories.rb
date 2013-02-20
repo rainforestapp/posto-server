@@ -7,7 +7,7 @@ FactoryGirl.define do
 
   factory :user, 
     aliases: [:recipient_user, :request_sender_user, :request_recipient_user,
-              :order_sender_user] do
+              :order_sender_user, :author_user] do
     facebook_id { generate(:facebook_id) }
 
     factory :greg_user do
@@ -74,16 +74,37 @@ FactoryGirl.define do
     end
   end
 
+  factory :card_image, aliases: [:original_full_photo_image, :edited_full_photo_image, 
+                                 :composed_full_photo_image] do
+    app
+    author_user
+    uuid { SecureRandom.hex }
+    width 200
+    height 200
+    orientation :up
+    image_type :original_full_photo
+  end
+
   factory :card_order do
     app
     order_sender_user
     quoted_total_price 199
+    card_design
 
     factory :card_order_with_prints do
       after(:create) do |card_order, evaluator|
         FactoryGirl.create_list(:card_printing, 2, card_order: card_order)
       end
     end
+  end
+
+  factory :card_design do
+    app
+    author_user
+    design_type :lulcards_alpha
+    original_full_photo_image
+    edited_full_photo_image
+    composed_full_photo_image
   end
 
   factory :card_printing do

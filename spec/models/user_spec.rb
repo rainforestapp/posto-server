@@ -63,7 +63,7 @@ describe User do
     first_profile.gender.should == "male"
     first_profile.email.should == "gfodor@gmail.com" 
 
-    UserProfile.update_all("latest = 'f'", "user_id = #{user.user_profile.user_id}")
+    UserProfile.update_all("latest = 0", "user_id = #{user.user_profile.user_id}")
     User.first_or_create_with_facebook_token("", api: stub_api_with_profile(profile_with(email: "gfodor2@gmail.com")))
     user.reload.user_profile.email.should == "gfodor2@gmail.com"
     first_profile.reload.should_not be_latest
