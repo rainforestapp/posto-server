@@ -12,15 +12,16 @@ class PostcardImageGenerator
     raise "Must set card printing" unless self.card_printing
 
     card_order = self.card_printing.card_order
-    card_design = self.card_order.card_design
+    card_design = card_order.card_design
 
     template_path = "resources/postcards/#{card_design.design_type.to_s.gsub("_", "/")}"
     front_scan_key = self.card_printing.front_scan_key
     back_scan_key = self.card_printing.back_scan_key
-    sender_user = self.card_order.order_sender_user
+    sender_user = card_order.order_sender_user
     fb_name = sender_user.user_profile.name
-    sent_date = self.card_order.created_at.strftime("%-m/%-d/%y")
+    sent_date = card_order.created_at.strftime("%-m/%-d/%y")
     sent_text = "Sent on #{sent_date}"
+    title_on_top = card_design.top_caption.size < card_design.bottom_caption.size
 
     composed_image_url = card_design.composed_full_photo_image.public_url
 
@@ -38,22 +39,22 @@ class PostcardImageGenerator
 
                 border_pixels = (BORDER_SIZE * [cols, rows].max.to_f).floor
 
-                front_template = Magick::Image.read(template_path + "/FrontTemplate.png").first
+                front_template = Magick::Image.read(template_path + "/FrontTemplate#{title_on_top ? "Flipped" : ""}.png").first
                 back = Magick::Image.read(template_path + "/BackTemplate.png").first
 
                 front_qr = RQRCode::QRCode.new(URI.escape(QR_PATH + front_scan_key), size: 4, level: :h)
-                front_qr_png = front_qr.to_img.resize(150,150).save(front_qr_file.path)
+                front_qr_png = front_qr.to_img.resize(175,175).save(front_qr_file.path)
                 front_qr_image = Magick::Image.read(front_qr_file.path).first
-                front_template.composite!(front_qr_image, 1594, 97, Magick::DstOverCompositeOp)
+                front_template.composite!(front_qr_image, 1569, 97, Magick::DstOverCompositeOp)
 
                 front = composite.resize_to_fill(front_template.rows, front_template.columns)
-                front.rotate!(270)
+                front.rotate!(title_on_top ? 90 : 270)
                 wallet_card = composite.rotate(270)
                 wallet_card.resize_to_fill!(1050, 750)
                 front.composite!(front_template, 0, 0, Magick::OverCompositeOp)
 
                 back_qr = RQRCode::QRCode.new(URI.escape(QR_PATH + back_scan_key), size: 4, level: :h)
-                back_qr_png = back_qr.to_img.resize(150,150).save(back_qr_file.path)
+                back_qr_png = back_qr.to_img.resize(175,175).save(back_qr_file.path)
                 back_qr_image = Magick::Image.read(back_qr_file.path).first
 
                 fb_profile = Magick::Image.read(profile_image_file.path).first
