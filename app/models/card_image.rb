@@ -14,4 +14,12 @@ class CardImage < ActiveRecord::Base
             in: [:up, :down, :left, :right, 
                  :up_mirrored, :down_mirrored, :left_mirrored, :right_mirrored],
             validates: true
+
+  def path
+    "#{uuid[0...2]}/#{uuid[2...4]}/#{uuid[4...6]}/#{uuid}.jpg"
+  end
+
+  def public_url
+    "http://#{CONFIG.upload_host}/#{self.path}"
+  end
 end

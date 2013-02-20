@@ -119,35 +119,36 @@ class User < ActiveRecord::Base
   def create_order_from_payload!(payload, *args)
     ensure_order_payload_valid(payload, *args)
     app = App.by_name(payload["app"])
-    card_order = self.card_orders.create!(app: app,
-                                          quoted_total_price: payload["quoted_total_price"])
 
+    image_types = %w(original_full_photo composed_full_photo edited_full_photo)
 
-    card_order.tap do |card_order|
-      image_types = %w(original_full_photo composed_full_photo edited_full_photo)
+    image_ids = image_types.reduce({}) do |image_ids, image_type|
+      image_ids.tap do |image_ids|
+        card_image_params = payload["card_design"][image_type]
 
-      image_ids = image_types.reduce({}) do |image_ids, image_type|
-        image_ids.tap do |image_ids|
-          card_image_params = payload["card_design"][image_type]
+        if card_image_params
+          card_image_params = card_image_params.merge(app: app, 
+                                                      image_type: image_type.to_sym)
 
-          if card_image_params
-            card_image_params = card_image_params.merge(app: app, 
-                                                        image_type: image_type.to_sym)
-
-            card_image = CardImage.where(uuid: card_image_params["uuid"]).first
-            card_image ||= self.authored_card_images.create!(card_image_params)
-            image_ids["#{image_type}_image"] = card_image
-          end
+          card_image = CardImage.where(uuid: card_image_params["uuid"]).first
+          card_image ||= self.authored_card_images.create!(card_image_params)
+          image_ids["#{image_type}_image"] = card_image
         end
       end
+    end
 
-      card_design_args = payload["card_design"]
-                          .except(*image_types)
-                          .merge(design_type: :lulcards_alpha, app: app)
-                          .merge(image_ids)
+    card_design_args = payload["card_design"]
+                        .except(*image_types)
+                        .merge(design_type: :lulcards_alpha, app: app)
+                        .merge(image_ids)
 
-      card_design = self.authored_card_designs.create!(card_design_args)
+    card_design = self.authored_card_designs.create!(card_design_args)
 
+    card_order = self.card_orders.create!(app: app,
+                                          card_design: card_design,
+                                          quoted_total_price: payload["quoted_total_price"])
+
+    card_order.tap do |card_order|
       payload["recipients"].each do |recipient|
         recipient_user = User.where(facebook_id: recipient["facebook_id"]).first_or_create!
         card_order.card_printings.create!(recipient_user: recipient_user)

@@ -8,7 +8,7 @@ CREATE TABLE `activity_executions` (
   `meta` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`activity_execution_id`),
   KEY `index_activity_executions_on_worker_and_method_and_arguments` (`worker`,`method`,`arguments`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `address_api_responses` (
   `address_api_response_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -60,7 +60,7 @@ CREATE TABLE `address_request_states` (
   PRIMARY KEY (`address_request_state_id`),
   KEY `index_address_request_states_on_address_request_id` (`address_request_id`),
   KEY `index_address_request_states_on_latest` (`latest`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `address_requests` (
   `address_request_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -75,7 +75,7 @@ CREATE TABLE `address_requests` (
   PRIMARY KEY (`address_request_id`),
   KEY `index_address_requests_on_sender_user_id` (`request_sender_user_id`),
   KEY `index_address_requests_on_recipient_user_id` (`request_recipient_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `address_responses` (
   `address_response_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -172,7 +172,7 @@ CREATE TABLE `card_images` (
   PRIMARY KEY (`card_image_id`),
   UNIQUE KEY `index_card_images_on_uuid` (`uuid`),
   KEY `index_card_images_on_author_user_id` (`author_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `card_order_states` (
   `card_order_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -195,8 +195,10 @@ CREATE TABLE `card_orders` (
   `updated_at` datetime NOT NULL,
   `meta` text COLLATE utf8_unicode_ci,
   `quoted_total_price` int(11) NOT NULL,
+  `card_design_id` bigint(20) NOT NULL,
   PRIMARY KEY (`card_order_id`),
-  KEY `index_card_orders_on_sender_user_id` (`order_sender_user_id`)
+  KEY `index_card_orders_on_sender_user_id` (`order_sender_user_id`),
+  KEY `index_card_orders_on_card_design_id` (`card_design_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `card_preview_compositions` (
@@ -416,7 +418,7 @@ CREATE TABLE `user_logins` (
   `meta` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`user_login_id`),
   KEY `index_user_logins_on_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `user_profiles` (
   `user_profile_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -449,7 +451,7 @@ CREATE TABLE `users` (
   `meta` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `index_users_on_facebook_id` (`facebook_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO schema_migrations (version) VALUES ('20130201080909');
 
@@ -540,3 +542,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130213002328');
 INSERT INTO schema_migrations (version) VALUES ('20130219100148');
 
 INSERT INTO schema_migrations (version) VALUES ('20130219190424');
+
+INSERT INTO schema_migrations (version) VALUES ('20130220022631');
