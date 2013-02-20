@@ -175,15 +175,8 @@ class User < ActiveRecord::Base
       raise OrderCreationException.new(error_type)
     end
 
-    raise_order_exception.(:no_facebook_token) unless payload["facebook_token"]
-    api = options[:api] || Koala::Facebook::API.new(payload["facebook_token"])
-
     raise_order_exception.(:no_app_specified) unless payload["app"]
     app = App.by_name(payload["app"])
-
-    profile = api.get_object("me?fields=id")
-    facebook_id = profile["id"]
-    raise_order_exception.(:token_mismatch) unless self.facebook_id == facebook_id
 
     unless self.payment_info_state == :active
       raise_order_exception.("#{self.payment_info_state.to_s}_payment".to_sym)
@@ -192,13 +185,6 @@ class User < ActiveRecord::Base
     raise_order_exception.(:no_recipients) unless payload["recipients"] && payload["recipients"].size > 0
     number_of_cards_to_send = payload["recipients"].size
     raise_order_exception.(:max_recipients_reached) if number_of_cards_to_send > CONFIG.max_cards_to_send
-
-    friend_facebook_ids = Set.new(api.get_object("me/friends?fields=id").map { |obj| obj["id"] })
-    recipient_facebook_ids = Set.new(payload["recipients"].map { |r| r["facebook_id"] })
-
-    unless friend_facebook_ids.intersection(recipient_facebook_ids) == recipient_facebook_ids
-      raise_order_exception.(:not_connected_to_recipients) 
-    end
 
     payload["recipients"].each do |recipient|
       facebook_id = recipient["facebook_id"]
