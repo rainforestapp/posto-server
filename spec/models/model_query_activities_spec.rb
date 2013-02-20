@@ -22,7 +22,4 @@ describe ModelQueryActivities do
     worker.get_outgoing_request_ids_for_card_order(order_id).should == []
     worker.get_sent_request_ids_for_card_order(order_id).should == [request.address_request_id]
   end
-
-  it "should get printable cards" do
-  end
 end

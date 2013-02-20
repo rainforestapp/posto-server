@@ -20,4 +20,12 @@ class CardPrinting < ActiveRecord::Base
   def printable?
     self.card_printing_composition && self.recipient_user.has_mailable_address?
   end
+
+  def front_scan_key
+    "f" + Base64.encode64(self.card_printing_id.to_s).chomp
+  end
+
+  def back_scan_key
+    "b" + Base64.encode64(self.card_printing_id.to_s).chomp
+  end
 end
