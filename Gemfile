@@ -39,8 +39,6 @@ gem "rabl"
 
 gem "oj"
 
-gem "honeybadger"
-
 gem "aws-sdk"
 
 gem "symbolize", :require => "symbolize/active_record"
