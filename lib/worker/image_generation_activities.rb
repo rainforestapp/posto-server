@@ -1,8 +1,22 @@
-require "postcard_image_generator"
+require "preview_image_generator"
 
 class ImageGenerationActivities
   def generate_preview_images(card_order_id)
-    puts "gen preview #{card_order_id}"
+    card_order = CardOrder.find(card_order_id)
+    card_design = card_order.card_design
+    card_design_author = card_design.author_user
+    generator = PreviewImageGenerator.new(card_design)
+    app = card_order.app
+
+    generator.generate! do |preview_file_path|
+      preview_image = card_design_author.create_and_publish_image_file!(preview_file_path, app: app, image_type: :card_preview)
+
+      card_design.card_preview_compositions.create!(
+        card_preview_image: preview_image
+      )
+    end
+
+    true
   end
 
   def generate_postcard_images(card_printing_id)

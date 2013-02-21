@@ -173,7 +173,7 @@ CREATE TABLE `card_images` (
   PRIMARY KEY (`card_image_id`),
   UNIQUE KEY `index_card_images_on_uuid` (`uuid`),
   KEY `index_card_images_on_author_user_id` (`author_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `card_order_states` (
   `card_order_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -209,6 +209,7 @@ CREATE TABLE `card_preview_compositions` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `meta` text COLLATE utf8_unicode_ci,
+  `latest` tinyint(1) NOT NULL,
   PRIMARY KEY (`card_preview_composition_id`),
   KEY `index_card_preview_compositions_on_card_design_id` (`card_design_id`),
   KEY `index_card_preview_compositions_on_card_preview_image_id` (`card_preview_image_id`)
@@ -227,7 +228,7 @@ CREATE TABLE `card_printing_compositions` (
   KEY `index_card_printing_compositions_on_card_printing_id` (`card_printing_id`),
   KEY `index_card_printing_compositions_on_card_front_image_id` (`card_front_image_id`),
   KEY `index_card_printing_compositions_on_card_back_image_id` (`card_back_image_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `card_printing_states` (
   `card_printing_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -550,3 +551,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130220022631');
 INSERT INTO schema_migrations (version) VALUES ('20130220231333');
 
 INSERT INTO schema_migrations (version) VALUES ('20130221002548');
+
+INSERT INTO schema_migrations (version) VALUES ('20130221020607');
