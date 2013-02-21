@@ -5,7 +5,8 @@ CONFIG = SampleableConfig.define do
   really_kill_switch false
   kill_message "Lulcard is unavailable."
 
-  upload_host "d2bl1qoka9pog2.cloudfront.net"
+  card_image_host "d2bl1qoka9pog2.cloudfront.net"
+  card_image_bucket "posto-uploads"
 
   api_key_expiration_days 30
   api_key_renewal_days 15

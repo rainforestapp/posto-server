@@ -83,6 +83,7 @@ FactoryGirl.define do
     height 200
     orientation :up
     image_type :original_full_photo
+    image_format :jpg
   end
 
   factory :card_order do
