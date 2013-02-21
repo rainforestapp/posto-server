@@ -4,9 +4,6 @@ describe AddressRequest do
   it "should start out pending" do
     request = create(:address_request)
     request.state.should == :outgoing
-    request.address_responses.should be_empty
-    request.address_request_expiration.should be_nil
-    request.address_request_polling.should be_nil
     request.mark_as_sent!
     request.state.should == :sent
   end
@@ -20,9 +17,6 @@ describe AddressRequest do
     request = create(:expirable_address_request)
     request.check_and_expire!
     request.state.should == :expired
-    request.address_request_expiration.should_not be_nil
-    request.address_request_expiration.duration_hit_hours.should == 100 * 24
-    request.address_request_expiration.duration_limit_hours.should == CONFIG.address_request_expiration_days * 24
     request.should_not be_expirable
   end
 
@@ -31,16 +25,6 @@ describe AddressRequest do
     request.mark_as_failed!(errors: "Foo")
     request.state.should == :failed
     request.meta[:errors].should == "Foo"
-  end
-
-  it "should add response" do
-    request = create(:address_request)
-    request.add_response("123123", :facebook_message, { "message" => "foo" })
-    request.address_responses.reload.size.should == 1
-    request.address_responses[0].response_data["message"].should == "foo"
-    request.address_responses[0].response_source_id.should == "123123"
-    request.address_responses[0].response_source_type.should == :facebook_message
-    request.address_responses[0].response_sender_user.should == request.request_recipient_user
   end
 
   it "should post api response into address request and mark as closed" do

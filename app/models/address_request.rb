@@ -9,16 +9,14 @@ class AddressRequest < ActiveRecord::Base
   belongs_to :request_recipient_user, class_name: "User"
   belongs_to :app
 
-  has_many :address_responses
-
   has_audited_state_through :address_request_state
-  has_one_audited :address_request_expiration
-  has_one_audited :address_request_polling
 
   symbolize :address_request_medium, in: [:facebook_message], validate: true
   serialize :address_request_payload, Hash
 
   before_create :ensure_no_other_pending_request_for_recipient
+
+  has_one_audited :address_request_facebook_thread
 
   def expirable?
     return false unless self.pending?
@@ -33,13 +31,6 @@ class AddressRequest < ActiveRecord::Base
   def check_and_expire!
     return false unless expirable?
 
-    duration_hit_hours = ((Time.zone.now - self.created_at) / (60 * 60)).floor
-
-    self.address_request_expirations.create!(
-      duration_hit_hours: duration_hit_hours,
-      duration_limit_hours: CONFIG.address_request_expiration_days * 24
-    )
-
     self.state = :expired
   end
 
@@ -51,13 +42,6 @@ class AddressRequest < ActiveRecord::Base
     metadata = args.extract_options!
     self.append_to_metadata!(metadata) if metadata
     self.state = :failed
-  end
-
-  def add_response(response_source_id, response_source_type, response_data)
-    address_responses.create!(response_source_id: response_source_id, 
-                              response_source_type: response_source_type,
-                              response_sender_user: request_recipient_user,
-                              response_data: response_data)
   end
 
   def close_with_api_response(address_api_response)
@@ -73,5 +57,99 @@ class AddressRequest < ActiveRecord::Base
     if self.request_recipient_user.has_pending_address_request?
       raise "Pending address request already exists for #{self.request_recipient_user}"
     end
+  end
+
+  def has_new_facebook_thread_activity?
+    unless self.address_request_facebook_thread
+      return init_address_request_facebook_thread!
+    end
+
+    current_thread = self.address_request_facebook_thread
+    new_update_time = get_last_recipient_message_sent_time 
+    has_activity = new_update_time && new_update_time > current_thread.thread_update_time
+
+    if has_activity
+      self.address_request_facebook_threads.create!(
+        facebook_thread_id: current_thread.facebook_thread_id,
+        thread_update_time: new_update_time
+      )
+    end
+
+    has_activity
+  end
+
+  private
+
+  # Returns true if there have been messages since our original request was sent
+  def init_address_request_facebook_thread!
+    sender_facebook_id = self.request_sender_user.facebook_id
+    recipient_facebook_id = self.request_recipient_user.facebook_id
+
+    api = Koala::Facebook::API.new(self.request_sender_user.facebook_token.token)
+    sent_message_text = self.address_request_payload[:message].gsub(/\s+$/, "")
+
+    threads = api.fql_query("select thread_id, recipients, updated_time from thread where folder_id = 0 and #{recipient_facebook_id} IN recipients order by updated_time desc")
+
+    request_facebook_thread = nil
+    request_message = nil
+
+    loop do
+      threads.each do |thread|
+        next unless thread["recipients"] && thread["recipients"].size == 2
+
+        messages = api.fql_query("select author_id, body, created_time from message where thread_id = #{thread["thread_id"]} order by created_time desc")
+
+        matching_message = messages.find do |message|
+          has_author = message["author_id"].to_s == sender_facebook_id
+          has_body = message["body"].downcase.include?(sent_message_text.downcase)
+          has_author && has_body
+        end
+
+        if matching_message
+          request_facebook_thread = thread
+          request_message = matching_message
+          break
+        end
+
+        messages = messages.next_page
+        break if messages.blank?
+      end
+
+      break if request_facebook_thread
+
+      threads = threads.next_page
+      break if threads.blank?
+    end
+
+    if request_facebook_thread
+      thread_update_time = Time.at(request_facebook_thread["updated_time"])
+      request_sent_time = Time.at(request_message["created_time"])
+
+      self.address_request_facebook_threads.create!(
+        facebook_thread_id: request_facebook_thread["thread_id"],
+        thread_update_time: thread_update_time
+      )
+
+      return thread_update_time > request_sent_time
+    else
+      false
+    end
+  end
+
+  def get_last_recipient_message_sent_time
+    api = Koala::Facebook::API.new(self.request_sender_user.facebook_token.token)
+    recipient_facebook_id = self.request_recipient_user.facebook_id
+
+    thread_id = self.address_request_facebook_thread.facebook_thread_id
+    messages = api.fql_query("select author_id, created_time from message where thread_id = #{thread_id}")
+
+    recipient_messages = messages.select do |m|
+      m["author_id"].to_s == recipient_facebook_id
+    end
+
+    return nil if recipient_messages.size == 0
+
+    last_recipient_message_time = recipient_messages.map { |r| r["created_time"] }.max
+    return Time.at(last_recipient_message_time)
   end
 end
