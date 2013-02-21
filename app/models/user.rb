@@ -53,6 +53,41 @@ class User < ActiveRecord::Base
     end
   end
 
+  def create_and_publish_image_file!(file_path, *args)
+    options = args.extract_options!
+    raise "Missing argument: app" unless options[:app]
+
+    image = Magick::Image.read(file_path).first
+    raise "No image found at #{file_path}" unless image
+
+    begin
+      card_image_params = {}
+      card_image_params[:width] = image.columns
+      card_image_params[:height] = image.rows
+      card_image_params[:orientation] = :up
+      card_image_params[:image_format] = CardImage::RMAGICK_IMAGE_FORMAT_MAP[image.format.downcase]
+      card_image_params[:image_type] = options[:image_type]
+      card_image_params[:app] = options[:app] 
+
+      self.authored_card_images.create!(card_image_params).tap do |card_image|
+        begin
+          s3 = AWS::S3.new
+          bucket = s3.buckets[CONFIG.card_image_bucket]
+          s3_object = bucket.objects[card_image.path]
+          s3_object.write(Pathname.new(file_path),
+                          content_type: card_image.content_type,
+                          acl: :public_read)
+        rescue Exception => e
+          # Kill it if we couldn't upload to s3
+          card_image.destroy rescue nil
+          raise
+        end
+      end
+    ensure
+      image.destroy!
+    end
+  end
+
   def add_login!
     UserLogin.where(user_id: self.user_id, app_id: App.lulcards.app_id).create!
   end

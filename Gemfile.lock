@@ -178,6 +178,7 @@ DEPENDENCIES
   jquery-rails
   koala
   mysql2
+  nokogiri
   oj
   rabl
   rails (= 3.2.11)

@@ -1,27 +1,23 @@
-require "tempfile"
-require "open-uri"
-require "uri"
+require "image_generator"
 
-class PostcardImageGenerator
+class PostcardImageGenerator < ImageGenerator
   BORDER_SIZE = 0.05
   QR_PATH = "http://lulcards.com/s/"
-
-  attr_accessor :card_printing
 
   def initialize(card_printing)
     @card_printing = card_printing
   end
 
   def generate!(&block)
-    raise "Must set card printing" unless self.card_printing
+    raise "Must set card printing" unless @card_printing
     raise "Must supply block with two arguments" unless block_given? && block.arity == 2
 
-    card_order = self.card_printing.card_order
+    card_order = @card_printing.card_order
     card_design = card_order.card_design
 
     template_path = "resources/postcards/#{card_design.design_type.to_s.gsub("_", "/")}"
-    front_scan_key = self.card_printing.front_scan_key
-    back_scan_key = self.card_printing.back_scan_key
+    front_scan_key = @card_printing.front_scan_key
+    back_scan_key = @card_printing.back_scan_key
     sender_user = card_order.order_sender_user
     fb_name = sender_user.user_profile.name
     sent_date = card_order.created_at.strftime("%-m/%-d/%y")
@@ -122,56 +118,6 @@ class PostcardImageGenerator
           end
         end
       end
-    end
-  end
-
-  private
-
-  def with_file_for_url(url)
-    with_tempfile do |file|
-      open(url) do |data|
-        file.write(data.read)
-        file.close
-        yield file
-      end
-    end
-  end
-
-  def with_closed_tempfile
-    with_tempfile do |file|
-      file.close
-      yield(file)
-    end
-  end
-
-  def with_tempfile
-    Tempfile.open(SecureRandom.hex) do |file|
-      file.binmode
-
-      begin
-        yield(file)
-      ensure
-        File.unlink(file.path) if File.exist?(file.path)
-      end
-    end
-  end
-
-  def with_image_for_url(url)
-    with_file_for_url(url) do |file|
-      with_image(file.path) do |image|
-        yield(image)
-      end
-    end
-  end
-
-  def with_image(path)
-    image = nil
-
-    begin 
-      image = Magick::Image.read(path).first
-      yield(image)
-    ensure
-      image.try(:destroy!)
     end
   end
 end

@@ -105,24 +105,6 @@ describe User do
     user.reload.api_key.should_not be_nil
     user.reload.api_key.should be_active
   end
-
-  it "should not let order be created without facebook token" do
-    user = create(:user)
-    stub_api = stub_api_with_profile(default_profile)
-
-    expect(lambda do
-      user.create_order_from_payload!({}, api: stub_api)
-    end).to raise_error(OrderCreationException, /no_facebook_token/)
-  end
-
-  it "should not let order be created if tokens mismatch" do
-    user = create(:user)
-    stub_api = stub_api_with_profile(default_profile)
-
-    expect(lambda do
-      user.create_order_from_payload!({ "facebook_token" => "foobar", "app" => "lulcards" }, api: stub_api)
-    end).to raise_error(OrderCreationException, /token_mismatch/)
-  end
   
   it "should not let order be created if no recipients" do
     user = create(:greg_user)
@@ -146,17 +128,6 @@ describe User do
     end).to raise_error(OrderCreationException, /max_recipients_reached/)
   end
 
-  it "should not let order be created if not connected to friends" do
-    user = create(:greg_user)
-    user.stub(payment_info_state: :active)
-    stub_api = stub_api_with(profile: default_profile, friends: [{ "id" => Random.new.rand(10000).to_s }])
-    stub_recipient = { "facebook_id" => "999999" }
-
-    expect(lambda do
-      user.create_order_from_payload!({ "facebook_token" => "foobar", "app" => "lulcards",
-                                        "recipients" => [stub_recipient] }, api: stub_api)
-    end).to raise_error(OrderCreationException, /not_connected_to_recipients/)
-  end
   
   it "should not let order be created if friends need requests and not included" do
     user = create(:greg_user)
@@ -223,11 +194,11 @@ describe User do
       "bottom_caption" => "world",
       "top_caption_font_size" => 32,
       "bottom_caption_font_size" => 32,
-      "original_full_photo" => { "width" => 320, "height" => 460,
+      "original_full_photo" => { "width" => 320, "height" => 460, "image_format" => "jpg",
                                  "orientation" => "up", "uuid" => "original_uuid", },
-      "edited_full_photo" => { "width" => 320, "height" => 460,
+      "edited_full_photo" => { "width" => 320, "height" => 460, "image_format" => "jpg",
                                "orientation" => "down", "uuid" => "edited_uuid", },
-      "composed_full_photo" => { "width" => 320, "height" => 460,
+      "composed_full_photo" => { "width" => 320, "height" => 460, "image_format" => "jpg",
                                  "orientation" => "left", "uuid" => "composed_uuid", }
     }
 
