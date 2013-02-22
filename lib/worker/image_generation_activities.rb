@@ -1,4 +1,5 @@
 require "preview_image_generator"
+require "postcard_image_generator"
 
 class ImageGenerationActivities
   def generate_preview_images(card_order_id)

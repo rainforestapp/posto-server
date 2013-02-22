@@ -96,6 +96,8 @@ class PostcardImageGenerator < ImageGenerator
                                     img.add_profile("resources/icc/sRGB_v4_ICC_preference.icc")
                                     img.add_profile("resources/icc/USWebUncoated.icc")
                                     img.colorspace = Magick::CMYKColorspace
+                                    img.x_resolution = 300.0
+                                    img.y_resolution = 300.0
                                   end
 
                                   front_pdf.write("pdf:#{front_pdf_file.path}")
