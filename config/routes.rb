@@ -24,4 +24,11 @@ Posto::Application.routes.draw do
       end
     end
   end
+
+  namespace :admin do
+    resources :address_parse_tasks, :verify_order_tasks
+
+    resources :address_requests
+    resources :card_orders
+  end
 end

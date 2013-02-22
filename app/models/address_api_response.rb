@@ -27,8 +27,6 @@ class AddressApiResponse < ActiveRecord::Base
 
     open(url) do |data|
       result = JSON.parse(data.read)
-      puts result.inspect
-
       response = (result[0] || {})
       AddressApiResponse.create!(arguments: arguments, response: response, api_type: :live_address)
     end
