@@ -25,10 +25,9 @@ Posto::Application.routes.draw do
     end
   end
 
-  namespace :admin do
-    resources :address_parse_tasks, :verify_order_tasks
-
-    resources :address_requests
-    resources :card_orders
+  resource :admin, controller: "Admin" do
+    scope module: :admin do
+      resources :address_parse_tasks, :verify_order_tasks, :address_requests, :card_orders
+    end
   end
 end

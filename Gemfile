@@ -55,3 +55,8 @@ gem "rqrcode_png"
 gem "nokogiri"
 
 gem "xmpp4r_facebook"
+
+gem "therubyracer"
+
+gem "less-rails"
+

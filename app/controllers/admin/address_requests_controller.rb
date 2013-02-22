@@ -1,2 +1,2 @@
-class Admin::AddressRequestsController < ApplicationController
+class Admin::AddressRequestsController < AdminControllerBase
 end

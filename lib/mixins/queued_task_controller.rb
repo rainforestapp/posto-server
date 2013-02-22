@@ -6,6 +6,29 @@ module QueuedTaskController
     cattr_accessor :queue_to_consume
   end
 
+  def new
+    sqs = AWS::SQS.new
+    queue = AWS::SQS.new.queues.named(self.class.queue_to_consume)
+    message = queue.receive_message(limit: 1,
+                                    wait_time_seconds: 1)
+
+    if message
+      data = JSON.parse(message.body)
+      task_token = data["task_token"]
+      message.delete
+
+      if data["address_request_id"]
+        address_request = AddressRequest.find(data["address_request_id"])
+        redirect_to admin_address_request_path address_request, task_token: task_token
+      elsif data["card_order_id"]
+        card_order = CardOrder.find(data["card_order_id"])
+        redirect_to admin_card_order_path card_order, task_token: task_token
+      else
+        raise "Unknown task type #{data}"
+      end
+    end
+  end
+
   module ClassMethods
     def consumes_queue(name)
       self.queue_to_consume = "posto-#{Rails.env == "production" ? "prod" : "dev"}-#{name.to_s.gsub("_", "-")}"

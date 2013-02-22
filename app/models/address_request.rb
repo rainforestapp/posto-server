@@ -59,23 +59,44 @@ class AddressRequest < ActiveRecord::Base
     end
   end
 
-  def has_new_facebook_thread_activity?
-    unless self.address_request_facebook_thread
-      return init_address_request_facebook_thread!
-    end
-
+  # returns true if new activity was seen
+  def mark_facebook_thread_activity_as_latest!
     current_thread = self.address_request_facebook_thread
     new_update_time = get_last_recipient_message_sent_time 
-    has_activity = new_update_time && new_update_time > current_thread.thread_update_time
+    has_new_activity = new_update_time && new_update_time > current_thread.thread_update_time
 
-    if has_activity
+    if has_new_activity
       self.address_request_facebook_threads.create!(
         facebook_thread_id: current_thread.facebook_thread_id,
         thread_update_time: new_update_time
       )
     end
 
-    has_activity
+    has_new_activity
+  end
+
+  def has_new_facebook_thread_activity?
+    unless self.address_request_facebook_thread
+      init_address_request_facebook_thread!
+    else
+      mark_facebook_thread_activity_as_latest!
+    end
+  end
+
+  def get_latest_recipient_messages
+    unless self.address_request_facebook_thread
+      init_address_request_facebook_thread!
+    end
+
+    api = Koala::Facebook::API.new(self.request_sender_user.facebook_token.token)
+    recipient_facebook_id = self.request_recipient_user.facebook_id
+
+    thread_id = self.address_request_facebook_thread.facebook_thread_id
+    messages = api.fql_query("select author_id, body, created_time from message where thread_id = #{thread_id}")
+
+    messages.select do |m|
+      m["author_id"].to_s == recipient_facebook_id
+    end
   end
 
   private
@@ -137,16 +158,7 @@ class AddressRequest < ActiveRecord::Base
   end
 
   def get_last_recipient_message_sent_time
-    api = Koala::Facebook::API.new(self.request_sender_user.facebook_token.token)
-    recipient_facebook_id = self.request_recipient_user.facebook_id
-
-    thread_id = self.address_request_facebook_thread.facebook_thread_id
-    messages = api.fql_query("select author_id, created_time from message where thread_id = #{thread_id}")
-
-    recipient_messages = messages.select do |m|
-      m["author_id"].to_s == recipient_facebook_id
-    end
-
+    recipient_messages = get_latest_recipient_messages
     return nil if recipient_messages.size == 0
 
     last_recipient_message_time = recipient_messages.map { |r| r["created_time"] }.max
