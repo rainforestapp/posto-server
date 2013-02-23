@@ -60,3 +60,5 @@ gem "therubyracer"
 
 gem "less-rails"
 
+gem "haml-rails"
+

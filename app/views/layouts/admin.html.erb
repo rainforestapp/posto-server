@@ -7,7 +7,7 @@
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body data-controller="<%= controller.controller_path %>" data-action="<%= controller.action_name %>">
 
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">

@@ -22,17 +22,7 @@ class FacebookMessageActivities
 
   def send_message_for_address_request(address_request_id)
     address_request = AddressRequest.find(address_request_id)
-    access_token = address_request.request_sender_user.facebook_token.token
-    from_jid = "-#{address_request.request_sender_user.facebook_id}@chat.facebook.com"
-    to_jid = "-#{address_request.request_recipient_user.facebook_id}@chat.facebook.com"
-    body = address_request.address_request_payload[:message]
-    message = Jabber::Message.new(to_jid, body)
-    client = Jabber::Client.new(Jabber::JID.new(from_jid))
-    client.connect
-    xfb = Jabber::SASL::XFacebookPlatform.new(client, ENV["FB_API_KEY"], access_token, ENV["FB_API_SECRET"])
-    client.auth_sasl(xfb, nil)
-    client.send(message)
-    client.close
+    address_request.send!
     true
   end
 

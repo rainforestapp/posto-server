@@ -63,5 +63,9 @@ module Posto
     config.generators do |g|
       g.test_framework :rspec
     end
+
+    if Rails.env == "production"
+      config.force_ssl = true
+    end
   end
 end

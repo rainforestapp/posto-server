@@ -1,0 +1,13 @@
+- if @recipient_messages
+  .row
+    .span4
+      .recent-messages
+        - @recipient_messages.each do |message|
+          %ul{class: ["nav", "nav-pills"]}
+            - message["body"].split(/\s+/).each do |word|
+              %li
+                %a{ :href => "#", :class => "message-word", "data-word" => word }&= h(word)
+    .span5
+      .query-edit
+        %textarea{ class: "pending-query", rows: 4, cols: 120 }
+        %input.submit-query{ type: "button", value: "Lookup" }

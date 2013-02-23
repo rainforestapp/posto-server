@@ -14,8 +14,8 @@ class AddressApiResponse < ActiveRecord::Base
 
   RECORD_EXPIRATION = 90.days
 
-  def self.lookup(*args)
-    arguments = args.extract_options!
+  def self.lookup(query)
+    arguments = { street: query }
     record = self.where(arguments: YAML.dump(arguments)).first
     return record if record && record.created_at > Time.zone.now - RECORD_EXPIRATION
 
