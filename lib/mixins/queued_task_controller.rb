@@ -5,6 +5,12 @@ module QueuedTaskController
     cattr_accessor :queue_to_consume
   end
 
+  def destroy
+    raise "missing task token" unless params[:task_token]
+    complete_swf_activity_task!
+    redirect_to action: :new
+  end
+
   def new
     sqs = AWS::SQS.new
     queue = AWS::SQS.new.queues.named(self.class.queue_to_consume)

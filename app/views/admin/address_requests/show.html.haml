@@ -1,13 +1,31 @@
 - if @recipient_messages
   .row
-    .span4
+    .span3
       .recent-messages
         - @recipient_messages.each do |message|
           %ul{class: ["nav", "nav-pills"]}
             - message["body"].split(/\s+/).each do |word|
               %li
                 %a{ :href => "#", :class => "message-word", "data-word" => word }&= h(word)
-    .span5
+        = form_tag(admin_address_parse_task_path, action: "destroy", method: "delete") do
+          = hidden_field_tag(:task_token, params[:task_token]) 
+          = hidden_field_tag(:task_result, "not_parsed") 
+          = submit_tag("Skip Task")
+    .span3
       .query-edit
         %textarea{ class: "pending-query", rows: 4, cols: 120 }
         %input.submit-query{ type: "button", value: "Lookup" }
+    .span3
+      .query-result
+        .delivery-line-1
+        .delivery-line-2
+        .last-line
+      = form_tag(admin_address_request_path, id: "complete-form", action: "update", method: "put") do
+        - if params[:task_token]
+          = hidden_field_tag(:task_token, params[:task_token]) 
+          = hidden_field_tag(:task_result, "parsed") 
+        = hidden_field_tag(:address_api_response_id, nil, id: "complete-form-address-api-response-id") 
+        = submit_tag("Complete", id: "complete-task-button")
+- else
+  Request ##{@address_request.address_request_id}
+  Nothing to do.
