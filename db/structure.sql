@@ -20,7 +20,7 @@ CREATE TABLE `address_api_responses` (
   `arguments` varchar(512) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`address_api_response_id`),
   KEY `index_address_api_responses_on_arguments` (`arguments`(255))
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `address_request_facebook_threads` (
   `address_request_facebook_thread_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -46,7 +46,7 @@ CREATE TABLE `address_request_states` (
   PRIMARY KEY (`address_request_state_id`),
   KEY `index_address_request_states_on_address_request_id` (`address_request_id`),
   KEY `index_address_request_states_on_latest` (`latest`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `address_requests` (
   `address_request_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -277,6 +277,20 @@ CREATE TABLE `facebook_tokens` (
   KEY `index_facebook_tokens_on_token` (`token`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `rails_admin_histories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `message` text COLLATE utf8_unicode_ci,
+  `username` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `item` int(11) DEFAULT NULL,
+  `table` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `month` smallint(6) DEFAULT NULL,
+  `year` bigint(20) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_rails_admin_histories` (`item`,`table`,`month`,`year`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `recipient_addresses` (
   `recipient_address_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `recipient_user_id` bigint(20) NOT NULL,
@@ -291,7 +305,7 @@ CREATE TABLE `recipient_addresses` (
   KEY `index_recipient_addresses_on_address_api_response_id` (`address_api_response_id`),
   KEY `index_recipient_addresses_on_latest` (`latest`),
   KEY `index_recipient_addresses_on_address_request_id` (`address_request_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `schema_migrations` (
   `version` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -527,3 +541,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130221020607');
 INSERT INTO schema_migrations (version) VALUES ('20130221085535');
 
 INSERT INTO schema_migrations (version) VALUES ('20130222164456');
+
+INSERT INTO schema_migrations (version) VALUES ('20130223075260');
