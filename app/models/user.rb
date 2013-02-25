@@ -76,7 +76,8 @@ class User < ActiveRecord::Base
           s3_object = bucket.objects[card_image.path]
           s3_object.write(Pathname.new(file_path),
                           content_type: card_image.content_type,
-                          acl: :public_read)
+                          acl: :public_read,
+                          cache_control: "max-age=#{60 * 60 * 24 * 7}")
         rescue Exception => e
           # Kill it if we couldn't upload to s3
           card_image.destroy rescue nil

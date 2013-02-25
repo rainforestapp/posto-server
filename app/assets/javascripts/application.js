@@ -20,15 +20,18 @@ $(function() {
   var $body = $("body");
   var controller = $body.data("controller").replace(/\//g, "_");
   var action = $body.data("action");
-  var activeController = new Posto[controller];
 
-  if (activeController !== undefined) {
-    if ($.isFunction(activeController.init)) {
-      activeController.init();
-    }
+  if (Posto[controller] !== undefined) {
+    var activeController = new Posto[controller];
 
-    if ($.isFunction(activeController[action])) {
-      activeController[action]();
+    if (activeController !== undefined) {
+      if ($.isFunction(activeController.init)) {
+        activeController.init();
+      }
+
+      if ($.isFunction(activeController[action])) {
+        activeController[action]();
+      }
     }
   }
 });

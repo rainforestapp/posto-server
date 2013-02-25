@@ -1,0 +1,10 @@
+.row
+  .span9
+    #{@mailable_card_count} / #{@all_card_count} printings @ #{@total_price}
+  - @mailable_card_printings.each do |card_printing|
+    .span3
+      .recipient-name
+  .span9
+    %embed{src: @front_url, class: "postcard-pdf"}
+  .span9
+    %embed{src: @back_url, class: "postcard-pdf"}
