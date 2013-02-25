@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
     facebook_token_record = FacebookToken.where(token: facebook_token).first
 
     begin
-      profile = api.get_object("me?fields=name,first_name,middle_name,last_name,location,gender,email,birthday")
+      profile = api.get_object("me?fields=#{UserProfile::FACEBOOK_FIELDS.join(",")}")
       facebook_id = profile["id"]
 
       user = User.where(facebook_id: facebook_id).first_or_create!
