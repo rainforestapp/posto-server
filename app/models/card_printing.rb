@@ -22,7 +22,7 @@ class CardPrinting < ActiveRecord::Base
   end
 
   def mailable?
-    self.card_printing_composition && self.recipient_user.mailable?
+    self.recipient_user.mailable?
   end
 
   def front_scan_key
@@ -31,5 +31,9 @@ class CardPrinting < ActiveRecord::Base
 
   def back_scan_key
     "b" + Base64.encode64(self.card_printing_id.to_s).chomp
+  end
+
+  def mark_as_cancelled!
+    self.state = :cancelled
   end
 end

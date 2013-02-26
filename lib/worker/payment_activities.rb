@@ -26,6 +26,14 @@ class PaymentActivities
       )
 
       if charge["failure_message"]
+        if stripe_customer && stripe_customer.stripe_card
+          begin
+            stripe_customer.stripe_card.mark_as_declined!
+            stripe_customer.stripe_card.append_to_metadata!(message: charge["failure_message"])
+          rescue nil
+          end
+        end
+
         return "declined"
       end
 
@@ -67,7 +75,18 @@ class PaymentActivities
     charge = Stripe::Charge.retrieve(charge_id)
     return "no_charge" unless charge
 
-    return "declined" if charge["failure_message"]
+    if charge["failure_message"] 
+      if stripe_customer && stripe_customer.stripe_card
+        begin
+          stripe_customer.stripe_card.mark_as_declined!
+          stripe_customer.stripe_card.append_to_metadata!(message: charge["failure_message"])
+        rescue nil
+        end
+      end
+
+      return "declined" if charge["failure_message"]
+    end
+
     return "paid" if charge["paid"]
 
     return "pending"

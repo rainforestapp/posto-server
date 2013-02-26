@@ -5,7 +5,11 @@ namespace :worker do
     elsif data[1].kind_of?(Hash)
       data[1]
     else
-      data[1]
+      if data.kind_of?(Array)
+        data[1]
+      else
+        data
+      end
     end
   end
 
@@ -70,7 +74,10 @@ namespace :worker do
 
             class_name, activity_method = activity_task.activity_type.name.split(".")
             activity_method = activity_method.underscore
+            puts "task: #{activity_task.activity_type.name}"
+            puts "input: #{activity_task.input}"
             args = decode_from_java(JSON.parse(activity_task.input))
+            puts "args: #{args.inspect}"
             worker = Kernel.const_get(class_name.to_sym).new
             worker.task_token = activity_task.task_token if worker.respond_to?(:task_token=)
             is_manual = worker.respond_to?(:manual?) && worker.manual?
@@ -79,7 +86,7 @@ namespace :worker do
 
             if is_execute_once
               execution = ActivityExecution.where(method: activity_method, worker:class_name,
-                                                  arguments: YAML.dump(args)).first
+                                                  arguments: YAML.dump({ args: args })).first
 
               unless execution
                 result = worker.send(activity_method.to_sym, *args)
@@ -88,12 +95,15 @@ namespace :worker do
               result = worker.send(activity_method.to_sym, *args)
             end
 
-            ActivityExecution.where(method: activity_method, worker:class_name,
-                                    arguments: YAML.dump(args)).create!
+            unless execution
+              ActivityExecution.create!(method: activity_method, worker:class_name, arguments: { args: args })
+            end
 
-            # AWS::SimpleWorkflow::Client.new().respond_activity_task_completed(:task_token => task_token)
             unless is_manual
-              activity_task.complete!(result: encode_to_java(result).to_json)
+              begin
+                activity_task.complete!(result: encode_to_java(result).to_json)
+              rescue nil
+              end
             end
           rescue AWS::SimpleWorkflow::ActivityTask::CancelRequestedError
             activity_task.cancel! unless activity_task.responded?

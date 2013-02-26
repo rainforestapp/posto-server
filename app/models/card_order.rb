@@ -14,9 +14,9 @@ class CardOrder < ActiveRecord::Base
 
   has_audited_state_through :card_order_state
 
-  def mark_as_failed!
-    self.card_printings.each(&:mark_as_failed!)
-    self.state = :failed
+  def mark_as_cancelled!
+    self.card_printings.each(&:mark_as_cancelled!)
+    self.state = :cancelled
   end
 
   def mark_as_finished!
@@ -33,6 +33,6 @@ class CardOrder < ActiveRecord::Base
 
   def total_price_to_charge
     number_of_cards = self.mailable_card_printings.size
-    total_price_to_charge(self.mailable_card_printings.size)
+    CardOrder.total_price_to_charge_for_number_of_cards(self.mailable_card_printings.size)
   end
 end

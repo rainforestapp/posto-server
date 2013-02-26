@@ -45,6 +45,8 @@ class AmazingMailActivities
   end
 
   def check_if_amazing_mail_has_images(queued_import_ids)
+    return unless queued_import_ids.size > 0
+
     raise "Don't do this until SSL works"
 
     ready = true
