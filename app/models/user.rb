@@ -102,8 +102,12 @@ class User < ActiveRecord::Base
     ApiKey.where(user_id: self.user_id).create!
   end
 
-  def has_mailable_address?
-    recipient_address.try(:mailable?)
+  def mailable?
+    !!recipient_address
+  end
+
+  def has_up_to_date_address?
+    recipient_address.try(:up_to_date?)
   end
 
   def has_pending_address_request?
@@ -111,7 +115,7 @@ class User < ActiveRecord::Base
   end
 
   def requires_address_request?
-    !has_mailable_address? && !has_pending_address_request?
+    !has_up_to_date_address? && !has_pending_address_request?
   end
 
   def send_address_request!(*args)
@@ -135,14 +139,22 @@ class User < ActiveRecord::Base
     stripe_customer_name = "#{self.user_profile.last_name}, #{self.user_profile.first_name}" if self.user_profile
     stripe_customer_name += " ##{self.user_id}/#{self.facebook_id}"
 
-    pending_customer = Stripe::Customer.create(description: stripe_customer_name, card: token)
-    pending_customer.save
+    begin
+      pending_customer = Stripe::Customer.create(description: stripe_customer_name, card: token)
+      pending_customer.save
 
-    if pending_customer.active_card && pending_customer.active_card["cvc_check"] == "fail"
-      begin
-        pending_customer.delete
-      ensure
+      if pending_customer.active_card && pending_customer.active_card["cvc_check"] == "fail"
+        begin
+          pending_customer.delete
+        ensure
+          raise StripeCvcCheckFailException.new
+        end
+      end
+    rescue Stripe::CardError => e
+      if e.message =~ /security code/
         raise StripeCvcCheckFailException.new
+      else
+        raise
       end
     end
 

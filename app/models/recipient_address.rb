@@ -12,7 +12,7 @@ class RecipientAddress < ActiveRecord::Base
     Time.zone.now > expires_at
   end
 
-  def mailable?
+  def up_to_date?
     !expired?
   end
 

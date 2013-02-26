@@ -33,13 +33,13 @@ describe AddressRequest do
     recipient = request.request_recipient_user
     recipient.recipient_address.should be_nil
     recipient.should have_pending_address_request
-    recipient.should_not have_mailable_address
+    recipient.should_not be_mailable
 
     request.close_with_api_response(api_response)
     recipient.recipient_address.address_api_response.should == api_response
     recipient.recipient_address.address_request.should == request
     recipient.should_not have_pending_address_request
-    recipient.should have_mailable_address
+    recipient.should be_mailable
     request.state.should == :closed
   end
 

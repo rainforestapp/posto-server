@@ -21,8 +21,8 @@ class CardPrinting < ActiveRecord::Base
     card_order.card_design
   end
 
-  def printable?
-    self.card_printing_composition && self.recipient_user.has_mailable_address?
+  def mailable?
+    self.card_printing_composition && self.recipient_user.mailable?
   end
 
   def front_scan_key

@@ -10,6 +10,7 @@ class CardOrder < ActiveRecord::Base
   belongs_to :card_design
 
   has_many :card_printings
+  has_many :transactions, order: "created_at desc"
 
   has_audited_state_through :card_order_state
 
@@ -23,11 +24,15 @@ class CardOrder < ActiveRecord::Base
   end
 
   def mailable_card_printings
-    self.card_printings.select(&:printable?)
+    self.card_printings.select(&:mailable?)
+  end
+
+  def self.total_price_to_charge_for_number_of_cards(number_of_cards)
+    CONFIG.processing_fee + (CONFIG.card_fee * number_of_cards)
   end
 
   def total_price_to_charge
     number_of_cards = self.mailable_card_printings.size
-    CONFIG.processing_fee + (CONFIG.card_fee * number_of_cards)
+    total_price_to_charge(self.mailable_card_printings.size)
   end
 end

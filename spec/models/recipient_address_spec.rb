@@ -6,6 +6,6 @@ describe RecipientAddress do
   end
 
   it "should note user has mailable address if recipient address exists and isn't expired" do
-    create(:recipient_address).recipient_user.should have_mailable_address
+    create(:recipient_address).recipient_user.should be_mailable
   end
 end
