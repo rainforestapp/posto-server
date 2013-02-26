@@ -45,9 +45,13 @@ class CardImage < ActiveRecord::Base
       raise "unknown image format #{image_format}"
     end
   end
+  
+  def filename
+    "#{uuid}.#{image_format}"
+  end
 
   def path
-    "#{uuid[0...2]}/#{uuid[2...4]}/#{uuid[4...6]}/#{uuid}.#{self.image_format}"
+    "#{uuid[0...2]}/#{uuid[2...4]}/#{uuid[4...6]}/#{filename}"
   end
 
   def public_url

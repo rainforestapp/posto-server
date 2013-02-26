@@ -1,12 +1,18 @@
 require "open-uri"
 
 class AmazingMailActivities
+  include TempFileHelpers
+
   def az_user
     ENV["AMAZING_MAIL_USER"]
   end
 
   def az_password
     ENV["AMAZING_MAIL_PASSWORD"]
+  end
+
+  def az_dmid
+    ENV["AMAZING_MAIL_DMID"]
   end
 
   def submit_images_to_amazing_mail(card_order_id)
@@ -86,6 +92,31 @@ class AmazingMailActivities
   end
 
   def submit_printing_request_to_amazing_mail(card_printing_ids)
+    with_closed_tempfile do |csv_file|
+      CSV.open(csv_file.path, "wb") do |csv|
+        csv << %w(DMID RECORDID TOFIRST TOLAST TOADDR1 TOADDR2 TOCITY TOSTATE TOZIP FRONTPDF MSGPDF)
+
+        card_printing_ids.each do |card_printing_id|
+          card_printing = CardPrinting.find(card_printing_id)
+          recipient = card_printing.recipient_user
+
+          csv << [
+            az_dmid,
+            card_printing_id,
+            recipient.user_profile.first_name,
+            recipient.user_profile.last_name,
+            recipient.recipient_address.delivery_line_1,
+            recipient.recipient_address.delivery_line_2,
+            recipient.recipient_address.city,
+            recipient.recipient_address.state,
+            recipient.recipient_address.zip,
+            "posto/#{card_printing.card_printing_composition.card_front_image.filename}",
+            "posto/#{card_printing.card_printing_composition.card_back_image.filename}"
+          ]
+        end
+      end
+    end
+
     puts "submit az request #{card_printing_ids.inspect}"
     "5884949"
   end
