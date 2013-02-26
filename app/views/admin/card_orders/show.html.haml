@@ -1,10 +1,30 @@
+- if params[:task_token]
+  = form_tag(admin_verify_order_task_path, action: "destroy", method: "delete") do
+    = hidden_field_tag(:task_token, params[:task_token]) 
+    = hidden_field_tag(:task_result, "verified") 
+    = submit_tag("Verify")
 .row
   .span9
-    #{@mailable_card_count} / #{@all_card_count} printings @ #{@total_price}
+    %span{style: "color: #55AA55; font-size:24px;"}
+      #{@total_price}
+    (#{@mailable_card_count} / #{@all_card_count}) printings
+.row
   - @mailable_card_printings.each do |card_printing|
     .span3
+      %p
       .recipient-name
+        %b
+          #{card_printing.recipient_user.user_profile.name}
+      .recipient-address
+        %pre=card_printing.recipient_user.recipient_address.printable_address
+.row
   .span9
     %embed{src: @front_url, class: "postcard-pdf"}
   .span9
     %embed{src: @back_url, class: "postcard-pdf"}
+
+- if params[:task_token]
+  = form_tag(admin_verify_order_task_path, action: "destroy", method: "delete") do
+    = hidden_field_tag(:task_token, params[:task_token]) 
+    = hidden_field_tag(:task_result, "not_verified") 
+    = submit_tag("Skip")

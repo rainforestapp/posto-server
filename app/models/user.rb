@@ -22,34 +22,39 @@ class User < ActiveRecord::Base
 
     begin
       profile = api.get_object("me?fields=#{UserProfile::FACEBOOK_FIELDS.join(",")}")
-      facebook_id = profile["id"]
 
-      user = User.where(facebook_id: facebook_id).first_or_create!
-
-      location = nil
-      location = profile["location"]["name"] if profile["location"]
-
-      birthday = nil
-      birthday = Chronic.parse(profile["birthday"] + " 00:00:00") if profile["birthday"]
-
-      facebook_token_record = FacebookToken.where(user_id: user.user_id, token: facebook_token).first_or_create!
-
-      user.tap do |user|
-        UserProfile.where(user_id: user.user_id,
-                          name: profile["name"],
-                          first_name: profile["first_name"],
-                          last_name: profile["last_name"],
-                          location: location,
-                          middle_name: profile["middle_name"],
-                          birthday: birthday,
-                          gender: profile["gender"],
-                          email: profile["email"]).first_or_create!
+      first_or_update_with_facebook_response(profile).tap do |user|
+        facebook_token_record = FacebookToken.where(user_id: user.user_id, token: facebook_token).first_or_create!
       end
     rescue Koala::Facebook::AuthenticationError => e
       facebook_token_record.state = :expired if facebook_token_record
 
       # TODO log authentication error
       return nil
+    end
+  end
+
+  def self.first_or_update_with_facebook_response(facebook_response)
+    facebook_id = facebook_response["id"]
+
+    user = User.where(facebook_id: facebook_id).first_or_create!
+
+    location = nil
+    location = facebook_response["location"]["name"] if facebook_response["location"]
+
+    birthday = nil
+    birthday = Chronic.parse(facebook_response["birthday"] + " 00:00:00") if facebook_response["birthday"]
+
+    user.tap do |user|
+      UserProfile.where(user_id: user.user_id,
+                        name: facebook_response["name"],
+                        first_name: facebook_response["first_name"],
+                        last_name: facebook_response["last_name"],
+                        location: location,
+                        middle_name: facebook_response["middle_name"],
+                        birthday: birthday,
+                        gender: facebook_response["gender"],
+                        email: facebook_response["email"]).first_or_create!
     end
   end
 

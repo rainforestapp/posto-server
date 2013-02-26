@@ -31,4 +31,10 @@ class AddressApiResponse < ActiveRecord::Base
       AddressApiResponse.create!(arguments: arguments, response: response, api_type: :live_address)
     end
   end
+
+  def printable_address
+    ["delivery_line_1", "delivery_line_2", "last_line"].map do |k|
+      response[k]
+    end.compact.join("\n")
+  end
 end

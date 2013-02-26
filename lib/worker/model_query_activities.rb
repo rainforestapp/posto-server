@@ -10,7 +10,7 @@ class ModelQueryActivities
   end
 
   def get_printable_card_printing_ids(card_order_id)
-    card_order_id).mailable_card_printings.map(&:card_printing_id)
+    CardOrder.find(card_order_id).mailable_card_printings.map(&:card_printing_id)
   end
 
   def mark_order_as_cancelled(card_order_id)

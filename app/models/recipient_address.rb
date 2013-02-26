@@ -19,4 +19,8 @@ class RecipientAddress < ActiveRecord::Base
   def expires_at
     self.created_at + CONFIG.recipient_address_expiration_days.days
   end
+
+  def printable_address
+    address_api_response.printable_address
+  end
 end

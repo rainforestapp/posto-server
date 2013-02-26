@@ -17,6 +17,11 @@ class FacebookMessageActivities
       return "not_verified"
     end
 
+    recipient_facebook_ids.each do |recipient_facebook_id|
+      recipient_facebook_response = api.get_object("#{recipient_facebook_id}?fields=#{UserProfile::FACEBOOK_FIELDS.join(",")}")
+      User.first_or_update_with_facebook_response(recipient_facebook_response)
+    end
+
     "verified"
   end
 
