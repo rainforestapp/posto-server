@@ -179,4 +179,8 @@ class AddressRequest < ActiveRecord::Base
     last_recipient_message_time = recipient_messages.map { |r| r["created_time"] }.max
     return Time.at(last_recipient_message_time)
   end
+
+  def send_sender_notification(message)
+    self.request_sender_user.send_notification(message, app: self.app)
+  end
 end

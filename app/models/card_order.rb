@@ -41,9 +41,6 @@ class CardOrder < ActiveRecord::Base
   end
 
   def send_order_notification(message)
-    device_alias = "#{app.name}-#{Rails.env}-user-#{order_sender_user_id}"
-    Urbanairship.push({ schedule_for: [Time.zone.now], 
-                        aliases: [device_alias], 
-                        aps: { alert: message, sound: "notification.wav" }})
+    self.order_sender_user.send_notification(message, app: self.app)
   end
 end

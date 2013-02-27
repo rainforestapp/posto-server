@@ -4,6 +4,17 @@ class NotificationActivities
   end
 
   def send_notification_of_address_request_completed(address_request_id)
+    address_request = AddressRequest.find(address_request_id)
+    sender = address_request.request_sender_user
+    recipient = address_request.request_recipient_user
+
+    if recipient.user_profile && recipient.recipient_address
+      recipient_name = recipient.user_profile.name
+      city = recipient.recipient_address.city
+      state = recipient.recipient_address.state
+      message = "#{recipient_name} provided their address in #{city}, #{state}. We will mail your card to this address."
+      address_request.send_sender_notification(message)
+    end
   end
 
   def send_notification_of_address_request_expired(address_request_id)

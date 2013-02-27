@@ -219,6 +219,15 @@ class User < ActiveRecord::Base
     end
   end
 
+  def send_notification(message, *args)
+    options = args.extract_options!
+    raise "Missing app" unless options[:app]
+
+    Urbanairship.push({ schedule_for: [Time.zone.now], 
+                        aliases: ["#{options[:app].name}-#{Rails.env}-user-#{self.user_id}"], 
+                        aps: { alert: message, sound: "notification.wav" }})
+  end
+
   private 
 
   def ensure_order_payload_valid(payload, *args)
