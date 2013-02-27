@@ -13,6 +13,7 @@ Posto::Application.routes.draw do
         end
 
         resources :card_orders
+        resources :aps_tokens
       end
 
       resources :apps do

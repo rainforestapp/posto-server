@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   has_many :authored_card_designs, foreign_key: "author_user_id", class_name: "CardDesign"
   has_many :card_printings, foreign_key: "recipient_user_id"
   has_many :authored_card_images, foreign_key: "author_user_id", class_name: "CardImage"
+  has_many :aps_tokens, order: "aps_token_id desc"
 
   def self.first_or_create_with_facebook_token(facebook_token, *args)
     options = args.extract_options!

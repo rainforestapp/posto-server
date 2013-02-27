@@ -4,8 +4,6 @@ gem 'rails', '3.2.11'
 
 gem "mysql2"
 
-gem 'squeel'
-
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
@@ -63,3 +61,5 @@ gem "less-rails"
 gem "haml-rails"
 
 gem "rails_admin"
+
+gem "urbanairship"
