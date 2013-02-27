@@ -35,4 +35,15 @@ class CardOrder < ActiveRecord::Base
     number_of_cards = self.mailable_card_printings.size
     CardOrder.total_price_to_charge_for_number_of_cards(self.mailable_card_printings.size)
   end
+
+  def order_number
+    10000 + (self.card_order_id * 17)
+  end
+
+  def send_order_notification(message)
+    device_alias = "#{app.name}-#{Rails.env}-user-#{order_sender_user_id}"
+    Urbanairship.push({ schedule_for: [Time.zone.now], 
+                        aliases: [device_alias], 
+                        aps: { alert: message }})
+  end
 end
