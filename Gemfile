@@ -63,5 +63,3 @@ gem "less-rails"
 gem "haml-rails"
 
 gem "rails_admin"
-
-
