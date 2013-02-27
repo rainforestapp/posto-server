@@ -67,5 +67,7 @@ module Posto
     if Rails.env == "production"
       config.force_ssl = true
     end
+
+    config.action_mailer.delivery_method = :amazon_ses
   end
 end

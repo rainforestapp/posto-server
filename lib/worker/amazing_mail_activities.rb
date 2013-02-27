@@ -98,7 +98,7 @@ class AmazingMailActivities
   def submit_printing_request_to_amazing_mail(card_printing_ids)
     with_closed_tempfile do |csv_file|
       CSV.open(csv_file.path, "wb") do |csv|
-        csv << %w(DMID RECORDID TOFIRST TOLAST TOADDR1 TOADDR2 TOCITY TOSTATE TOZIP FRONTPDF MSGPDF)
+        csv << %w(DMID RECORDID TOFIRST TOLAST TOADDR1 TOADDR2 TOCITY TOSTATE TOZIP FRONTPDF BACKPDF)
 
         card_printing_ids.each do |card_printing_id|
           card_printing = CardPrinting.find(card_printing_id)
