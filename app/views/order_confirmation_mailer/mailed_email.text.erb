@@ -1,0 +1,5 @@
+Your lulcards order #<%= @card_order.order_number %> has been mailed.
+
+We have mailed your card<%= @card_printings.size > 1 ? "s" : "" %> to <%= @card_printings.map { |p| p.recipient_user.user_profile.name }.to_sentence %>. <% @card_printings.size > 0 ? "They" : "It" %> should arrive within 5 to 7 business days.
+
+Thanks again for your order!

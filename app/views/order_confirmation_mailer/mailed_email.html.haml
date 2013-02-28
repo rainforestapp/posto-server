@@ -1,0 +1,8 @@
+%b
+  Your card#{@card_printings.size > 1 ? "s" : ""} #{@card_printings.size > 1 ? "have" : "has" } been mailed.
+%div{ style: "color: #303030" }
+  %p
+    We have mailed your card#{@card_printings.size > 1 ? "s" : ""} to #{@card_printings.map { |p| p.recipient_user.user_profile.name }.to_sentence}.
+    #{@card_printings.size > 1 ? "They" : "It" } should arrive within 5 to 7 business days.
+  %p
+    Thanks again for your order!

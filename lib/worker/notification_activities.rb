@@ -3,6 +3,9 @@ class NotificationActivities
     true
   end
 
+  def send_notification_of_order_received(card_order_id)
+  end
+
   def send_notification_of_address_request_completed(address_request_id)
     address_request = AddressRequest.find(address_request_id)
     sender = address_request.request_sender_user

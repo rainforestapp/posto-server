@@ -7,7 +7,7 @@
     We are printing your card#{@card_printings.size > 1 ? "s" : ""} for #{@card_printings.map { |p| p.recipient_user.user_profile.name }.to_sentence} and
     will and notify you once #{@card_printings.size > 1 ? "they" : "it"} ha#{@card_printings.size > 1 ? "ve" : "s"} been mailed.
   %p
-    Your payment card has been charged for #{@card_printings.size} card#{@card_printings.size > 1 ? "s" : ""}.
+    Your account has been charged for #{@card_printings.size} card#{@card_printings.size > 1 ? "s" : ""}.
   %p
     Total charges: <b>#{@card_order.printable_total_price}</b>
 

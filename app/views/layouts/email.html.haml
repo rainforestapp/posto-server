@@ -3,13 +3,11 @@
   %head
     %meta{"content" => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
   %body{ style: "margin:0; padding: 0; font-family: arial, sans-serif; font-size: 14px" }
-    .header{ style: "background-color: black; margin: 0px auto; width: 780px; height: 70px; border-radius: 8px; padding: 0; color: white;" }
+    .header{ style: "background-color: black; margin: 0px auto; width: 90%; height: 70px; border-radius: 8px; padding: 0; color: white;" }
       .header-content{ style: "padding: 13px; padding-left: 20px;" }
         %img{ src: "http://data.lulcards.com/images/email/email_logo_1@2x.png", width:164, height:44 }
-    .content{ style: "padding-top: 20px; padding-left:20px" }
-      %div{ style: "margin: 0px auto; width: 800px; " }
-        %div{ style: "float: left; background-color: #fafafa; border-radius: 16px; border: 1px solid #efefef; padding: 15px;" }
-          %div{ style: "float: left; border: 1px solid #888888; width:137px; height: 192px;" }
-            %img{ width: 137, height: 192, src: @card_order.card_design.card_preview_composition.treated_card_preview_image.public_url }
-          %div{ style: "width: 550px; float: left; padding-left: 30px; padding-right: 30px; padding-top: 1px; padding-bottom:10px;"}
-            =yield
+    .content{ style: "width: 90%; margin: 0px auto; padding: 0px;" }
+      %div{ style: "float: left; padding-top: 25px; padding-bottom: 25px; margin-top:25px; background-color: #fafafa; border-radius: 16px; border: 1px solid #efefef; width: 100%;" }
+        %img{ style:"float: left; width: 10%; min-width: 50px; margin-bottom: 15px; margin-left: 25px; border:1px solid #888888;", src: @card_order.card_design.card_preview_composition.treated_card_preview_image.public_url }
+        %div{ style: "float: left; width: 80%; margin-left:25px;"}
+          =yield
