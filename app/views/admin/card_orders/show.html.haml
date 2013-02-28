@@ -5,6 +5,14 @@
     = submit_tag("Verify")
 .row
   .span9
+    <b>Sender:</b>
+.row
+  .span9
+    %span
+      %img{ src: "http://graph.facebook.com/#{@sender.facebook_id}/picture" }
+      %a{ target:"_blank", href: "http://facebook.com/#{@sender.facebook_id}" }
+        #{@sender.user_profile.name}
+  .span9{ style: "margin-top: 10px" }
     %span{style: "color: #55AA55; font-size:24px;"}
       #{@total_price}
     (#{@mailable_card_count} / #{@all_card_count}) printings
@@ -12,9 +20,12 @@
   - @mailable_card_printings.each do |card_printing|
     .span3
       %p
+      .pic
+        %img{ src: "http://graph.facebook.com/#{card_printing.recipient_user.facebook_id}/picture" }
       .recipient-name
         %b
-          #{card_printing.recipient_user.user_profile.name}
+          %a{ target:"_blank", href: "http://facebook.com/#{card_printing.recipient_user.facebook_id}" }
+            #{card_printing.recipient_user.user_profile.name}
       .recipient-address
         %pre=card_printing.recipient_user.recipient_address.printable_address
 .row

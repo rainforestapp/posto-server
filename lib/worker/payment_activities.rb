@@ -18,19 +18,28 @@ class PaymentActivities
 
       amount = CardOrder.total_price_to_charge_for_number_of_cards(card_printing_ids.size)
 
-      charge = Stripe::Charge.create(
-        amount: amount,
-        currency: "usd",
-        customer: customer["id"],
-        description: "Charge #{card_printing_ids.inspect} Order ##{card_order_id}"
-      )
+      begin
+        charge = Stripe::Charge.create(
+          amount: amount,
+          currency: "usd",
+          customer: customer["id"],
+          description: "Charge #{card_printing_ids.inspect} Order ##{card_order_id}"
+        )
+      rescue Stripe::CardError => e
+        begin
+          stripe_customer.stripe_customer_card.mark_as_declined!
+          stripe_customer.stripe_customer_card.append_to_metadata!(message: e.message)
+        rescue Exception => e
+        end
+        return "declined"
+      end
 
       if charge["failure_message"]
         if stripe_customer && stripe_customer.stripe_card
           begin
-            stripe_customer.stripe_card.mark_as_declined!
-            stripe_customer.stripe_card.append_to_metadata!(message: charge["failure_message"])
-          rescue nil
+            stripe_customer.stripe_customer_card.mark_as_declined!
+            stripe_customer.stripe_customer_card.append_to_metadata!(message: e.message)
+          rescue Exception => e
           end
         end
 

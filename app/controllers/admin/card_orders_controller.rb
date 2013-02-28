@@ -2,6 +2,7 @@ class Admin::CardOrdersController < AdminControllerBase
   def show
     @card_order = CardOrder.find(params[:id])
     composition = @card_order.card_printings[0].card_printing_composition
+    @sender = @card_order.order_sender_user
     @front_url = composition.card_front_image.public_url
     @back_url = composition.card_back_image.public_url
     @all_card_count = @card_order.card_printings.size

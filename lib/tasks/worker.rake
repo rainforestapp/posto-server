@@ -110,8 +110,8 @@ namespace :worker do
           rescue StandardError => e
             unless activity_task.responded?
               reason = "UNTRAPPED ERROR #{e.message}"
-              details = e.backtrace.join("\n")
-              activity_task.fail!(:reason => reason, :details => details)
+              details = e.message + "\n" + e.backtrace.join("\n")
+              activity_task.fail!(:reason => reason[0..200], :details => details)
             end
           ensure
             @mutex.synchronize do

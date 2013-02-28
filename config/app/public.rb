@@ -8,7 +8,7 @@ CONFIG = SampleableConfig.define do
   card_image_host "data.lulcards.com"
   card_image_bucket "posto-data"
 
-  csv_host "data.lulcards.com"
+  csv_host "d19ku6gs1135cx.cloudfront.net"
   csv_bucket "posto-data"
 
   api_key_expiration_days 30
