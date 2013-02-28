@@ -51,4 +51,15 @@ class CardOrder < ActiveRecord::Base
   def send_order_notification(message)
     self.order_sender_user.send_notification(message, app: self.app)
   end
+
+  def execute_workflow!
+    swf = AWS::SimpleWorkflow.new
+    domain = swf.domains["posto-#{Rails.env == "production" ? "prod" : "dev"}"]
+    workflow_type = domain.workflow_types['CardOrderWorkflow.processOrder', CONFIG.order_workflow_version]
+    input = ["[Ljava.lang.Object;", 
+            [["java.lang.Long", self.card_order_id],
+              self.order_sender_user.facebook_token.token]].to_json
+
+    workflow_type.start_execution input: input
+  end
 end

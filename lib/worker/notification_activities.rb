@@ -4,6 +4,7 @@ class NotificationActivities
   end
 
   def send_notification_of_order_received(card_order_id)
+    true
   end
 
   def send_notification_of_address_request_completed(address_request_id)
@@ -18,9 +19,11 @@ class NotificationActivities
       message = "#{recipient_name} provided their address in #{city}, #{state}. We will mail their card to this address."
       address_request.send_sender_notification(message)
     end
+    true
   end
 
   def send_notification_of_address_request_expired(address_request_id)
+    true
   end
   
   def send_notification_of_submitted_order(card_printing_ids)
@@ -40,12 +43,14 @@ class NotificationActivities
 
       card_order.send_order_notification(message)
     end
+    true
   end
 
   def send_notification_of_payment_declined(card_order_id)
     card_order = CardPrinting.find(card_order_id).card_order
     message = "We're really sorry, but your order ##{card_order.order_number} had to be cancelled because your payment method was declined."
     card_order.send_order_notification(message)
+    true
   end
 
   def send_notification_of_printings_mailed(card_printing_ids)
@@ -54,14 +59,17 @@ class NotificationActivities
       message = "Your order ##{card_order.order_number} has been mailed and should arrive in 5-7 business days."
       card_order.send_order_notification(message)
     end
+    true
   end
 
   def send_notification_of_card_scan(card_printing_id)
+    true
   end
 
   def send_notification_of_all_addresses_expired(card_order_id)
     card_order = CardPrinting.find(card_order_id).card_order
     message = "We're really sorry, but your order ##{card_order.order_number} had to be cancelled because your recipients never provided their addresses."
     card_order.send_order_notification(message)
+    true
   end
 end

@@ -14,6 +14,8 @@ CONFIG = SampleableConfig.define do
   api_key_expiration_days 30
   api_key_renewal_days 15
 
+  order_workflow_version "2.1"
+
   effects true
   number_of_clicks_before_tooltip 1
   design_edit_hint_mode "tooltip"

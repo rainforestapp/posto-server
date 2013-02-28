@@ -51,7 +51,7 @@ class AmazingMailActivities
   end
 
   def check_if_amazing_mail_has_images(queued_import_ids)
-    return unless queued_import_ids.size > 0
+    return "ready" unless queued_import_ids.size > 0
 
     ready = true
 

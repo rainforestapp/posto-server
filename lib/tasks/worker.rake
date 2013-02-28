@@ -113,7 +113,6 @@ namespace :worker do
               details = e.backtrace.join("\n")
               activity_task.fail!(:reason => reason, :details => details)
             end
-            raise e
           ensure
             @mutex.synchronize do
               @processing = false

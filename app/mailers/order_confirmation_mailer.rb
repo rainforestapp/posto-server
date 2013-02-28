@@ -47,7 +47,10 @@ class OrderConfirmationMailer < ActionMailer::Base
     user_profile = card_order.order_sender_user.try(:user_profile) 
     recipient_email_address = user_profile.try(:email)
     recipient_name = user_profile.try(:name)
-    recipient_email_address = "gfodor@gmail.com"
+
+    if Rails.env == "development"
+      recipient_email_address = "gfodor@gmail.com"
+    end
 
     if recipient_email_address && recipient_name
       yield "#{recipient_name} <#{recipient_email_address}>"
