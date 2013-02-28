@@ -3,7 +3,7 @@ module Api
     class PhotoUploadTokensController < ApplicationController
       def new
         s3 = AWS::S3.new
-        bucket = s3.buckets["posto-uploads"]
+        bucket = s3.buckets[CONFIG.card_image_bucket]
         uuid = SecureRandom.hex
 
         # TODO log this somewhere that this device took this token

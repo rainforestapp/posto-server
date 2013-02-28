@@ -1,0 +1,10 @@
+%div{ style: "width: 500px; float: left; background-color: white; padding-left: 30px; padding-right: 30px; padding-top: 10px; padding-bottom:10px; border-radius: 12px;"}
+  %p
+    %b
+      Thank you for your order.
+  %p
+    Your lulcards order ##{@card_order.order_number} has been received.
+  %p
+    We will notify you once we have collected all the addresses for your recipients and can print your order.
+%div{ style: "float:left; border: 1px solid black; width: 274px; height:384px; margin-left: 20px; margin-bottom: 20px;" }
+  %div{ style: "border: 1px solid #888888; position:relative; left: 20px; top: 20px; width: 234px; height: 344px; background-image: url('#{@card_order.card_design.card_preview_composition.card_preview_image.public_url}');" }

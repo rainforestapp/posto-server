@@ -34,6 +34,8 @@ Posto::Application.routes.draw do
                 :address_requests, :card_orders
 
       resource :address_api, controller: "AddressApi"
+
+      match 'mailer(/:action(/:id(.:format)))' => 'mailer#:action'
     end
   end
 end
