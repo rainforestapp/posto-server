@@ -59,7 +59,15 @@ class CardOrder < ActiveRecord::Base
     input = ["[Ljava.lang.Object;", 
             [["java.lang.Long", self.card_order_id],
               self.order_sender_user.facebook_token.token]].to_json
+    workflow_id = "card-order-#{self.card_order_id.to_s}"
 
-    workflow_type.start_execution input: input
+    tags = []
+    tags << "sender-id-#{order_sender_user_id}"
+    tags << "sender-last-#{order_sender_user.user_profile.last_name}"
+    tags << "app-#{self.app.name}"
+    tags << "order-number-#{self.order_number}"
+    tags << "design-#{self.card_design.card_design_id}"
+
+    workflow_type.start_execution input: input, workflow_id: workflow_id, tag_list: tags
   end
 end

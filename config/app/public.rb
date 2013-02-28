@@ -28,8 +28,8 @@ CONFIG = SampleableConfig.define do
   card_fee 100
   max_cards_to_send 9
   max_photo_byte_size 24 * 1024 * 1024
-  recipient_address_expiration_days 90
-  address_request_expiration_days 7
+  recipient_address_expiration_days 31 * 6
+  address_request_expiration_days 6
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
 
   order_submitted_header "Thanks!"
