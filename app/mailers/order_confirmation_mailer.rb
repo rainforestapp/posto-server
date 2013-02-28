@@ -3,17 +3,24 @@ class OrderConfirmationMailer < ActionMailer::Base
   layout "email"
 
   def received_email(card_order)
-    @card_order = card_order
+    with_recipient_address_for_card_order(card_order) do |recipient_address|
+      mail(to: recipient_address,
+           subject: "Your lulcards order ##{card_order.order_number} has been received")
+    end
+  end
 
-    recipient_address = card_order.order_sender_user.try(:user_profile).try(:email)
+  def printing_email(card_order, card_printing_ids)
+    @card_printings = CardPrinting.find(*card_printing_ids)
 
     with_recipient_address_for_card_order(card_order) do |recipient_address|
       mail(to: recipient_address,
-           subject: "Your lulcards order ##{card_order.order_number}")
+           subject: "Receipt for lulcards order ##{card_order.order_number}")
     end
   end
 
   def with_recipient_address_for_card_order(card_order)
+    @card_order = card_order
+
     user_profile = card_order.order_sender_user.try(:user_profile) 
     recipient_email_address = user_profile.try(:email)
     recipient_name = user_profile.try(:name)

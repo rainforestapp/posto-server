@@ -9,11 +9,13 @@ class ImageGenerationActivities
     generator = PreviewImageGenerator.new(card_design)
     app = card_order.app
 
-    generator.generate! do |preview_file_path|
+    generator.generate! do |preview_file_path, treated_preview_file_path|
       preview_image = card_design_author.create_and_publish_image_file!(preview_file_path, app: app, image_type: :card_preview)
+      treated_preview_image = card_design_author.create_and_publish_image_file!(treated_preview_file_path, app: app, image_type: :treated_card_preview)
 
       card_design.card_preview_compositions.create!(
-        card_preview_image: preview_image
+        card_preview_image: preview_image,
+        treated_card_preview_image: treated_preview_image
       )
     end
 
