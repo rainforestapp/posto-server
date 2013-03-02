@@ -33,7 +33,7 @@ CONFIG = SampleableConfig.define do
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
 
   order_submitted_header "Thanks!"
-  order_submitted_message "We'll notify you when your order is mailed. You can check its status from the Account page."
+  order_submitted_message "Your order has been submitted. We'll notify and e-mail you as we process it."
 
   shuffle_captions do
     variant 1, true

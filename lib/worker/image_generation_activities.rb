@@ -28,13 +28,18 @@ class ImageGenerationActivities
     card_design_author = card_printing.card_design.author_user
     app = card_printing.card_order.app
 
-    generator.generate! do |front_file_path, back_file_path|
+    generator.generate! do |front_file_path, back_file_path, front_jpg_file_path, back_jpg_file_path|
       front_image = card_design_author.create_and_publish_image_file!(front_file_path, app: app, image_type: :card_front)
       back_image = card_design_author.create_and_publish_image_file!(back_file_path, app: app, image_type: :card_back)
 
+      jpg_front_image = card_design_author.create_and_publish_image_file!(front_jpg_file_path, app: app, image_type: :card_front)
+      jpg_back_image = card_design_author.create_and_publish_image_file!(back_jpg_file_path, app: app, image_type: :card_back)
+
       card_printing.card_printing_compositions.create!(
         card_front_image: front_image,
-        card_back_image: back_image
+        card_back_image: back_image,
+        jpg_card_front_image: jpg_front_image,
+        jpg_card_back_image: jpg_back_image
       )
     end
 

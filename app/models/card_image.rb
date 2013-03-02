@@ -13,7 +13,8 @@ class CardImage < ActiveRecord::Base
   belongs_to :app
 
   symbolize :image_type, 
-            in: [:original_full_photo, :edited_full_photo, :composed_full_photo, :card_front, :card_back, :card_preview, :treated_card_preview],
+            in: [:original_full_photo, :edited_full_photo, :composed_full_photo, 
+                 :card_front, :card_back, :card_preview, :treated_card_preview],
             validates: true
 
   symbolize :orientation, 

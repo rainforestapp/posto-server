@@ -3,6 +3,8 @@ require "api_constraints"
 Posto::Application.routes.draw do
   mount RailsAdmin::Engine => '/radmin', :as => 'rails_admin'
 
+  resources :qr, controller: "Qr"
+
   namespace :api, defaults: { format: 'json' } do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: :true) do
       resources :tokens

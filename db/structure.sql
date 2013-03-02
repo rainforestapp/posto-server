@@ -178,7 +178,9 @@ CREATE TABLE `card_orders` (
   `meta` text COLLATE utf8_unicode_ci,
   `quoted_total_price` int(11) NOT NULL,
   `card_design_id` bigint(20) NOT NULL,
+  `uid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`card_order_id`),
+  UNIQUE KEY `index_card_orders_on_uid` (`uid`),
   KEY `index_card_orders_on_sender_user_id` (`order_sender_user_id`),
   KEY `index_card_orders_on_card_design_id` (`card_design_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -206,6 +208,8 @@ CREATE TABLE `card_printing_compositions` (
   `updated_at` datetime NOT NULL,
   `meta` text COLLATE utf8_unicode_ci,
   `latest` tinyint(1) NOT NULL,
+  `jpg_card_front_image_id` bigint(20) NOT NULL,
+  `jpg_card_back_image_id` bigint(20) NOT NULL,
   PRIMARY KEY (`card_printing_composition_id`),
   KEY `index_card_printing_compositions_on_card_printing_id` (`card_printing_id`),
   KEY `index_card_printing_compositions_on_card_front_image_id` (`card_front_image_id`),
@@ -233,7 +237,9 @@ CREATE TABLE `card_printings` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `meta` text COLLATE utf8_unicode_ci,
+  `uid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`card_printing_id`),
+  UNIQUE KEY `index_card_printings_on_uid` (`uid`),
   KEY `index_card_printings_on_card_order_id` (`card_order_id`),
   KEY `index_card_printings_on_recipient_user_id` (`recipient_user_id`),
   KEY `index_card_printings_on_print_number` (`print_number`)
@@ -562,3 +568,7 @@ INSERT INTO schema_migrations (version) VALUES ('20130226010904');
 INSERT INTO schema_migrations (version) VALUES ('20130227011943');
 
 INSERT INTO schema_migrations (version) VALUES ('20130228004524');
+
+INSERT INTO schema_migrations (version) VALUES ('20130301003520');
+
+INSERT INTO schema_migrations (version) VALUES ('20130302183141');

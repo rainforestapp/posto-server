@@ -2,6 +2,7 @@ class CardPrinting < ActiveRecord::Base
   include AppendOnlyModel
   include HasAuditedState
   include HasOneAudited
+  include HasUid
 
   attr_accessible :recipient_user
 
@@ -26,11 +27,11 @@ class CardPrinting < ActiveRecord::Base
   end
 
   def front_scan_key
-    "f" + Base64.encode64(self.card_printing_id.to_s).chomp
+    "f" + self.uid
   end
 
   def back_scan_key
-    "b" + Base64.encode64(self.card_printing_id.to_s).chomp
+    "b" + self.uid
   end
 
   def mark_as_cancelled!

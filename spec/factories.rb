@@ -33,7 +33,7 @@ FactoryGirl.define do
     address_request
 
     factory :expired_recipient_address do
-      created_at 100.days.ago
+      created_at 500.days.ago
     end
   end
 

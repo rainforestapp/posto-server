@@ -2,6 +2,7 @@ class CardOrder < ActiveRecord::Base
   include AppendOnlyModel
   include HasAuditedState
   include HasOneAudited
+  include HasUid
 
   attr_accessible :app, :quoted_total_price, :card_design
 
