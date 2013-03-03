@@ -17,16 +17,25 @@ class QrController < ApplicationController
     card_order = card_printing.card_order
     card_design = card_order.card_design
     preview_composition = card_design.card_preview_composition
+    sender = card_order.order_sender_user
 
     out = {}
-    out[:sender_name] = card_order.order_sender_user.user_profile.name
+    out[:sender] = {
+      user_id: sender.user_id,
+      facebook_id: sender.facebook_id,
+      name: sender.user_profile.name,
+    }
+
     out[:sent_on] = card_order.created_at.strftime("%-m/%-d/%y")
-    out[:treated_preview_image_url] = preview_composition.treated_card_preview_image.public_url
-    out[:preview_image_url] = preview_composition.card_preview_image.public_url
-    out[:original_full_photo_url] = card_design.original_full_photo_image.public_url
+
+    out[:images] = {
+      treated_preview: preview_composition.treated_card_preview_image.public_url,
+      preview: preview_composition.card_preview_image.public_url,
+      original_full_photo: card_design.original_full_photo_image.public_url,
+    }
 
     if card_design.edited_full_photo_image
-      out[:edited_full_photo_url] = card_design.edited_full_photo_image.public_url
+      out[:images][:edited_full] = card_design.edited_full_photo_image.public_url
     end
 
     render json: out
