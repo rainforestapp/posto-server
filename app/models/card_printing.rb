@@ -10,6 +10,9 @@ class CardPrinting < ActiveRecord::Base
   belongs_to :recipient_user, class_name: "User"
   has_one_audited :card_printing_composition
 
+  has_one_audited :card_scan
+  has_many :card_scans
+
   before_save(on: :create) do
     self.print_number = self.class.connection.select_value <<-END
       select coalesce(max(print_number), 0) + 1 from card_printings
