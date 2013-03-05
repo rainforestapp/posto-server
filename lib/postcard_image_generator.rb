@@ -2,7 +2,6 @@ require "image_generator"
 
 class PostcardImageGenerator < ImageGenerator
   BORDER_SIZE = 0.05
-  QR_PATH = "http://lulcrds.com/qr/"
 
   def initialize(card_printing)
     @card_printing = card_printing
@@ -46,9 +45,9 @@ class PostcardImageGenerator < ImageGenerator
 
                             border_pixels = (BORDER_SIZE * [cols, rows].max.to_f).floor
 
-                            front_qr = RQRCode::QRCode.new(URI.escape(QR_PATH + front_scan_key), size: 4, level: :h)
+                            front_qr = RQRCode::QRCode.new(URI.escape(CONFIG.qr_path + front_scan_key), size: 4, level: :h)
                             front_qr_png = front_qr.to_img.resize(175,175).save(front_qr_file.path)
-                            back_qr = RQRCode::QRCode.new(URI.escape(QR_PATH + back_scan_key), size: 4, level: :h)
+                            back_qr = RQRCode::QRCode.new(URI.escape(CONFIG.qr_path + back_scan_key), size: 4, level: :h)
                             back_qr_png = back_qr.to_img.resize(175,175).save(back_qr_file.path)
 
                             with_image(front_qr_file.path) do |front_qr_image|
@@ -94,9 +93,11 @@ class PostcardImageGenerator < ImageGenerator
 
                                   with_image(front_image_file.path) do |front_pdf|
                                     with_image(back_image_file.path) do |back_pdf|
+                                      front_pdf.rotate!(270)
                                       front_pdf.write("jpeg:#{front_jpg_image_file.path}") do
                                         self.quality = 90
                                       end
+                                      front_pdf.rotate!(90)
 
                                       back_pdf.write("jpeg:#{back_jpg_image_file.path}") do
                                         self.quality = 90

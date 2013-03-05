@@ -11,6 +11,14 @@ CONFIG = SampleableConfig.define do
   csv_host "d19ku6gs1135cx.cloudfront.net"
   csv_bucket "posto-data"
 
+  if Rails.env == "development"
+    qr_path "http://posto.dev/qr/"
+    share_url_path "http://posto.dev/v/"
+  else
+    qr_path "https://lulcards.com/qr/"
+    share_url_path "http://lulcards.com/v/"
+  end
+
   api_key_expiration_days 30
   api_key_renewal_days 15
 
@@ -19,8 +27,6 @@ CONFIG = SampleableConfig.define do
   effects true
   number_of_clicks_before_tooltip 1
   design_edit_hint_mode "tooltip"
-  tap_to_edit_top_caption "tap to edit"
-  tap_to_edit_bottom_caption "scroll for more"
   server_debug false
   fb_permissions ["email", "read_mailbox", "xmpp_login", "friends_location", "user_location"]
   fb_fields ["gender", "birthday"]
@@ -39,6 +45,8 @@ CONFIG = SampleableConfig.define do
     variant 1, true
     variant 1, false
   end
+
+  share_caption "Check out this postcard I got from NAME! #lulcards"
 
   permission_caption do
     variant 1, "is_needed", "Chat and Inbox access is needed to ask your friends for their addresses."
