@@ -40,4 +40,8 @@ class CardPrinting < ActiveRecord::Base
   def mark_as_cancelled!
     self.state = :cancelled
   end
+
+  def card_number
+    (800000000 + (self.card_printing_id * 13)).to_s
+  end
 end

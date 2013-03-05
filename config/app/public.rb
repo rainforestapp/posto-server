@@ -1,8 +1,11 @@
 require "sampleable_config"
 
 CONFIG = SampleableConfig.define do
+  version 1
   kill_switch false
   really_kill_switch false
+  mixpanel_enabled true
+  mixpanel_event_screen []
   kill_message "Lulcard is unavailable."
 
   card_image_host "data.lulcards.com"

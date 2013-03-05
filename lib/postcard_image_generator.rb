@@ -76,17 +76,26 @@ class PostcardImageGenerator < ImageGenerator
                                     self.fill = "#FFFFFF"
                                     self.stroke = 'transparent'
                                     self.pointsize = use_big_font ? 48 : 32
-                                    self.font_family = "HelveticaNeueL"
+                                    self.font("#{File.dirname(__FILE__)}/../resources/fonts/HelveticaNeueCondensedBold.ttf")
                                     self.text_align(Magick::LeftAlign)
                                   end
 
                                   back_with_text.annotate(back, 0, 0, 1310, sent_y_offset, sent_text) do
-                                    self.fill = "#FC933E"
+                                    self.fill = "#FF8E32"
                                     self.stroke = 'transparent'
                                     self.pointsize = 28
-                                    self.font_family = "HelveticaNeueL"
+                                    self.font("#{File.dirname(__FILE__)}/../resources/fonts/HelveticaNeueCondensedBold.ttf")
                                     self.text_align(Magick::LeftAlign)
                                   end
+
+                                  back_with_text.annotate(back, 0, 0, 100, 1228, @card_printing.card_number) do
+                                    self.fill = "#AAAAAA"
+                                    self.stroke = 'transparent'
+                                    self.pointsize = 32
+                                    self.font("#{File.dirname(__FILE__)}/../resources/fonts/HelveticaNeueCondensedBold.ttf")
+                                    self.text_align(Magick::LeftAlign)
+                                  end
+
 
                                   front.write("png:" + front_image_file.path)
                                   back.write("png:" + back_image_file.path)
