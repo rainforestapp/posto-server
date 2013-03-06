@@ -113,6 +113,8 @@ namespace :worker do
               details = e.message + "\n" + e.backtrace.join("\n")
               logger.error "[#{$$}] Activity Task Failed: #{reason} #{details}"
               activity_task.fail!(:reason => reason[0..200], :details => details)
+
+              Airbrake.notify_or_ignore(e, parameters: { reason: reason, details: details }, cgi_data: ENV) rescue nil
             end
           ensure
             @mutex.synchronize do

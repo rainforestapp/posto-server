@@ -8,6 +8,7 @@ CONFIG = SampleableConfig.define do
   mixpanel_event_screen []
   kill_message "Lulcard is unavailable."
   support_email "support@lulcards.com"
+  uservoice_enabled true
 
   card_image_host "data.lulcards.com"
   card_image_bucket "posto-data"
