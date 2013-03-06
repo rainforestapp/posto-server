@@ -9,6 +9,7 @@ CONFIG = SampleableConfig.define do
   kill_message "Lulcard is unavailable."
   support_email "support@lulcards.com"
   uservoice_enabled true
+  testflight_enabled true
 
   card_image_host "data.lulcards.com"
   card_image_bucket "posto-data"
