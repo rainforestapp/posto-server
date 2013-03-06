@@ -35,6 +35,7 @@ namespace :worker do
   end
 
   task :start => :environment do
+    logger = Rails.logger
     swf = AWS::SimpleWorkflow.new
     domain = swf.domains[Rails.env == "production" || Rails.env == "princess" ? "posto-prod" : "posto-dev"]
 
@@ -74,10 +75,8 @@ namespace :worker do
 
             class_name, activity_method = activity_task.activity_type.name.split(".")
             activity_method = activity_method.underscore
-            puts "task: #{activity_task.activity_type.name}"
-            puts "input: #{activity_task.input}"
             args = decode_from_java(JSON.parse(activity_task.input))
-            puts "args: #{args.inspect}"
+            logger.info "[#{$$}] Activity Task: #{activity_task.activity_type.name}(#{activity_task.input})"
             worker = Kernel.const_get(class_name.to_sym).new
             worker.task_token = activity_task.task_token if worker.respond_to?(:task_token=)
             is_manual = worker.respond_to?(:manual?) && worker.manual?
@@ -102,7 +101,8 @@ namespace :worker do
             unless is_manual
               begin
                 activity_task.complete!(result: encode_to_java(result).to_json)
-              rescue nil
+              rescue Exception => e
+                logger.error "[#{$$}] Activity Task Completion Mark Failed #{e.message}"
               end
             end
           rescue AWS::SimpleWorkflow::ActivityTask::CancelRequestedError
@@ -111,6 +111,7 @@ namespace :worker do
             unless activity_task.responded?
               reason = "UNTRAPPED ERROR #{e.message}"
               details = e.message + "\n" + e.backtrace.join("\n")
+              logger.error "[#{$$}] Activity Task Failed: #{reason} #{details}"
               activity_task.fail!(:reason => reason[0..200], :details => details)
             end
           ensure

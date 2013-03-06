@@ -21,6 +21,7 @@ module ApiSecureEndpoint
 
         authenticated = api_key.try(:active?).tap do |active|
           @current_user = api_key.try(:user) if active
+          logger.info "Request Authenticated as [#{@current_user.user_id}]" if @current_user
         end
 
         authenticated || self.class.__auth_token_optional
