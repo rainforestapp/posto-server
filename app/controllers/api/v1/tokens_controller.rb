@@ -9,7 +9,7 @@ module Api
 
         api_key = nil
 
-        if token
+        unless token.blank?
           api_key = Rails.cache.fetch([:api_key_by_token, token]) do
             ApiKey.where(token: token).includes(:user).first
           end
@@ -31,13 +31,16 @@ module Api
         if api_key
           @api_key = api_key
 
-          has_first_login = Rails.cache.fetch([:user_has_first_login, api_key.user]) do
+          first_login_key = [:user_has_first_login, api_key.user]
+
+          has_first_login = Rails.cache.fetch(first_login_key) do
             api_key.user.user_logins.size > 0
           end
 
           unless has_first_login
-            if api_key.user.user_logins.size > 0
+            if api_key.user.user_logins.size == 0
               api_key.user.add_login!
+              Rails.cache.delete(first_login_key)
             end
           end
 
