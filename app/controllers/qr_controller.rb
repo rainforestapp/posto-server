@@ -4,6 +4,8 @@ class QrController < ApplicationController
   allow_unauthenticated_access!
 
   def show
+    expires_in 1.day, public: true
+
     uid = params[:id][1..-1]
     type = params[:id][0]
 
