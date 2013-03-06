@@ -6,6 +6,7 @@ class StripeCustomer < ActiveRecord::Base
 
   has_one_audited :stripe_customer_card
   belongs_to_and_marks_latest_within :user
+  after_save :invalidate_payment_info_state!
 
   def has_active_card?
     self.payment_info_state == :active
@@ -37,5 +38,9 @@ class StripeCustomer < ActiveRecord::Base
 
   def delete_from_stripe!
     Stripe::Customer.retrieve(self.stripe_id).delete
+  end
+
+  def invalidate_payment_info_state!
+    user.invalidate_payment_info_state!
   end
 end

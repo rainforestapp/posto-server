@@ -4,6 +4,7 @@ class StripeCustomerCard < ActiveRecord::Base
   include HasAuditedState
 
   attr_accessible :stripe_card
+  after_save :invalidate_payment_info_state!
 
   belongs_to_and_marks_latest_within :stripe_customer
   belongs_to :stripe_card
@@ -28,5 +29,9 @@ class StripeCustomerCard < ActiveRecord::Base
 
   def mark_as_declined!
     self.state = :declined
+  end
+
+  def invalidate_payment_info_state!
+    stripe_customer.invalidate_payment_info_state!
   end
 end

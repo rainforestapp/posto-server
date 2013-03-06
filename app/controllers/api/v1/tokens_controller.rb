@@ -7,7 +7,13 @@ module Api
         token = params[:posto_token]
         facebook_token = params[:facebook_token]
 
-        api_key = token && ApiKey.where(:token => token).first
+        api_key = nil
+
+        if token
+          api_key = Rails.cache.fetch([:api_key_by_token, token]) do
+            ApiKey.where(token: token).includes(:user).first
+          end
+        end
 
         if api_key
           if api_key.expired?
@@ -19,15 +25,22 @@ module Api
 
         unless api_key.try(:active?)
           user = User.first_or_create_with_facebook_token(facebook_token)
-
-          if user
-            api_key = user.renew_api_key!
-          end
+          api_key = user.try(:renew_api_key!)
         end
 
         if api_key
           @api_key = api_key
-          api_key.user.add_login!
+
+          has_first_login = Rails.cache.fetch([:user_has_first_login, api_key.user]) do
+            api_key.user.user_logins.size > 0
+          end
+
+          unless has_first_login
+            if api_key.user.user_logins.size > 0
+              api_key.user.add_login!
+            end
+          end
+
           respond_with(@api_key)
         else
           head :unauthorized

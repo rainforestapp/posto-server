@@ -10,12 +10,14 @@ module ApiSecureEndpoint
       return true if self.class.__auth_token_optional && request.env["Authorization"].nil?
 
       authenticate_or_request_with_http_token do |token, options|
-        if Rails.env == "development" && token == "thisisabackdoor"
-          @current_user = User.where(facebook_id: "403143").first
-          return true
-        end
+        #if Rails.env == "development" && token == "thisisabackdoor"
+        #  @current_user = User.where(facebook_id: "403143").first
+        #  return true
+        #end
 
-        api_key = ApiKey.where(:token => token).first
+        api_key = Rails.cache.fetch([:api_key_by_token, token]) do
+          ApiKey.where(token: token).includes(:user).first
+        end
 
         authenticated = api_key.try(:active?).tap do |active|
           @current_user = api_key.try(:user) if active

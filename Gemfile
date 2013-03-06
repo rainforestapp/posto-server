@@ -63,3 +63,5 @@ gem "haml-rails", "~> 0.4"
 gem "rails_admin", "~> 0.4.5"
 
 gem "urbanairship", "~> 2.3.0"
+
+gem "dalli", "~> 2.6.2"

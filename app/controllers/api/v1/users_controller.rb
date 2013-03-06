@@ -2,6 +2,8 @@ module Api
   module V1
     class UsersController < ApplicationController
       def show
+        expires_in 1.hour, public: true
+
         respond_to do |format|
           facebook_id = params[:id]
 

@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   has_many :card_printings, foreign_key: "recipient_user_id"
   has_many :authored_card_images, foreign_key: "author_user_id", class_name: "CardImage"
   has_many :aps_tokens, order: "aps_token_id desc"
+  has_many :user_logins
 
   def self.first_or_create_with_facebook_token(facebook_token, *args)
     options = args.extract_options!
@@ -131,8 +132,13 @@ class User < ActiveRecord::Base
   end
 
   def payment_info_state
-    return :none unless self.stripe_customer
-    self.stripe_customer.payment_info_state
+    Rails.cache.fetch(payment_info_state_cache_key) do
+      if self.stripe_customer
+        self.stripe_customer.payment_info_state
+      else
+        :none
+      end
+    end
   end
 
   def set_stripe_payment_info_with_token(token)
@@ -159,7 +165,7 @@ class User < ActiveRecord::Base
       end
     end
 
-    self.stripe_customer.try(:delete_from_stripe!)
+    self.stripe_customer.try(:delete_from_stripe!) rescue nil
     self.stripe_customers.create!(stripe_id: pending_customer["id"])
     self.stripe_customer.stripe_card = StripeCard.find_or_create_by_stripe_card_info(pending_customer.active_card)
   end
@@ -228,6 +234,10 @@ class User < ActiveRecord::Base
                         aps: { alert: message, sound: "notification.wav" }})
   end
 
+  def invalidate_payment_info_state!
+    Rails.cache.delete(payment_info_state_cache_key)
+  end
+
   private 
 
   def ensure_order_payload_valid(payload, *args)
@@ -273,6 +283,10 @@ class User < ActiveRecord::Base
     end
 
     raise_order_exception.(:no_card_design) unless payload["card_design"]
+  end
+
+  def payment_info_state_cache_key
+    [:payment_info_state, self]
   end
 end
 
