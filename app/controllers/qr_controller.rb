@@ -90,7 +90,11 @@ class QrController < ApplicationController
       out[:images][:edited_full_photo] = card_design.edited_full_photo_image.public_url
     end
 
-    render json: out
+    respond_to do |format
+      format.json do
+        render json: out
+      end
+    end
   end
 end
 
