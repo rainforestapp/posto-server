@@ -17,7 +17,7 @@ Posto::Application.configure do
 
   if File.exists?(memcached_config_file)
     File.open(memcached_config_file) do |f|
-      config.cache_store = [:dalli_store] + YAML.load(f.read)[Rails.env]["servers"]
+      config.cache_store = [:dalli_store] + YAML.load(f.read)["development"]["servers"]
     end
   end
 
