@@ -7,7 +7,14 @@ Posto::Application.configure do
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
-  config.cache_store = :dalli_store
+
+  memcached_config_file = "#{File.dirname(__FILE__)}/../memcached.yml"
+
+  if File.exists?(memcached_config_file)
+    File.open(memcached_config_file) do |f|
+      config.cache_store = [:dalli_store] + YAML.load(f.read)[Rails.env]["servers"]
+    end
+  end
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
   config.serve_static_assets = false

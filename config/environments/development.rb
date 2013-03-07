@@ -12,7 +12,14 @@ Posto::Application.configure do
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
-  config.cache_store = :dalli_store
+
+  memcached_config_file = "#{File.dirname(__FILE__)}/../memcached.yml"
+
+  if File.exists?(memcached_config_file)
+    File.open(memcached_config_file) do |f|
+      config.cache_store = [:dalli_store] + YAML.load(f.read)[Rails.env]["servers"]
+    end
+  end
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false

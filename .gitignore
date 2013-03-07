@@ -1,2 +1,5 @@
 .powenv
 db/structure.sql
+config/database.yml
+config/memcached.yml
+config/application.yml
