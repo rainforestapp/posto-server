@@ -68,6 +68,8 @@ gem "dalli", "~> 2.6.2"
 
 gem "figaro", "~> 0.6.1"
 
+gem "unicorn", "~> 4.6.2"
+
 gem "airbrake"
 
 gem "newrelic_rpm"
