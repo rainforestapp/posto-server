@@ -42,6 +42,7 @@ CONFIG = SampleableConfig.define do
   max_photo_byte_size 24 * 1024 * 1024
   recipient_address_expiration_days 31 * 6
   address_request_expiration_days 6
+  cvc_enabled false
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
 
   order_submitted_header "Thanks!"
