@@ -1,6 +1,7 @@
 require "tempfile"
 require "open-uri"
 require "uri"
+require "RMagick"
 
 class ImageGenerator
   include TempFileHelpers

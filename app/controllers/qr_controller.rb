@@ -4,17 +4,14 @@ class QrController < ApplicationController
   allow_unauthenticated_access!
 
   def show
-    expires_in 1.day, public: true
-
     uid = params[:id][1..-1]
     type = params[:id][0]
 
-    unless params[:id] && params[:app] && params[:device_uuid]
+    unless params[:id]
       head :bad_request
       return
     end
 
-    app = App.by_name(params[:app])
     device_uuid = params[:device_uuid]
 
     position = nil
@@ -41,24 +38,21 @@ class QrController < ApplicationController
     preview_composition = card_design.card_preview_composition
     sender = card_order.order_sender_user
 
-    if device_uuid.blank?
-      head :bad_request
-      return
+    if @current_user || !device_uuid.blank?
+      user_id = @current_user.try(:user_id)
+
+      is_first_scan = card_printing.card_scan.nil?
+
+      card_scan = card_printing.card_scans.create!(
+        device_uuid: device_uuid,
+        scanned_by_user_id: user_id,
+        scanned_at: Time.zone.now,
+        app_id: card_order.app_id,
+        scan_position: position,
+      )
+
+      card_scan.send_notification! if is_first_scan
     end
-
-    user_id = @current_user.try(:user_id)
-
-    is_first_scan = card_printing.card_scan.nil?
-
-    card_scan = card_printing.card_scans.create!(
-      device_uuid: device_uuid,
-      scanned_by_user_id: user_id,
-      scanned_at: Time.zone.now,
-      app_id: app.app_id,
-      scan_position: position,
-    )
-
-    card_scan.send_notification! if is_first_scan
 
     out = {}
 
@@ -93,6 +87,11 @@ class QrController < ApplicationController
     respond_to do |format|
       format.json do
         render json: out
+      end
+
+      format.html do
+        expires_in 1.day, public: true
+        render text: "wat"
       end
     end
   end
