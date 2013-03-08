@@ -21,8 +21,8 @@ CONFIG = SampleableConfig.define do
     qr_path "http://posto.dev/qr/"
     share_url_path "http://posto.dev/v/"
   else
-    qr_path "https://lulcards.com/qr/"
-    share_url_path "http://lulcards.com/v/"
+    qr_path "https://api.lulcards.com/qr/"
+    share_url_path "https://api.lulcards.com/v/"
   end
 
   api_key_expiration_days 30

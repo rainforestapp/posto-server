@@ -1504,3 +1504,13 @@ RailsAdmin.config do |config|
   # end
 
 end
+
+class RailsAdmin::ApplicationController < ::ApplicationController
+  before_filter(lambda do
+    if Rails.env == "production"
+      unless request.ssl?
+        head :forbidden
+      end
+    end
+  end)
+end
