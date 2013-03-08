@@ -55,6 +55,11 @@ CONFIG = SampleableConfig.define do
 
   share_caption "Check out this postcard I got from NAME! #lulcards"
 
+  card_io do
+    variant 1, true
+    variant 2, false
+  end
+
   permission_caption do
     variant 1, "is_needed", "Chat and Inbox access is needed to ask your friends for their addresses."
     variant 1, "is_needed_spam", "Access is used to ask for addresses.\nWe promise we won't spam."
