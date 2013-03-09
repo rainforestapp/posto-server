@@ -44,6 +44,8 @@ namespace :worker do
     @mutex = Mutex.new
 
     trap("SIGINT") do
+      @finished = true
+
       @mutex.synchronize do
         exit 0 unless @processing
       end
@@ -64,6 +66,8 @@ namespace :worker do
     end
     
     trap("SIGTERM") do
+      @finished = true
+
       @mutex.synchronize do
         exit 0 unless @processing
       end
@@ -142,6 +146,8 @@ namespace :worker do
             end
           end
         end
+
+        break if @finished
       rescue Timeout::Error
         retry
       end
