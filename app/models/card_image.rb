@@ -1,5 +1,3 @@
-require "RMagick"
-
 class CardImage < ActiveRecord::Base
   include AppendOnlyModel
 

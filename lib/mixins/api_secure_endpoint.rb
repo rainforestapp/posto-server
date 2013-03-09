@@ -1,5 +1,6 @@
 module ApiSecureEndpoint
   extend ActiveSupport::Concern
+  include ForceSsl
 
   included do
     cattr_accessor :__auth_token_optional

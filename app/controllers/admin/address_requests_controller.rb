@@ -12,6 +12,10 @@ class Admin::AddressRequestsController < AdminControllerBase
     @address_request = AddressRequest.find(params[:id])
     redirected = false
 
+    if params[:parsed_from]
+      @address_request.append_to_metadata!(parsed_from: params[:parsed_from])
+    end
+
     if params[:address_api_response_id]
       @address_api_response = AddressApiResponse.find(params[:address_api_response_id])
       @address_request.close_with_api_response(@address_api_response)

@@ -66,9 +66,9 @@ module Posto
       g.test_framework :rspec
     end
 
-    if Rails.env == "production"
-      config.force_ssl = true
-    end
+    #if Rails.env == "production"
+    #  config.force_ssl = true
+    #end
 
     config.action_mailer.delivery_method = :amazon_ses
   end

@@ -26,6 +26,7 @@
           = hidden_field_tag(:task_token, params[:task_token]) 
           = hidden_field_tag(:task_result, "parsed") 
         = hidden_field_tag(:address_api_response_id, nil, id: "complete-form-address-api-response-id") 
+        = hidden_field_tag(:parsed_from, @recipient_messages.map { |m| m["body"] }.join(" ")) 
         = submit_tag("Complete", id: "complete-task-button")
 - else
   Request ##{@address_request.address_request_id}

@@ -21,7 +21,7 @@ CONFIG = SampleableConfig.define do
     qr_path "http://posto.dev/qr/"
     share_url_path "http://posto.dev/v/"
   else
-    qr_path "https://lulcards.com/qr/"
+    qr_path "http://lulcards.com/qr/"
     share_url_path "http://lulcards.com/v/"
   end
 
@@ -42,6 +42,7 @@ CONFIG = SampleableConfig.define do
   max_photo_byte_size 24 * 1024 * 1024
   recipient_address_expiration_days 31 * 6
   address_request_expiration_days 6
+  cvc_enabled false
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
 
   order_submitted_header "Thanks!"
@@ -53,6 +54,11 @@ CONFIG = SampleableConfig.define do
   end
 
   share_caption "Check out this postcard I got from NAME! #lulcards"
+
+  card_io do
+    variant 1, true
+    variant 2, false
+  end
 
   permission_caption do
     variant 1, "is_needed", "Chat and Inbox access is needed to ask your friends for their addresses."
@@ -88,7 +94,7 @@ CONFIG = SampleableConfig.define do
     variant 1, "hey address", {
       header_primary: "We need to verify\n@@@'s address.",
       header_secondary: "Send ### a Facebook message.",
-      message: "hey, what's your address?\n\n",
+      message: "hey, what's your address? I want to send you something I made with an app called lulcards.\n\n",
       disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
       title: "!!!",
       button_label: "Send",

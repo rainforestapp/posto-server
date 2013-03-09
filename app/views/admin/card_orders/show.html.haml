@@ -30,9 +30,9 @@
         %pre=card_printing.recipient_user.recipient_address.printable_address
 .row
   .span9
-    %embed{src: @front_url, class: "postcard-pdf"}
+    %img{src: @front_url, class: "postcard-front"}
   .span9
-    %embed{src: @back_url, class: "postcard-pdf"}
+    %img{src: @back_url, class: "postcard-back"}
 
 - if params[:task_token]
   = form_tag(admin_verify_order_task_path, action: "destroy", method: "delete") do
