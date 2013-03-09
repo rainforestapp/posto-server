@@ -62,6 +62,26 @@ namespace :worker do
         exit 1
       end
     end
+    
+    trap("SIGTERM") do
+      @mutex.synchronize do
+        exit 0 unless @processing
+      end
+
+      begin
+        Timeout::timeout(60) do
+          loop do
+            @mutex.synchronize do
+              exit 0 unless @processing
+            end
+            
+            sleep 5
+          end
+        end
+      rescue Exception => e
+        exit 1
+      end
+    end
 
     loop do 
       begin
