@@ -20,7 +20,7 @@ class CardScan < ActiveRecord::Base
         message = "#{profile.name} just scanned the card you sent #{profile.direct_object_pronoun}."
       end
 
-      order_sender.send_notification(message, self.app)
+      order_sender.send_notification(message, app: self.app)
     end
   end
 end
