@@ -56,6 +56,7 @@ class AddressRequest < ActiveRecord::Base
     client.auth_sasl(xfb, nil)
     client.send(message)
     client.close
+    mark_as_sent!
     true
   end
 
