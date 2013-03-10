@@ -1,3 +1,6 @@
+require_dependency "api_key"
+require_dependency "user"
+
 module ApiSecureEndpoint
   extend ActiveSupport::Concern
   include ForceSsl

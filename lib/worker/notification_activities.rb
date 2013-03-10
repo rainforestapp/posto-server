@@ -14,9 +14,10 @@ class NotificationActivities
 
     if recipient.user_profile && recipient.recipient_address
       recipient_name = recipient.user_profile.name
+      possessive_pronoun = recipient.user_profile.possessive_pronoun
       city = recipient.recipient_address.city
       state = recipient.recipient_address.state
-      message = "#{recipient_name} provided their address in #{city}, #{state}. We will mail their card to this address."
+      message = "#{recipient_name} provided #{possessive_pronoun} address in #{city}, #{state}. We will mail #{possessive_pronoun} card to this address."
       address_request.send_sender_notification(message)
     end
     true
