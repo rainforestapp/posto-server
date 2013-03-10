@@ -24,26 +24,30 @@ module Api
         end
 
         unless api_key.try(:active?)
-          user = User.first_or_create_with_facebook_token(facebook_token)
-          api_key = user.try(:renew_api_key!)
+          User.transaction_with_retry do
+            user = User.first_or_create_with_facebook_token(facebook_token)
+
+            if user
+              first_login_key = [:user_has_first_login, user]
+
+              has_first_login = Rails.cache.fetch(first_login_key) do
+                user.user_logins.size > 0
+              end
+
+              unless has_first_login
+                if user.user_logins.size == 0
+                  user.add_login!
+                  Rails.cache.delete(first_login_key)
+                end
+              end
+
+              api_key = user.renew_api_key!
+            end
+          end
         end
 
         if api_key
           @api_key = api_key
-
-          first_login_key = [:user_has_first_login, api_key.user]
-
-          has_first_login = Rails.cache.fetch(first_login_key) do
-            api_key.user.user_logins.size > 0
-          end
-
-          unless has_first_login
-            if api_key.user.user_logins.size == 0
-              api_key.user.add_login!
-              Rails.cache.delete(first_login_key)
-            end
-          end
-
           respond_with(@api_key)
         else
           head :unauthorized

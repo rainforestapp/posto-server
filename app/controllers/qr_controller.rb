@@ -75,9 +75,9 @@ class QrController < ApplicationController
 
     out[:design] = {
       top_caption: card_design.top_caption,
-      top_caption_font_size: card_design.top_caption_font_size,
+      top_caption_font_size: card_design.top_caption_font_size.to_i,
       bottom_caption: card_design.bottom_caption,
-      bottom_caption_font_size: card_design.bottom_caption_font_size,
+      bottom_caption_font_size: card_design.bottom_caption_font_size.to_i,
     }
 
     if card_design.edited_full_photo_image

@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   include AppendOnlyModel
   include HasOneAudited
+  include TransactionRetryable
 
   has_one_audited :user_profile
   has_one_audited :api_key

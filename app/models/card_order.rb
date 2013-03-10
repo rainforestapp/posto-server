@@ -3,6 +3,7 @@ class CardOrder < ActiveRecord::Base
   include HasAuditedState
   include HasOneAudited
   include HasUid
+  include TransactionRetryable
 
   attr_accessible :app, :quoted_total_price, :card_design
 
