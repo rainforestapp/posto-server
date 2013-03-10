@@ -4,7 +4,7 @@ module Api
       def show
         config_seed = params[:id] || 0
         config = CONFIG.to_sampled_config(config_seed.to_i)
-        expires_in 5.minutes, public: true
+        expires_in 5.minutes, public: true if Rails.env == "production"
 
         respond_to do |format|
           format.json do
