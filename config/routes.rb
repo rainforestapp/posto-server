@@ -27,6 +27,8 @@ Posto::Application.routes.draw do
       resource :users do
         resources :facebook, controller: "Users"
       end
+
+      resource :addresses
     end
   end
 
