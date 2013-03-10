@@ -4,6 +4,8 @@ module Api
       include ApiSecureEndpoint
 
       def create
+        order = nil
+
         CardOrder.transaction_with_retry do
           order = @current_user.create_order_from_payload!(JSON.parse(params[:payload]))
           order.execute_workflow! if Rails.env == "production"
