@@ -49,15 +49,28 @@ class User < ActiveRecord::Base
     birthday = Chronic.parse(facebook_response["birthday"] + " 00:00:00") if facebook_response["birthday"]
 
     user.tap do |user|
-      UserProfile.where(user_id: user.user_id,
-                        name: facebook_response["name"],
-                        first_name: facebook_response["first_name"],
-                        last_name: facebook_response["last_name"],
-                        location: location,
-                        middle_name: facebook_response["middle_name"],
-                        birthday: birthday,
-                        gender: facebook_response["gender"],
-                        email: facebook_response["email"]).first_or_create!
+      new_fields = { user_id: user.user_id,
+                     name: facebook_response["name"],
+                     first_name: facebook_response["first_name"],
+                     last_name: facebook_response["last_name"],
+                     location: location,
+                     middle_name: facebook_response["middle_name"],
+                     birthday: birthday,
+                     gender: facebook_response["gender"],
+                     email: facebook_response["email"] }
+
+      current_profile = user.user_profile
+
+      if current_profile
+        # Keep any existing non-nil fields
+        current_fields = current_profile.attributes.symbolize_keys
+
+        new_fields.keys.each do |k|
+          new_fields[k] ||= current_fields[k]
+        end
+      end
+
+      UserProfile.where(new_fields).first_or_create!
     end
   end
 
