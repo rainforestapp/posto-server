@@ -31,6 +31,7 @@ CONFIG = SampleableConfig.define do
   order_workflow_version "2.1"
 
   effects true
+  caption_swap_button false
   number_of_clicks_before_tooltip 1
   design_edit_hint_mode "tooltip"
   server_debug false
@@ -44,6 +45,11 @@ CONFIG = SampleableConfig.define do
   address_request_expiration_days 6
   cvc_enabled false
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
+  nag_version 1
+  nag_title "New Version Available"
+  nag_message "A new version of lulcards is available."
+  nag_action "Update"
+  nag_target "itms://itunes.com/apps/instagram"
 
   order_submitted_header "Thanks!"
   order_submitted_message "Your order has been submitted. We'll notify and e-mail you as we process it."
