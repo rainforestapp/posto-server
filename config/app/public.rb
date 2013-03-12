@@ -36,6 +36,7 @@ CONFIG = SampleableConfig.define do
   design_edit_hint_mode "tooltip"
   server_debug false
   fb_permissions ["email", "read_mailbox", "xmpp_login"]
+  fb_message_permissions ["read_mailbox", "xmpp_login"]
   fb_fields ["gender", "birthday"]
   processing_fee 99
   card_fee 100
@@ -86,6 +87,7 @@ CONFIG = SampleableConfig.define do
       disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
       title: "!!!",
       button_label: "Send",
+      known_address_label: "I know @@@'s address",
     }
 
     variant 1, "hey want", {
@@ -95,6 +97,7 @@ CONFIG = SampleableConfig.define do
       disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
       title: "!!!",
       button_label: "Send",
+      known_address_label: "I know @@@'s address",
     }
 
     variant 1, "hey address", {
@@ -104,6 +107,7 @@ CONFIG = SampleableConfig.define do
       disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
       title: "!!!",
       button_label: "Send",
+      known_address_label: "I know @@@'s address",
     }
   end
 
