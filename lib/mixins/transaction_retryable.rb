@@ -7,7 +7,9 @@ module TransactionRetryable
 
       loop do
         begin
-          return yield
+          transaction do 
+            return yield
+          end
         rescue ActiveRecord::StatementInvalid => e
           raise e unless e.message =~ /Deadlock found when trying to get lock/
           raise e if (attempts += 1) >= max_retries
