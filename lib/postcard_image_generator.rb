@@ -104,9 +104,9 @@ class PostcardImageGenerator < ImageGenerator
                                     with_image(back_image_file.path) do |back_pdf|
 
                                       if title_on_top
-                                        front_pdf.rotate!(90)
-                                      else
                                         front_pdf.rotate!(270)
+                                      else
+                                        front_pdf.rotate!(90)
                                       end
 
                                       front_pdf.write("jpeg:#{front_jpg_image_file.path}") do
@@ -114,9 +114,9 @@ class PostcardImageGenerator < ImageGenerator
                                       end
 
                                       if title_on_top
-                                        front_pdf.rotate!(270)
-                                      else
                                         front_pdf.rotate!(90)
+                                      else
+                                        front_pdf.rotate!(270)
                                       end
 
                                       back_pdf.write("jpeg:#{back_jpg_image_file.path}") do
