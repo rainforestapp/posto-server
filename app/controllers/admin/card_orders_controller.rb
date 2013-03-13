@@ -3,10 +3,10 @@ class Admin::CardOrdersController < AdminControllerBase
     @card_order = CardOrder.find(params[:id])
     composition = @card_order.card_printings[0].card_printing_composition
     @sender = @card_order.order_sender_user
-    @front_url = composition.jpg_card_front_image.public_url
-    @back_url = composition.jpg_card_back_image.public_url
-    @front_pdf_url = composition.card_front_image.public_url
-    @back_pdf_url = composition.card_back_image.public_url
+    @front_url = composition.jpg_card_front_image.public_ssl_url
+    @back_url = composition.jpg_card_back_image.public_ssl_url
+    @front_pdf_url = composition.card_front_image.public_ssl_url
+    @back_pdf_url = composition.card_back_image.public_ssl_url
     @all_card_count = @card_order.card_printings.size
     @mailable_card_printings = @card_order.mailable_card_printings
     @mailable_card_count = @mailable_card_printings.size
