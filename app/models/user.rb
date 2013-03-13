@@ -248,9 +248,11 @@ class User < ActiveRecord::Base
     options = args.extract_options!
     raise "Missing app" unless options[:app]
 
-    Urbanairship.push({ schedule_for: [Time.zone.now], 
-                        aliases: ["#{options[:app].name}-#{Rails.env}-user-#{self.user_id}"], 
-                        aps: { alert: message, sound: "notification.wav" }})
+    if self.aps_tokens.first
+      Urbanairship.push({ schedule_for: [Time.zone.now], 
+                          device_tokens: [self.aps_tokens.first.token],
+                          aps: { alert: message, sound: "notification.wav" }})
+    end
   end
 
   def invalidate_payment_info_state!
