@@ -248,9 +248,11 @@ class User < ActiveRecord::Base
     options = args.extract_options!
     raise "Missing app" unless options[:app]
 
-    if self.aps_tokens.first
+    aps_token = self.aps_tokens.where(app_id: options[:app].app_id).first
+
+    if aps_token
       Urbanairship.push({ schedule_for: [Time.zone.now], 
-                          device_tokens: [self.aps_tokens.first.token],
+                          device_tokens: [aps_token],
                           aps: { alert: message, sound: "notification.wav" }})
     end
   end
