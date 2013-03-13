@@ -31,8 +31,12 @@
 .row
   .span9
     %img{src: @front_url, class: "postcard-front"}
+    %a{href: @front_pdf_url, target:"_blank"}
+      Front PDF
   .span9
     %img{src: @back_url, class: "postcard-back"}
+    %a{href: @back_pdf_url, target:"_blank"}
+      Back PDF
 
 - if params[:task_token]
   = form_tag(admin_verify_order_task_path, action: "destroy", method: "delete") do
