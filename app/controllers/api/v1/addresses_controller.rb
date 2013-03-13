@@ -19,6 +19,7 @@ module Api
               address[:line_1] = api_result["delivery_line_1"]
               address[:line_2] = api_result["delivery_line_2"] || api_result["last_line"]
               address[:line_3] = api_result["last_line"] if api_result["delivery_line_2"]
+              address[:location] = api_result["components"]["city_name"] + ", " + api_result["components"]["state_abbreviation"]
 
               render json: { success: true, address: address, address_api_response_id: address_api_response.address_api_response_id }
             else

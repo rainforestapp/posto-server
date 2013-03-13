@@ -2,7 +2,7 @@ module Api
   module V1
     class UsersController < ApplicationController
       def show
-        expires_in 1.hour, public: true
+        expires_in 1.hour, public: true if Rails.env == "production"
 
         respond_to do |format|
           facebook_id = params[:id]
@@ -17,6 +17,10 @@ module Api
           if user
             recipient[:user_id] = user.user_id 
             recipient[:address_request_required] = user.requires_address_request?
+
+            if user.recipient_address
+              recipient[:location] = "#{user.recipient_address.city}, #{user.recipient_address.state}"
+            end
           end
 
           format.json do
