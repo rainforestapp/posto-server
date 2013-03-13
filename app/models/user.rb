@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
       profile = api.get_object("me?fields=#{UserProfile::FACEBOOK_FIELDS.join(",")}")
 
       first_or_update_with_facebook_response(profile).tap do |user|
-        facebook_token_record = FacebookToken.where(user_id: user.user_id, token: facebook_token).first_or_create!
+        facebook_token_record = FacebookToken.where(user_id: user.user_id, token: facebook_token).lock(true).first_or_create!
       end
     rescue Koala::Facebook::AuthenticationError => e
       facebook_token_record.state = :expired if facebook_token_record
@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
   def self.first_or_update_with_facebook_response(facebook_response)
     facebook_id = facebook_response["id"]
 
-    user = User.where(facebook_id: facebook_id).first_or_create!
+    user = User.where(facebook_id: facebook_id).lock(true).first_or_create!
 
     location = nil
     location = facebook_response["location"]["name"] if facebook_response["location"]
@@ -224,7 +224,7 @@ class User < ActiveRecord::Base
 
     card_order.tap do |card_order|
       payload["recipients"].each do |recipient|
-        recipient_user = User.where(facebook_id: recipient["facebook_id"]).first_or_create!
+        recipient_user = User.where(facebook_id: recipient["facebook_id"]).lock(true).first_or_create!
         card_order.card_printings.create!(recipient_user: recipient_user)
 
         if recipient_user.requires_address_request?
@@ -288,7 +288,7 @@ class User < ActiveRecord::Base
       sent = recipient["sent_address_request"]
       message = recipient["address_request_message"]
 
-      recipient_user = User.where(facebook_id: facebook_id).first_or_create!
+      recipient_user = User.where(facebook_id: facebook_id).lock(true).first_or_create!
 
       if recipient_user.requires_address_request? 
         unless recipient["granted_address_request_permission"] || recipient["sent_address_request"] || recipient["supplied_address_api_response_id"]

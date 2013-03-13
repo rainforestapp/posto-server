@@ -13,6 +13,7 @@ module TransactionRetryable
         rescue ActiveRecord::StatementInvalid => e
           raise e unless e.message =~ /Deadlock found when trying to get lock/
           raise e if (attempts += 1) >= max_retries
+          sleep 1
         end
       end
     end
