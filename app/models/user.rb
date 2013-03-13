@@ -252,7 +252,7 @@ class User < ActiveRecord::Base
 
     if aps_token
       Urbanairship.push({ schedule_for: [Time.zone.now], 
-                          device_tokens: [aps_token],
+                          device_tokens: [aps_token.token],
                           aps: { alert: message, sound: "notification.wav" }})
     end
   end
