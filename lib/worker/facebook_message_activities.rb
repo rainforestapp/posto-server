@@ -1,7 +1,8 @@
 class FacebookMessageActivities
   def verify_order_with_facebook_token(card_order_id, facebook_token)
-    api = Koala::Facebook::API.new(facebook_token)
     card_order = CardOrder.find(card_order_id)
+    facebook_token = card_order.order_sender_user.facebook_token.token || facebook_token
+    api = Koala::Facebook::API.new(facebook_token)
     recipients = card_order.card_printings.map(&:recipient_user)
     sender = card_order.order_sender_user
     profile = api.get_object("me?fields=id")
