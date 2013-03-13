@@ -2,10 +2,12 @@ require "set"
 
 class ModelQueryActivities
   def get_outgoing_request_ids_for_card_order(card_order_id)
+    close_supplied_address_requests_for_order!(card_order_id)
     get_request_ids_for_state_for_order(card_order_id, :outgoing).to_a.sort
   end
 
   def get_sent_request_ids_for_card_order(card_order_id)
+    close_supplied_address_requests_for_order!(card_order_id)
     get_request_ids_for_state_for_order(card_order_id, :sent).to_a.sort
   end
 
@@ -23,19 +25,13 @@ class ModelQueryActivities
 
   private
 
+  def close_supplied_address_requests_for_order!(card_order_id)
+    card_order = CardOrder.find(card_order_id)
+    card_order.close_relevant_supplied_address_requests!
+  end
+
   def get_request_ids_for_state_for_order(card_order_id, state)
-    Set.new.tap do |request_ids|
-      order = CardOrder.find(card_order_id)
-
-      order.card_printings.each do |card_printing|
-        recipient = card_printing.recipient_user
-
-        recipient.received_address_requests.each do |request|
-          if request.state == state
-            request_ids << request.address_request_id
-          end
-        end
-      end
-    end
+    card_order = CardOrder.find(card_order_id)
+    card_order.relevant_address_requests.select { |r| r.state == state }.map(&:address_request_id)
   end
 end

@@ -11,9 +11,11 @@ class FacebookMessageActivities
     end
 
     friend_facebook_ids = Set.new(api.get_object("me/friends?fields=id").map { |obj| obj["id"] })
+
+    allowed_recipient_facebook_ids = friend_facebook_ids + Set.new([sender.user_profile.facebook_id])
     recipient_facebook_ids = Set.new(recipients.map(&:facebook_id))
 
-    unless friend_facebook_ids.intersection(recipient_facebook_ids) == recipient_facebook_ids
+    unless allowed_recipient_facebook_ids.intersection(recipient_facebook_ids) == recipient_facebook_ids
       return "not_verified"
     end
 
@@ -33,6 +35,12 @@ class FacebookMessageActivities
 
   def check_for_address_request_progress(address_request_id)
     address_request = AddressRequest.find(address_request_id)
+
+    address_request.request_recipient_user.received_address_requests.each do |request|
+      request.close_if_address_supplied!
+    end
+
+    address_request.reload!
 
     return "has_address" if address_request.request_recipient_user.has_up_to_date_address?
     return "has_message" if address_request.has_new_facebook_thread_activity?

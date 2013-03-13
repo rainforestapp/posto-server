@@ -3,7 +3,11 @@ module AppendOnlyModel
 
   included do
     before_update(lambda do
-      raise "Immutable model #{self} trying to be updated" unless @_saving_metadata
+      self.changes.each do |column, diff|
+        unless diff[0].nil? || column == "meta"
+          raise "Append-only model #{self} trying to update non-null column"
+        end
+      end
     end)
 
     serialize :meta, Hash
@@ -11,10 +15,8 @@ module AppendOnlyModel
 
   def append_to_metadata!(new_metadata)
     current_metadata = self.meta || {}
-    @_saving_metadata = true
     self.meta = current_metadata.merge(new_metadata)
-    self.save
-    @_saving_metadata = false
+    self.save!
     self.meta
   end
 

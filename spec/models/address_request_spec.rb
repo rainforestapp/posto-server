@@ -43,16 +43,18 @@ describe AddressRequest do
     request.state.should == :closed
   end
 
-  it "should not allow a new request to be made if one already exists" do
+  it "should allow a new request to be made if one already exists if address is supplied" do
     sender = create(:user)
     recipient = create(:user)
     app = create(:app)
+    api_response = create(:address_api_response)
+
     recipient.should_not have_pending_address_request
 
-    request = sender.send_address_request!({ message: "foo" }, 
-                                             recipient: recipient, 
-                                             app: app, 
-                                             medium: :facebook_message)
+    request = sender.enqueue_address_request!({ message: "foo" }, 
+                                                recipient: recipient, 
+                                                app: app, 
+                                                medium: :facebook_message)
 
     recipient.should have_pending_address_request
     request.app.should == app
@@ -60,11 +62,18 @@ describe AddressRequest do
     request.address_request_medium.should == :facebook_message
     request.address_request_payload[:message].should == "foo"
 
-    expect {
-      sender.send_address_request!({ message: "foo" }, 
-                                     recipient: recipient, 
-                                     app: app, 
-                                     medium: :facebook_message)
-    }.to raise_error("Pending address request already exists for #{recipient}")
+    supplied_request = sender.enqueue_address_request!({ message: "foo" }, 
+                                                         recipient: recipient, 
+                                                         app: app, 
+                                                         medium: :facebook_message)
+
+    supplied_request.mark_as_supplied_with_address_api_response!(api_response)
+
+    recipient.should have_pending_address_request
+
+    supplied_request.close_if_address_supplied!
+
+    recipient.should_not have_pending_address_request
+    recipient.requires_address_request?.should be_false
   end
 end

@@ -134,7 +134,7 @@ class User < ActiveRecord::Base
     !has_up_to_date_address? && !has_pending_address_request?
   end
 
-  def send_address_request!(*args)
+  def enqueue_address_request!(*args)
     options = args.extract_options!
 
     self.sent_address_requests.create!(
@@ -228,12 +228,17 @@ class User < ActiveRecord::Base
         card_order.card_printings.create!(recipient_user: recipient_user)
 
         if recipient_user.requires_address_request?
-          address_request = self.send_address_request!({ message: recipient["address_request_message"] },
-                                                         recipient: recipient_user,
-                                                         app: app,
-                                                         medium: :facebook_message)
+          address_request = self.enqueue_address_request!({ message: recipient["address_request_message"] },
+                                                            recipient: recipient_user,
+                                                            app: app,
+                                                            medium: :facebook_message)
 
-          address_request.state = :sent if recipient["sent_address_request"]
+          if recipient["supplied_address_api_response_id"]
+            supplied_address_api_response = AddressApiResponse.find(recipient["supplied_address_api_response_id"])
+            address_request.mark_as_supplied_with_address_api_response!(supplied_address_api_response)
+          elsif recipient["sent_address_request"]
+            address_request.mark_as_sent!
+          end
         end
       end
     end
@@ -282,7 +287,7 @@ class User < ActiveRecord::Base
       recipient_user = User.where(facebook_id: facebook_id).first_or_create!
 
       if recipient_user.requires_address_request? 
-        unless recipient["granted_address_request_permission"] || recipient["sent_address_request"]
+        unless recipient["granted_address_request_permission"] || recipient["sent_address_request"] || recipient["supplied_address_api_response_id"]
           raise_order_exception.(:needs_recipient_address_requests)
         end
 

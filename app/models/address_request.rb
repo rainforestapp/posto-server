@@ -3,18 +3,18 @@ class AddressRequest < ActiveRecord::Base
   include HasOneAudited
   include HasAuditedState
 
-  attr_accessible :request_recipient_user, :app, :address_request_medium, :address_request_payload, :state
+  attr_accessible :request_recipient_user, :app, :address_request_medium, :address_request_payload, :state,
+                  :sender_supplied_address_api_response
 
   belongs_to :request_sender_user, class_name: "User"
   belongs_to :request_recipient_user, class_name: "User"
   belongs_to :app
+  belongs_to :sender_supplied_address_api_response, class_name: "AddressApiResponse"
 
   has_audited_state_through :address_request_state
 
   symbolize :address_request_medium, in: [:facebook_message], validate: true
   serialize :address_request_payload, Hash
-
-  before_create :ensure_no_other_pending_request_for_recipient
 
   has_one_audited :address_request_facebook_thread
 
@@ -28,6 +28,10 @@ class AddressRequest < ActiveRecord::Base
     [:outgoing, :sent].include?(self.state)
   end
 
+  def has_supplied_address?
+    !!self.sender_supplied_address_api_response
+  end
+
   def check_and_expire!
     return false unless expirable?
 
@@ -36,6 +40,17 @@ class AddressRequest < ActiveRecord::Base
 
   def mark_as_sent!
     self.state = :sent
+  end
+
+  def mark_as_supplied_with_address_api_response!(address_api_response)
+    self.sender_supplied_address_api_response = address_api_response
+    self.save!
+
+    self.state = :supplied
+  end
+
+  def mark_as_closed!
+    self.state = :closed
   end
 
   def mark_as_failed!(*args)
@@ -66,12 +81,14 @@ class AddressRequest < ActiveRecord::Base
       address_request: self
     )
 
-    self.state = :closed
+    self.request_recipient_user.received_address_requests.each do |request|
+      request.mark_as_closed!
+    end
   end
 
-  def ensure_no_other_pending_request_for_recipient
-    if self.request_recipient_user.has_pending_address_request?
-      raise "Pending address request already exists for #{self.request_recipient_user}"
+  def close_if_address_supplied!
+    if has_supplied_address?
+      self.close_with_api_response(self.sender_supplied_address_api_response)
     end
   end
 

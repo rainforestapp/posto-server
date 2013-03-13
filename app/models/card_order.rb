@@ -72,4 +72,18 @@ class CardOrder < ActiveRecord::Base
 
     workflow_type.start_execution input: input, workflow_id: workflow_id, tag_list: tags
   end
+
+  def relevant_address_requests
+    Set.new.tap do |requests|
+      self.card_printings.each do |card_printing|
+        card_printing.recipient_user.received_address_requests.each do |request|
+          requests << request
+        end
+      end
+    end.to_a
+  end
+
+  def close_relevant_supplied_address_requests!
+    relevant_address_requests.each(&:close_if_address_supplied!)
+  end
 end

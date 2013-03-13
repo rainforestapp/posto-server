@@ -7,7 +7,7 @@ describe ModelQueryActivities do
     recip = card_order.card_printings[0].recipient_user
     order_id = card_order.card_order_id
 
-    request = card_order.order_sender_user.send_address_request!({
+    request = card_order.order_sender_user.enqueue_address_request!({
       message: "hello",
       recipient: recip,
       app: create(:app),
