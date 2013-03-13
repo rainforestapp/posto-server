@@ -26,9 +26,12 @@ module Api
           end
         end
 
+        current_facebook_token = nil
+
         unless api_key.try(:active?)
           User.transaction_with_retry do
             user = User.first_or_create_with_facebook_token(facebook_token)
+            current_facebook_token = facebook_token
 
             if user
               first_login_key = [:user_has_first_login, user]
@@ -50,6 +53,16 @@ module Api
         end
 
         if api_key
+          if facebook_token && current_facebook_token != facebook_token
+            user_id = api_key.user_id
+
+            current_facebook_token = FacebookToken.current_facebook_token_for_user_id(user_id)
+
+            if current_facebook_token != facebook_token
+              FacebookToken.create!(user_id: user_id, token: facebook_token)
+            end
+          end
+
           @api_key = api_key
           respond_with(@api_key)
         else
