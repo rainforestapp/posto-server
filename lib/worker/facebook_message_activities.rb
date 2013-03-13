@@ -12,7 +12,7 @@ class FacebookMessageActivities
 
     friend_facebook_ids = Set.new(api.get_object("me/friends?fields=id").map { |obj| obj["id"] })
 
-    allowed_recipient_facebook_ids = friend_facebook_ids + Set.new([sender.user_profile.facebook_id])
+    allowed_recipient_facebook_ids = friend_facebook_ids + Set.new([sender.facebook_id])
     recipient_facebook_ids = Set.new(recipients.map(&:facebook_id))
 
     unless allowed_recipient_facebook_ids.intersection(recipient_facebook_ids) == recipient_facebook_ids
@@ -40,7 +40,7 @@ class FacebookMessageActivities
       request.close_if_address_supplied!
     end
 
-    address_request.reload!
+    address_request.reload
 
     return "has_address" if address_request.request_recipient_user.has_up_to_date_address?
     return "has_message" if address_request.has_new_facebook_thread_activity?
