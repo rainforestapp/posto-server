@@ -4,7 +4,7 @@
   %p
     Your lulcards order <b>##{@card_order.order_number}</b> is being processed. This is your receipt.
   %p
-    We are printing your card#{@card_printings.size > 1 ? "s" : ""} for #{@card_printings.map { |p| p.recipient_user.user_profile.name }.to_sentence} and
+    We are printing your card#{@card_printings.size > 1 ? "s" : ""} for #{@card_printings.map { |p| p.name_or_self("yourself") }.to_sentence} and
     will and notify you once #{@card_printings.size > 1 ? "they" : "it"} ha#{@card_printings.size > 1 ? "ve" : "s"} been mailed.
   %p
     Your account has been charged for #{@card_printings.size} card#{@card_printings.size > 1 ? "s" : ""}.

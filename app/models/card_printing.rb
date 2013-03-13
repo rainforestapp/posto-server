@@ -44,4 +44,10 @@ class CardPrinting < ActiveRecord::Base
   def card_number
     (800000000 + (self.card_printing_id * 13)).to_s
   end
+
+  def name_or_self(self_text)
+    return self_text if self.recipient_user == self.card_order.order_sender_user
+    self.recipient_user.user_profile.try(:name)
+  end
 end
+

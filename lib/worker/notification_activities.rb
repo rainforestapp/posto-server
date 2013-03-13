@@ -13,11 +13,11 @@ class NotificationActivities
     recipient = address_request.request_recipient_user
 
     if recipient.user_profile && recipient.recipient_address
-      recipient_name = recipient.user_profile.name
+      recipient_name = recipient.user_profile.first_name
       possessive_pronoun = recipient.user_profile.possessive_pronoun
       city = recipient.recipient_address.city
       state = recipient.recipient_address.state
-      message = "#{recipient_name} provided #{possessive_pronoun} address in #{city}, #{state}. We will mail #{possessive_pronoun} card to this address."
+      message = "#{recipient_name} provided #{possessive_pronoun} address in #{city}, #{state}. We'll mail #{possessive_pronoun} card to this address."
       address_request.send_sender_notification(message)
     end
     true
@@ -30,7 +30,7 @@ class NotificationActivities
   def send_notification_of_submitted_order(card_printing_ids)
     if card_printing_ids.size > 0
       card_order = CardPrinting.find(card_printing_ids[0]).card_order
-      message = "Your order ##{card_order.order_number} has been sent for printing."
+      message = "Your order has been sent for printing."
 
       missing_address_count = card_order.card_printings.size - card_printing_ids.size
 
@@ -49,7 +49,7 @@ class NotificationActivities
 
   def send_notification_of_payment_declined(card_order_id)
     card_order = CardPrinting.find(card_order_id).card_order
-    message = "We're really sorry, but your order ##{card_order.order_number} had to be cancelled because your payment method was declined."
+    message = "We're really sorry, but your order had to be cancelled because your payment method was declined."
     card_order.send_order_notification(message)
     true
   end
@@ -57,7 +57,7 @@ class NotificationActivities
   def send_notification_of_printings_mailed(card_printing_ids)
     if card_printing_ids.size > 0
       card_order = CardPrinting.find(card_printing_ids[0]).card_order
-      message = "Your order ##{card_order.order_number} has been mailed and should arrive in 5-7 business days."
+      message = "Your order has been mailed! It should arrive in 5-7 business days."
       card_order.send_order_notification(message)
     end
     true
@@ -69,7 +69,7 @@ class NotificationActivities
 
   def send_notification_of_all_addresses_expired(card_order_id)
     card_order = CardPrinting.find(card_order_id).card_order
-    message = "We're really sorry, but your order ##{card_order.order_number} had to be cancelled because your recipients never provided their addresses."
+    message = "We're really sorry, but your order had to be cancelled because your recipients never provided their addresses."
     card_order.send_order_notification(message)
     true
   end

@@ -5,7 +5,7 @@ class OrderConfirmationMailer < ActionMailer::Base
   def received_email(card_order)
     with_recipient_address_for_card_order(card_order) do |recipient_address|
       mail(to: recipient_address,
-           subject: "Your lulcards order ##{card_order.order_number} has been received")
+           subject: "Your lulcards order has been received")
     end
   end
 
@@ -14,7 +14,7 @@ class OrderConfirmationMailer < ActionMailer::Base
 
     with_recipient_address_for_card_order(card_order) do |recipient_address|
       mail(to: recipient_address,
-           subject: "Receipt for lulcards order ##{card_order.order_number}")
+           subject: "Receipt for your lulcards order")
     end
   end
 
@@ -23,21 +23,21 @@ class OrderConfirmationMailer < ActionMailer::Base
 
     with_recipient_address_for_card_order(card_order) do |recipient_address|
       mail(to: recipient_address,
-           subject: "Your lulcards order ##{card_order.order_number} has been mailed")
+           subject: "Your lulcards order has been mailed")
     end
   end
 
   def declined_email(card_order)
     with_recipient_address_for_card_order(card_order) do |recipient_address|
       mail(to: recipient_address,
-           subject: "Your lulcards payment method for order ##{card_order.order_number} was declined")
+           subject: "Your lulcards payment was declined")
     end
   end
 
   def expired_email(card_order)
     with_recipient_address_for_card_order(card_order) do |recipient_address|
       mail(to: recipient_address,
-           subject: "Your lulcards order ##{card_order.order_number} has been cancelled")
+           subject: "Your lulcards order has been cancelled")
     end
   end
 
