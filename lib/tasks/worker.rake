@@ -41,21 +41,16 @@ namespace :worker do
 
     @finished = false
     @processing = false
-    @mutex = Mutex.new
 
     trap("SIGINT") do
       @finished = true
 
-      @mutex.synchronize do
-        exit 0 unless @processing
-      end
+      exit 0 unless @processing
 
       begin
         Timeout::timeout(60) do
           loop do
-            @mutex.synchronize do
-              exit 0 unless @processing
-            end
+            exit 0 unless @processing
             
             sleep 5
           end
@@ -68,16 +63,12 @@ namespace :worker do
     trap("SIGTERM") do
       @finished = true
 
-      @mutex.synchronize do
-        exit 0 unless @processing
-      end
+      exit 0 unless @processing
 
       begin
         Timeout::timeout(60) do
           loop do
-            @mutex.synchronize do
-              exit 0 unless @processing
-            end
+            exit 0 unless @processing
             
             sleep 5
           end
@@ -93,9 +84,7 @@ namespace :worker do
 
         if activity_task
           begin
-            @mutex.synchronize do
-              @processing = true
-            end
+            @processing = true
 
             class_name, activity_method = activity_task.activity_type.name.split(".")
             activity_method = activity_method.underscore
@@ -141,9 +130,7 @@ namespace :worker do
               Airbrake.notify_or_ignore(e, parameters: { reason: reason, details: details }, cgi_data: ENV) rescue nil
             end
           ensure
-            @mutex.synchronize do
-              @processing = false
-            end
+            @processing = false
           end
         end
 
