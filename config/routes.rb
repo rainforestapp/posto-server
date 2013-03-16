@@ -3,7 +3,7 @@ require "api_constraints"
 Posto::Application.routes.draw do
   mount RailsAdmin::Engine => '/radmin', :as => 'rails_admin'
 
-  root to: "index.html"
+  root to: "index#show"
 
   resources :qr, controller: "Qr"
   resources :v, controller: "ShareRedirect"
