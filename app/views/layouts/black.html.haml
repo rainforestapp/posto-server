@@ -24,7 +24,7 @@
     = stylesheet_link_tag "posto/card_printing", media: "all"
     = javascript_include_tag "application"
     = csrf_meta_tags
-  %body{ "data-controller" => controller.controller_path, "data-action" => controller.action_name }
+  %body{ "data-controller" => controller.controller_path, "data-action" => controller.action_name, class: "black" }
     #fb-root
     :javascript
       (function(d, s, id) {
