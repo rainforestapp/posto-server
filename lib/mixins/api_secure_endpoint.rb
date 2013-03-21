@@ -3,12 +3,21 @@ require_dependency "user"
 
 module ApiSecureEndpoint
   extend ActiveSupport::Concern
-  include ForceSsl
 
   included do
     cattr_accessor :__auth_token_optional
 
     skip_before_filter :verify_authenticity_token, if: lambda { |c| c.request.format == 'application/json' }
+
+    before_filter(lambda do
+      if Rails.env == "production"
+        unless self.class.__auth_token_optional && request.env["Authorization"].nil?
+          unless request.ssl?
+            head :forbidden
+          end
+        end
+      end
+    end)
 
     before_filter(lambda do
       return true if self.class.__auth_token_optional && request.env["Authorization"].nil?
