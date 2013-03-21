@@ -86,6 +86,7 @@ CREATE TABLE `apps` (
   `updated_at` datetime NOT NULL,
   `meta` text COLLATE utf8_unicode_ci,
   `domain` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `apple_app_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`app_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -592,3 +593,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130312225217');
 INSERT INTO schema_migrations (version) VALUES ('20130313192517');
 
 INSERT INTO schema_migrations (version) VALUES ('20130321002652');
+
+INSERT INTO schema_migrations (version) VALUES ('20130321020642');
