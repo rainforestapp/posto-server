@@ -24,7 +24,7 @@ class PostcardImageGenerator < ImageGenerator
     title_on_top = card_design.top_caption.size < card_design.bottom_caption.size
 
     composed_image_url = card_design.composed_full_photo_image.public_url
-    profile_image_url = "https://graph.facebook.com/#{sender_user.facebook_id}/picture?width=200&height=200"
+    profile_image_url = sender_user.profile_image_url(true)
 
     with_closed_tempfile do |front_pdf_file|
       with_closed_tempfile do |back_pdf_file| 

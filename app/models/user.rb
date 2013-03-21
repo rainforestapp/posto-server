@@ -261,6 +261,10 @@ class User < ActiveRecord::Base
     Rails.cache.delete(payment_info_state_cache_key)
   end
 
+  def profile_image_url(secure = false)
+    "http#{secure ? "s" : ""}://graph.facebook.com/#{self.facebook_id}/picture?width=200&height=200"
+  end
+
   private 
 
   def ensure_order_payload_valid(payload, *args)

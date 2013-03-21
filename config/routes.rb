@@ -8,6 +8,8 @@ Posto::Application.routes.draw do
   resources :qr, controller: "Qr"
   resources :v, controller: "ShareRedirect"
 
+  resources :card_printings
+
   namespace :api, defaults: { format: 'json' } do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: :true) do
       resources :tokens

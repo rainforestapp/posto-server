@@ -54,44 +54,44 @@ class QrController < ApplicationController
       card_scan.send_notification! if is_first_scan
     end
 
-    out = {}
-
-    out[:sender] = {
-      user_id: sender.user_id,
-      facebook_id: sender.facebook_id,
-      name: sender.user_profile.name,
-      first_name: sender.user_profile.first_name,
-    }
-
-    out[:sent_on] = card_order.created_at.strftime("%-m/%-d/%y")
-    out[:share_url] = CONFIG.share_url_path + params[:id]
-
-    out[:images] = {
-      treated_preview: preview_composition.treated_card_preview_image.public_url,
-      preview: preview_composition.card_preview_image.public_url,
-      original_full_photo: card_design.original_full_photo_image.public_url,
-      composed: printing_composition.jpg_card_front_image.public_url
-    }
-
-    out[:design] = {
-      top_caption: card_design.top_caption,
-      top_caption_font_size: card_design.top_caption_font_size.to_i,
-      bottom_caption: card_design.bottom_caption,
-      bottom_caption_font_size: card_design.bottom_caption_font_size.to_i,
-    }
-
-    if card_design.edited_full_photo_image
-      out[:images][:edited_full_photo] = card_design.edited_full_photo_image.public_url
-    end
-
     respond_to do |format|
       format.json do
+        out = {}
+
+        out[:sender] = {
+          user_id: sender.user_id,
+          facebook_id: sender.facebook_id,
+          name: sender.user_profile.name,
+          first_name: sender.user_profile.first_name,
+        }
+
+        out[:sent_on] = card_order.created_at.strftime("%-m/%-d/%y")
+        out[:share_url] = CONFIG.share_url_path + params[:id]
+
+        out[:images] = {
+          treated_preview: preview_composition.treated_card_preview_image.public_url,
+          preview: preview_composition.card_preview_image.public_url,
+          original_full_photo: card_design.original_full_photo_image.public_url,
+          composed: printing_composition.jpg_card_front_image.public_url
+        }
+
+        out[:design] = {
+          top_caption: card_design.top_caption,
+          top_caption_font_size: card_design.top_caption_font_size.to_i,
+          bottom_caption: card_design.bottom_caption,
+          bottom_caption_font_size: card_design.bottom_caption_font_size.to_i,
+        }
+
+        if card_design.edited_full_photo_image
+          out[:images][:edited_full_photo] = card_design.edited_full_photo_image.public_url
+        end
+
         render json: out
       end
 
       format.html do
-        expires_in 1.day, public: true
-        render text: "wat"
+        expires_in 1.day, public: true if Rails.env == "production"
+        redirect_to "/card_printings/#{uid}"
       end
     end
   end

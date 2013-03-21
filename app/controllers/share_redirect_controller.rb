@@ -14,7 +14,9 @@ class ShareRedirectController < ApplicationController
       return
     end
 
+    expires_in 1.day, public: true if Rails.env == "production"
+
     # TODO do something better
-    redirect_to card_printing.card_printing_composition.jpg_card_front_image.public_url
+    redirect_to "/card_printings/#{card_printing.uid}"
   end
 end

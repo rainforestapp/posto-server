@@ -17,6 +17,8 @@ CONFIG = SampleableConfig.define do
   csv_host "d19ku6gs1135cx.cloudfront.net"
   csv_bucket "posto-data"
 
+  facebook_app_id "487965654580467"
+
   if Rails.env == "development"
     qr_path "http://posto.dev/qr/"
     share_url_path "http://posto.dev/v/"
