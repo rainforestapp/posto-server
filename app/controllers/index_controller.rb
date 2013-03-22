@@ -3,6 +3,6 @@ class IndexController < ApplicationController
     #expires_in 1.hour, public: true if Rails.env == "production"
 
     #render
-    redirect_to "www.lulcards.com"
+    redirect_to "http://www.lulcards.com"
   end
 end
