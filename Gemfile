@@ -70,6 +70,8 @@ gem "figaro", "~> 0.6.1"
 
 gem "unicorn", "~> 4.6.2"
 
+gem "statsd-ruby"
+
 gem "airbrake"
 
 gem "newrelic_rpm"

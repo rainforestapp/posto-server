@@ -29,8 +29,15 @@ module Api
         current_facebook_token = nil
 
         unless api_key.try(:active?)
+          STATSD.increment("controller.all.tokens.create_token.count")
+
           User.transaction_with_retry do
-            user = User.first_or_create_with_facebook_token(facebook_token)
+            user = nil
+
+            STATSD.time("controller.all.tokens.user_create_time") do
+              user = User.first_or_create_with_facebook_token(facebook_token)
+            end
+
             current_facebook_token = facebook_token
 
             if user
