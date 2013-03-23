@@ -101,19 +101,19 @@ namespace :worker do
                                                   arguments: YAML.dump({ args: args })).first
 
               unless execution
-                STATSD.time("worker.#{class_name.underscore}.#{activity_method}.total_time") do
+                STATSD.time("worker.all.#{class_name.underscore}.#{activity_method}.total_time") do
                   result = worker.send(activity_method.to_sym, *args)
                 end
               end
             else
-              STATSD.time("worker.#{class_name.underscore}.#{activity_method}.total_time") do
+              STATSD.time("worker.all.#{class_name.underscore}.#{activity_method}.total_time") do
                 result = worker.send(activity_method.to_sym, *args)
               end
             end
 
             unless execution
               ActivityExecution.create!(method: activity_method, worker:class_name, arguments: { args: args })
-              STATSD.increment("worker.#{class_name}.#{activity_method}.count")
+              STATSD.increment("worker.all.#{class_name.underscore}.#{activity_method}.count")
             end
 
             unless is_manual
