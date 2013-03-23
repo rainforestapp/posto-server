@@ -10,8 +10,6 @@ ActiveSupport::Notifications.subscribe "process_action.action_controller" do |na
   db_time = payload[:db_runtime].floor
 
   ["controller.all.", "controller.#{hostname}."].each do |prefix|
-    Rails.logger.info "Sending statsd to #{prefix}#{path}.count #{STATSD.inspect}"
-
     STATSD.increment("#{prefix}#{path}.count")
     STATSD.timing("#{prefix}#{path}.total_time", total_time)
     STATSD.timing("#{prefix}#{path}.view_time", view_time)
