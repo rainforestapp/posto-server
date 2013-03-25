@@ -86,7 +86,7 @@ CONFIG = SampleableConfig.define do
     variant 1, "hey want send", {
       header_primary: "We need to verify\n@@@'s address.",
       header_secondary: "Send ### a Facebook message.",
-      message: "hey, what's your mailing address? i want to send you something\n",
+      message: "hey what's your mailing address, i want to send you something\n",
       disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
       title: "!!!",
       button_label: "Send",
@@ -96,7 +96,7 @@ CONFIG = SampleableConfig.define do
     variant 1, "hey short", {
       header_primary: "We need to verify\n@@@'s address.",
       header_secondary: "Send ### a Facebook message.",
-      message: "hey, what's your mailing address?\n\n",
+      message: "hey what's your mailing address?\n\n",
       disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
       title: "!!!",
       button_label: "Send",
@@ -106,7 +106,7 @@ CONFIG = SampleableConfig.define do
     variant 1, "hey where", {
       header_primary: "We need to verify\n@@@'s address.",
       header_secondary: "Send ### a Facebook message.",
-      message: "hey, I want to mail you something, where should I send it?\n",
+      message: "hey I want to mail you something, what's your address?\n",
       disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
       title: "!!!",
       button_label: "Send",
