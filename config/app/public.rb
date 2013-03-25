@@ -83,30 +83,30 @@ CONFIG = SampleableConfig.define do
   end
 
   facebook_allow_messages do
-    variant 1, "hey want lulcards", {
+    variant 1, "hey want send", {
       header_primary: "We need to verify\n@@@'s address.",
       header_secondary: "Send ### a Facebook message.",
-      message: "hey, I want to mail you a postcard I made with an app. what's your address?",
+      message: "hey, what's your mailing address? i want to send you something\n",
       disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
       title: "!!!",
       button_label: "Send",
       known_address_label: "I know @@@'s address",
     }
 
-    variant 1, "hey want", {
+    variant 1, "hey short", {
       header_primary: "We need to verify\n@@@'s address.",
       header_secondary: "Send ### a Facebook message.",
-      message: "hey, I made you a postcard with an app on my phone. what's your address?",
+      message: "hey, what's your mailing address?\n\n",
       disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
       title: "!!!",
       button_label: "Send",
       known_address_label: "I know @@@'s address",
     }
 
-    variant 1, "hey address", {
+    variant 1, "hey where", {
       header_primary: "We need to verify\n@@@'s address.",
       header_secondary: "Send ### a Facebook message.",
-      message: "hey, what's your address? I want to mail you a postcard\n",
+      message: "hey, I want to mail you something, where should I send it?\n",
       disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
       title: "!!!",
       button_label: "Send",
