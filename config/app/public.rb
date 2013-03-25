@@ -5,6 +5,7 @@ CONFIG = SampleableConfig.define do
   kill_switch false
   really_kill_switch false
   mixpanel_enabled true
+  mixpanel_people_enabled true
   mixpanel_event_screen []
   kill_message "Lulcard is unavailable."
   support_email "support@lulcards.com"

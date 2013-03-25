@@ -2,8 +2,6 @@ module Api
   module V1
     class UsersController < ApplicationController
       def show
-        expires_in 3.minutes, public: true if Rails.env == "production"
-
         respond_to do |format|
           facebook_id = params[:id]
 
