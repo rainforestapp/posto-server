@@ -28,6 +28,10 @@
             = hidden_field_tag(:task_token, params[:task_token]) 
             = hidden_field_tag(:task_result, "not_parsed") 
             = submit_tag("No Address Found")
+          = form_tag(admin_address_parse_task_path, action: "destroy", method: "delete") do
+            = hidden_field_tag(:task_token, params[:task_token]) 
+            = hidden_field_tag(:task_result, "rejected") 
+            = submit_tag("Reject")
 - else
   Request ##{@address_request.address_request_id}
   Nothing to do.
