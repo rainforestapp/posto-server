@@ -18,6 +18,10 @@ class EmailActivities
     true
   end
 
+  def send_email_of_address_request_rejected(address_request_id)
+    true
+  end
+
   def send_email_of_address_request_expired(address_request_id)
     true
   end
