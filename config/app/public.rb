@@ -117,8 +117,8 @@ CONFIG = SampleableConfig.define do
   default_captions do
     variant 1, "many", [
       "lol", "haha", "lulz", "sup", "wat", "oh hai", "wtf", "fail", "yolo", "nope", "meh", "woof",
-      "soon.", "uh no", "win", "douche", "fuuuuu", "fuck yea", "zomg", "fml", "derp", "dat ass", "ohshi",
-      "fuck it", "pwned", "what is this i don't even", "not bad", "o rly?", "mother of god", "dafuq",
+      "soon.", "uh no", "win", "douche", "fuuuuu", "hell yea", "zomg", "fml", "derp", "dat ass", "ohshi",
+      "screw it", "pwned", "what is this i don't even", "not bad", "o rly?", "mother of god", "dafuq",
       "like a boss", "shit just got real", "u mad?", "cool story bro", "sucks to suck", "haters gonna hate",
       "seems legit", "i have no idea what i'm doing", "whatcha thinkin bout?", "oh god why", "its a trap",
       "bitch please", "i am not good with computer",
@@ -126,8 +126,8 @@ CONFIG = SampleableConfig.define do
 
     variant 1, "few", [
       "lulz", "sup", "wat", "wtf", "fail", "yolo", "nope", "meh", "woof",
-      "win", "douche", "fuuuuu", "fuck yea", "fml", "derp", "dat ass", "meh", 
-      "fuck it", "pwned", "not bad", "mother of god", "dafuq",
+      "win", "douche", "fuuuuu", "hell yea", "fml", "derp", "dat ass", "meh", 
+      "screw it", "pwned", "not bad", "mother of god", "dafuq",
       "like a boss", "shit just got real", "cool story bro", 
       "seems legit", "bitch please", 
     ]
