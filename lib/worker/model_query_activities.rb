@@ -19,6 +19,13 @@ class ModelQueryActivities
     CardOrder.find(card_order_id).mark_as_cancelled!
   end
 
+  def mark_order_as_rejected(card_order_id)
+    card_order = CardOrder.find(card_order_id)
+    card_order.mark_as_cancelled!
+
+    OrderConfirmationMailer.rejected_email(card_order).deliver
+  end
+
   def mark_order_as_finished(card_order_id)
     CardOrder.find(card_order_id).mark_as_finished!
   end

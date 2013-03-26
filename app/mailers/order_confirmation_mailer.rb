@@ -9,6 +9,13 @@ class OrderConfirmationMailer < ActionMailer::Base
     end
   end
 
+  def rejected_email(card_order)
+    with_recipient_address_for_card_order(card_order) do |recipient_address|
+      mail(to: recipient_address,
+           subject: "Your lulcards order has been cancelled")
+    end
+  end
+
   def printing_email(card_order, card_printing_ids)
     @card_printings = CardPrinting.find(card_printing_ids)
 

@@ -43,3 +43,7 @@
     = hidden_field_tag(:task_token, params[:task_token]) 
     = hidden_field_tag(:task_result, "not_verified") 
     = submit_tag("Skip")
+  = form_tag(admin_verify_order_task_path, action: "destroy", method: "delete") do
+    = hidden_field_tag(:task_token, params[:task_token]) 
+    = hidden_field_tag(:task_result, "rejected") 
+    = submit_tag("Reject")
