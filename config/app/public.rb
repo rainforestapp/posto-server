@@ -38,7 +38,7 @@ CONFIG = SampleableConfig.define do
   number_of_clicks_before_tooltip 1
   design_edit_hint_mode "tooltip"
   server_debug false
-  fb_permissions ["email", "read_mailbox", "xmpp_login", "user_location", "friends_location"]
+  fb_permissions ["email", "read_mailbox", "xmpp_login", "user_location", "friends_location", "user_photos", "friends_photos"]
   fb_message_permissions ["read_mailbox", "xmpp_login"]
   fb_fields ["gender", "birthday"]
   processing_fee 99
