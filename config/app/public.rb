@@ -43,6 +43,9 @@ CONFIG = SampleableConfig.define do
   fb_fields ["gender", "birthday"]
   processing_fee 100
   card_fee 99
+  processing_credits 5
+  card_credits 5
+  signup_credits 30
   max_cards_to_send 9
   max_photo_byte_size 24 * 1024 * 1024
   recipient_address_expiration_days 31 * 6
