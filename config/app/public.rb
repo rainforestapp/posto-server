@@ -41,7 +41,7 @@ CONFIG = SampleableConfig.define do
   fb_permissions ["email", "read_mailbox", "xmpp_login", "user_location", "friends_location", "user_photos", "friends_photos"]
   fb_message_permissions ["read_mailbox", "xmpp_login"]
   fb_fields ["gender", "birthday"]
-  processing_fee 99
+  processing_fee 100
   card_fee 99
   max_cards_to_send 9
   max_photo_byte_size 24 * 1024 * 1024
