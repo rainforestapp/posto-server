@@ -2,6 +2,7 @@ require "image_generator"
 
 class PostcardImageGenerator < ImageGenerator
   BORDER_SIZE = 0.05
+  MAX_RECIPIENTS_TO_LIST = 4
 
   def initialize(card_printing)
     @card_printing = card_printing
@@ -9,7 +10,7 @@ class PostcardImageGenerator < ImageGenerator
 
   def generate!(&block)
     raise "Must set card printing" unless @card_printing
-    raise "Must supply block with two arguments" unless block_given? && block.arity == 4
+    raise "Must supply block with four arguments" unless block_given? && block.arity == 4
 
     card_order = @card_printing.card_order
     card_design = card_order.card_design
@@ -21,6 +22,28 @@ class PostcardImageGenerator < ImageGenerator
     fb_name = sender_user.user_profile.name
     sent_date = card_order.created_at.strftime("%-m/%-d/%y")
     sent_text = "Sent on #{sent_date}"
+
+    other_recipients = card_order.card_printings.reject { |p| p == @card_printing }.map { |p| p.recipient_user }
+
+    if other_recipients.size > 0
+      recipients_to_list = other_recipients[0..(MAX_RECIPIENTS_TO_LIST - 1)]
+      names = recipients_to_list.map { |r| r.user_profile.name }
+
+      if other_recipients.size > MAX_RECIPIENTS_TO_LIST
+        extra_recipient_count = other_recipients.size - MAX_RECIPIENTS_TO_LIST
+
+        if extra_recipient_count == 1
+          names << "1 other"
+        else
+          names << "#{extra_recipient_count} others"
+        end
+      else
+        names << "you"
+      end
+
+      sent_text += " to #{names.to_sentence}."
+    end
+
     title_on_top = card_design.top_caption.size < card_design.bottom_caption.size
 
     composed_image_url = card_design.composed_full_photo_image.public_url
@@ -80,12 +103,18 @@ class PostcardImageGenerator < ImageGenerator
                                     self.text_align(Magick::LeftAlign)
                                   end
 
-                                  back_with_text.annotate(back, 0, 0, 1310, sent_y_offset, sent_text) do
-                                    self.fill = "#FF8E32"
-                                    self.stroke = 'transparent'
-                                    self.pointsize = 28
-                                    self.font("#{File.dirname(__FILE__)}/../resources/fonts/HelveticaNeueCondensedBold.ttf")
-                                    self.text_align(Magick::LeftAlign)
+                                  sent_text_line_offset = 0
+
+                                  word_wrap(sent_text, 35).split(/\n/).each do |line|
+                                    back_with_text.annotate(back, 550, 0, 1310, sent_y_offset + sent_text_line_offset, line) do
+                                      self.fill = "#FF8E32"
+                                      self.stroke = 'transparent'
+                                      self.pointsize = 28
+                                      self.font("#{File.dirname(__FILE__)}/../resources/fonts/HelveticaNeueCondensedBold.ttf")
+                                      self.text_align(Magick::LeftAlign)
+                                    end
+
+                                    sent_text_line_offset += 32
                                   end
 
                                   back_with_text.annotate(back, 0, 0, 100, 1228, @card_printing.card_number) do
@@ -155,5 +184,11 @@ class PostcardImageGenerator < ImageGenerator
         end
       end
     end
+  end
+
+  def word_wrap(text, columns = 80)
+    text.split("\n").collect do |line|
+      line.length > columns ? line.gsub(/(.{1,#{columns}})(\s+|$)/, "\\1\n").strip : line
+    end * "\n"
   end
 end
