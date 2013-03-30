@@ -23,7 +23,7 @@ class PostcardImageGenerator < ImageGenerator
     sent_date = card_order.created_at.strftime("%-m/%-d/%y")
     sent_text = "Sent on #{sent_date}"
 
-    other_recipients = card_order.card_printings.reject { |p| p == @card_printing }.map { |p| p.recipient_user }
+    other_recipients = card_order.card_printings.reject { |p| p == @card_printing || !p.mailable? }.map { |p| p.recipient_user }
 
     if other_recipients.size > 0
       recipients_to_list = other_recipients[0..(MAX_RECIPIENTS_TO_LIST - 1)]
