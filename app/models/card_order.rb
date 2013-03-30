@@ -15,6 +15,7 @@ class CardOrder < ActiveRecord::Base
   has_many :transactions, order: "created_at desc"
 
   has_audited_state_through :card_order_state
+  has_one_audited :card_order_credit_allocation
 
   def mark_as_cancelled!
     self.card_printings.each(&:mark_as_cancelled!)

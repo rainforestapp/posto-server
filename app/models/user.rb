@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
   has_many :authored_card_images, foreign_key: "author_user_id", class_name: "CardImage"
   has_many :aps_tokens, order: "aps_token_id desc"
   has_many :user_logins
+  has_many :credit_orders
+  has_many :credit_journal_entries
 
   def self.first_or_create_with_facebook_token(facebook_token, *args)
     options = args.extract_options!
@@ -263,6 +265,35 @@ class User < ActiveRecord::Base
 
   def profile_image_url(secure = false)
     "http#{secure ? "s" : ""}://graph.facebook.com/#{self.facebook_id}/picture?width=200&height=200"
+  end
+
+  def credits_for_app(app)
+    CreditJournalEntry.credits_for_user_id(self.user_id, app: app)
+  end
+
+  def add_credits!(credits, *args)
+    options = args.extract_options!
+    app = options[:app]
+    source_type = options[:source_type] || :unknown
+    source_id = options[:source_id] || self.user_id
+
+    raise ArgumentError.new("Must specify app") unless app
+    raise ArgumentError.new("Credits must be positive") if credits <= 0
+    self.credit_journal_entries.create!(amount: credits, app: app, source_type: source_type, source_id: source_id)
+    self.credits_for_app(app)
+  end
+
+  def deduct_credits!(credits, *args)
+    options = args.extract_options!
+    app = options[:app]
+    source_type = options[:source_type] || :unknown
+    source_id = options[:source_id] || self.user_id
+
+    raise ArgumentError.new("Must specify app") unless app
+    raise ArgumentError.new("Credits must be positive") if credits <= 0
+    raise InsufficientCreditsError.new unless self.credits_for_app(app) >= credits
+    self.credit_journal_entries.create!(amount: -credits, app: app, source_type: source_type, source_id: source_id)
+    self.credits_for_app(app)
   end
 
   private 

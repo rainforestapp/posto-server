@@ -3,6 +3,8 @@ FactoryGirl.define do
 
   factory :app do
     name { Faker::Lorem.word }
+    apple_app_id { 1234 }
+    domain { "lulcards.com" }
   end
 
   factory :user, 
