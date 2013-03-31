@@ -19,6 +19,7 @@ class CardOrder < ActiveRecord::Base
 
   def mark_as_cancelled!
     self.card_printings.each(&:mark_as_cancelled!)
+    self.refund_all_allocated_credits!
     self.state = :cancelled
   end
 
@@ -34,17 +35,26 @@ class CardOrder < ActiveRecord::Base
     self.card_printings.reject(&:mailable?).size > 0
   end
 
+  def number_of_mailable_cards
+    mailable_card_printings.size
+  end
+
   def number_of_ordered_cards
     self.card_printings.size
   end
 
+  def number_of_payable_mailable_cards
+    [number_of_mailable_cards - number_of_credit_allocated_cards, 0].max
+  end
+
   def self.total_price_to_charge_for_number_of_cards(number_of_cards)
+    return 0 if number_of_cards == 0
+
     CONFIG.processing_fee + (CONFIG.card_fee * number_of_cards)
   end
 
   def total_price_to_charge
-    number_of_cards = self.mailable_card_printings.size
-    CardOrder.total_price_to_charge_for_number_of_cards(self.mailable_card_printings.size)
+    CardOrder.total_price_to_charge_for_number_of_cards(self.number_of_payable_mailable_cards)
   end
 
   def printable_total_price
@@ -92,6 +102,14 @@ class CardOrder < ActiveRecord::Base
     relevant_address_requests.each(&:close_if_address_supplied!)
   end
 
+  def number_of_credit_allocated_cards
+    self.card_order_credit_allocation.try(:number_of_credited_cards) || 0
+  end
+
+  def allocated_credits
+    self.card_order_credit_allocation.try(:allocated_credits) || 0
+  end
+
   def allocate_and_deduct_credits!
     sender = self.order_sender_user
 
@@ -103,8 +121,52 @@ class CardOrder < ActiveRecord::Base
       number_of_credited_cards: number_of_credited_cards
     )
 
-    sender.deduct_credits!(credit_allocation.allocated_credits, app: app)
+    sender.deduct_credits!(credit_allocation.allocated_credits,
+                           app: app,
+                           source_type: :card_order_debit,
+                           source_id: self.card_order_id)
 
     credit_allocation
+  end
+
+  def refund_allocated_credits_for_cards!(number_of_cards)
+    card_order_credit_allocation = self.card_order_credit_allocation
+    return 0 unless card_order_credit_allocation
+
+    number_of_credit_allocated_cards = self.number_of_credit_allocated_cards
+    number_of_cards_to_refund = [number_of_cards, number_of_credit_allocated_cards].min
+
+    return 0 if number_of_cards_to_refund == 0
+    
+    # Include the processing fee if we are refunding the last card
+    include_processing_fee = number_of_cards_to_refund == number_of_credit_allocated_cards
+
+    number_of_credits_to_refund = number_of_cards_to_refund * card_order_credit_allocation.credits_per_card
+    number_of_credits_to_refund += card_order_credit_allocation.credits_per_order if include_processing_fee
+
+    remaining_number_of_credit_allocated_cards = number_of_credit_allocated_cards - number_of_cards_to_refund
+
+    new_allocation = self.card_order_credit_allocations.create!(credits_per_card: card_order_credit_allocation.credits_per_card,
+                                                                credits_per_order: card_order_credit_allocation.credits_per_order,
+                                                                number_of_credited_cards: remaining_number_of_credit_allocated_cards)
+
+    self.order_sender_user.add_credits!(number_of_credits_to_refund, 
+                                        app: self.app,
+                                        source_type: :card_order_credit,
+                                        source_id: new_allocation.card_order_credit_allocation_id)
+
+    number_of_credits_to_refund
+  end
+
+  def refund_all_allocated_credits!
+    self.refund_allocated_credits_for_cards!(self.number_of_credit_allocated_cards)
+  end
+
+  def refund_allocated_credits_for_nonmailable_cards!
+    number_of_nonmailable_cards = self.number_of_ordered_cards - self.number_of_mailable_cards
+
+    if number_of_nonmailable_cards > 0
+      self.refund_allocated_credits_for_cards!(number_of_nonmailable_cards)
+    end
   end
 end

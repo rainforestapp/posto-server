@@ -3,69 +3,76 @@ class PaymentActivities
     card_order = CardOrder.find(card_order_id)
     card_printing_ids = card_printing_ids.uniq
 
-    mailable_card_priting_ids = card_order.mailable_card_printings.map(&:card_printing_id).sort
+    mailable_card_printing_ids = card_order.mailable_card_printings.map(&:card_printing_id).sort
 
-    if (card_printing_ids.sort - mailable_card_priting_ids).size > 0
-      raise "printing id mismatch #{card_printing_ids.inspect} #{mailable_card_priting_ids.inspect}"
+    if (card_printing_ids.sort - mailable_card_printing_ids).size > 0
+      raise "printing id mismatch #{card_printing_ids.inspect} #{mailable_card_printing_ids.inspect}"
     end
 
     if card_order.mailable_card_printings.size > 0
-      stripe_customer = card_order.order_sender_user.stripe_customer
-      return "no_customer" unless stripe_customer
-      customer = Stripe::Customer.retrieve(stripe_customer.stripe_id)
-      return "no_customer" unless customer
-      return "no_card" unless customer["active_card"]
+      amount = 0
 
-      amount = CardOrder.total_price_to_charge_for_number_of_cards(card_printing_ids.size)
-
-      begin
-        charge = Stripe::Charge.create(
-          amount: amount,
-          currency: "usd",
-          customer: customer["id"],
-          description: "Charge #{card_printing_ids.inspect} Order ##{card_order_id}"
-        )
-      rescue Stripe::CardError => e
-        begin
-          stripe_customer.stripe_customer_card.mark_as_declined!
-          stripe_customer.stripe_customer_card.append_to_metadata!(message: e.message)
-        rescue Exception => e
-        end
-        return "declined"
+      CardOrder.transaction_with_retry do
+        card_order.refund_allocated_credits_for_nonmailable_cards!
+        amount = card_order.total_price_to_charge
       end
+    
+      if amount > 0
+        stripe_customer = card_order.order_sender_user.stripe_customer
+        return "no_customer" unless stripe_customer
+        customer = Stripe::Customer.retrieve(stripe_customer.stripe_id)
+        return "no_customer" unless customer
+        return "no_card" unless customer["active_card"]
 
-      if charge["failure_message"]
-        if stripe_customer && stripe_customer.stripe_card
+        begin
+          charge = Stripe::Charge.create(
+            amount: amount,
+            currency: "usd",
+            customer: customer["id"],
+            description: "Charge #{card_printing_ids.inspect} Order ##{card_order_id}"
+          )
+        rescue Stripe::CardError => e
           begin
             stripe_customer.stripe_customer_card.mark_as_declined!
             stripe_customer.stripe_customer_card.append_to_metadata!(message: e.message)
           rescue Exception => e
           end
+          return "declined"
         end
 
-        return "declined"
-      end
+        if charge["failure_message"]
+          if stripe_customer && stripe_customer.stripe_card
+            begin
+              stripe_customer.stripe_customer_card.mark_as_declined!
+              stripe_customer.stripe_customer_card.append_to_metadata!(message: e.message)
+            rescue Exception => e
+            end
+          end
 
-      transaction = card_order.transactions.create!(
-        charged_customer_type: :stripe,
-        charged_customer_id: stripe_customer.stripe_customer_id,
-        response: { stripe_charge_id: charge["id"] }
-      )
+          return "declined"
+        end
 
-      transaction.transaction_line_items.create!(
-        description: "Processing Fee",
-        price_units: CONFIG.processing_fee,
-        currency: "usd",
-        is_credit: false,
-      )
+        transaction = card_order.transactions.create!(
+          charged_customer_type: :stripe,
+          charged_customer_id: stripe_customer.stripe_customer_id,
+          response: { stripe_charge_id: charge["id"] }
+        )
 
-      card_printing_ids.each do |card_printing_id|
         transaction.transaction_line_items.create!(
-          description: "Card Printing ##{card_printing_id}",
-          price_units: CONFIG.card_fee,
+          description: "Processing Fee",
+          price_units: CONFIG.processing_fee,
           currency: "usd",
           is_credit: false,
         )
+
+        card_printing_ids.each do |card_printing_id|
+          transaction.transaction_line_items.create!(
+            description: "Card Printing ##{card_printing_id}",
+            price_units: CONFIG.card_fee,
+            currency: "usd",
+            is_credit: false,
+          )
+        end
       end
 
       return "charged"

@@ -2,13 +2,17 @@ require "set"
 
 class ModelQueryActivities
   def get_outgoing_request_ids_for_card_order(card_order_id)
-    close_supplied_address_requests_for_order!(card_order_id)
-    get_request_ids_for_state_for_order(card_order_id, :outgoing).to_a.sort
+    CardOrder.transaction_with_retry do
+      close_supplied_address_requests_for_order!(card_order_id)
+      get_request_ids_for_state_for_order(card_order_id, :outgoing).to_a.sort
+    end
   end
 
   def get_sent_request_ids_for_card_order(card_order_id)
-    close_supplied_address_requests_for_order!(card_order_id)
-    get_request_ids_for_state_for_order(card_order_id, :sent).to_a.sort
+    CardOrder.transaction_with_retry do
+      close_supplied_address_requests_for_order!(card_order_id)
+      get_request_ids_for_state_for_order(card_order_id, :sent).to_a.sort
+    end
   end
 
   def get_printable_card_printing_ids(card_order_id)
@@ -16,18 +20,24 @@ class ModelQueryActivities
   end
 
   def mark_order_as_cancelled(card_order_id)
-    CardOrder.find(card_order_id).mark_as_cancelled!
+    CardOrder.transaction_with_retry do
+      CardOrder.find(card_order_id).mark_as_cancelled!
+    end
   end
 
   def mark_order_as_rejected(card_order_id)
-    card_order = CardOrder.find(card_order_id)
-    card_order.mark_as_cancelled!
+    CardOrder.transaction_with_retry do
+      card_order = CardOrder.find(card_order_id)
+      card_order.mark_as_cancelled!
+    end
 
     OrderConfirmationMailer.rejected_email(card_order).deliver
   end
 
   def mark_order_as_finished(card_order_id)
-    CardOrder.find(card_order_id).mark_as_finished!
+    CardOrder.transaction_with_retry do
+      CardOrder.find(card_order_id).mark_as_finished!
+    end
   end
 
   private

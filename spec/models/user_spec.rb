@@ -301,6 +301,22 @@ describe User do
 
     order.card_order_credit_allocation.allocated_credits.should == 15
     user.credits_for_app(App.lulcards).should == 12
+    
+    # test refunding
+    order.refund_allocated_credits_for_cards!(1).should == 5
+    user.credits_for_app(App.lulcards).should == 17
+    order.card_order_credit_allocation.allocated_credits.should == 10
+    order.card_order_credit_allocation.number_of_credited_cards.should == 1
+
+    order.refund_allocated_credits_for_cards!(1).should == 10
+    user.credits_for_app(App.lulcards).should == 27
+    order.card_order_credit_allocation.number_of_credited_cards.should == 0
+    order.card_order_credit_allocation.allocated_credits.should == 0
+
+    order.refund_allocated_credits_for_cards!(1).should == 0
+    user.credits_for_app(App.lulcards).should == 27
+    order.card_order_credit_allocation.allocated_credits.should == 0
+    order.card_order_credit_allocation.number_of_credited_cards.should == 0
   end
   
   it "should credit and debit credits" do
