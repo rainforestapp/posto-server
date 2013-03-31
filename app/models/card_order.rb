@@ -34,6 +34,10 @@ class CardOrder < ActiveRecord::Base
     self.card_printings.reject(&:mailable?).size > 0
   end
 
+  def number_of_ordered_cards
+    self.card_printings.size
+  end
+
   def self.total_price_to_charge_for_number_of_cards(number_of_cards)
     CONFIG.processing_fee + (CONFIG.card_fee * number_of_cards)
   end
@@ -86,5 +90,21 @@ class CardOrder < ActiveRecord::Base
 
   def close_relevant_supplied_address_requests!
     relevant_address_requests.each(&:close_if_address_supplied!)
+  end
+
+  def allocate_and_deduct_credits!
+    sender = self.order_sender_user
+
+    number_of_credited_cards = sender.number_of_credited_cards_for_order_of_size(self.number_of_ordered_cards, app: self.app)
+
+    credit_allocation = self.card_order_credit_allocations.create(
+      credits_per_card: CONFIG.card_credits,
+      credits_per_order: CONFIG.processing_credits,
+      number_of_credited_cards: number_of_credited_cards
+    )
+
+    sender.deduct_credits!(credit_allocation.allocated_credits, app: app)
+
+    credit_allocation
   end
 end

@@ -243,6 +243,10 @@ class User < ActiveRecord::Base
           end
         end
       end
+
+      if payload["quoted_total_credits"]
+        card_order.allocate_and_deduct_credits!
+      end
     end
   end
 
@@ -296,6 +300,26 @@ class User < ActiveRecord::Base
     self.credits_for_app(app)
   end
 
+  def remaining_credited_cards_for_card_order_for_app(app)
+    credits = self.credits_for_app(app)
+    return 0 if credits < (CONFIG.processing_credits + CONFIG.card_credits)
+    ((credits - CONFIG.processing_credits).to_f / CONFIG.card_credits.to_f).floor
+  end
+
+  def number_of_credited_cards_for_order_of_size(number_of_cards, *args)
+    options = args.extract_options!
+    app = options[:app]
+    raise ArgumentError.new unless app
+
+    [self.remaining_credited_cards_for_card_order_for_app(app), number_of_cards].min
+  end
+
+  def credits_to_allocate_for_order_of_size(number_of_cards, *args)
+    number_of_credited_cards = number_of_credited_cards_for_order_of_size(number_of_cards, *args)
+    return 0 if number_of_credited_cards == 0
+    CONFIG.processing_credits + (CONFIG.card_credits * number_of_credited_cards) 
+  end
+
   private 
 
   def ensure_order_payload_valid(payload, *args)
@@ -334,7 +358,32 @@ class User < ActiveRecord::Base
       end
     end
 
-    total_price = CONFIG.processing_fee + (CONFIG.card_fee * number_of_cards_to_send)
+    credits_to_allocate = 0
+    number_of_credited_cards = 0
+
+    if payload["quoted_total_credits"]
+      if credits_for_app(app) < payload["quoted_total_credits"]
+        raise_order_exception.(:insufficient_credits)
+      end
+
+      number_of_credited_cards = self.number_of_credited_cards_for_order_of_size(number_of_cards_to_send, app: app)
+
+      if number_of_credited_cards > 0
+        credits_to_allocate = self.credits_to_allocate_for_order_of_size(number_of_cards_to_send, app:app)
+      end
+
+      unless payload["quoted_total_credits"] == credits_to_allocate
+        raise_order_exception.(:misquoted_credits)
+      end
+    end
+
+    total_price = 0
+
+    number_of_payable_cards = number_of_cards_to_send - number_of_credited_cards
+
+    if number_of_payable_cards > 0
+      total_price = CONFIG.processing_fee + (CONFIG.card_fee * number_of_payable_cards)
+    end
 
     unless payload["quoted_total_price"] == total_price
       raise_order_exception.(:misquoted_total_price)
