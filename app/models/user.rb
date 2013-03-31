@@ -333,10 +333,6 @@ class User < ActiveRecord::Base
     raise_order_exception.(:no_app_specified) unless payload["app"]
     app = App.by_name(payload["app"])
 
-    unless self.payment_info_state == :active
-      raise_order_exception.("#{self.payment_info_state.to_s}_payment".to_sym)
-    end
-
     raise_order_exception.(:no_recipients) unless payload["recipients"] && payload["recipients"].size > 0
     number_of_cards_to_send = payload["recipients"].size
     raise_order_exception.(:max_recipients_reached) if number_of_cards_to_send > CONFIG.max_cards_to_send
@@ -387,6 +383,12 @@ class User < ActiveRecord::Base
 
     unless payload["quoted_total_price"] == total_price
       raise_order_exception.(:misquoted_total_price)
+    end
+
+    if total_price > 0
+      unless self.payment_info_state == :active
+        raise_order_exception.("#{self.payment_info_state.to_s}_payment".to_sym)
+      end
     end
 
     raise_order_exception.(:no_card_design) unless payload["card_design"]
