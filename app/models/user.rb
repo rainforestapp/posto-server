@@ -275,6 +275,10 @@ class User < ActiveRecord::Base
     CreditJournalEntry.credits_for_user_id(self.user_id, app: app)
   end
 
+  def has_empty_credit_journal_for_app?(app)
+    CreditJournalEntry.credit_journal_size_for_user_id(self.user_id, app: app) == 0
+  end
+
   def add_credits!(credits, *args)
     options = args.extract_options!
     app = options[:app]

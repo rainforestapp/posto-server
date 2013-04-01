@@ -46,6 +46,8 @@ CONFIG = SampleableConfig.define do
   processing_credits 5
   card_credits 5
   signup_credits 30
+  signup_credits_title "You Earned CREDITS Credits"
+  signup_credits_message "You earned CREDITS credits by connecting your Facebook account to lulcards!"
   max_cards_to_send 9
   max_photo_byte_size 24 * 1024 * 1024
   recipient_address_expiration_days 31 * 6
@@ -61,7 +63,7 @@ CONFIG = SampleableConfig.define do
   order_submitted_header "Thanks!"
   order_submitted_message "Your order has been submitted. We'll notify and e-mail you as we process it."
   credit_order_submitted_header "Thanks!"
-  credit_order_submitted_message "CREDITS credits have been added to your account."
+  credit_order_submitted_message "CREDITS credits have been added to your account. You now have TOTAL credits."
 
   credit_packages [
     { credit_package_id: 1, credits: 50, price: 939, savings: 5 },

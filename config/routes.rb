@@ -25,6 +25,7 @@ Posto::Application.routes.draw do
       end
 
       resources :apps do
+        resource :current_user, controller: "CurrentUser"
         resources :config, controller: "Conf"
       end
 
