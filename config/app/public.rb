@@ -60,6 +60,16 @@ CONFIG = SampleableConfig.define do
 
   order_submitted_header "Thanks!"
   order_submitted_message "Your order has been submitted. We'll notify and e-mail you as we process it."
+  credit_order_submitted_header "Credits Added"
+  credit_order_submitted_message "You purchased CREDITS credits. Thanks!"
+
+  credit_packages [
+    { credit_package_id: 1, credits: 50, price: 939, savings: 5 },
+    { credit_package_id: 2, credits: 110, price: 1949, savings: 10 },
+    { credit_package_id: 3, credits: 300, price: 4999, savings: 15 },
+    { credit_package_id: 4, credits: 630, price: 9999, savings: 20 },
+    { credit_package_id: 5, credits: 1350, price: 19999, savings: 25 },
+  ]
 
   shuffle_captions do
     variant 1, true
