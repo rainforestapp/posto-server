@@ -19,7 +19,7 @@ class AmazingMailActivities
     card_order = CardOrder.find(card_order_id)
 
     Set.new.tap do |queued_import_ids|
-      card_order.card_printings.each do |card_printing|
+      card_order.mailable_card_printings.each do |card_printing|
         front_url = card_printing.card_printing_composition.card_front_image.public_url
         back_url = card_printing.card_printing_composition.card_back_image.public_url
 
