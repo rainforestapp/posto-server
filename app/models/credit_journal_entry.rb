@@ -9,8 +9,16 @@ class CreditJournalEntry < ActiveRecord::Base
   symbolize :source_type, in: [:card_order_debit, :card_order_credit, :credit_order, :signup, :unknown], validate: true
 
   after_save on: :create do
-    Rails.cache.delete(CreditJournalEntry.credit_cache_key_for_user_id(self.user_id, app_id: self.app_id))
-    Rails.cache.delete(CreditJournalEntry.credit_journal_size_cache_key_for_user_id(self.user_id, app_id: self.app_id))
+    CreditJournalEntry.invalidate_cache_for_user_id!(self.user_id, app_id: self.app_id)
+  end
+
+  def self.invalidate_cache_for_user_id!(user_id, *args)
+    options = args.extract_options!
+    app_id = options[:app_id]
+
+    raise ArgumentError.new("required app_id") unless app_id
+    Rails.cache.delete(credit_cache_key_for_user_id(user_id, app_id: app_id))
+    Rails.cache.delete(credit_journal_size_cache_key_for_user_id(user_id, app_id: app_id))
   end
 
   def self.credits_for_user_id(user_id, *args)

@@ -336,6 +336,10 @@ class User < ActiveRecord::Base
 
     raise_order_exception.(:no_app_specified) unless payload["app"]
     app = App.by_name(payload["app"])
+    raise_order_exception.(:no_app_specified) unless app
+
+    # Just to be safe, read credit journal from disk.
+    CreditJournalEntry.invalidate_cache_for_user_id!(self.user_id, app_id: app.app_id)
 
     raise_order_exception.(:no_recipients) unless payload["recipients"] && payload["recipients"].size > 0
     number_of_cards_to_send = payload["recipients"].size
