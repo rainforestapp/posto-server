@@ -7,3 +7,7 @@ We are printing your card<%= @card_printings.size > 1 ? "s" : "" %> for <%= @car
 Your account has been charged for <%= @card_printings.size %> card<%= @card_printings.size > 1 ? "s" : "" %>.
 
 Total charges: <%= @card_order.printable_total_price %>
+
+<% if @card_order.allocated_credits > 0 %>
+Total credits: <%= @card_order.allocated_credits %>
+<% end %>

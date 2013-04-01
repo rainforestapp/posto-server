@@ -10,5 +10,8 @@
     Your account has been charged for #{@card_printings.size} card#{@card_printings.size > 1 ? "s" : ""}.
   %p
     Total charges: <b>#{@card_order.printable_total_price}</b>
+    - if @card_order.allocated_credits > 0
+      %p
+        Total credits: <b>#{@card_order.allocated_credits}</b>
 
 %p
