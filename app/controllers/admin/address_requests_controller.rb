@@ -7,7 +7,7 @@ class Admin::AddressRequestsController < AdminControllerBase
 
       @extra_selectable_text = ""
 
-      if @address_request.request_recipient_user.user_profile
+      if @address_request.request_recipient_user.user_profile.try(:location)
         @extra_selectable_text += @address_request.request_recipient_user.user_profile.location
       end
       
