@@ -115,18 +115,18 @@ class CardOrder < ActiveRecord::Base
 
     number_of_credited_cards = sender.number_of_credited_cards_for_order_of_size(self.number_of_ordered_cards, app: self.app)
 
-    credit_allocation = self.card_order_credit_allocations.create(
-      credits_per_card: CONFIG.card_credits,
-      credits_per_order: CONFIG.processing_credits,
-      number_of_credited_cards: number_of_credited_cards
-    )
-
-    sender.deduct_credits!(credit_allocation.allocated_credits,
-                           app: app,
-                           source_type: :card_order_debit,
-                           source_id: self.card_order_id)
-
-    credit_allocation
+    if number_of_credited_cards > 0
+      credit_allocation = self.card_order_credit_allocations.create(
+        credits_per_card: CONFIG.card_credits,
+        credits_per_order: CONFIG.processing_credits,
+        number_of_credited_cards: number_of_credited_cards
+      ).tap do |credit_allocation|
+        sender.deduct_credits!(credit_allocation.allocated_credits,
+                              app: app,
+                              source_type: :card_order_debit,
+                              source_id: self.card_order_id)
+      end
+    end
   end
 
   def refund_allocated_credits_for_cards!(number_of_cards)

@@ -62,6 +62,11 @@ CONFIG = SampleableConfig.define do
 
   order_submitted_header "Thanks!"
   order_submitted_message "Your order has been submitted. We'll notify and e-mail you as we process it."
+  order_submitted_credit_prompt_header "Thanks!"
+  order_submitted_credit_prompt_message "Thank you for your order. You can save up to 25% on your next order using credits. Want to know more?"
+  order_submitted_credit_prompt_cancel_action "No Thanks"
+  order_submitted_credit_prompt_action "Learn More"
+
   credit_order_submitted_header "Thanks!"
   credit_order_submitted_message "CREDITS credits have been added to your account. You now have TOTAL credits."
 
