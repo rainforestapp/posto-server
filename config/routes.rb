@@ -21,6 +21,7 @@ Posto::Application.routes.draw do
 
         resources :card_orders
         resources :aps_tokens
+        resources :credit_orders
       end
 
       resources :apps do

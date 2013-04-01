@@ -60,8 +60,8 @@ CONFIG = SampleableConfig.define do
 
   order_submitted_header "Thanks!"
   order_submitted_message "Your order has been submitted. We'll notify and e-mail you as we process it."
-  credit_order_submitted_header "Credits Added"
-  credit_order_submitted_message "You purchased CREDITS credits. Thanks!"
+  credit_order_submitted_header "Thanks!"
+  credit_order_submitted_message "CREDITS credits have been added to your account."
 
   credit_packages [
     { credit_package_id: 1, credits: 50, price: 939, savings: 5 },
