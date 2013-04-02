@@ -6,6 +6,8 @@ class SignupsController
     handle_auth = (response) ->
       if response.status == "connected"
         $("#ready-form .facebook-token").val(response.authResponse.accessToken)
+        $(".hide-on-submit").hide()
+        $(".show-on-submit").show()
         $("#ready-form").submit()
 
     if FB?

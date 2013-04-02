@@ -8,6 +8,7 @@
         %img{ src: "http://data.lulcards.com/images/email/email_logo_1@2x.png", width:164, height:44 }
     .content{ style: "width: 90%; margin: 0px auto; padding: 0px;" }
       %div{ style: "float: left; padding-top: 25px; padding-bottom: 25px; margin-top:25px; background-color: #fafafa; border-radius: 16px; border: 1px solid #efefef; width: 100%;" }
-        %img{ style:"float: left; width: 10%; min-width: 50px; margin-bottom: 15px; margin-left: 25px; border:1px solid #888888;", src: @card_order.card_design.card_preview_composition.treated_card_preview_image.public_url }
+        - if @card_design
+          %img{ style:"float: left; width: 10%; min-width: 50px; margin-bottom: 15px; margin-left: 25px; border:1px solid #888888;", src: @card_order.card_design.card_preview_composition.treated_card_preview_image.public_url }
         %div{ style: "float: left; width: 80%; margin-left:25px;"}
           =yield

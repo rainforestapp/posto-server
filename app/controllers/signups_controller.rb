@@ -21,7 +21,21 @@ class SignupsController < ApplicationController
 
     if user
       if user.has_empty_credit_journal_for_app?(app)
-        # TODO reward referral
+        if params[:referral_code]
+          referring_user = User.where(uid: params[:referral_code]).first
+
+          if referring_user
+            referring_user.add_credits!(CONFIG.referral_credits,
+                                        app: app,
+                                        source_type: :referral,
+                                        source_id: user.user_id)
+
+            message = "#{user.user_profile.name} joined #{CONFIG.app_name}, so you earned #{CONFIG.referral_credits} credits!"
+            referring_user.send_notification(message, app: app)
+            EarnedCreditsMailer.referral(referring_user, user, app).deliver
+          end
+        end
+
         user.add_credits!(CONFIG.signup_credits,
                           app: app,
                           source_type: :signup,
