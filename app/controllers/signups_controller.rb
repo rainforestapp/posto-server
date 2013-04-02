@@ -1,4 +1,6 @@
 class SignupsController < ApplicationController
+  include ForceSsl
+
   layout "black"
 
   def show
