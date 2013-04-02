@@ -24,16 +24,28 @@
     = stylesheet_link_tag "posto/card_printing", media: "all"
     = stylesheet_link_tag "posto/signup", media: "all"
     = javascript_include_tag "application"
+    = javascript_include_tag "signups"
     = csrf_meta_tags
   %body{ "data-controller" => controller.controller_path, "data-action" => controller.action_name, class: "black" }
     #fb-root
     :javascript
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=487965654580467";
-        fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
+      window.fbAsyncInit = function() {
+        // init the FB JS SDK
+        FB.init({
+          appId      : '487965654580467', // App ID from the App Dashboard
+          channelUrl : 'https://api.lulcards.com/channel.html', // Channel File for x-domain communication
+          status     : true, // check the login status upon init?
+          cookie     : true, // set sessions cookies to allow your server to access the session?
+          xfbml      : true  // parse XFBML tags on this page?
+        });
+      };
+
+      (function(d, debug){
+        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "//connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
+        ref.parentNode.insertBefore(js, ref);
+      }(document, /*debug*/ false));
     .container
       = yield

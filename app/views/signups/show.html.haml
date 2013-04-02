@@ -1,9 +1,18 @@
 .signup
-  .span6{ class: "offset3 header" }
+  .span6{ class: "offset4 header" }
     .logo
-      %img{ src: "http://assets.lulcards.com/logo.png", width: 162, height: 43 }
-  .span6{ class: "offset3 header" }
+      =image_tag "InviteLogo.png", width: 162, height: 43
+  .span6{ class: "offset4 header" }
     .description.lead
-      lulcards lets you send hilarious REAL postcards right from your phone.
-    .description
-      sign in now and get <b>3 free cards</b> to send today!
+      Send hilarious <b>real</b> postcards.<br>Right from your phone. 
+    =image_tag "InviteHandCard.png", width: 208, height: 267
+  .span6{ class: "offset4 header" }
+    - if @number_of_free_cards > 0
+      .description.lead
+        Your first #{@number_of_free_cards} cards are <b>free</b>!
+    %div{ :class => "fb-login-button", "data-show-faces" => "false", "data-width" => 300, "data-max-rows" => 1, "size" => "xlarge", "scope" => CONFIG.fb_permissions.join(",")}
+  .span6{ class: "offset4 header" }
+    %div{ :class => "fb-facepile", "data-width" => 300, "data-max-rows" => 1, "data-colorscheme" => "dark"}
+    %form{ action: "/apps/#{params[:app_id]}/signup", method: "POST", id: "ready-form" }
+      %input{ type: "hidden", name: "facebook_token", class: "facebook-token" }
+      %input{ type: "hidden", name: "referral_code", value: params[:referral_code] }

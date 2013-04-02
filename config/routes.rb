@@ -9,6 +9,7 @@ Posto::Application.routes.draw do
   resources :v, controller: "ShareRedirect"
 
   resources :card_printings
+  resource :channel
 
   resources :apps do
     resource :signup

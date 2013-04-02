@@ -11,6 +11,7 @@ CONFIG = SampleableConfig.define do
   support_email "support@lulcards.com"
   uservoice_enabled true
   testflight_enabled true
+  itunes_url "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
 
   card_image_host "data.lulcards.com"
   card_image_bucket "posto-data"
@@ -45,6 +46,7 @@ CONFIG = SampleableConfig.define do
   card_fee 99
   processing_credits 5
   card_credits 5
+  referral_credits 5
   signup_credits 30
   signup_credits_title "You Earned CREDITS Credits"
   signup_credits_message "You earned CREDITS credits by connecting your Facebook account to lulcards!"

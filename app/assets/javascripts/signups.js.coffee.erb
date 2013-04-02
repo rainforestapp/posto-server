@@ -1,0 +1,23 @@
+class SignupsController
+  init: ->
+    $(".login").click ->
+      FB.login((-> ), { scope: '<%= CONFIG.fb_permissions.join(",") %>' })
+
+    handle_auth = (response) ->
+      if response.status == "connected"
+        $("#ready-form .facebook-token").val(response.authResponse.accessToken)
+        $("#ready-form").submit()
+
+    if FB?
+      FB.Event.subscribe('auth.statusChange', handle_auth)
+    else
+      async_init = window.fbAsyncInit
+
+      window.fbAsyncInit = ->
+        async_init()
+
+        FB.getLoginStatus (response) ->
+          handle_auth(response)
+          FB.Event.subscribe('auth.statusChange', handle_auth)
+
+window.Posto.signups = SignupsController

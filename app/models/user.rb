@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   include AppendOnlyModel
   include HasOneAudited
   include TransactionRetryable
+  include HasUid
 
   has_one_audited :user_profile
   has_one_audited :api_key
@@ -19,6 +20,8 @@ class User < ActiveRecord::Base
   has_many :user_logins
   has_many :credit_orders
   has_many :credit_journal_entries
+
+  attr_accessible :uid
 
   def self.first_or_create_with_facebook_token(facebook_token, *args)
     options = args.extract_options!
