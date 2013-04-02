@@ -309,7 +309,7 @@ CREATE TABLE `credit_journal_entries` (
   PRIMARY KEY (`credit_journal_entry_id`),
   KEY `index_credit_journal_entries_on_user_id` (`user_id`),
   KEY `index_credit_journal_entries_on_source_type_and_source_id` (`source_type`,`source_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `credit_orders` (
   `credit_order_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -512,7 +512,7 @@ CREATE TABLE `user_referral_states` (
   PRIMARY KEY (`user_referral_state_id`),
   KEY `index_user_referral_states_on_user_referral_id` (`user_referral_id`),
   KEY `index_user_referral_states_on_user_referral_id_and_latest` (`user_referral_id`,`latest`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `user_referrals` (
   `user_referral_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -525,7 +525,7 @@ CREATE TABLE `user_referrals` (
   PRIMARY KEY (`user_referral_id`),
   KEY `index_user_referrals_on_referred_user_id` (`referred_user_id`),
   KEY `index_user_referrals_on_referring_user_id` (`referring_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `users` (
   `user_id` bigint(20) NOT NULL AUTO_INCREMENT,

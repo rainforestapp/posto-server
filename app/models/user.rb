@@ -327,6 +327,39 @@ class User < ActiveRecord::Base
     CONFIG.processing_credits + (CONFIG.card_credits * number_of_credited_cards) 
   end
 
+  def handle_signup_bonuses_for_app!(app)
+    sent_referral_notification = false
+
+    self.class.transaction_with_retry do
+      if self.has_empty_credit_journal_for_app?(app)
+        self.add_credits!(CONFIG.signup_credits,
+                          app: app,
+                          source_type: :signup,
+                          source_id: self.user_id)
+
+        referrals = UserReferral.where(referred_user_id: self.user_id,
+                                       app_id: app.app_id)
+
+        referrals.each do |referral|
+          unless referral.state == :granted
+            referral.state = :granted
+            referring_user = referral.referring_user
+            referring_user.add_credits!(CONFIG.referral_credits,
+                                        app: app,
+                                        source_type: :referral,
+                                        source_id: self.user_id)
+
+            unless sent_referral_notification
+              message = "#{self.user_profile.name} joined #{CONFIG.app_name}, so you earned #{CONFIG.referral_credits} credits!"
+              referring_user.send_notification(message, app: app)
+              EarnedCreditsMailer.referral(referring_user, self, app).deliver
+            end
+          end
+        end
+      end
+    end
+  end
+
   private 
 
   def ensure_order_payload_valid(payload, *args)
