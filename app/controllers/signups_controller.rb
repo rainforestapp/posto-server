@@ -37,11 +37,6 @@ class SignupsController < ApplicationController
             end
           end
         end
-
-        user.add_credits!(CONFIG.signup_credits,
-                          app: app,
-                          source_type: :signup,
-                          source_id: user.user_id)
       end
     end
 
