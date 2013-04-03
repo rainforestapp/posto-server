@@ -14,6 +14,7 @@ class CardPrintingsController < ApplicationController
     @profile_image_url = @sender.profile_image_url
     @sent_on = @card_order.created_at.strftime("%-m/%-d/%y")
     @meta_image = @image_url
+    @meta_creator = @sender_name
     @meta_url = "http://#{@app.domain}/card_printings/#{@card_printing.uid}"
 
     @full_text = (@card_design.top_caption + " " + @card_design.bottom_caption).truncate(30)
