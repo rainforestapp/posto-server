@@ -6,6 +6,7 @@ Posto::Application.routes.draw do
   root to: "index#show"
 
   resources :qr, controller: "Qr"
+  resources :ref, controller: "Ref"
   resources :v, controller: "ShareRedirect"
 
   resources :card_printings

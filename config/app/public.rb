@@ -57,6 +57,7 @@ CONFIG = SampleableConfig.define do
   cvc_enabled false
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
   nag_version 1
+  nag_app_versions ["1.0", "1.0.1"]
   nag_title "New Version Available"
   nag_message "A new version of lulcards is available."
   nag_action "Update"
@@ -86,6 +87,8 @@ CONFIG = SampleableConfig.define do
   end
 
   share_caption "Check out this postcard I got from NAME! #lulcards"
+  invite_sms_message "I've been sending hilarious postcards to people with lulcards, check it out! LINK"
+  invite_share_message "#lulcards lets you send hilarious postcards to friends. check it out! LINK"
 
   card_io do
     variant 1, true
