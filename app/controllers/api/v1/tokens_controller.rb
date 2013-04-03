@@ -13,7 +13,7 @@ module Api
         api_key = nil
 
         unless token.blank?
-          api_key = Rails.cache.fetch([:api_key_by_token, token]) do
+          api_key = Rails.cache.fetch([:api_key_by_token_with_user, token]) do
             ApiKey.where(token: token).includes(:user).first
           end
         end
