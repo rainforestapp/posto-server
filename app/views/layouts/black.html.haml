@@ -11,6 +11,8 @@
       %meta{ property: "og:site_name", content: @app.name }
       %meta{ property: "twitter:site", content: @app.name }
       %meta{ property: "twitter:domain", content: @app.domain }
+      %meta{ property: "twitter:app:name:iphone", content: @app.name }
+      %meta{ property: "twitter:app:id:iphone", content: @app.apple_app_id }
       %meta{ name: "apple-itunes-app", content: "app-id=#{@app.apple_app_id}"}
 
     - if @meta_image
