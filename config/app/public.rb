@@ -161,8 +161,10 @@ CONFIG = SampleableConfig.define do
     ]
   end
 
+  memes_enabled true
+
   stock_designs({
-    characters: [
+    memes: [
       {  
         id: "first_world_problems", 
         name: "First World Problems",
