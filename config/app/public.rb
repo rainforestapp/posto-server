@@ -134,7 +134,7 @@ CONFIG = SampleableConfig.define do
     variant 1, "hey where", {
       header_primary: "We need to verify\n@@@'s address.",
       header_secondary: "Send ### a Facebook message.",
-      message: "hey I want to mail you something, what's your address?\n",
+      message: "hey I want to mail you something, what's your mailing address?\n",
       disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
       title: "!!!",
       button_label: "Send",
