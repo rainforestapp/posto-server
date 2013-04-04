@@ -166,15 +166,16 @@ CONFIG = SampleableConfig.define do
       {  
         id: "first_world_problems", 
         name: "First World Problems",
-        thumb: "http://s3-us-west-1.amazonaws.com/posto-assets/stock_preview_test.png",
-        image: "http://data.lulcards.com/1c/95/ec/1c95ecb1ddffdfe13f0d26c558635265.jpg",
+        thumb: "http://d1vgp5rbple5yc.cloudfront.net/memes/thumb/first_world_problems.jpg",
+        image: "http://d19ku6gs1135cx.cloudfront.net/ae/86/59/ae86596a3cf7d338198aea25426b64c8.jpg",
         captions: [
-          { top_caption: "This is the top", bottom_caption: "this is the bottom" },
-          { top_caption: "This is the second top", bottom_caption: "this is the second bottom" },
-          { top_caption: "This is the second top", bottom_caption: "this is the second bottom" },
-          { top_caption: "This is the second top", bottom_caption: "this is the second bottom" },
-          { top_caption: "This is the second top", bottom_caption: "this is the second bottom" },
-          { top_caption: "This is the second top", bottom_caption: "this is the second bottom" },
+          { top_caption: "i had something clever to say", bottom_caption: "but the conversation has moved on" },
+          { top_caption: "i dropped my iphone", bottom_caption: "on my ipad" },
+          { top_caption: "i ordered delivery", bottom_caption: "now i have to put on clothes" },
+          { top_caption: "i can't access the internet", bottom_caption: "from the toilet" },
+          { top_caption: "i started watching a new tv show", bottom_caption: "now i have to wait for new episodes" },
+          { top_caption: "i'm so thirsty", bottom_caption: "but there's nothing to drink except free water" },
+          { top_caption: "it's my birthday", bottom_caption: "already have everything" },
         ] 
       }
     ]
