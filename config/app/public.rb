@@ -91,6 +91,7 @@ CONFIG = SampleableConfig.define do
   invite_share_message "#lulcards lets you send hilarious postcards to friends. check it out!"
   invite_url_prefix "http://lulcards.com/ref"
   invite_share_image "http://www.lulcards.com/images/iphone.png"
+  invite_disabled false
 
   card_io do
     variant 1, true
@@ -159,4 +160,23 @@ CONFIG = SampleableConfig.define do
       "seems legit", "bitch please", 
     ]
   end
+
+  stock_designs({
+    characters: [
+      {  
+        id: "first_world_problems", 
+        name: "First World Problems",
+        thumb: "http://s3-us-west-1.amazonaws.com/posto-assets/stock_preview_test.png",
+        image: "http://data.lulcards.com/1c/95/ec/1c95ecb1ddffdfe13f0d26c558635265.jpg",
+        captions: [
+          { top_caption: "This is the top", bottom_caption: "this is the bottom" },
+          { top_caption: "This is the second top", bottom_caption: "this is the second bottom" },
+          { top_caption: "This is the second top", bottom_caption: "this is the second bottom" },
+          { top_caption: "This is the second top", bottom_caption: "this is the second bottom" },
+          { top_caption: "This is the second top", bottom_caption: "this is the second bottom" },
+          { top_caption: "This is the second top", bottom_caption: "this is the second bottom" },
+        ] 
+      }
+    ]
+  })
 end

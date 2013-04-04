@@ -7,7 +7,7 @@ class CardDesign < ActiveRecord::Base
                   :top_caption, :top_caption_font_size,
                   :design_type, 
                   :original_full_photo_image, :edited_full_photo_image, :composed_full_photo_image, 
-                  :source_card_design_id
+                  :source_card_design_id, :stock_design_id
 
   belongs_to :app
   belongs_to :author_user, class_name: "User"

@@ -80,6 +80,7 @@ class QrController < ApplicationController
           top_caption_font_size: card_design.top_caption_font_size.to_i,
           bottom_caption: card_design.bottom_caption,
           bottom_caption_font_size: card_design.bottom_caption_font_size.to_i,
+          stock_design_id: card_design.stock_design_id,
         }
 
         if card_design.edited_full_photo_image
