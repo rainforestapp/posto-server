@@ -204,7 +204,7 @@ CONFIG = SampleableConfig.define do
         image: "http://d19ku6gs1135cx.cloudfront.net/16/90/be/1690be1f103a61dde7f20528843e7265.jpg",
         captions: [
           { top_caption: "overslept for work", bottom_caption: "daylight savings time", top_font_size: 24, bottom_font_size: 24 },
-          { top_caption: "ran into high school bully", bottom_caption: ""would you like fries with that?"", top_font_size: 24, bottom_font_size: 18 },
+          { top_caption: "ran into high school bully", bottom_caption: "\"would you like fries with that?\"", top_font_size: 24, bottom_font_size: 18 },
           { top_caption: "crazy night of drinking", bottom_caption: "still have phone and wallet", top_font_size: 30, bottom_font_size: 18 },
           { top_caption: "made a wrong turn", bottom_caption: "shortcut", top_font_size: 30, bottom_font_size: 36 },
           { top_caption: "did load of laundry", bottom_caption: "all socks accounted for", top_font_size: 30, bottom_font_size: 24 },
@@ -246,6 +246,34 @@ CONFIG = SampleableConfig.define do
           { top_caption: "i don't always use the word \"ergo\"", bottom_caption: "but when I do, I'm losing the argument", top_font_size: 18, bottom_font_size: 24 },
           { top_caption: "i don't always reply to people with \"with all due respect\"", bottom_caption: "but when i do, I'm about to insult your mother", top_font_size: 18, bottom_font_size: 18 },
           { top_caption: "i don't always watch football", bottom_caption: "but when I do, it's the Super Bowl", top_font_size: 18, bottom_font_size: 24 },
+        ] 
+      },
+      {  
+        id: "half_baked_bart", 
+        name: "Half Baked Bart",
+        thumb: "http://d1vgp5rbple5yc.cloudfront.net/memes/thumb/half_baked_bart.jpg",
+        image: "http://d19ku6gs1135cx.cloudfront.net/9e/2c/fe/9e2cfe2a9e280420544b9d334f633a02.jpg",
+        captions: [
+          { top_caption: "officer i'm sorry i ran the light", bottom_caption: "i thought it was blue", top_font_size: 18, bottom_font_size: 30 },
+          { top_caption: "how would you like your steak cooked?", bottom_caption: "extra large", top_font_size: 18, bottom_font_size: 30 },
+          { top_caption: "you know what's faster than the speed of light?", bottom_caption: "the speed of love", top_font_size: 18, bottom_font_size: 30 },
+          { top_caption: "hey look a sheep", bottom_caption: "moooo", top_font_size: 30, bottom_font_size: 54 },
+          { top_caption: "a bath is like", bottom_caption: "an instant shower", top_font_size: 24, bottom_font_size: 30 },
+        ] 
+      },
+      {  
+        id: "condescending_wally", 
+        name: "Condescending Wally",
+        thumb: "http://d1vgp5rbple5yc.cloudfront.net/memes/thumb/condescending_wally.jpg",
+        image: "http://d19ku6gs1135cx.cloudfront.net/11/87/a2/1187a2969943221844b1105e8bfca1c5.jpg",
+        captions: [
+          { top_caption: "You wear a weatherproof outdoors jacket?", bottom_caption: "Tell me about your last adventure.", top_font_size: 18, bottom_font_size: 18 },
+          { top_caption: "You have a pinstripe on your car?", bottom_caption: "It must make it go so much faster.", top_font_size: 18, bottom_font_size: 24 },
+          { top_caption: "You read the book the movie is based on?", bottom_caption: "You must be so much more worthy of seeing it than everyone else.", top_font_size: 18, bottom_font_size: 18 },
+          { top_caption: "You found your soul mate?", bottom_caption: "Who is it this month?", top_font_size: 24, bottom_font_size: 30 },
+          { top_caption: "You post pictures with filters on the internet?", bottom_caption: "How long have you been a photographer?", top_font_size: 18, bottom_font_size: 24 },
+          { top_caption: "You have political bumper stickers?", bottom_caption: "You must have deep and nuanced opinions.", top_font_size: 18, bottom_font_size: 18 },
+          { top_caption: "You changed your oil?", bottom_caption: "You must be a real gearhead.", top_font_size: 30, bottom_font_size: 24 },
         ] 
       },
     ]
