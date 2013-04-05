@@ -276,6 +276,20 @@ CONFIG = SampleableConfig.define do
           { top_caption: "You changed your oil?", bottom_caption: "You must be a real gearhead.", top_font_size: 30, bottom_font_size: 24 },
         ] 
       },
+      {  
+        id: "scumbag_data_scientist", 
+        name: "Scumbag Data Scientist",
+        thumb: "http://d1vgp5rbple5yc.cloudfront.net/memes/thumb/scumbag_data_scientist.jpg",
+        image: "http://d19ku6gs1135cx.cloudfront.net/f5/6c/35/f56c352e1562014c6257d03825abbcef.jpg",
+        captions: [
+          { top_caption: "forgets break statement", bottom_caption: "runs $10,000 map reduce job", top_font_size: 24, bottom_font_size: 24 },
+          { top_caption: "pulls idea out of ass", bottom_caption: "calls it 'hypothesis'", top_font_size: 30, bottom_font_size: 30 },
+          { top_caption: "understands 3rd normal form", bottom_caption: "fuck it. mongodb", top_font_size: 18, bottom_font_size: 36 },
+          { top_caption: "phd in statistics", bottom_caption: "buys you a lotto ticket for your birthday", top_font_size: 30, bottom_font_size: 18 },
+          { top_caption: "successfully applies latent dirichlet allocation", bottom_caption: "to improve ad targeting", top_font_size: 18, bottom_font_size: 24 },
+        ] 
+      },
     ]
   })
+
 end
