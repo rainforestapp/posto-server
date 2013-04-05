@@ -45,6 +45,12 @@ class PostcardImageGenerator < ImageGenerator
     end
 
     title_on_top = card_design.top_caption.size < card_design.bottom_caption.size
+    render_qr_on_front = true
+
+    if card_design.top_caption.size > 0 && card_design.bottom_caption.size > 0
+      render_qr_on_front = false
+      title_on_top = false
+    end
 
     composed_image_url = card_design.composed_full_photo_image.public_url
     profile_image_url = sender_user.profile_image_url(true)
@@ -61,7 +67,7 @@ class PostcardImageGenerator < ImageGenerator
                   with_closed_tempfile do |front_qr_file|
                     with_closed_tempfile do |front_image_file|
                       with_closed_tempfile do |back_image_file|
-                        with_image(template_path + "/FrontTemplate#{title_on_top ? "Flipped" : ""}.png") do |front_template|
+                        with_image(template_path + "/FrontTemplate#{render_qr_on_front ? (title_on_top ? "Flipped" : "") : "Codeless"}.png") do |front_template|
                           with_image(template_path + "/BackTemplate.png") do |back|
                             cols = composite.columns
                             rows = composite.rows
@@ -75,7 +81,9 @@ class PostcardImageGenerator < ImageGenerator
 
                             with_image(front_qr_file.path) do |front_qr_image|
                               with_image(back_qr_file.path) do |back_qr_image|
-                                front_template.composite!(front_qr_image, 1569, 97, Magick::DstOverCompositeOp)
+                                if render_qr_on_front
+                                  front_template.composite!(front_qr_image, 1569, 97, Magick::DstOverCompositeOp)
+                                end
 
                                 front = composite.resize_to_fill(front_template.rows, front_template.columns)
 
