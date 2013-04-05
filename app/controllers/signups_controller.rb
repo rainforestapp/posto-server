@@ -4,7 +4,7 @@ class SignupsController < ApplicationController
   layout "black"
 
   def show
-    @title = "lulcards: send hilarious REAL postcards"
+    @title = "lulcards: send hilarious REAL photos in the mail"
     @number_of_free_cards = CONFIG.signup_credits / (CONFIG.processing_credits + CONFIG.card_credits)
   end
 
