@@ -6,6 +6,10 @@ class SignupsController < ApplicationController
   def show
     @title = "lulcards: send hilarious REAL photos in the mail"
     @number_of_free_cards = CONFIG.signup_credits / (CONFIG.processing_credits + CONFIG.card_credits)
+    
+    @app = App.by_name(params[:app_id])
+    @meta_image = view_context.image_path("InviteHandCard.png")
+    @meta_creator = @app.name
   end
 
   def create
