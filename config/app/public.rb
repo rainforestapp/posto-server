@@ -86,9 +86,9 @@ CONFIG = SampleableConfig.define do
     variant 1, false
   end
 
-  share_caption "Check out this postcard I got from NAME! #lulcards"
-  invite_sms_message "I've been sending hilarious postcards to people with lulcards, check it out! LINK"
-  invite_share_message "#lulcards lets you send hilarious postcards to friends. check it out!"
+  share_caption "Check out this card I got from NAME! #lulcards"
+  invite_sms_message "I've been sending hilarious REAL photos to people in the mail with lulcards, check it out! LINK"
+  invite_share_message "#lulcards lets you send hilarious REAL photos to friends in the mail. check it out!"
   invite_url_prefix "http://lulcards.com/ref"
   invite_share_image "http://www.lulcards.com/images/iphone.png"
   invite_disabled false
