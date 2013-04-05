@@ -213,6 +213,41 @@ CONFIG = SampleableConfig.define do
           { top_caption: "she dumped me", bottom_caption: "two days before her birthday", top_font_size: 24, bottom_font_size: 24 },
         ] 
       },
+      {  
+        id: "confession_grizzly", 
+        name: "Confession Grizzly",
+        thumb: "http://d1vgp5rbple5yc.cloudfront.net/memes/thumb/confession_grizzly.jpg",
+        image: "http://d19ku6gs1135cx.cloudfront.net/fe/f8/c7/fef8c785c6253335689af1c4084b0797.jpg",
+        captions: [
+          { top_caption: "i pretend to be stupid", bottom_caption: "so i don't have to answer dumb questions", top_font_size: 30, bottom_font_size: 18 },
+          { top_caption: "i am a hero when trouble strikes", bottom_caption: "in my imagination", top_font_size: 18, bottom_font_size: 30 },
+          { top_caption: "i can keep a secret", bottom_caption: "until someone asks me about it", top_font_size: 30, bottom_font_size: 18 },
+          { top_caption: "i'm a vegetarian", bottom_caption: "with a weakness for bacon", top_font_size: 30, bottom_font_size: 24 },
+          { top_caption: "i use big words", bottom_caption: "if i think you won't know what they mean", top_font_size: 30, bottom_font_size: 18 },
+          { top_caption: "i replay conversations in my head", bottom_caption: "five years after they happened", top_font_size: 24, bottom_font_size: 24 },
+          { top_caption: "i get paid lots of money", bottom_caption: "to surf the internet all day", top_font_size: 24, bottom_font_size: 24 },
+          { top_caption: "people think i am intelligent", bottom_caption: "i just know about wikipedia", top_font_size: 24, bottom_font_size: 18 },
+          { top_caption: "i got your text", bottom_caption: "i just didn't want to respond", top_font_size: 30, bottom_font_size: 18 },
+        ] 
+      },
+      {  
+        id: "most_interesting_man", 
+        name: "Interesting Man",
+        thumb: "http://d1vgp5rbple5yc.cloudfront.net/memes/thumb/most_interesting_man.jpg",
+        image: "http://d19ku6gs1135cx.cloudfront.net/78/09/04/78090499c61c9efaf5f47e4c61d6e2bf.jpg",
+        captions: [
+          { top_caption: "i don't always play video games", bottom_caption: "but when I do, I disappear from society and subsist on junk food", top_font_size: 18, bottom_font_size: 18 },
+          { top_caption: "i don't always post photos on facebook", bottom_caption: "but when i do, i offend friends and family alike", top_font_size: 18, bottom_font_size: 18 },
+          { top_caption: "i don't always find music i like", bottom_caption: "but when i do, i play it until it induces vomiting", top_font_size: 18, bottom_font_size: 18 },
+          { top_caption: "i don't always wear a suit", bottom_caption: "but when i do, i have to google how to tie a tie properly", top_font_size: 18, bottom_font_size: 18 },
+          { top_caption: "i don't always curse at other drivers", bottom_caption: "but when i do, it was probably my fault", top_font_size: 18, bottom_font_size: 24 },
+          { top_caption: "i don't always read the instructions on toiletries", bottom_caption: "but when i do, it's because i forgot my phone when i went to the bathroom", top_font_size: 18, bottom_font_size: 18 },
+          { top_caption: "i don't always leave my dog's turds on the side of the road", bottom_caption: "but when i do, it's because I think nobody is around to witness the crime", top_font_size: 18, bottom_font_size: 18 },
+          { top_caption: "i don't always use the word \"ergo\"", bottom_caption: "but when I do, I'm losing the argument", top_font_size: 18, bottom_font_size: 24 },
+          { top_caption: "i don't always reply to people with \"with all due respect\"", bottom_caption: "but when i do, I'm about to insult your mother", top_font_size: 18, bottom_font_size: 18 },
+          { top_caption: "i don't always watch football", bottom_caption: "but when I do, it's the Super Bowl", top_font_size: 18, bottom_font_size: 24 },
+        ] 
+      },
     ]
   })
 end
