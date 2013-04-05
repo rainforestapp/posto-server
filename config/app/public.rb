@@ -217,7 +217,7 @@ CONFIG = SampleableConfig.define do
         id: "confession_grizzly", 
         name: "Confession Grizzly",
         thumb: "http://d1vgp5rbple5yc.cloudfront.net/memes/thumb/confession_grizzly.jpg",
-        image: "http://d19ku6gs1135cx.cloudfront.net/fe/f8/c7/fef8c785c6253335689af1c4084b0797.jpg",
+        image: "http://d19ku6gs1135cx.cloudfront.net/ad/a4/3d/ada43d5a85218e27fb81a48ceebf5278.jpg",
         captions: [
           { top_caption: "i pretend to be stupid", bottom_caption: "so i don't have to answer dumb questions", top_font_size: 30, bottom_font_size: 18 },
           { top_caption: "i am a hero when trouble strikes", bottom_caption: "in my imagination", top_font_size: 18, bottom_font_size: 30 },
