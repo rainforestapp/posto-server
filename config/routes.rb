@@ -14,6 +14,7 @@ Posto::Application.routes.draw do
 
   resources :apps do
     resource :signup
+    resource :promo
   end
 
   namespace :api, defaults: { format: 'json' } do
@@ -48,7 +49,7 @@ Posto::Application.routes.draw do
   resource :admin, controller: "Admin" do
     scope module: :admin do
       resources :address_parse_tasks, :verify_order_tasks, 
-                :address_requests, :card_orders
+                :address_requests, :card_orders, :promo_codes
 
       resource :address_api, controller: "AddressApi"
 
