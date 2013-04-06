@@ -11,6 +11,7 @@ Posto::Application.routes.draw do
 
   resources :card_printings
   resource :channel
+  resource :launch_faq, controller: "LaunchFaq"
 
   resources :apps do
     resource :signup
