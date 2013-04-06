@@ -3,7 +3,7 @@ module HasUid
 
   included do
     before_save on: :create do
-      self.uid = self.class.generate_uid
+      self.uid ||= self.class.generate_uid
     end
   end
 

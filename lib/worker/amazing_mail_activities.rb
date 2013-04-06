@@ -193,4 +193,29 @@ class AmazingMailActivities
 
     return "not_confirmed"
   end
+
+  def cancel_import(import_id)
+    az_uri = URI.parse("https://c3.amazingmail.com/jobstatus/Services.ashx")
+
+    payload = <<-END
+<?xml version="1.0" encoding="UTF-8"?>
+<AMI:PRSCancelRequest xmlns:AMI="https://c3.integrato.com">
+<Authentication>
+  <UserId>#{az_user}</UserId>
+  <Password>#{az_password}</Password>
+  </Authentication>
+<ImportId reason="customer cancelled">#{import_id}</ImportId>  
+</AMI:PRSCancelRequest>
+    END
+
+    http = Net::HTTP.new(az_uri.host, 443)
+    http.use_ssl = true
+    http.ca_file = File.join(File.dirname(__FILE__), "../../certs/cacert.pem")
+    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    req = Net::HTTP::Post.new(az_uri.request_uri)
+    req.set_form_data({ "C3QueryWebSvcRequest" => payload })
+    response = http.request(req)
+
+    puts response.body
+  end
 end

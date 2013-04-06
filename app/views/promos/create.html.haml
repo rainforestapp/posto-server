@@ -1,0 +1,11 @@
+.promo
+  .span6{ class: "offset4 header" }
+    .logo
+      =image_tag "InviteLogo.png", width: 162, height: 43
+  .span6{ class: "offset4 header" }
+    .description.lead
+      Your code has been redeemed. You now have #{@total_credits} credits.
+  .span6{ class: "offset4 header" }
+    .description.lead
+      %a{ href: @app_url }
+        Now, download the app
