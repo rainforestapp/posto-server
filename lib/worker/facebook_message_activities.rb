@@ -45,6 +45,7 @@ class FacebookMessageActivities
 
     return "has_address" if address_request.request_recipient_user.has_up_to_date_address?
     return "has_message" if address_request.has_new_facebook_thread_activity?
+    return "expired" if address_request.expired?
     return "no_progress"
   end
 end
