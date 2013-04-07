@@ -310,7 +310,7 @@ CREATE TABLE `credit_journal_entries` (
   PRIMARY KEY (`credit_journal_entry_id`),
   KEY `index_credit_journal_entries_on_user_id` (`user_id`),
   KEY `index_credit_journal_entries_on_source_type_and_source_id` (`source_type`,`source_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `credit_orders` (
   `credit_order_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -335,7 +335,7 @@ CREATE TABLE `credit_promo_states` (
   `meta` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`credit_promo_state_id`),
   KEY `index_credit_promo_states_on_credit_promo_id` (`credit_promo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `credit_promos` (
   `credit_promo_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -349,7 +349,7 @@ CREATE TABLE `credit_promos` (
   PRIMARY KEY (`credit_promo_id`),
   KEY `index_credit_promos_on_uid` (`uid`),
   KEY `index_credit_promos_on_granted_to_user_id` (`granted_to_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `facebook_token_states` (
   `facebook_token_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -374,7 +374,7 @@ CREATE TABLE `facebook_tokens` (
   PRIMARY KEY (`facebook_token_id`),
   KEY `index_facebook_tokens_on_user_id` (`user_id`),
   KEY `index_facebook_tokens_on_token` (`token`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `rails_admin_histories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

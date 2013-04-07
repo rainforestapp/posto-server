@@ -10,14 +10,12 @@ describe AddressRequest do
 
   it "should not expire unexpirable address requests" do
     request = create(:address_request)
-    request.should_not be_expirable
+    request.should_not be_expired
   end
 
   it "should be markable as expired" do
     request = create(:expirable_address_request)
-    request.check_and_expire!
-    request.state.should == :expired
-    request.should_not be_expirable
+    request.should be_expired
   end
 
   it "should be markable as failed" do

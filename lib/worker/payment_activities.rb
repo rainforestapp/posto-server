@@ -82,7 +82,16 @@ class PaymentActivities
   end
 
   def check_if_charge_has_been_paid(card_order_id)
-    transaction = CardOrder.find(card_order_id).transactions[0]
+    card_order = CardOrder.find(card_order_id)
+    amount = nil
+
+    CardOrder.transaction_with_retry do
+      amount = card_order.total_price_to_charge
+    end
+
+    return "free" if amount == 0
+
+    transaction = card_order.find(card_order_id).transactions[0]
     return "no_transaction" unless transaction
 
     charge_id = transaction.response[:stripe_charge_id]
