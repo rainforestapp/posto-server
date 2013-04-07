@@ -91,7 +91,7 @@ class PaymentActivities
 
     return "free" if amount == 0
 
-    transaction = card_order.find(card_order_id).transactions[0]
+    transaction = card_order.transactions[0]
     return "no_transaction" unless transaction
 
     charge_id = transaction.response[:stripe_charge_id]
