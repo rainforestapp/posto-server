@@ -18,24 +18,16 @@ class AddressRequest < ActiveRecord::Base
 
   has_one_audited :address_request_facebook_thread
 
-  def expirable?
-    return false unless self.pending?
-
-    Time.zone.now > self.created_at + CONFIG.address_request_expiration_days.days
+  def pending?
+    [:outgoing, :sent].include?(self.state) && !expired?
   end
 
-  def pending?
-    [:outgoing, :sent].include?(self.state)
+  def expired?
+    Time.zone.now > self.created_at + CONFIG.address_request_expiration_days.days
   end
 
   def has_supplied_address?
     !!self.sender_supplied_address_api_response
-  end
-
-  def check_and_expire!
-    return false unless expirable?
-
-    self.state = :expired
   end
 
   def mark_as_sent!
