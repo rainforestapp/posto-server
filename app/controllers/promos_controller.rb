@@ -11,6 +11,7 @@ class PromosController < ApplicationController
     @app = App.by_name(params[:app_id])
     @meta_image = view_context.image_path("InviteHandCard.png")
     @meta_creator = @app.name
+    @disable_itunes_link = true
   end
 
   def create
