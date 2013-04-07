@@ -50,6 +50,10 @@ class OrderConfirmationMailer < ActionMailer::Base
 
   def with_recipient_address_for_card_order(card_order)
     @card_order = card_order
+    
+    if card_order
+      @card_design = card_order.card_design
+    end
 
     user_profile = card_order.order_sender_user.try(:user_profile) 
     recipient_email_address = user_profile.try(:email)
