@@ -42,10 +42,10 @@ CONFIG = SampleableConfig.define do
   fb_permissions ["email", "read_mailbox", "xmpp_login", "user_location", "friends_location", "user_photos", "friends_photos"]
   fb_message_permissions ["read_mailbox", "xmpp_login"]
   fb_fields ["gender", "birthday"]
-  processing_fee 100
-  card_fee 99
-  processing_credits 5
-  card_credits 5
+  processing_fee 1
+  card_fee 124
+  processing_credits 0
+  card_credits 10
   referral_credits 5
   signup_credits 30
   signup_credits_title "You Earned CREDITS Credits"
