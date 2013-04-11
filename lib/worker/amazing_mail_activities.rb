@@ -104,11 +104,25 @@ class AmazingMailActivities
           card_printing = CardPrinting.find(card_printing_id)
           recipient = card_printing.recipient_user
 
+          first_name = recipient.user_profile.first_name.to_s
+          last_name = recipient.user_profile.last_name.to_s
+          encoding_options = { invalid: :replace, undef: :replace, replace: "", universal_newline: true }
+
+          first_name = first_name.encode Encoding.find('ASCII'), encoding_options
+          last_name = last_name.encode Encoding.find('ASCII'), encoding_options
+
+          if (first_name.size <= 2 && recipient.user_profile.first_name.to_s.size > 2) || 
+             (last_name.size <= 2 && recipient.user_profile.last_name.to_s.size > 2) ||
+             first_name.size == 0 || last_name.size == 0
+            first_name = "Current" 
+            last_name = "Resident"
+          end
+
           csv << [
             az_dmid,
             card_printing_id,
-            recipient.user_profile.first_name,
-            recipient.user_profile.last_name,
+            first_name,
+            last_name,
             recipient.recipient_address.delivery_line_1,
             recipient.recipient_address.delivery_line_2,
             recipient.recipient_address.city,
