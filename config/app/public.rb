@@ -74,11 +74,11 @@ CONFIG = SampleableConfig.define do
   credit_order_submitted_message "CREDITS credits have been added to your account. You now have TOTAL credits."
 
   credit_packages [
-    { credit_package_id: 1, credits: 50, price: 939, savings: 5 },
-    { credit_package_id: 2, credits: 110, price: 1949, savings: 10 },
-    { credit_package_id: 3, credits: 300, price: 4999, savings: 15 },
-    { credit_package_id: 4, credits: 630, price: 9999, savings: 20 },
-    { credit_package_id: 5, credits: 1350, price: 19999, savings: 25 },
+    { credit_package_id: 6, credits: 40, price: 475, savings: 5 },
+    { credit_package_id: 7, credits: 90, price: 999, savings: 10 },
+    { credit_package_id: 8, credits: 190, price: 1999, savings: 15 },
+    { credit_package_id: 9, credits: 300, price: 2999, savings: 20 },
+    { credit_package_id: 10, credits: 540, price: 4999, savings: 25 },
   ]
 
   shuffle_captions do
