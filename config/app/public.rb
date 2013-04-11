@@ -56,12 +56,12 @@ CONFIG = SampleableConfig.define do
   address_request_expiration_days 6
   cvc_enabled false
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
-  nag_version 1
+  nag_version 2
   nag_app_versions ["1.0", "1.0.1"]
   nag_title "New Version Available"
-  nag_message "A new version of lulcards is available."
+  nag_message "A new version of lulcards is available. Upgrade now to get 3 *free* cards!"
   nag_action "Update"
-  nag_target "itms://itunes.com/apps/instagram"
+  nag_target "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
 
   order_submitted_header "Thanks!"
   order_submitted_message "Your order has been submitted. We'll notify and e-mail you as we process it."
