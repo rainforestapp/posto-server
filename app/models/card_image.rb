@@ -17,7 +17,7 @@ class CardImage < ActiveRecord::Base
 
   symbolize :orientation, 
             in: [:up, :down, :left, :right, 
-                 :up_mirrored, :down_mirrored, :left_mirrored, :right_mirrored],
+                 :up_mirrored, :down_mirrored, :left_mirrored, :right_mirrored, :unknown],
             validates: true
 
   symbolize :image_format, in: [:jpg, :png, :pdf], validates: true
