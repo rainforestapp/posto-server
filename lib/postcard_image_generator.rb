@@ -75,9 +75,9 @@ class PostcardImageGenerator < ImageGenerator
 
                               border_pixels = (BORDER_SIZE * [cols, rows].max.to_f).floor
 
-                              front_qr = RQRCode::QRCode.new(URI.escape(CONFIG.qr_path + front_scan_key), size: 4, level: :h)
+                              front_qr = RQRCode::QRCode.new(URI.escape(config.qr_path + front_scan_key), size: 4, level: :h)
                               front_qr_png = front_qr.to_img.resize(175,175).save(front_qr_file.path)
-                              back_qr = RQRCode::QRCode.new(URI.escape(CONFIG.qr_path + back_scan_key), size: 4, level: :h)
+                              back_qr = RQRCode::QRCode.new(URI.escape(config.qr_path + back_scan_key), size: 4, level: :h)
                               back_qr_png = back_qr.to_img.resize(175,175).save(back_qr_file.path)
 
                               with_image(front_qr_file.path) do |front_qr_image|
