@@ -66,13 +66,13 @@ CONFIG = SampleableConfig.define do
     qr_path "http://posto.dev/qr/"
     share_url_path "http://posto.dev/v/"
   else
+    qr_path "http://lulcards.com/qr/"
+
     app "lulcards" do
-      qr_path "http://lulcards.com/qr/"
       share_url_path "http://lulcards.com/v/"
     end
 
     app "babycards" do
-      qr_path "http://sendbabycards.com/qr/"
       share_url_path "http://sendbabycards.com/v/"
     end
   end
