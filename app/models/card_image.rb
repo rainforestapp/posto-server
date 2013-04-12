@@ -54,6 +54,6 @@ class CardImage < ActiveRecord::Base
   end
 
   def public_url
-    "http://#{CONFIG.card_image_host}/#{self.path}"
+    "http://#{CONFIG.for_app(self.app).card_image_host}/#{self.path}"
   end
 end

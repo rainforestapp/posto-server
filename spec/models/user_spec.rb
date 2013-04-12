@@ -172,7 +172,7 @@ describe User do
       user.create_order_from_payload!({ "facebook_token" => "foobar", 
                                         "app" => "lulcards",
                                         "recipients" => [stub_recipient], 
-                                        "quoted_total_price" => 199 }, api: stub_api)
+                                        "quoted_total_price" => 124 }, api: stub_api)
     end).to raise_error(OrderCreationException, /no_card_design/)
   end
   
@@ -189,7 +189,7 @@ describe User do
       user.create_order_from_payload!({ "facebook_token" => "foobar", 
                                         "app" => "lulcards",
                                         "recipients" => [stub_recipient], 
-                                        "quoted_total_price" => 199 }, api: stub_api)
+                                        "quoted_total_price" => 124 }, api: stub_api)
     end).to raise_error(OrderCreationException, /no_card_design/)
   end
   
@@ -231,7 +231,7 @@ describe User do
                                               "app" => "lulcards",
                                               "recipients" => [recipient], 
                                               "card_design" => card_design,
-                                              "quoted_total_price" => 199 }, api: stub_api)
+                                              "quoted_total_price" => 124 }, api: stub_api)
 
     order.card_printings.size.should == 1
   end
@@ -297,13 +297,13 @@ describe User do
                                               "recipients" => recipients, 
                                               "card_design" => card_design,
                                               "quoted_total_price" => 0,
-                                              "quoted_total_credits" => 15}, api: stub_api)
+                                              "quoted_total_credits" => 20}, api: stub_api)
 
-    order.card_order_credit_allocation.allocated_credits.should == 15
-    user.credits_for_app(App.lulcards).should == 12
+    order.card_order_credit_allocation.allocated_credits.should == 20
+    user.credits_for_app(App.lulcards).should == 7
     
     # test refunding
-    order.refund_allocated_credits_for_cards!(1).should == 5
+    order.refund_allocated_credits_for_cards!(1).should == 10
     user.credits_for_app(App.lulcards).should == 17
     order.card_order_credit_allocation.allocated_credits.should == 10
     order.card_order_credit_allocation.number_of_credited_cards.should == 1
@@ -324,14 +324,14 @@ describe User do
     app = App.lulcards
 
     user.credits_for_app(app).should == 0
-    user.add_credits!(17, app: app).should == 17
-    user.credits_for_app(app).should == 17
+    user.add_credits!(27, app: app).should == 27
+    user.credits_for_app(app).should == 27
     user.remaining_credited_cards_for_card_order_for_app(app).should == 2
-    user.deduct_credits!(5, app: app).should == 12
+    user.deduct_credits!(10, app: app).should == 17
     user.remaining_credited_cards_for_card_order_for_app(app).should == 1
-    user.deduct_credits!(5, app: app).should == 7
+    user.deduct_credits!(8, app: app).should == 9
     user.remaining_credited_cards_for_card_order_for_app(app).should == 0
-    user.credits_for_app(app).should == 7
+    user.credits_for_app(app).should == 9
 
     expect(lambda do
       user.deduct_credits!(10, app: app)

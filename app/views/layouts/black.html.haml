@@ -28,7 +28,7 @@
     - if @meta_creator
       %meta{ property: "twitter:creator", content: @meta_creator }
 
-    %meta{ property: "og:app_id", content: CONFIG.facebook_app_id }
+    %meta{ property: "og:app_id", content: @config.facebook_app_id }
     %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0"}
 
     %title

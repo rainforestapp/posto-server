@@ -3,7 +3,7 @@ module Api
     class PhotoUploadTokensController < ApplicationController
       def new
         s3 = AWS::S3.new
-        bucket = s3.buckets[CONFIG.card_image_bucket]
+        bucket = s3.buckets[@config.card_image_bucket]
         uuid = SecureRandom.hex
 
         # TODO log this somewhere that this device took this token
@@ -11,7 +11,7 @@ module Api
         key = "#{uuid[0...2]}/#{uuid[2...4]}/#{uuid[4...6]}/#{uuid}.jpg"
 
         post = bucket.presigned_post(key: key)
-                       .where(:content_length).in(1..CONFIG.max_photo_byte_size)
+                       .where(:content_length).in(1..@config.max_photo_byte_size)
                        .where(:key).is(key)
                        .where(:content_type).is("image/jpeg")
                        .where(:acl).is("public-read")

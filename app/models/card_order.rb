@@ -47,14 +47,16 @@ class CardOrder < ActiveRecord::Base
     [number_of_mailable_cards - number_of_credit_allocated_cards, 0].max
   end
 
-  def self.total_price_to_charge_for_number_of_cards(number_of_cards)
+  def total_price_to_charge_for_number_of_cards(number_of_cards)
     return 0 if number_of_cards == 0
 
-    CONFIG.processing_fee + (CONFIG.card_fee * number_of_cards)
+    CONFIG.for_app(self.app) do |config|
+      config.processing_fee + (config.card_fee * number_of_cards)
+    end
   end
 
   def total_price_to_charge
-    CardOrder.total_price_to_charge_for_number_of_cards(self.number_of_payable_mailable_cards)
+    total_price_to_charge_for_number_of_cards(self.number_of_payable_mailable_cards)
   end
 
   def printable_total_price
@@ -72,7 +74,7 @@ class CardOrder < ActiveRecord::Base
   def execute_workflow!
     swf = AWS::SimpleWorkflow.new
     domain = swf.domains["posto-#{Rails.env == "production" ? "prod" : "dev"}"]
-    workflow_type = domain.workflow_types['CardOrderWorkflow.processOrder', CONFIG.order_workflow_version]
+    workflow_type = domain.workflow_types['CardOrderWorkflow.processOrder', CONFIG.for_app(self.app).order_workflow_version]
     input = ["[Ljava.lang.Object;", 
             [["java.lang.Long", self.card_order_id],
               self.order_sender_user.facebook_token.token]].to_json
@@ -111,20 +113,22 @@ class CardOrder < ActiveRecord::Base
   end
 
   def allocate_and_deduct_credits!
-    sender = self.order_sender_user
+    CONFIG.for_app(self.app) do |config|
+      sender = self.order_sender_user
 
-    number_of_credited_cards = sender.number_of_credited_cards_for_order_of_size(self.number_of_ordered_cards, app: self.app)
+      number_of_credited_cards = sender.number_of_credited_cards_for_order_of_size(self.number_of_ordered_cards, app: self.app)
 
-    if number_of_credited_cards > 0
-      credit_allocation = self.card_order_credit_allocations.create(
-        credits_per_card: CONFIG.card_credits,
-        credits_per_order: CONFIG.processing_credits,
-        number_of_credited_cards: number_of_credited_cards
-      ).tap do |credit_allocation|
-        sender.deduct_credits!(credit_allocation.allocated_credits,
-                              app: app,
-                              source_type: :card_order_debit,
-                              source_id: self.card_order_id)
+      if number_of_credited_cards > 0
+        credit_allocation = self.card_order_credit_allocations.create(
+          credits_per_card: config.card_credits,
+          credits_per_order: config.processing_credits,
+          number_of_credited_cards: number_of_credited_cards
+        ).tap do |credit_allocation|
+          sender.deduct_credits!(credit_allocation.allocated_credits,
+                                app: app,
+                                source_type: :card_order_debit,
+                                source_id: self.card_order_id)
+        end
       end
     end
   end

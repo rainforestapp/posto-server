@@ -4,13 +4,15 @@ class EarnedCreditsMailer < ActionMailer::Base
 
   def referral(referring_user, referred_user, app)
     with_recipient_address_for_user(referring_user) do |recipient_address|
-      @earned_credits = CONFIG.referral_credits
-      @referring_user = referring_user
-      @referred_user = referred_user
-      @app = app
+      CONFIG.for_app(app) do |config|
+        @earned_credits = config.referral_credits
+        @referring_user = referring_user
+        @referred_user = referred_user
+        @app = app
 
-      mail(to: recipient_address,
-           subject: "You earned #{@earned_credits} #{app.name} credits")
+        mail(to: recipient_address,
+            subject: "You earned #{@earned_credits} #{app.name} credits")
+      end
     end
   end
 

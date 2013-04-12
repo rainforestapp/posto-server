@@ -65,6 +65,6 @@ describe SampleableConfig do
     end
 
     sample = config.to_sampled_config(123)
-    expect { sample.to_sampled_config(123) }.to raise_error("Trying to sample already sampled config hash")
+    expect { sample.to_sampled_config(124) }.to raise_error("Trying to sample already sampled config hash")
   end
 end

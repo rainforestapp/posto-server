@@ -86,32 +86,34 @@ class User < ActiveRecord::Base
     image = Magick::Image.read(file_path).first
     raise "No image found at #{file_path}" unless image
 
-    begin
-      card_image_params = {}
-      card_image_params[:width] = image.columns
-      card_image_params[:height] = image.rows
-      card_image_params[:orientation] = :up
-      card_image_params[:image_format] = CardImage::RMAGICK_IMAGE_FORMAT_MAP[image.format.downcase]
-      card_image_params[:image_type] = options[:image_type]
-      card_image_params[:app] = options[:app] 
+    CONFIG.for_app(options[:app]) do |config|
+      begin
+        card_image_params = {}
+        card_image_params[:width] = image.columns
+        card_image_params[:height] = image.rows
+        card_image_params[:orientation] = :up
+        card_image_params[:image_format] = CardImage::RMAGICK_IMAGE_FORMAT_MAP[image.format.downcase]
+        card_image_params[:image_type] = options[:image_type]
+        card_image_params[:app] = options[:app] 
 
-      self.authored_card_images.create!(card_image_params).tap do |card_image|
-        begin
-          s3 = AWS::S3.new
-          bucket = s3.buckets[CONFIG.card_image_bucket]
-          s3_object = bucket.objects[card_image.path]
-          s3_object.write(Pathname.new(file_path),
-                          content_type: card_image.content_type,
-                          acl: :public_read,
-                          cache_control: "max-age=#{60 * 60 * 24 * 7}")
-        rescue Exception => e
-          # Kill it if we couldn't upload to s3
-          card_image.destroy rescue nil
-          raise
+        self.authored_card_images.create!(card_image_params).tap do |card_image|
+          begin
+            s3 = AWS::S3.new
+            bucket = s3.buckets[CONFIG.card_image_bucket]
+            s3_object = bucket.objects[card_image.path]
+            s3_object.write(Pathname.new(file_path),
+                            content_type: card_image.content_type,
+                            acl: :public_read,
+                            cache_control: "max-age=#{60 * 60 * 24 * 7}")
+          rescue Exception => e
+            # Kill it if we couldn't upload to s3
+            card_image.destroy rescue nil
+            raise
+          end
         end
+      ensure
+        image.destroy!
       end
-    ensure
-      image.destroy!
     end
   end
 
@@ -308,9 +310,11 @@ class User < ActiveRecord::Base
   end
 
   def remaining_credited_cards_for_card_order_for_app(app)
-    credits = self.credits_for_app(app)
-    return 0 if credits < (CONFIG.processing_credits + CONFIG.card_credits)
-    ((credits - CONFIG.processing_credits).to_f / CONFIG.card_credits.to_f).floor
+    CONFIG.for_app(app) do |config|
+      credits = self.credits_for_app(app)
+      return 0 if credits < (config.processing_credits + config.card_credits)
+      ((credits - config.processing_credits).to_f / config.card_credits.to_f).floor
+    end
   end
 
   def number_of_credited_cards_for_order_of_size(number_of_cards, *args)
@@ -324,35 +328,44 @@ class User < ActiveRecord::Base
   def credits_to_allocate_for_order_of_size(number_of_cards, *args)
     number_of_credited_cards = number_of_credited_cards_for_order_of_size(number_of_cards, *args)
     return 0 if number_of_credited_cards == 0
-    CONFIG.processing_credits + (CONFIG.card_credits * number_of_credited_cards) 
+
+    options = args.extract_options!
+    app = options[:app]
+    raise ArgumentError.new unless app
+
+    CONFIG.for_app(app) do |config|
+      config.processing_credits + (config.card_credits * number_of_credited_cards) 
+    end
   end
 
   def handle_signup_bonuses_for_app!(app)
     sent_referral_notification = false
 
-    self.class.transaction_with_retry do
-      if self.has_empty_credit_journal_for_app?(app)
-        self.add_credits!(CONFIG.signup_credits,
-                          app: app,
-                          source_type: :signup,
-                          source_id: self.user_id)
+    CONFIG.for_app(app) do |config|
+      self.class.transaction_with_retry do
+        if self.has_empty_credit_journal_for_app?(app)
+          self.add_credits!(config.signup_credits,
+                            app: app,
+                            source_type: :signup,
+                            source_id: self.user_id)
 
-        referrals = UserReferral.where(referred_user_id: self.user_id,
-                                       app_id: app.app_id)
+          referrals = UserReferral.where(referred_user_id: self.user_id,
+                                        app_id: app.app_id)
 
-        referrals.each do |referral|
-          unless referral.state == :granted
-            referral.state = :granted
-            referring_user = referral.referring_user
-            referring_user.add_credits!(CONFIG.referral_credits,
-                                        app: app,
-                                        source_type: :referral,
-                                        source_id: self.user_id)
+          referrals.each do |referral|
+            unless referral.state == :granted
+              referral.state = :granted
+              referring_user = referral.referring_user
+              referring_user.add_credits!(config.referral_credits,
+                                          app: app,
+                                          source_type: :referral,
+                                          source_id: self.user_id)
 
-            unless sent_referral_notification
-              message = "#{self.user_profile.name} joined #{CONFIG.app_name}, so you earned #{CONFIG.referral_credits} credits!"
-              referring_user.send_notification(message, app: app)
-              EarnedCreditsMailer.referral(referring_user, self, app).deliver
+              unless sent_referral_notification
+                message = "#{self.user_profile.name} joined #{config.app_name}, so you earned #{config.referral_credits} credits!"
+                referring_user.send_notification(message, app: app)
+                EarnedCreditsMailer.referral(referring_user, self, app).deliver
+              end
             end
           end
         end
@@ -379,7 +392,7 @@ class User < ActiveRecord::Base
 
     raise_order_exception.(:no_recipients) unless payload["recipients"] && payload["recipients"].size > 0
     number_of_cards_to_send = payload["recipients"].size
-    raise_order_exception.(:max_recipients_reached) if number_of_cards_to_send > CONFIG.max_cards_to_send
+    raise_order_exception.(:max_recipients_reached) if number_of_cards_to_send > CONFIG.for_app(app).max_cards_to_send
 
     payload["recipients"].each do |recipient|
       facebook_id = recipient["facebook_id"]
@@ -422,7 +435,7 @@ class User < ActiveRecord::Base
     number_of_payable_cards = number_of_cards_to_send - number_of_credited_cards
 
     if number_of_payable_cards > 0
-      total_price = CONFIG.processing_fee + (CONFIG.card_fee * number_of_payable_cards)
+      total_price = CONFIG.for_app(app).processing_fee + (CONFIG.for_app(app).card_fee * number_of_payable_cards)
     end
 
     unless payload["quoted_total_price"] == total_price

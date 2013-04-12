@@ -7,11 +7,9 @@ CONFIG = SampleableConfig.define do
   mixpanel_enabled true
   mixpanel_people_enabled true
   mixpanel_event_screen []
-  kill_message "Lulcard is unavailable."
   support_email "support@lulcards.com"
   uservoice_enabled true
   testflight_enabled true
-  itunes_url "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
 
   card_image_host "data.lulcards.com"
   card_image_bucket "posto-data"
@@ -19,14 +17,56 @@ CONFIG = SampleableConfig.define do
   csv_host "d19ku6gs1135cx.cloudfront.net"
   csv_bucket "posto-data"
 
-  facebook_app_id "487965654580467"
+  app "lulcards" do
+    facebook_app_id "487965654580467"
+    itunes_url "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
+    kill_message "lulcards is unavailable."
+    stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
+    nag_version 2
+    nag_app_versions ["1.0", "1.0.1"]
+    nag_title "New Version Available"
+    nag_message "A new version of lulcards is available. Upgrade now to get 3 *free* cards!"
+    nag_action "Update"
+    nag_target "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
+    share_caption "Check out this card I got from NAME! #lulcards"
+    invite_sms_message "I've been sending hilarious REAL photos to people in the mail with lulcards, check it out! LINK"
+    invite_share_message "#lulcards lets you send hilarious REAL photos to friends in the mail. check it out!"
+    invite_url_prefix "http://lulcards.com/ref"
+    invite_share_image "http://www.lulcards.com/images/iphone.png"
+    invite_disabled false
+  end
+
+  app "babycards" do
+    facebook_app_id "567028869998464"
+    kill_message "BabyCards is unavailable."
+    stripe_publishable_key ENV["BABYCARDS_STRIPE_PUBLISHABLE_KEY"]
+    nag_version 1
+    nag_app_versions ["1.0"]
+    nag_title "New Version Available"
+    nag_message "A new version of BabyCards is available."
+    nag_action "Update"
+    nag_target "TODO"
+    share_caption "Check out this card I got from NAME! #babycards"
+    invite_sms_message "I've been sending amazing pictures of our new baby to people in the mail with BabyCards, check it out! LINK"
+    invite_share_message "#BabyCards lets you send amazing photos of your new baby in the mail. check it out!"
+    invite_url_prefix "http://sendbabycards.com/ref"
+    invite_share_image "http://www.sendbabycards.com/images/iphone.png"
+    invite_disabled false
+  end
 
   if Rails.env == "development"
     qr_path "http://posto.dev/qr/"
     share_url_path "http://posto.dev/v/"
   else
-    qr_path "http://lulcards.com/qr/"
-    share_url_path "http://lulcards.com/v/"
+    app "lulcards" do
+      qr_path "http://lulcards.com/qr/"
+      share_url_path "http://lulcards.com/v/"
+    end
+
+    app "babycards" do
+      qr_path "http://sendbabycards.com/qr/"
+      share_url_path "http://sendbabycards.com/v/"
+    end
   end
 
   api_key_expiration_days 30
@@ -49,19 +89,12 @@ CONFIG = SampleableConfig.define do
   referral_credits 5
   signup_credits 30
   signup_credits_title "You Earned CREDITS Credits"
-  signup_credits_message "You earned CREDITS credits by connecting your Facebook account to lulcards!"
+  signup_credits_message "You earned CREDITS credits by connecting your Facebook account!"
   max_cards_to_send 9
   max_photo_byte_size 24 * 1024 * 1024
   recipient_address_expiration_days 31 * 6
   address_request_expiration_days 6
   cvc_enabled false
-  stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
-  nag_version 2
-  nag_app_versions ["1.0", "1.0.1"]
-  nag_title "New Version Available"
-  nag_message "A new version of lulcards is available. Upgrade now to get 3 *free* cards!"
-  nag_action "Update"
-  nag_target "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
 
   order_submitted_header "Thanks!"
   order_submitted_message "Your order has been submitted. We'll notify and e-mail you as we process it."
@@ -86,13 +119,6 @@ CONFIG = SampleableConfig.define do
     variant 1, false
   end
 
-  share_caption "Check out this card I got from NAME! #lulcards"
-  invite_sms_message "I've been sending hilarious REAL photos to people in the mail with lulcards, check it out! LINK"
-  invite_share_message "#lulcards lets you send hilarious REAL photos to friends in the mail. check it out!"
-  invite_url_prefix "http://lulcards.com/ref"
-  invite_share_image "http://www.lulcards.com/images/iphone.png"
-  invite_disabled false
-
   card_io do
     variant 1, true
     variant 2, false
@@ -102,12 +128,6 @@ CONFIG = SampleableConfig.define do
     variant 1, "is_needed", "Chat and Inbox access is needed to ask your friends for their addresses."
     variant 1, "is_needed_spam", "Access is used to ask for addresses.\nWe promise we won't spam."
     variant 1, "without_asking", "We'll never post anything to Facebook without asking first."
-    #
-    #variant 1, "we_need_you", "We need access so you can ask your friends for their addresses."
-    #variant 1, "we_need_us", "We need permission to ask your friends for their addresses. We won't spam."
-    #variant 1, "we_need_tell", "We need Chat & Inbox permissions so your friends can provide their addresses."
-    #variant 1, "lets_you_ask", "Chat & Inbox permissions let you ask for your friends' addresses."
-    #variant 1, "we_send", "We send Facebook messages to ask for addresses. We promise we won't spam."
   end
 
   facebook_allow_messages do

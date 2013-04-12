@@ -38,6 +38,8 @@ class QrController < ApplicationController
     preview_composition = card_design.card_preview_composition
     sender = card_order.order_sender_user
 
+    bind_to_app!(card_order.app)
+
     if @current_user || !device_uuid.blank?
       user_id = @current_user.try(:user_id)
 
@@ -66,7 +68,7 @@ class QrController < ApplicationController
         }
 
         out[:sent_on] = card_order.created_at.strftime("%-m/%-d/%y")
-        out[:share_url] = CONFIG.share_url_path + params[:id]
+        out[:share_url] = @config.share_url_path + params[:id]
 
         out[:images] = {
           treated_preview: preview_composition.treated_card_preview_image.public_url,
