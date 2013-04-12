@@ -17,11 +17,16 @@ CONFIG = SampleableConfig.define do
   csv_host "d19ku6gs1135cx.cloudfront.net"
   csv_bucket "posto-data"
 
+  stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
+
   app "lulcards" do
-    facebook_app_id "487965654580467"
+    facebook_app_id ENV["FB_API_KEY"]
+    facebook_api_secret ENV["FB_API_SECRET"]
     itunes_url "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
     kill_message "lulcards is unavailable."
-    stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
+    urban_airship_application_key ENV["URBAN_AIRSHIP_APP_KEY"]
+    urban_airship_application_secret ENV["URBAN_AIRSHIP_APP_SECRET"]
+    urban_airship_master_secret ENV["URBAN_AIRSHIP_MASTER_SECRET"]
     nag_version 2
     nag_app_versions ["1.0", "1.0.1"]
     nag_title "New Version Available"
@@ -37,9 +42,12 @@ CONFIG = SampleableConfig.define do
   end
 
   app "babycards" do
-    facebook_app_id "567028869998464"
+    facebook_app_id ENV["BABYCARDS_FB_API_KEY"]
+    facebook_api_secret ENV["BABYCARDS_FB_API_SECRET"]
     kill_message "BabyCards is unavailable."
-    stripe_publishable_key ENV["BABYCARDS_STRIPE_PUBLISHABLE_KEY"]
+    urban_airship_application_key ENV["BABYCARDS_URBAN_AIRSHIP_APP_KEY"]
+    urban_airship_application_secret ENV["BABYCARDS_URBAN_AIRSHIP_APP_SECRET"]
+    urban_airship_master_secret ENV["BABYCARDS_URBAN_AIRSHIP_MASTER_SECRET"]
     nag_version 1
     nag_app_versions ["1.0"]
     nag_title "New Version Available"
