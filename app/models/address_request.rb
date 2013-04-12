@@ -23,7 +23,7 @@ class AddressRequest < ActiveRecord::Base
   end
 
   def expired?
-    Time.zone.now > self.created_at + CONFIG.address_request_expiration_days.days
+    Time.zone.now > self.created_at + CONFIG.for_app(self.app).address_request_expiration_days.days
   end
 
   def has_supplied_address?

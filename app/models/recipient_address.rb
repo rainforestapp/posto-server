@@ -17,7 +17,7 @@ class RecipientAddress < ActiveRecord::Base
   end
 
   def expires_at
-    self.created_at + CONFIG.recipient_address_expiration_days.days
+    self.created_at + CONFIG.for_app(self.address_request.app).recipient_address_expiration_days.days
   end
 
   def api_data

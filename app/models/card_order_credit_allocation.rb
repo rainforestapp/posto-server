@@ -5,11 +5,6 @@ class CardOrderCreditAllocation < ActiveRecord::Base
 
   attr_accessible :credits_per_card, :credits_per_order, :number_of_credited_cards
 
-  before_save on: :create do
-    self.credits_per_card = CONFIG.card_credits
-    self.credits_per_order = CONFIG.processing_credits
-  end
-
   def allocated_credits
     return 0 if self.number_of_credited_cards == 0
     self.credits_per_order + (self.credits_per_card * self.number_of_credited_cards)

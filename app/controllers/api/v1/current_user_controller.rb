@@ -14,7 +14,7 @@ module Api
 
           # Handle new user, the way we know is if their credit journal is empty.
           
-          if CONFIG.signup_credits <= 0
+          if @config.signup_credits <= 0
             # Signup credits has to be > 0 right now, because the check below is used to determine if this user 
             # was just created. If so, the bonuses are handles below. If signup credits is zero, then no journal
             # entry will be created and the bonuses will not be applied (referrals). So, if signup credits becomes

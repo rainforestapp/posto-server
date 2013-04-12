@@ -7,7 +7,7 @@ class PromosController < ApplicationController
     @title = "lulcards: send hilarious REAL photos in the mail"
     
     @promo = CreditPromo.where(uid: params[:promo_code]).first
-    @number_of_free_cards = @promo.credits / (CONFIG.processing_credits + CONFIG.card_credits)
+    @number_of_free_cards = @promo.credits / (@config.processing_credits + @config.card_credits)
     @app = App.by_name(params[:app_id])
     @meta_image = view_context.image_path("InviteHandCard.png")
     @meta_creator = @app.name

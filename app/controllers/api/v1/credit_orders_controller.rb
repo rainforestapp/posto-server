@@ -15,7 +15,7 @@ module Api
 
         return head :bad_request unless app
 
-        config_package = CONFIG.credit_packages.find do |p| 
+        config_package = @config.credit_packages.find do |p| 
           p[:credit_package_id] == package[:credit_package_id].to_i
         end
 
