@@ -262,9 +262,15 @@ class User < ActiveRecord::Base
     aps_token = self.aps_tokens.where(app_id: options[:app].app_id).first
 
     if aps_token
-      Urbanairship.push({ schedule_for: [Time.zone.now], 
-                          device_tokens: [aps_token.token],
-                          aps: { alert: message, sound: "notification.wav" }})
+      urban_airship = Urbanairship::Client.new
+      urban_airship.application_key = config.urban_airship_application_key
+      urban_airship.application_secret = config.urban_airship_application_secret
+      urban_airship.master_secret = config.urban_airship_master_secret
+      urban_airship.logger = Rails.logger
+      urban_airship.request_timeout = 5
+      urban_airship.push({ schedule_for: [Time.zone.now], 
+                           device_tokens: [aps_token.token],
+                           aps: { alert: message, sound: "notification.wav" }})
     end
   end
 

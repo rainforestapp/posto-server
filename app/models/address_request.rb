@@ -52,19 +52,21 @@ class AddressRequest < ActiveRecord::Base
   end
 
   def send!
-    access_token = self.request_sender_user.facebook_token.token
-    from_jid = "-#{self.request_sender_user.facebook_id}@chat.facebook.com"
-    to_jid = "-#{self.request_recipient_user.facebook_id}@chat.facebook.com"
-    body = self.address_request_payload[:message]
-    message = Jabber::Message.new(to_jid, body)
-    client = Jabber::Client.new(Jabber::JID.new(from_jid))
-    client.connect
-    xfb = Jabber::SASL::XFacebookPlatform.new(client, ENV["FB_API_KEY"], access_token, ENV["FB_API_SECRET"])
-    client.auth_sasl(xfb, nil)
-    client.send(message)
-    client.close
-    mark_as_sent!
-    true
+    CONFIG.for_app(self.app) do |config|
+      access_token = self.request_sender_user.facebook_token.token
+      from_jid = "-#{self.request_sender_user.facebook_id}@chat.facebook.com"
+      to_jid = "-#{self.request_recipient_user.facebook_id}@chat.facebook.com"
+      body = self.address_request_payload[:message]
+      message = Jabber::Message.new(to_jid, body)
+      client = Jabber::Client.new(Jabber::JID.new(from_jid))
+      client.connect
+      xfb = Jabber::SASL::XFacebookPlatform.new(client, config.facebook_app_id, access_token, config.facebook_api_secret)
+      client.auth_sasl(xfb, nil)
+      client.send(message)
+      client.close
+      mark_as_sent!
+      true
+    end
   end
 
   def close_with_api_response(address_api_response)
