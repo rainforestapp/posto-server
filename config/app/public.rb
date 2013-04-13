@@ -55,8 +55,8 @@ CONFIG = SampleableConfig.define do
     nag_action "Update"
     nag_target "TODO"
     share_caption "Check out this card I got from NAME! #babycards"
-    invite_sms_message "I've been sending amazing pictures of our new baby to people in the mail with BabyCards, check it out! LINK"
-    invite_share_message "#BabyCards lets you send amazing photos of your new baby in the mail. check it out!"
+    invite_sms_message "I've been sending great pictures of BABY_NAME to people in the mail with BabyCards, check it out! LINK"
+    invite_share_message "#BabyCards lets you send amazing photos of your baby in the mail. check it out!"
     invite_url_prefix "http://sendbabycards.com/ref"
     invite_share_image "http://www.sendbabycards.com/images/iphone.png"
     invite_disabled false
@@ -87,7 +87,7 @@ CONFIG = SampleableConfig.define do
   number_of_clicks_before_tooltip 1
   design_edit_hint_mode "tooltip"
   server_debug false
-  fb_permissions ["email", "read_mailbox", "xmpp_login", "user_location", "friends_location", "user_photos", "friends_photos"]
+  fb_permissions ["email", "read_mailbox", "xmpp_login", "user_location", "user_birthday", "friends_location", "user_photos", "friends_photos", "friends_birthday"]
   fb_message_permissions ["read_mailbox", "xmpp_login"]
   fb_fields ["gender", "birthday"]
   processing_fee -1
