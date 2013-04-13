@@ -20,7 +20,7 @@ class SampleableConfig < Hash
       sample = SampleableConfig.new(@seed, app.name)
 
       self.each do |k, v|
-        if v.kind_of?(Hash) && v[app.name]
+        if v.kind_of?(Hash) && v.include?(app.name)
           sample[k] = v[app.name]
         else
           sample[k] = v
