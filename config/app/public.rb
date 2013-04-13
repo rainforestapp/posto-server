@@ -103,6 +103,8 @@ CONFIG = SampleableConfig.define do
   recipient_address_expiration_days 31 * 6
   address_request_expiration_days 6
   cvc_enabled false
+  min_birthday_days 5
+  max_birthday_days 21
 
   order_submitted_header "Thanks!"
   order_submitted_message "Your order has been submitted. We'll notify and e-mail you as we process it."
