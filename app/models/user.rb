@@ -51,7 +51,16 @@ class User < ActiveRecord::Base
     location = facebook_response["location"]["name"] if facebook_response["location"]
 
     birthday = nil
-    birthday = Chronic.parse(facebook_response["birthday"] + " 00:00:00") if facebook_response["birthday"]
+    birthday_day = nil
+    birthday_month = nil
+    birthday_year = nil
+
+    if facebook_response["birthday"]
+      birthday = Chronic.parse(facebook_response["birthday"] + " 00:00:00")
+      birthday_day = birthday.day
+      birthday_month = birthday.month
+      birthday_year = birthday.year
+    end
 
     user.tap do |user|
       new_fields = { user_id: user.user_id,
@@ -61,6 +70,9 @@ class User < ActiveRecord::Base
                      location: location,
                      middle_name: facebook_response["middle_name"],
                      birthday: birthday,
+                     birthday_day: birthday_day,
+                     birthday_month: birthday_month,
+                     birthday_year: birthday_year,
                      gender: facebook_response["gender"],
                      email: facebook_response["email"] }
 
