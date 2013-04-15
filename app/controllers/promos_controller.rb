@@ -25,11 +25,10 @@ class PromosController < ApplicationController
     app = App.by_name(app)
     return head :bad_request unless app
 
-    bind_to_app!(app)
     @app = app
     @meta_image = view_context.image_path("InviteHandCard.png")
     @meta_creator = @app.name
-    @app_url = CONFIG.itunes_url
+    @app_url = @config.itunes_url
 
     promo = CreditPromo.where(uid: params[:promo_code]).first
     @total_credits = 0
