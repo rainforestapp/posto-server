@@ -24,8 +24,6 @@ class SignupsController < ApplicationController
     app = App.by_name(app)
     return head :bad_request unless app
 
-    bind_to_app!(app)
-
     user = User.first_or_create_with_facebook_token(facebook_token)
 
     if user
@@ -47,6 +45,6 @@ class SignupsController < ApplicationController
       end
     end
 
-    redirect_to CONFIG.itunes_url
+    redirect_to @config.itunes_url
   end
 end
