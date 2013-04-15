@@ -25,6 +25,7 @@ class PromosController < ApplicationController
     app = App.by_name(app)
     return head :bad_request unless app
 
+    bind_to_app!(app)
     @app = app
     @meta_image = view_context.image_path("InviteHandCard.png")
     @meta_creator = @app.name
