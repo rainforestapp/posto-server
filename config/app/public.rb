@@ -43,13 +43,13 @@ CONFIG = SampleableConfig.define do
     sent_timeline_posts [
       {
         occasion: "none",
-        alert: "Post on FIRST_NAME's timeline to let them know you bought them a card? (They won't be able to see your design.)",
+        alert: "Post on FIRST_NAME's timeline to let PRONOUN them know you bought PRONOUN a card? (They won't be able to see your design.)",
         caption: "I just sent you a printed photo in the mail with lulcards.",
         description: "It should arrive in the mail in 5-7 business days, keep your eyes out for it!",
       }, 
       {
         occasion: "birthday",
-        alert: "Post on FIRST_NAME's timeline to let them know you bought them a card for their birthday? (They won't be able to see your design.)",
+        alert: "Post on FIRST_NAME's timeline to let PRONOUN know you bought PRONOUN a card for their birthday? (They won't be able to see your design.)",
         caption: "I just sent you a printed card in the mail for your birthday with lulcards.",
         description: "It should arrive in the mail 5-7 business days, keep your eyes out for it!",
       }, 
