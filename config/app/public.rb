@@ -44,12 +44,14 @@ CONFIG = SampleableConfig.define do
       {
         occasion: "none",
         alert: "Do you want to post a message on FIRST_NAME's timeline to let them know their card is on the way? (They won't be able to see your design until it arrives.)",
-        message: "hey, I just sent you a printed photo in the mail with lulcards. It should get there in 5-7 business days, keep your eyes out for it!",
+        caption: "I just sent you a printed photo in the mail with lulcards.",
+        description: "It should arrive there in 5-7 business days, keep your eyes out for it in your mail!",
       }, 
       {
         occasion: "birthday",
         alert: "Do you want to post a message on FIRST_NAME's timeline to let them know a birthday card is on the way? (They won't be able to see your design until it arrives.)",
-        message: "hey, I just sent you a birthday card in the mail with lulcards. It should get there in 5-7 business days, keep your eyes out for it!",
+        caption: "I just sent you a printed card in the mail for your birthday with lulcards.",
+        description: "It should arrive there in 5-7 business days, keep your eyes out for it in your mail!",
       }, 
     ]
   end
