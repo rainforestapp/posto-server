@@ -77,7 +77,7 @@ CREATE TABLE `api_keys` (
   KEY `index_api_keys_on_user_id` (`user_id`),
   KEY `index_api_keys_on_token` (`token`),
   KEY `index_api_keys_on_latest` (`latest`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `apps` (
   `app_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -88,7 +88,7 @@ CREATE TABLE `apps` (
   `domain` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `apple_app_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`app_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `aps_tokens` (
   `aps_token_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -136,6 +136,7 @@ CREATE TABLE `card_designs` (
   `composed_full_photo_image_id` bigint(20) NOT NULL,
   `edited_full_photo_image_id` bigint(20) DEFAULT NULL,
   `stock_design_id` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `note` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`card_design_id`),
   KEY `index_card_designs_on_author_user_id` (`author_user_id`),
   KEY `index_card_designs_on_source_card_design_id` (`source_card_design_id`),
@@ -310,7 +311,7 @@ CREATE TABLE `credit_journal_entries` (
   PRIMARY KEY (`credit_journal_entry_id`),
   KEY `index_credit_journal_entries_on_user_id` (`user_id`),
   KEY `index_credit_journal_entries_on_source_type_and_source_id` (`source_type`,`source_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `credit_orders` (
   `credit_order_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -374,7 +375,7 @@ CREATE TABLE `facebook_tokens` (
   PRIMARY KEY (`facebook_token_id`),
   KEY `index_facebook_tokens_on_user_id` (`user_id`),
   KEY `index_facebook_tokens_on_token` (`token`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `rails_admin_histories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -503,7 +504,7 @@ CREATE TABLE `user_logins` (
   `meta` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`user_login_id`),
   KEY `index_user_logins_on_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `user_profiles` (
   `user_profile_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -530,7 +531,7 @@ CREATE TABLE `user_profiles` (
   KEY `index_user_profiles_on_email` (`email`),
   KEY `index_user_profiles_on_latest` (`latest`),
   KEY `index_user_profiles_on_birthday_day_and_birthday_month` (`birthday_day`,`birthday_month`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `user_referral_states` (
   `user_referral_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -568,7 +569,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `index_users_on_facebook_id` (`facebook_id`),
   KEY `index_users_on_uid` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO schema_migrations (version) VALUES ('20130201080909');
 
@@ -711,3 +712,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130406054401');
 INSERT INTO schema_migrations (version) VALUES ('20130413040339');
 
 INSERT INTO schema_migrations (version) VALUES ('20130413043218');
+
+INSERT INTO schema_migrations (version) VALUES ('20130417084558');
