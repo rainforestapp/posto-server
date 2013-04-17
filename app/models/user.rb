@@ -234,6 +234,7 @@ class User < ActiveRecord::Base
                         .except(*image_types)
                         .merge(design_type: :lulcards_alpha, app: app)
                         .merge(image_ids)
+                        .merge(note: payload["note"])
 
     card_design = self.authored_card_designs.create!(card_design_args)
 
