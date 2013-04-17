@@ -136,6 +136,10 @@ CONFIG = SampleableConfig.define do
   order_submitted_credit_prompt_message "Thank you for your order. You can save up to 25% on your next order by using credits."
   order_submitted_credit_prompt_cancel_action "No Thanks"
   order_submitted_credit_prompt_action "Refill Now"
+  order_submitted_invite_prompt_header "Earn Free Credits"
+  order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting friends."
+  order_submitted_invite_prompt_cancel_action "No Thanks"
+  order_submitted_invite_prompt_action "Earn Credits"
 
   credit_order_submitted_header "Thanks!"
   credit_order_submitted_message "CREDITS credits have been added to your account. You now have TOTAL credits."
