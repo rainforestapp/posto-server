@@ -126,6 +126,22 @@ class PostcardImageGenerator < ImageGenerator
                                       sent_text_line_offset += 32
                                     end
 
+                                    note = card_design.note || "Hello"
+
+                                    note_offset = 0
+
+                                    word_wrap(note, 35).split(/\n/).each do |line|
+                                      back_with_text.annotate(back, 680, 0, 1134, 320 + note_offset, line) do
+                                        self.fill = "#FFFFFF"
+                                        self.stroke = 'transparent'
+                                        self.pointsize = 24
+                                        self.font("#{File.dirname(__FILE__)}/../resources/fonts/HelveticaNeueCondensedBold.ttf")
+                                        self.text_align(Magick::LeftAlign)
+                                      end
+
+                                      note_offset += 28
+                                    end
+
                                     back_with_text.annotate(back, 0, 0, 100, 1228, @card_printing.card_number) do
                                       self.fill = "#AAAAAA"
                                       self.stroke = 'transparent'
@@ -133,7 +149,6 @@ class PostcardImageGenerator < ImageGenerator
                                       self.font("#{File.dirname(__FILE__)}/../resources/fonts/HelveticaNeueCondensedBold.ttf")
                                       self.text_align(Magick::LeftAlign)
                                     end
-
 
                                     front.write("png:" + front_image_file.path)
                                     back.write("png:" + back_image_file.path)
