@@ -127,6 +127,8 @@ CONFIG = SampleableConfig.define do
   min_birthday_days 0
   max_birthday_days 14
   birthday_nag "Send a card to a friend for their birthday."
+  note_max_length 140
+  default_notes [ { occasion: "birthday", note: "Happy birthday!" } ]
 
   order_submitted_header "Thanks!"
   order_submitted_message "Your order has been submitted. We'll notify and e-mail you as we process it."
