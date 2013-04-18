@@ -435,25 +435,50 @@ class User < ActiveRecord::Base
     existing_users = User.where(facebook_id: facebook_ids)
                          .includes(:recipient_addresses, :user_profiles, :birthday_request_responses).to_a
 
-    reminders.each do |reminder|
-      facebook_id = reminder[:facebook_id]
-      user = existing_users.find { |u| u.facebook_id == facebook_id }
-      user ||= User.where(facebook_id: facebook_id).first_or_create!
+    [].tap do |requests|
+      reminders.each do |reminder|
+        facebook_id = reminder[:facebook_id]
+        user = existing_users.find { |u| u.facebook_id == facebook_id }
+        user ||= User.where(facebook_id: facebook_id).first_or_create!
 
-      if user.requires_birthday_request?
-        birthday_request = self.sent_birthday_requests.create!(
-          request_recipient_user: user,
-          app: options[:app],
-          birthday_request_medium: :facebook_message,
-          birthday_request_payload: { message: options[:message] },
-        )
+        if user.requires_birthday_request?
+          birthday_request = self.sent_birthday_requests.create!(
+            request_recipient_user: user,
+            app: options[:app],
+            birthday_request_medium: :facebook_message,
+            birthday_request_payload: { message: options[:message] },
+          )
 
-        birthday_request.state = reminder[:birthday_request_sent] ? :sent : :outgoing
+          birthday_request.state = reminder[:birthday_request_sent] ? :sent : :outgoing
+
+          requests << birthday_request
+        end
+      end
+
+      if Rails.env == "production"
+        self.execute_birthday_requests_workflow!(requests)
       end
     end
   end
 
   private 
+
+  def execute_birthday_requests_workflow!(birthday_requests)
+    return if birthday_requests.size == 0
+
+    swf = AWS::SimpleWorkflow.new
+    domain = swf.domains["posto-#{Rails.env == "production" ? "prod" : "dev"}"]
+    workflow_type = domain.workflow_types['BirthdayRequestWorkflow.processRequests', CONFIG.for_app(self.app).birthday_request_workflow_version]
+    java_request_ids = birthday_requests.map { |r| ["java.lang.Long", r.birthday_request_id] }
+    input = ["[Ljava.lang.Object;", 
+            [["[Ljava.lang.Long", java_request_ids],
+              self.facebook_token.token]].to_json
+    workflow_id = "user-birthdays-#{self.user_id.to_s}-#{SecureRandom.hex}"
+
+    tags = []
+
+    workflow_type.start_execution input: input, workflow_id: workflow_id, tag_list: tags
+  end
 
   def ensure_order_payload_valid(payload, *args)
     errors = []

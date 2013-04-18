@@ -19,10 +19,8 @@ module Api
         # punted for now since always falls back on profile birthday
         # and worst case scenario is someone has the wrong birthday.
 
-        user = User.where(facebook_id: params[:facebook_id]).first
-        return head :bad_request unless user
-
         User.transaction_with_retry do
+          user = User.where(facebook_id: params[:facebook_id]).first_or_create!
           user.birthday_request_responses.create!(birthday: birthday,
                                                   sender_user_id: @current_user.user_id)
         end
