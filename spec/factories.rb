@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  sequence(:facebook_id) { |n| 300000 + n }
+  sequence(:facebook_id) { |n| (300000 + n).to_s }
 
   factory :app do
     name { Faker::Lorem.word }
@@ -9,7 +9,7 @@ FactoryGirl.define do
 
   factory :user, 
     aliases: [:recipient_user, :request_sender_user, :request_recipient_user,
-              :order_sender_user, :author_user] do
+              :order_sender_user, :author_user, :sender_user] do
     facebook_id { generate(:facebook_id) }
 
     factory :greg_user do
@@ -113,5 +113,11 @@ FactoryGirl.define do
   factory :card_printing do
     recipient_user
     print_number { Random.new.rand(1000) }
+  end
+
+  factory :birthday_request_response do
+    recipient_user
+    sender_user
+    birthday { Time.now }
   end
 end

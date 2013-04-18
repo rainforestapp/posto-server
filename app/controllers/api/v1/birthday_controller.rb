@@ -22,8 +22,10 @@ module Api
         user = User.where(facebook_id: params[:facebook_id]).first
         return head :bad_request unless user
 
-        user.birthday_request_responses.create!(birthday: birthday,
-                                                sender_user_id: @current_user.user_id)
+        User.transaction_with_retry do
+          user.birthday_request_responses.create!(birthday: birthday,
+                                                  sender_user_id: @current_user.user_id)
+        end
 
         respond_to do
           format.json do

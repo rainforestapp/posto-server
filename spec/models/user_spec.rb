@@ -337,4 +337,38 @@ describe User do
       user.deduct_credits!(10, app: app)
     end).to raise_error(InsufficientCreditsError)
   end
+
+  it "should create birthday requests for user" do
+    user = create(:greg_user)
+    app = create(:app)
+
+    user_with_birthday = create(:birthday_request_response).recipient_user
+
+    reminders = [
+      { facebook_id: "123123", birthday_request_sent: true },
+      { facebook_id: "321321", birthday_request_sent: false },
+      { facebook_id: user_with_birthday.facebook_id, birthday_request_sent: false },
+    ]
+
+    user.set_birthday_reminders(reminders, app: app, message: "What up")
+
+    first_user = User.where(facebook_id: "123123").first
+    first_user.should_not be_nil
+    first_user.received_birthday_requests.size.should == 1
+    first_user.received_birthday_requests[0].state.should == :sent
+    first_user.received_birthday_requests[0].payload[:message].should == "What up"
+
+    second_user = User.where(facebook_id: "321321").first
+    second_user.should_not be_nil
+    second_user.received_birthday_requests.size.should == 1
+    second_user.received_birthday_requests[0].state.should == :outgoing
+
+    user_with_birthday.reload.received_birthday_requests.size.should == 0
+
+    user.set_birthday_reminders(reminders, app: app, message: "What up")
+
+    first_user.reload.received_birthday_requests.size.should == 1
+    second_user.reload.received_birthday_requests.size.should == 1
+    user_with_birthday.reload.received_birthday_requests.size.should == 0
+  end
 end

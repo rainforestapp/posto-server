@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
 
   has_many :sent_address_requests, foreign_key: "request_sender_user_id", class_name: "AddressRequest", order: "created_at desc"
   has_many :received_address_requests, foreign_key: "request_recipient_user_id", class_name: "AddressRequest", order: "created_at desc"
-  has_many :sent_birthday_requests, foreign_key: "request_sender_user_id", class_name: "birthdayRequest", order: "created_at desc"
+  has_many :sent_birthday_requests, foreign_key: "request_sender_user_id", class_name: "BirthdayRequest", order: "created_at desc"
   has_many :received_birthday_requests, foreign_key: "request_recipient_user_id", class_name: "BirthdayRequest", order: "created_at desc"
   has_many :card_orders, foreign_key: "order_sender_user_id"
   has_many :authored_card_designs, foreign_key: "author_user_id", class_name: "CardDesign"
@@ -420,6 +420,35 @@ class User < ActiveRecord::Base
             end
           end
         end
+      end
+    end
+  end
+
+  def set_birthday_reminders(reminders, *args)
+    options = args.extract_options!
+
+    raise ArgumentError.new("missing app") unless options[:app]
+    raise ArgumentError.new("missing message") unless options[:message]
+
+    facebook_ids = reminders.map { |r| r[:facebook_id] }
+
+    existing_users = User.where(facebook_id: facebook_ids)
+                         .includes(:recipient_addresses, :user_profiles, :birthday_request_responses).to_a
+
+    reminders.each do |reminder|
+      facebook_id = reminder[:facebook_id]
+      user = existing_users.find { |u| u.facebook_id == facebook_id }
+      user ||= User.where(facebook_id: facebook_id).first_or_create!
+
+      if user.requires_birthday_request?
+        birthday_request = self.sent_birthday_requests.create!(
+          request_recipient_user: user,
+          app: options[:app],
+          birthday_request_medium: :facebook_message,
+          birthday_request_payload: { message: options[:message] },
+        )
+
+        birthday_request.state = reminder[:birthday_request_sent] ? :sent : :outgoing
       end
     end
   end
