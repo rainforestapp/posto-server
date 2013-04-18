@@ -40,7 +40,9 @@ Posto::Application.routes.draw do
       resources :photo_upload_tokens
 
       resource :users do
-        resources :facebook, controller: "Users"
+        resources :facebook, controller: "Users" do
+          resource :birthday, controller: "Birthday"
+        end
       end
 
       resource :addresses

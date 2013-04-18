@@ -9,9 +9,12 @@ class User < ActiveRecord::Base
   has_one_audited :facebook_token
   has_one_audited :stripe_customer
   has_one_audited :recipient_address, foreign_key: "recipient_user_id"
+  has_one_audited :birthday_request_response, foreign_key: "recipient_user_id"
 
   has_many :sent_address_requests, foreign_key: "request_sender_user_id", class_name: "AddressRequest", order: "created_at desc"
   has_many :received_address_requests, foreign_key: "request_recipient_user_id", class_name: "AddressRequest", order: "created_at desc"
+  has_many :sent_birthday_requests, foreign_key: "request_sender_user_id", class_name: "birthdayRequest", order: "created_at desc"
+  has_many :received_birthday_requests, foreign_key: "request_recipient_user_id", class_name: "BirthdayRequest", order: "created_at desc"
   has_many :card_orders, foreign_key: "order_sender_user_id"
   has_many :authored_card_designs, foreign_key: "author_user_id", class_name: "CardDesign"
   has_many :card_printings, foreign_key: "recipient_user_id"
@@ -149,8 +152,24 @@ class User < ActiveRecord::Base
     received_address_requests.first.try(:pending?)
   end
 
+  def birthday
+    self.user_profile.try(:birthday) || self.birthday_request_response.try(:birthday)
+  end
+
+  def has_birthday?
+    !birthday.nil?
+  end
+
+  def has_pending_birthday_request?
+    received_birthday_requests.first.try(:pending?)
+  end
+
   def requires_address_request?
     !has_up_to_date_address? && !has_pending_address_request?
+  end
+
+  def requires_birthday_request?
+    !has_birthday? && !has_pending_birthday_request?
   end
 
   def enqueue_address_request!(*args)
@@ -161,6 +180,17 @@ class User < ActiveRecord::Base
       app: options[:app],
       address_request_medium: options[:medium],
       address_request_payload: args[0],
+    )
+  end
+
+  def enqueue_birthday_request!(*args)
+    options = args.extract_options!
+
+    self.sent_birthday_requests.create!(
+      request_recipient_user: options[:recipient],
+      app: options[:app],
+      birthday_request_medium: options[:medium],
+      birthday_request_payload: args[0],
     )
   end
 
