@@ -123,6 +123,7 @@ CONFIG = SampleableConfig.define do
   max_photo_byte_size 24 * 1024 * 1024
   recipient_address_expiration_days 31 * 6
   address_request_expiration_days 6
+  birthday_request_expiration_days 6
   cvc_enabled false
   min_birthday_days 0
   max_birthday_days 14
@@ -197,6 +198,18 @@ CONFIG = SampleableConfig.define do
       title: "!!!",
       button_label: "Send",
       known_address_label: "I know @@@'s address",
+    }
+  end
+
+  facebook_birthday_allow_messages do
+    variant 1, "hey setting up", {
+      header_primary: "We need to verify\n@@@'s birthday.",
+      header_secondary: "Send ### a Facebook message.",
+      message: "hey when's your birthday, i'm setting up some reminders\n",
+      disclaimer: "This message will be sent if you want a birthday reminder for %%%. We'll notify you to set your reminder when %%% responds.",
+      title: "!!!",
+      button_label: "Send",
+      known_address_label: "I know @@@'s birthday",
     }
   end
 

@@ -3,26 +3,37 @@ module Api
     class UsersController < ApplicationController
       def show
         respond_to do |format|
-          facebook_id = params[:id]
+          # Nasty bit for backwards compatibility
+          return_array = params[:id].include?(",") || params[:multi]
+          facebook_ids = params[:id].split(",")
 
-          recipient = {
-            facebook_id: facebook_id,
-            address_request_required: true,
-          }
+          existing_users = User.where(facebook_id: facebook_ids)
+                               .includes(:recipient_addresses, :user_profiles, :birthday_request_responses).to_a
 
-          user = User.where(:facebook_id => facebook_id).first
+          recipients = facebook_ids.map do |facebook_id|
+            {
+              facebook_id: facebook_id,
+              address_request_required: true,
+              birthday_request_required: true,
+            }.tap do |recipient|
+              user = existing_users.find { |u| u.facebook_id == facebook_id }
 
-          if user
-            recipient[:user_id] = user.user_id 
-            recipient[:address_request_required] = user.requires_address_request?
+              if user
+                recipient[:user_id] = user.user_id 
+                recipient[:birthday] = user.birthday
 
-            if user.recipient_address
-              recipient[:location] = "#{user.recipient_address.city}, #{user.recipient_address.state}"
+                recipient[:address_request_required] = user.requires_address_request?
+                recipient[:birthday_request_required] = user.requires_birthday_request?
+
+                if user.recipient_address
+                  recipient[:location] = "#{user.recipient_address.city}, #{user.recipient_address.state}"
+                end
+              end
             end
           end
 
           format.json do
-            render :json => recipient
+            render :json => return_array ? recipients : recipients.first
           end
         end
       end
