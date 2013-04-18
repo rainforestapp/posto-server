@@ -48,4 +48,19 @@ class FacebookMessageActivities
     return "expired" if address_request.expired?
     return "no_progress"
   end
+
+  def send_message_for_birthday_request(birthday_request_id)
+    birthday_request = BirthdayRequest.find(birthday_request_id)
+    birthday_request.send!
+    true
+  end
+
+  def check_for_birthday_request_progress(birthday_request_id)
+    birthday_request = BirthdayRequest.find(birthday_request_id)
+
+    return "has_birthday" if birthday_request.request_recipient_user.has_birthday?
+    return "has_message" if birthday_request.has_new_facebook_thread_activity?
+    return "expired" if birthday_request.expired?
+    return "no_progress"
+  end
 end
