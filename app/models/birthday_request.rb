@@ -2,6 +2,7 @@ class BirthdayRequest < ActiveRecord::Base
   include AppendOnlyModel
   include HasOneAudited
   include HasAuditedState
+  include RecipientRequest
 
   attr_accessible :request_recipient_user, :app, :birthday_request_medium, :birthday_request_payload, :state
 

@@ -33,7 +33,10 @@ Posto::Application.routes.draw do
       end
 
       resources :apps do
-        resource :current_user, controller: "CurrentUser"
+        resource :current_user, controller: "CurrentUser" do
+          resources :birthday_reminders
+        end
+
         resources :config, controller: "Conf"
       end
 
