@@ -214,6 +214,8 @@ CONFIG = SampleableConfig.define do
     }
   end
 
+  birthday_reminder_recipient_prompt "Choose who you'll send birthday cards to."
+
   default_captions do
     variant 1, "many", [
       "lol", "haha", "lulz", "sup", "wat", "oh hai", "wtf", "fail", "yolo", "nope", "meh", "woof",
