@@ -105,6 +105,7 @@ CONFIG = SampleableConfig.define do
     { type: "recipient", message: "To choose your recipients you'll need to connect to Facebook." },
     { type: "friends_photos", message: "To view your friends' shared photos you'll need to connect to Facebook." },
     { type: "facebook_photos", message: "To view your Facebook photos you'll need to connect to Facebook." },
+    { type: "send_message", message: "To send messages, you'll need to grant permission on Facebook." },
   ]
 
   order_workflow_version "2.1"
