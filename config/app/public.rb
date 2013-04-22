@@ -101,6 +101,12 @@ CONFIG = SampleableConfig.define do
   api_key_expiration_days 30
   api_key_renewal_days 15
 
+  facebook_connect_messages [
+    { type: "recipient", message: "To choose your recipients you'll need to connect to Facebook." },
+    { type: "friends_photos", message: "To view your friends' shared photos you'll need to connect to Facebook." },
+    { type: "facebook_photos", message: "To view your Facebook photos you'll need to connect to Facebook." },
+  ]
+
   order_workflow_version "2.1"
   birthday_request_workflow_version "1.0"
 
