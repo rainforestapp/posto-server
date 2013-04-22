@@ -111,6 +111,14 @@ CONFIG = SampleableConfig.define do
   fb_permissions ["email", "read_mailbox", "xmpp_login", "user_location", "user_birthday", "friends_location", "user_photos", "friends_photos", "friends_birthday"]
   fb_message_permissions ["read_mailbox", "xmpp_login"]
   fb_fields ["gender", "birthday"]
+
+  facebook_connect_messages [
+    { type: "recipient", message: "To choose your recipients you'll need to connect to Facebook." },
+    { type: "friends_photos", message: "To view your friends' shared photos you'll need to connect to Facebook." },
+    { type: "facebook_photos", message: "To view your Facebook photos you'll need to connect to Facebook." },
+    { type: "send_message", message: "To send messages, you'll need to grant permission on Facebook." },
+  ]
+
   processing_fee -1
   card_fee 125
   processing_credits 0
