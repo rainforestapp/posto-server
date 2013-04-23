@@ -214,8 +214,8 @@ CONFIG = SampleableConfig.define do
     variant 1, "hey setting up", {
       header_primary: "We need to verify\n@@@'s birthday.",
       header_secondary: "Send ### a Facebook message.",
-      message: "hey when's your birthday, i'm setting up some reminders\n",
-      disclaimer: "This message will be sent if you want a birthday reminder for %%%. We'll notify you to set your reminder when %%% responds.",
+      message: "hey when's your birthday? i'm setting up some reminders\n",
+      disclaimer: "This message will be sent if you set a birthday reminder for $$$. We'll notify you to confirm your reminder when %%% responds.",
       title: "!!!",
       button_label: "Send",
       known_address_label: "I know @@@'s birthday",
@@ -224,7 +224,7 @@ CONFIG = SampleableConfig.define do
 
   birthday_reminder_recipient_prompt "Choose who you'll send birthday cards to."
   birthday_reminder_days 7
-  birthday_reminder_buy_info_text "We'll send you a reminder DAYS in advance to send a birthday card to these friends."
+  birthday_reminder_buy_info_text "You'll get a reminder 7 days before their birthdays."
 
   default_captions do
     variant 1, "many", [
