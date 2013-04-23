@@ -223,6 +223,8 @@ CONFIG = SampleableConfig.define do
   end
 
   birthday_reminder_recipient_prompt "Choose who you'll send birthday cards to."
+  birthday_reminder_days 7
+  birthday_reminder_buy_info_text "We'll send you a reminder DAYS in advance to send a birthday card to these friends."
 
   default_captions do
     variant 1, "many", [
