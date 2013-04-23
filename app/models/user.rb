@@ -441,17 +441,28 @@ class User < ActiveRecord::Base
         user = existing_users.find { |u| u.facebook_id == facebook_id }
         user ||= User.where(facebook_id: facebook_id).first_or_create!
 
-        if user.requires_birthday_request?
-          birthday_request = self.sent_birthday_requests.create!(
-            request_recipient_user: user,
-            app: options[:app],
-            birthday_request_medium: :facebook_message,
-            birthday_request_payload: { message: options[:message] },
-          )
+        if reminder[:supplied_birthday]
+          unless /[01][0-9]\/[0-3][0-9]/ =~ reminder[:supplied_birthday]
+            raise ArgumentError.new("birthday #{reminder}") 
+          end
 
-          birthday_request.state = reminder[:birthday_request_sent] ? :sent : :outgoing
+          birthday = Chronic.parse("#{reminder[:supplied_birthday]}/1904 00:00:00")
 
-          requests << birthday_request
+          user.birthday_request_responses.create!(birthday: birthday,
+                                                  sender_user_id: self.user_id)
+        else
+          if user.requires_birthday_request?
+            birthday_request = self.sent_birthday_requests.create!(
+              request_recipient_user: user,
+              app: options[:app],
+              birthday_request_medium: :facebook_message,
+              birthday_request_payload: { message: options[:message] },
+            )
+
+            birthday_request.state = reminder[:birthday_request_sent] ? :sent : :outgoing
+
+            requests << birthday_request
+          end
         end
       end
 

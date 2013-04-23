@@ -348,6 +348,7 @@ describe User do
       { facebook_id: "123123", birthday_request_sent: true },
       { facebook_id: "321321", birthday_request_sent: false },
       { facebook_id: user_with_birthday.facebook_id, birthday_request_sent: false },
+      { facebook_id: "333333", birthday_request_sent: false, supplied_birthday: "05/23" },
     ]
 
     user.set_birthday_reminders(reminders, app: app, message: "What up")
@@ -362,6 +363,11 @@ describe User do
     second_user.should_not be_nil
     second_user.received_birthday_requests.size.should == 1
     second_user.received_birthday_requests[0].state.should == :outgoing
+
+    third_user = User.where(facebook_id: "333333").first
+    third_user.should_not be_nil
+    third_user.birthday_request_responses.first.birthday.should == "Mon, 23 May 1904"
+    third_user.birthday_request_responses.first.sender_user.should == user
 
     user_with_birthday.reload.received_birthday_requests.size.should == 0
 
