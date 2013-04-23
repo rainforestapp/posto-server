@@ -55,7 +55,7 @@ CONFIG = SampleableConfig.define do
       }, 
       {
         occasion: "birthday",
-        alert: "Post on FIRST_NAME's timeline to let PRONOUN_OBJECT know you bought PRONOUN_OBJECT a card for PRONOUN_OBJECT birthday? (Don't worry, posting won't let PRONOUN_OBJECT see what your card looks like.)",
+        alert: "Post on FIRST_NAME's timeline to let PRONOUN_OBJECT know you bought PRONOUN_OBJECT a card? (Don't worry, posting won't let PRONOUN_OBJECT see what your card looks like.)",
         caption: "I just sent you a printed card in the mail for your birthday with lulcards.",
         description: "It should arrive in the mail 5-7 business days, keep your eyes out for it!",
       }, 
