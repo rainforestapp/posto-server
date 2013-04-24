@@ -212,6 +212,18 @@ CONFIG = SampleableConfig.define do
     }
   end
 
+  facebook_address_birthday_allow_messages do
+    variant 1, "hey birthday card", {
+      header_primary: "We need to verify\n@@@'s address.",
+      header_secondary: "Send ### a Facebook message.",
+      message: "hey I want to mail you a birthday card, what's your mailing address?\n",
+      disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
+      title: "!!!",
+      button_label: "Send",
+      known_address_label: "I know @@@'s address",
+    }
+  end
+
   facebook_birthday_allow_messages do
     variant 1, "hey setting up", {
       header_primary: "@@@'s birthday\nisn't on Facebook.",

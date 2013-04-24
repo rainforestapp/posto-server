@@ -152,8 +152,28 @@ class User < ActiveRecord::Base
     received_address_requests.first.try(:pending?)
   end
 
+  def self.birthday_for_user_id(user_id)
+    Rails.cache.fetch(birthday_cache_key_for_user_id(user_id)) do
+      user = User.find(user_id)
+
+      if user
+        user.user_profile.try(:birthday) || user.birthday_request_response.try(:birthday)
+      else
+        nil
+      end
+    end
+  end
+
+  def self.invalidate_birthday_for_user_id(user_id)
+    Rails.cache.delete(birthday_cache_key_for_user_id(user_id))
+  end
+
+  def self.birthday_cache_key_for_user_id(user_id)
+    ["cached_birthday", user_id]
+  end
+
   def birthday
-    self.user_profile.try(:birthday) || self.birthday_request_response.try(:birthday)
+    User.birthday_for_user_id(self.user_id)
   end
 
   def has_birthday?
@@ -428,7 +448,6 @@ class User < ActiveRecord::Base
     options = args.extract_options!
 
     raise ArgumentError.new("missing app") unless options[:app]
-    raise ArgumentError.new("missing message") unless options[:message]
 
     facebook_ids = reminders.map { |r| r[:facebook_id] }
 
@@ -457,7 +476,7 @@ class User < ActiveRecord::Base
                 request_recipient_user: user,
                 app: options[:app],
                 birthday_request_medium: :facebook_message,
-                birthday_request_payload: { message: options[:message] },
+                birthday_request_payload: { message: reminder[:message] || "hey what's your birthday"},
               )
 
               birthday_request.state = reminder[:birthday_request_sent] ? :sent : :outgoing
