@@ -229,7 +229,7 @@ CONFIG = SampleableConfig.define do
       header_primary: "@@@'s birthday\nisn't on Facebook.",
       header_secondary: "Send ### a message to ask.",
       message: "hey when's your birthday? i'm setting up some reminders\n",
-      disclaimer: "This message will be sent if you set a birthday reminder for @@@. We'll notify you to confirm your reminder when %%% responds.",
+      disclaimer: "This message will be sent if you set a birthday reminder for @@@. We'll notify you when %%% responds.",
       title: "!!!",
       button_label: "Send",
       known_address_label: "I know @@@'s birthday",
@@ -237,9 +237,9 @@ CONFIG = SampleableConfig.define do
   end
 
   birthday_reminder_recipient_prompt "Choose who you'll send birthday cards to."
-  birthday_reminder_days 7
+  birthday_reminder_days 9
   birthday_reminder_buy_info_text "You'll get a reminder 7 days before their birthday."
-  birthday_reminder_message "NAME's birthday is in DAYS days! Send a card now to make sure PRONOUN_SUBJECT gets it in time."
+  birthday_reminder_message "NAME's birthday is on DATE. Mail PRONOUN_OBJECT a card now for PRONOUN_SUBJECT to get it in time."
   birthday_reminder_hour 12
   birthday_reminder_minute 30
   birthday_reminder_version 1
