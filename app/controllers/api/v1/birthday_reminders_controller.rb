@@ -6,20 +6,22 @@ module Api
       respond_to :json
 
       def create
-        reminders = params[:reminders]
-        return head :bad_request unless reminders
+        payload = params[:payload]
+        return head :bad_request unless payload
 
         app = App.by_name(params[:app_id])
-        message = params[:message]
-        return head :bad_request unless message
+        return head :bad_request unless app
 
-        reminders = JSON.parse(reminders)
+        reminders = JSON.parse(payload)["reminders"]
+        return head :bad_request unless reminders
+
+        reminders.each(&:symbolize_keys!)
 
         User.transaction_with_retry do
-          @current_user.set_birthday_reminders(reminders, app: app, message: message)
+          @current_user.set_birthday_reminders(reminders, app: app)
         end
 
-        respond_to do
+        respond_to do |format|
           format.json do
             render json: { status: :ok }
           end

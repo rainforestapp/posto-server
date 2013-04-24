@@ -5,6 +5,10 @@ class UserProfile < ActiveRecord::Base
 
   belongs_to_and_marks_latest_within :user
 
+  before_save do
+    User.invalidate_birthday_for_user_id(self.user_id)
+  end
+
   def direct_object_pronoun
     gender_pronoun ["him", "her", self.first_name]
   end

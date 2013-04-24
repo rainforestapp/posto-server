@@ -345,13 +345,13 @@ describe User do
     user_with_birthday = create(:birthday_request_response).recipient_user
 
     reminders = [
-      { facebook_id: "123123", birthday_request_sent: true },
-      { facebook_id: "321321", birthday_request_sent: false },
-      { facebook_id: user_with_birthday.facebook_id, birthday_request_sent: false },
-      { facebook_id: "333333", birthday_request_sent: false, supplied_birthday: "05/23" },
+      { facebook_id: "123123", birthday_request_sent: true, message: "What up" },
+      { facebook_id: "321321", birthday_request_sent: false, message: "What up" },
+      { facebook_id: user_with_birthday.facebook_id, birthday_request_sent: false, message: "What up" },
+      { facebook_id: "333333", birthday_request_sent: false, supplied_birthday: "05/23", message: "What up" },
     ]
 
-    user.set_birthday_reminders(reminders, app: app, message: "What up")
+    user.set_birthday_reminders(reminders, app: app)
 
     first_user = User.where(facebook_id: "123123").first
     first_user.should_not be_nil
