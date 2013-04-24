@@ -152,6 +152,16 @@ class User < ActiveRecord::Base
     received_address_requests.first.try(:pending?)
   end
 
+  def self.user_id_for_facebook_id(facebook_id)
+    Rails.cache.fetch(["user_id_for_fb_id", facebook_id]) do
+      User.where(facebook_id: facebook_id).first_or_create!.user_id
+    end
+  end
+
+  def self.birthday_for_facebook_id(facebook_id)
+    self.birthday_for_user_id(self.user_id_for_facebook_id(facebook_id))
+  end
+
   def self.birthday_for_user_id(user_id)
     Rails.cache.fetch(birthday_cache_key_for_user_id(user_id)) do
       user = User.find(user_id)
@@ -462,11 +472,17 @@ class User < ActiveRecord::Base
 
         unless user.has_birthday?
           if reminder[:supplied_birthday]
-            unless /[01][0-9]\/[0-3][0-9]/ =~ reminder[:supplied_birthday]
-              raise ArgumentError.new("birthday #{reminder}") 
+            birthday = nil
+
+            if /^[01][0-9]\/[0-3][0-9]\/[0-9][0-9][0-9][0-9]$/ =~ reminder[:supplied_birthday]
+              birthday = Chronic.parse("#{reminder[:supplied_birthday]} 00:00:00")
+            elsif /^[01][0-9]\/[0-3][0-9]$/ =~ reminder[:supplied_birthday]
+              birthday = Chronic.parse("#{reminder[:supplied_birthday]}/1904 00:00:00")
             end
 
-            birthday = Chronic.parse("#{reminder[:supplied_birthday]}/1904 00:00:00")
+            unless birthday
+              raise ArgumentError.new("birthday #{reminder}") 
+            end
 
             user.birthday_request_responses.create!(birthday: birthday,
                                                     sender_user_id: self.user_id)
