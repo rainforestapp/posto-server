@@ -118,6 +118,7 @@ CONFIG = SampleableConfig.define do
     { type: "friends_photos", message: "To view your friends' shared photos you'll need to connect to Facebook." },
     { type: "facebook_photos", message: "To view your Facebook photos you'll need to connect to Facebook." },
     { type: "send_message", message: "To send messages, you'll need to grant permission on Facebook." },
+    { type: "post_tutorial", message: "Earn 30 credits (and mail 3 free cards) by connecting to Facebook." },
   ]
 
   processing_fee -1
@@ -136,8 +137,9 @@ CONFIG = SampleableConfig.define do
   cvc_enabled false
   min_birthday_days 0
   max_birthday_days 14
-  birthday_nag "Send a card to a friend for their birthday."
+  birthday_nag "Send them a birthday card they'll love."
   note_max_length 140
+  facebook_prompt_post_tutorial true
   default_notes [ { occasion: "birthday", note: "Happy birthday!" } ]
 
   order_submitted_header "Thanks!"
