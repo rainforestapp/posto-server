@@ -40,6 +40,7 @@ CONFIG = SampleableConfig.define do
     invite_share_image "http://www.lulcards.com/images/iphone.png"
     invite_disabled false
     sent_timeline_alert_header "Post to Timeline"
+    birthday_reminder_post_checkout_nag "lulcards make hilarious birthday gifts! Set up reminders to send cards to friends for their birthday. We'll look up their birthdays on Facebook."
     sent_timeline_posts [
       {
         occasion: "none",
@@ -137,7 +138,7 @@ CONFIG = SampleableConfig.define do
   cvc_enabled false
   min_birthday_days 0
   max_birthday_days 14
-  birthday_nag "Send them a birthday card they'll love."
+  birthday_nag "Send a surprise birthday card."
   note_max_length 140
   facebook_prompt_post_tutorial true
   default_notes [ { occasion: "birthday", note: "Happy birthday!" } ]
@@ -239,11 +240,15 @@ CONFIG = SampleableConfig.define do
   birthday_reminder_recipient_prompt "Choose who you'll send birthday cards to."
   birthday_reminder_days 9
   birthday_reminder_buy_info_text "You'll get a reminder 7 days before their birthday."
-  birthday_reminder_message "NAME's birthday is on DATE. Mail PRONOUN_OBJECT a card now for PRONOUN_SUBJECT to get it in time."
+  birthday_reminder_message "NAME's birthday is on DATE! Mail a card now for PRONOUN_OBJECT to get it in time."
   birthday_reminder_hour 12
   birthday_reminder_minute 30
   birthday_reminder_version 1
   birthday_reminder_update_message "Your birthday reminders have been updated. You now have NUMBER reminders."
+  birthday_reminder_post_checkout_nag_header "Set Reminders"
+  birthday_reminder_post_checkout_nag_action "Remind Me"
+  birthday_reminder_post_checkout_nag_when_empty true
+  birthday_reminder_post_checkout_nag_on_birthday true
 
   default_captions do
     variant 1, "many", [
