@@ -5,6 +5,14 @@ module RecipientRequest
     [:outgoing, :sent].include?(self.state) && !expired?
   end
 
+  def outgoing?
+    self.state == :outgoing
+  end
+
+  def sent?
+    self.state == :sent
+  end
+
   def expired?
     Time.zone.now > self.created_at + self.expiration_days
   end

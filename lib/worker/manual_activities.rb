@@ -42,4 +42,22 @@ class ManualActivities
 
     true
   end
+
+  def try_manual_parsing_birthday_for_request(birthday_request_id)
+    queue_name = "#{queue_prefix}-manual-birthday-parse"
+    payload = { birthday_request_id: birthday_request_id, task_token: self.task_token }
+    AWS::SQS.new.queues.named(queue_name).send_message(payload.to_json)
+
+    if ENV["MANUAL_NOTIFY_EMAIL_ADDRESS"]
+      AWS::SimpleEmailService.new.send_email(
+        subject: "[POSTO MANUAL] Birthday Request ##{birthday_request_id}",
+        from: "orders@lulcards.com",
+        to: ENV["MANUAL_NOTIFY_EMAIL_ADDRESS"],
+        body_text: ""
+      ) rescue nil
+    end
+
+    true
+  end
+
 end

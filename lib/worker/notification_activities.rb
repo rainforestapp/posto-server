@@ -23,11 +23,31 @@ class NotificationActivities
     true
   end
 
+  def send_notification_of_birthday_request_completed(birthday_request_id)
+    birthday_request = BirthdayRequest.find(birthday_request_id)
+    sender = birthday_request.request_sender_user
+    recipient = birthday_request.request_recipient_user
+
+    if recipient.user_profile && recipient.has_birthday?
+      recipient_name = recipient.user_profile.first_name
+      possessive_pronoun = recipient.user_profile.possessive_pronoun
+      birthday = recipient.printable_birthday
+      message = "#{recipient_name}'s birthday is on #{birthday}. Slide to set a reminder."
+      birthday_request.send_sender_notification(message)
+    end
+
+    true
+  end
+
   def send_notification_of_address_request_rejected(address_request_id)
     true
   end
 
   def send_notification_of_address_request_expired(address_request_id)
+    true
+  end
+
+  def send_notification_of_birthday_request_expired(address_request_id)
     true
   end
   
