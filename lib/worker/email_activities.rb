@@ -57,4 +57,12 @@ class EmailActivities
     OrderConfirmationMailer.expired_email(card_order).deliver
     true
   end
+
+  def send_email_of_birthday_request_completed(birthday_request_id)
+    true
+  end
+
+  def send_email_of_birthday_request_expired(birthday_request_id)
+    true
+  end
 end

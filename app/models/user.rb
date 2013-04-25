@@ -186,6 +186,12 @@ class User < ActiveRecord::Base
     User.birthday_for_user_id(self.user_id)
   end
 
+  def printable_birthday
+    birthday = self.birthday
+    return "" unless birthday
+    "#{birthday.strftime("%B")} #{birthday.day.ordinalize}"
+  end
+
   def has_birthday?
     !birthday.nil?
   end
