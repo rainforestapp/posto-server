@@ -54,8 +54,8 @@ Posto::Application.routes.draw do
 
   resource :admin, controller: "Admin" do
     scope module: :admin do
-      resources :address_parse_tasks, :verify_order_tasks, 
-                :address_requests, :card_orders, :promo_codes
+      resources :address_parse_tasks, :birthday_parse_tasks, :verify_order_tasks, 
+                :birthday_requests, :address_requests, :card_orders, :promo_codes
 
       resource :address_api, controller: "AddressApi"
 

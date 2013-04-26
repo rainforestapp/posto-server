@@ -345,10 +345,10 @@ describe User do
     user_with_birthday = create(:birthday_request_response).recipient_user
 
     reminders = [
-      { facebook_id: "123123", birthday_request_sent: true, message: "What up" },
-      { facebook_id: "321321", birthday_request_sent: false, message: "What up" },
-      { facebook_id: user_with_birthday.facebook_id, birthday_request_sent: false, message: "What up" },
-      { facebook_id: "333333", birthday_request_sent: false, supplied_birthday: "05/23", message: "What up" },
+      { facebook_id: "123123", birthday_request_sent: true, birthday_request_message: "What up" },
+      { facebook_id: "321321", birthday_request_sent: false, birthday_request_message: "What up" },
+      { facebook_id: user_with_birthday.facebook_id, birthday_request_sent: false, birthday_request_message: "What up" },
+      { facebook_id: "333333", birthday_request_sent: false, supplied_birthday: "05/23", birthday_request_message: "What up" },
     ]
 
     user.set_birthday_reminders(reminders, app: app)
@@ -371,7 +371,7 @@ describe User do
 
     user_with_birthday.reload.received_birthday_requests.size.should == 0
 
-    user.set_birthday_reminders(reminders, app: app, message: "What up")
+    user.set_birthday_reminders(reminders, app: app)
 
     first_user.reload.received_birthday_requests.size.should == 1
     second_user.reload.received_birthday_requests.size.should == 1

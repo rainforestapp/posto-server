@@ -498,7 +498,7 @@ class User < ActiveRecord::Base
                 request_recipient_user: user,
                 app: options[:app],
                 birthday_request_medium: :facebook_message,
-                birthday_request_payload: { message: reminder[:message] || "hey what's your birthday"},
+                birthday_request_payload: { message: reminder[:birthday_request_message] },
               )
 
               birthday_request.state = reminder[:birthday_request_sent] ? :sent : :outgoing
@@ -522,11 +522,10 @@ class User < ActiveRecord::Base
 
     swf = AWS::SimpleWorkflow.new
     domain = swf.domains["posto-#{Rails.env == "production" ? "prod" : "dev"}"]
-    workflow_type = domain.workflow_types['BirthdayRequestWorkflow.processRequests', CONFIG.for_app(self.app).birthday_request_workflow_version]
-    java_request_ids = birthday_requests.map { |r| ["java.lang.Long", r.birthday_request_id] }
+    workflow_type = domain.workflow_types['BirthdayRequestWorkflow.processRequests', CONFIG.for_app(birthday_requests[0].app).birthday_request_workflow_version]
+    java_request_ids = birthday_requests.map { |r| r.birthday_request_id }
     input = ["[Ljava.lang.Object;", 
-            [["[Ljava.lang.Long", java_request_ids],
-              self.facebook_token.token]].to_json
+            [["[Ljava.lang.Long;", java_request_ids]]].to_json
     workflow_id = "user-birthdays-#{self.user_id.to_s}-#{SecureRandom.hex}"
 
     tags = []

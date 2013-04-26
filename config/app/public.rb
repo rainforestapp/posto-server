@@ -103,7 +103,7 @@ CONFIG = SampleableConfig.define do
   api_key_renewal_days 15
 
   order_workflow_version "2.1"
-  birthday_request_workflow_version "1.0"
+  birthday_request_workflow_version "2.1"
 
   effects true
   caption_swap_button false

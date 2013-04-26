@@ -25,6 +25,9 @@ module QueuedTaskController
       if data["address_request_id"]
         address_request = AddressRequest.find(data["address_request_id"])
         redirect_to admin_address_request_path address_request, task_token: task_token
+      elsif data["birthday_request_id"]
+        birthday_request = BirthdayRequest.find(data["birthday_request_id"])
+        redirect_to admin_birthday_request_path birthday_request, task_token: task_token
       elsif data["card_order_id"]
         card_order = CardOrder.find(data["card_order_id"])
         redirect_to admin_card_order_path card_order, task_token: task_token
