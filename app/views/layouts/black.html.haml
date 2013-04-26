@@ -6,7 +6,6 @@
     %meta{ property: "twitter:card", content: "summary" }
     %meta{ property: "twitter:title", content: @title }
     %meta{ property: "twitter:description", content: "Send hilarious REAL photos in the mail to your friends with lulcards." }
-    %meta{ property: "og:type", content: "product" }
 
     - if @app
       %meta{ property: "og:site_name", content: @app.name }
@@ -27,6 +26,9 @@
 
     - if @meta_creator
       %meta{ property: "twitter:creator", content: @meta_creator }
+
+    - if @og_type
+      %meta{ property: "og:type", content: @og_type }
 
     %meta{ property: "og:app_id", content: @config.facebook_app_id }
     %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0"}

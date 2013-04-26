@@ -41,6 +41,7 @@ CONFIG = SampleableConfig.define do
     invite_disabled false
     sent_timeline_alert_header "Post to Timeline"
     birthday_reminder_post_checkout_nag "lulcards make hilarious birthday gifts! Set up reminders to send cards to friends for their birthday. We'll look up their birthdays on Facebook."
+    open_graph_type "lulcards:card"
     sent_timeline_posts [
       {
         occasion: "none",
