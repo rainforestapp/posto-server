@@ -8,7 +8,7 @@ class CardPrintingsController < ApplicationController
     @sender = @card_order.order_sender_user
     @sender_name = @sender.user_profile.name
     @card_design = @card_order.card_design
-    @message = @card_design.note if @card_design.note.try(:size) > 0
+    @message = @card_design.note if @card_design.note && @card_design.note.size > 0
     @app = @card_order.app
     @config = CONFIG.for_app(@app)
     @image_url = @card_printing.card_printing_composition.jpg_card_front_image.public_url
