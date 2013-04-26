@@ -42,6 +42,7 @@ CONFIG = SampleableConfig.define do
     sent_timeline_alert_header "Post to Timeline"
     birthday_reminder_post_checkout_nag "lulcards make hilarious birthday gifts! Set up reminders to send cards to friends for their birthday. We'll look up their birthdays on Facebook."
     open_graph_type "lulcards:card"
+    open_graph_endpoint "https://graph.facebook.com/me/lulcards:mail"
     sent_timeline_posts [
       {
         occasion: "none",
@@ -113,7 +114,11 @@ CONFIG = SampleableConfig.define do
   server_debug false
   fb_permissions ["email", "read_mailbox", "xmpp_login", "user_location", "user_birthday", "friends_location", "user_photos", "friends_photos", "friends_birthday"]
   fb_message_permissions ["read_mailbox", "xmpp_login"]
+  fb_share_permissions ["publish_actions"]
   fb_fields ["gender", "birthday"]
+  open_graph_share_enabled true
+  open_graph_share_header "Share on Facebook"
+  open_graph_share_message "Do you want to share your card on Facebook?"
 
   facebook_connect_messages [
     { type: "recipient", message: "To choose your recipients you'll need to connect to Facebook." },
@@ -121,6 +126,7 @@ CONFIG = SampleableConfig.define do
     { type: "facebook_photos", message: "To view your Facebook photos you'll need to connect to Facebook." },
     { type: "send_message", message: "To send messages, you'll need to grant permission on Facebook." },
     { type: "post_tutorial", message: "Earn 30 credits (and mail 3 free cards) by connecting to Facebook." },
+    { type: "share_card", message: "Share your cards on Facebook." },
   ]
 
   processing_fee -1
