@@ -510,7 +510,7 @@ class User < ActiveRecord::Base
       end
 
       if Rails.env == "production"
-        self.execute_birthday_requests_workflow!(requests)
+        execute_birthday_requests_workflow!(requests)
       end
     end
   end
