@@ -27,7 +27,10 @@ Posto::Application.routes.draw do
           resources :tokens, controller: "PaymentToken"
         end
 
-        resources :card_orders
+        resources :card_orders do
+          resource :share, controller: "Share"
+        end
+
         resources :aps_tokens
         resources :credit_orders
       end
