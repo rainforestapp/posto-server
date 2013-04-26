@@ -229,7 +229,7 @@ CONFIG = SampleableConfig.define do
     variant 1, "hey setting up", {
       header_primary: "@@@'s birthday\nisn't on Facebook.",
       header_secondary: "Send ### a message to ask.",
-      message: "hey when's your birthday? i'm setting up some reminders\n",
+      message: "hey when's your birthday?\n\n",
       disclaimer: "This message will be sent if you set a birthday reminder for @@@. We'll notify you when %%% responds.",
       title: "!!!",
       button_label: "Send",
