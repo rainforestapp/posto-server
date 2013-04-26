@@ -92,7 +92,7 @@ class FacebookMessageActivities
       "access_token" => token
     }
 
-    if true
+    if card_design.photo_is_user_generated
       StoryImageGenerator.new(card_design).generate! do |story_image_path|
         story_image = sender.create_and_publish_image_file!(story_image_path, app: card_order.app, image_type: :card_preview)
         params["image[0][url]"] = story_image.public_url
