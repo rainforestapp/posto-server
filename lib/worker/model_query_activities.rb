@@ -15,12 +15,12 @@ class ModelQueryActivities
     end
   end
 
-  def outgoing_birthday_request_ids_from(birthday_request_ids)
-    BirthdayRequest.find(birthday_request_ids).select(&:outgoing?)
+  def get_outgoing_birthday_request_ids_from(birthday_request_ids)
+    BirthdayRequest.find(birthday_request_ids).select(&:outgoing?).map(&:birthday_request_id)
   end
 
   def get_sent_birthday_request_ids_from(birthday_request_ids)
-    BirthdayRequest.find(birthday_request_ids).select(&:sent?)
+    BirthdayRequest.find(birthday_request_ids).select(&:sent?).map(&:birthday_request_id)
   end
 
   def get_printable_card_printing_ids(card_order_id)
