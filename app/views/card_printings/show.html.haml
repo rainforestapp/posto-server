@@ -5,6 +5,10 @@
         %img{ border:0, src: @image_url }
   .span6
     .author
+      - if @message
+        .author-message
+          %h4
+            #{@message}
       .author-from
         %h5
           From:
@@ -27,6 +31,10 @@
       .sent-by-caption
         Sent with
       .sent-by-image
-        %a{ href: "http://#{@app.domain}" }
-          = image_tag "SentByLogo.png", width: 102, height: 27
+        %p
+          %a{ href: @config.itunes_url }
+            = image_tag "SentByLogo.png", width: 102, height: 27
+        %p
+          %a{ href: @config.itunes_url }
+            = image_tag "AppStore.png", width: 175, height: 52
 
