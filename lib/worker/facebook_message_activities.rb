@@ -76,4 +76,14 @@ class FacebookMessageActivities
     return "expired" if birthday_request.expired?
     return "no_progress"
   end
+
+  def share_card_order_object
+#fb:explicitly_shared=true
+#  image[0][url]=http://www.yourdomain.com/images/my_camera_pizza_pic.jpg&
+#    image[0][user_generated]=true&
+#    https://graph.facebook.com/me/lulcards:mail?
+#    access_token=ACCESS_TOKEN&
+#    method=POST&
+#    card=http://samples.ogp.me/535056913204674
+  end
 end
