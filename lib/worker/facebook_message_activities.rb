@@ -1,3 +1,5 @@
+require "story_image_generator"
+
 class FacebookMessageActivities
   def verify_order_with_facebook_token(card_order_id, facebook_token)
     card_order = CardOrder.find(card_order_id)
@@ -77,13 +79,36 @@ class FacebookMessageActivities
     return "no_progress"
   end
 
-  def share_card_order_object
-#fb:explicitly_shared=true
-#  image[0][url]=http://www.yourdomain.com/images/my_camera_pizza_pic.jpg&
-#    image[0][user_generated]=true&
-#    https://graph.facebook.com/me/lulcards:mail?
-#    access_token=ACCESS_TOKEN&
-#    method=POST&
-#    card=http://samples.ogp.me/535056913204674
+  def share_card_on_open_graph(card_order_id)
+    card_order = CardOrder.find(card_order_id)
+    card_design = card_order.card_design
+    sender = card_order.order_sender_user
+    token = sender.facebook_token.token
+    config = CONFIG.for_app(card_order.app)
+
+    params = {
+      "fb:explicitly_shared" => "true",
+      "card" => "http://#{card_order.app.domain}/card_printings/#{card_order.card_printings[0].uid}",
+      "access_token" => token
+    }
+
+    if true
+      StoryImageGenerator.new(card_design).generate! do |story_image_path|
+        story_image = sender.create_and_publish_image_file!(story_image_path, app: card_order.app, image_type: :card_preview)
+        params["image[0][url]"] = story_image.public_url
+        params["image[0][user_generated]"] = true
+      end
+    end
+
+    fb_uri = URI.parse(config.open_graph_endpoint)
+    http = Net::HTTP.new(fb_uri.host, 443)
+    http.use_ssl = true
+    http.ca_file = File.join(File.dirname(__FILE__), "../../certs/cacert.pem")
+    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    req = Net::HTTP::Post.new(fb_uri.request_uri)
+    req.set_form_data(params)
+    response = http.request(req)
+    raise response.body unless response.code == 200
+    true
   end
 end
