@@ -108,7 +108,7 @@ class FacebookMessageActivities
     req = Net::HTTP::Post.new(fb_uri.request_uri)
     req.set_form_data(params)
     response = http.request(req)
-    raise response.body unless response.code == 200
+    raise response.body unless response.code.to_i == 200
     true
   end
 end
