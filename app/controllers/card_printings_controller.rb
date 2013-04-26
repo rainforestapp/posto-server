@@ -23,6 +23,7 @@ class CardPrintingsController < ApplicationController
     @full_text = @full_text.gsub(/  /, " ").gsub(/^ */, "").gsub(/ *$/, "")
 
     @title = "#{@full_text} card by #{@sender_name} - #{@app.name}"
+    @og_title = "#{@full_text} card"
 
     unless @card_printing
       head :bad_request
