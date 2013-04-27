@@ -46,12 +46,12 @@ class PostcardImageGenerator < ImageGenerator
       end
 
       title_on_top = card_design.top_caption.size < card_design.bottom_caption.size
-      render_qr_on_front = true
+      render_qr_on_front = false
 
-      if card_design.top_caption.size > 0 && card_design.bottom_caption.size > 0
-        render_qr_on_front = false
-        title_on_top = false
-      end
+      #if card_design.top_caption.size > 0 && card_design.bottom_caption.size > 0
+      #  render_qr_on_front = false
+      #  title_on_top = false
+      #end
 
       composed_image_url = card_design.composed_full_photo_image.public_url
       profile_image_url = sender_user.profile_image_url(true)
