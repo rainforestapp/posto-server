@@ -47,7 +47,6 @@ class PostcardImageGenerator < ImageGenerator
 
       title_on_top = card_design.top_caption.size < card_design.bottom_caption.size
       render_qr_on_front = false
-      title_on_top = false
 
       #if card_design.top_caption.size > 0 && card_design.bottom_caption.size > 0
       #  render_qr_on_front = false
@@ -69,7 +68,7 @@ class PostcardImageGenerator < ImageGenerator
                     with_closed_tempfile do |front_qr_file|
                       with_closed_tempfile do |front_image_file|
                         with_closed_tempfile do |back_image_file|
-                          with_image(template_path + "/FrontTemplate#{render_qr_on_front ? (title_on_top ? "Flipped" : "") : "Codeless"}.png") do |front_template|
+                          with_image(template_path + "/FrontTemplate#{render_qr_on_front ? (title_on_top ? "Flipped" : "") : (title_on_top ? "FlippedCodeless" : "Codeless"}.png") do |front_template|
                             with_image(template_path + "/BackTemplate.png") do |back|
                               cols = composite.columns
                               rows = composite.rows
