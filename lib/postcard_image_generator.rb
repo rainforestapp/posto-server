@@ -47,6 +47,7 @@ class PostcardImageGenerator < ImageGenerator
 
       title_on_top = card_design.top_caption.size < card_design.bottom_caption.size
       render_qr_on_front = false
+      title_on_top = false
 
       #if card_design.top_caption.size > 0 && card_design.bottom_caption.size > 0
       #  render_qr_on_front = false
