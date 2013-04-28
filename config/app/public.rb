@@ -174,7 +174,6 @@ CONFIG = SampleableConfig.define do
 
   shuffle_captions do
     variant 1, true
-    variant 1, false
   end
 
   card_io do
@@ -265,14 +264,6 @@ CONFIG = SampleableConfig.define do
       "like a boss", "shit just got real", "u mad?", "cool story bro", "sucks to suck", "haters gonna hate",
       "seems legit", "i have no idea what i'm doing", "whatcha thinkin bout?", "oh god why", "its a trap",
       "bitch please", "i am not good with computer",
-    ]
-
-    variant 1, "few", [
-      "lulz", "sup", "wat", "wtf", "fail", "yolo", "nope", "meh", "woof",
-      "win", "douche", "fuuuuu", "fuck yea", "fml", "derp", "dat ass", "meh", 
-      "fuck it", "pwned", "not bad", "mother of god", "dafuq",
-      "like a boss", "shit just got real", "cool story bro", 
-      "seems legit", "bitch please", 
     ]
   end
 
