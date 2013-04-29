@@ -118,7 +118,7 @@ CONFIG = SampleableConfig.define do
   fb_fields ["gender", "birthday"]
   open_graph_share_enabled true
   open_graph_share_header "Share on Facebook"
-  open_graph_share_message "Share your card on Facebook after it arrives?"
+  open_graph_share_message "Share your card after it arrives?"
   open_graph_share_delay_days 9
 
   facebook_connect_messages [
