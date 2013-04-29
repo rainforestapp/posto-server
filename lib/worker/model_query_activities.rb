@@ -48,6 +48,10 @@ class ModelQueryActivities
     end
   end
 
+  def get_days_until_share_for_card_order(card_order_id)
+    CardOrder.find(card_order_id).days_until_share || -1
+  end
+
   private
 
   def close_supplied_address_requests_for_order!(card_order_id)
