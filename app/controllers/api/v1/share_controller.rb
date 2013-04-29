@@ -5,7 +5,8 @@ module Api
 
       def create
         card_order = CardOrder.find(params[:card_order_id])
-        card_order.execute_share_workflow! if Rails.env == "production"
+        card_order.days_until_share = CONFIG.open_graph_share_delay_days
+        card_order.save!
 
         respond_to do |format|
           format.json { render json: { card_order_id: card_order.card_order_id } }
