@@ -190,9 +190,9 @@ CONFIG = SampleableConfig.define do
   facebook_allow_messages do
     variant 1, "hey want send", {
       header_primary: "We need to verify\n@@@'s address.",
-      header_secondary: "Send ### a Facebook message.",
+      header_secondary: "Send a message or enter it yourself.",
       message: "hey what's your mailing address, i want to send you something\n",
-      disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
+      disclaimer: "\n\nWe'll mail $$$ card once %%% responds.",
       title: "!!!",
       button_label: "Send",
       known_address_label: "I know @@@'s address",
@@ -200,9 +200,9 @@ CONFIG = SampleableConfig.define do
 
     variant 1, "hey short", {
       header_primary: "We need to verify\n@@@'s address.",
-      header_secondary: "Send ### a Facebook message.",
+      header_secondary: "Send a message or enter it yourself.",
       message: "hey what's your mailing address?\n\n",
-      disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
+      disclaimer: "\n\nWe'll mail $$$ card once %%% responds.",
       title: "!!!",
       button_label: "Send",
       known_address_label: "I know @@@'s address",
@@ -210,9 +210,9 @@ CONFIG = SampleableConfig.define do
 
     variant 1, "hey where", {
       header_primary: "We need to verify\n@@@'s address.",
-      header_secondary: "Send ### a Facebook message.",
+      header_secondary: "Send a message or enter it yourself.",
       message: "hey I want to mail you something, what's your mailing address?\n",
-      disclaimer: "This message will only be sent if you buy @@@ a card. We will mail $$$ card to the address %%% responds with.",
+      disclaimer: "\n\nWe'll mail $$$ card once %%% responds.",
       title: "!!!",
       button_label: "Send",
       known_address_label: "I know @@@'s address",
