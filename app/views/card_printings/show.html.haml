@@ -23,7 +23,7 @@
           = "Sent on #{@sent_on}"
     .actions
       .fb-like{ "send-data" => true, "data-width" => 450, "data-show-faces" => true, "data-colorscheme" => "dark",
-                "ref" => "card_printing" }
+                "ref" => "card_printing", "data-href" => @meta_url }
     .comments
       .fb-comments{ "data-href" => @meta_url, "data-width" => 470, "data-num-posts" => 20, "data-colorscheme" => "dark"}
 
