@@ -104,7 +104,7 @@ CONFIG = SampleableConfig.define do
   api_key_expiration_days 30
   api_key_renewal_days 15
 
-  order_workflow_version "2.1"
+  order_workflow_version "2.2"
   birthday_request_workflow_version "2.1"
 
   effects true
