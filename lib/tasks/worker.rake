@@ -13,18 +13,26 @@ namespace :worker do
     end
   end
 
-  def encode_to_java(data)
+  def encode_to_java(data, root)
     java_type = nil
     value = data
 
     if data.kind_of?(Hash)
       ["java.util.Map", value]
     elsif data.kind_of?(Array)
-      ["java.util.List", data.map { |v| encode_to_java(v) }]
+      ["java.util.List", data.map { |v| encode_to_java(v, false) }]
     elsif data.kind_of?(Fixnum)
-      ["java.lang.Long", data]
+      if root
+        data
+      else
+        ["java.lang.Long", data]
+      end
     elsif data.kind_of?(Float)
-      ["java.lang.Double", data]
+      if root
+        data
+      else
+        ["java.lang.Double", data]
+      end
     #elsif data.kind_of?(String)
     #  java_type = "java.lang.String"
     #elsif data.nil?
@@ -118,7 +126,7 @@ namespace :worker do
 
             unless is_manual
               begin
-                activity_task.complete!(result: encode_to_java(result).to_json)
+                activity_task.complete!(result: encode_to_java(result, true).to_json)
               rescue Exception => e
                 logger.error "[#{$$}] Activity Task Completion Mark Failed #{e.message}"
               end
