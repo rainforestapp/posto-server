@@ -84,6 +84,10 @@ CONFIG = SampleableConfig.define do
     invite_url_prefix "http://sendbabycards.com/ref"
     invite_share_image "http://www.sendbabycards.com/images/iphone.png"
     invite_disabled false
+    tutorial_postcard_line_1 "Send a beautiful printed photo postcard of your baby."
+    tutorial_postcard_line_2 "Friends and relatives alike will love it!"
+    subject_gender_info_line_1 "Tell us a bit about your new family member."
+    subject_gender_info_line_2 "Our cards are personalized for your baby."
   end
 
   if Rails.env == "development"
