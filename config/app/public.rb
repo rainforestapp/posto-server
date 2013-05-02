@@ -20,6 +20,7 @@ CONFIG = SampleableConfig.define do
 
   app "lulcards" do
     mixpanel_people_enabled false
+    mixpanel_revenue_enabled false
     page_title "lulcards: send hilarious real meme postcards"
     page_tagline "Send hilarious meme postcards, right from your phone."
     from_email "lulcards orders <orders@lulcards.com>"
@@ -91,6 +92,7 @@ CONFIG = SampleableConfig.define do
 
   app "babygrams" do
     mixpanel_people_enabled true
+    mixpanel_revenue_enabled true
     page_title "babygrams: send amazing baby photo postcards in the mail"
     page_tagline "Send amazing baby photo postcards in the mail."
     from_email "babygrams orders <orders@lulcards.com>"
