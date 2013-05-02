@@ -1,7 +1,7 @@
 class PromosController
   init: ->
     $(".login").click ->
-      FB.login((-> ), { scope: '<%= CONFIG.fb_permissions.join(",") %>' })
+      FB.login((-> ), { scope: '<%= @config.fb_permissions.join(",") %>' })
 
     handle_auth = (response) ->
       if response.status == "connected"
