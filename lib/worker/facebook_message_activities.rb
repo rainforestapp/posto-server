@@ -88,7 +88,7 @@ class FacebookMessageActivities
 
     params = {
       "fb:explicitly_shared" => "true",
-      "card" => "http://#{card_order.app.domain}/card_printings/#{card_order.card_printings[0].uid}",
+      config.open_graph_object => "http://#{card_order.app.domain}/card_printings/#{card_order.card_printings[0].uid}",
       "access_token" => token
     }
 

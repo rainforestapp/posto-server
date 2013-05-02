@@ -81,6 +81,7 @@ CONFIG = SampleableConfig.define do
     open_graph_share_message "Share your card after it arrives?"
     open_graph_share_delay_days 9
     open_graph_type "lulcards:card"
+    open_graph_object "postcard"
     open_graph_endpoint "https://graph.facebook.com/me/lulcards:mail"
     referral_credits 5
     order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting friends."
@@ -136,6 +137,7 @@ CONFIG = SampleableConfig.define do
     open_graph_share_message "Do you want to share your babygram on Facebook?"
     open_graph_share_delay_days 0
     open_graph_type "sendbabycards:postcard"
+    open_graph_object "postcard"
     open_graph_endpoint "https://graph.facebook.com/me/sendbabycards:mail"
     referral_credits 10
     order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting other parents."
