@@ -144,6 +144,7 @@ CONFIG = SampleableConfig.define do
     order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting other parents."
     ask_for_last_recipients true
     allow_lowercase_caption true
+    min_baby_birthday_reminder_delay_days 7
   end
 
   if Rails.env == "development"
