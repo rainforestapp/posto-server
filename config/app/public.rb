@@ -5,7 +5,6 @@ CONFIG = SampleableConfig.define do
   kill_switch false
   really_kill_switch false
   mixpanel_enabled true
-  mixpanel_people_enabled true
   mixpanel_event_screen []
   support_email "support@lulcards.com"
   uservoice_enabled true
@@ -20,6 +19,7 @@ CONFIG = SampleableConfig.define do
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
 
   app "lulcards" do
+    mixpanel_people_enabled false
     page_title "lulcards: send hilarious real meme postcards"
     page_tagline "Send hilarious meme postcards, right from your phone."
     from_email "lulcards orders <orders@lulcards.com>"
@@ -90,6 +90,7 @@ CONFIG = SampleableConfig.define do
   end
 
   app "babygrams" do
+    mixpanel_people_enabled true
     page_title "babygrams: send amazing baby photo postcards in the mail"
     page_tagline "Send amazing baby photo postcards in the mail."
     from_email "babygrams orders <orders@lulcards.com>"
