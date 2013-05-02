@@ -22,6 +22,7 @@ CONFIG = SampleableConfig.define do
   app "lulcards" do
     facebook_app_id ENV["FB_API_KEY"]
     facebook_api_secret ENV["FB_API_SECRET"]
+    fb_permissions ["email", "read_mailbox", "xmpp_login", "user_location", "user_birthday", "friends_location", "user_photos", "friends_photos", "friends_birthday"]
     itunes_url "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
     kill_message "lulcards is unavailable."
     urban_airship_application_key ENV["URBAN_AIRSHIP_APP_KEY"]
@@ -43,6 +44,7 @@ CONFIG = SampleableConfig.define do
     birthday_reminder_post_checkout_nag "lulcards make hilarious birthday gifts! Set up reminders to send cards to friends for their birthday. We'll look up their birthdays on Facebook."
     open_graph_type "lulcards:card"
     open_graph_endpoint "https://graph.facebook.com/me/lulcards:mail"
+    referral_credits 5
     sent_timeline_posts [
       {
         occasion: "none",
@@ -63,31 +65,68 @@ CONFIG = SampleableConfig.define do
         description: "It should arrive in the mail 5-7 business days, keep your eyes out for it!",
       }, 
     ]
+
+    facebook_connect_messages [
+      { type: "recipient", message: "To choose your recipients you'll need to connect to Facebook." },
+      { type: "friends_photos", message: "To view your friends' shared photos you'll need to connect to Facebook." },
+      { type: "facebook_photos", message: "To view your Facebook photos you'll need to connect to Facebook." },
+      { type: "send_message", message: "To send messages, you'll need to grant permission on Facebook." },
+      { type: "post_tutorial", message: "Earn 30 credits (and mail 3 free cards) by connecting to Facebook." },
+      { type: "share_card", message: "Share your cards on Facebook." },
+    ]
+
+    open_graph_share_enabled true
+    open_graph_share_header "Share on Facebook"
+    open_graph_share_message "Share your card after it arrives?"
+    open_graph_share_delay_days 9
+    referral_credits 5
   end
 
-  app "babycards" do
+  app "babygrams" do
     facebook_app_id ENV["BABYCARDS_FB_API_KEY"]
     facebook_api_secret ENV["BABYCARDS_FB_API_SECRET"]
-    kill_message "BabyCards is unavailable."
+    fb_permissions ["email", "user_location", "user_photos", "friends_photos"]
+    kill_message "babygrams is unavailable."
     urban_airship_application_key ENV["BABYCARDS_URBAN_AIRSHIP_APP_KEY"]
     urban_airship_application_secret ENV["BABYCARDS_URBAN_AIRSHIP_APP_SECRET"]
     urban_airship_master_secret ENV["BABYCARDS_URBAN_AIRSHIP_MASTER_SECRET"]
     nag_version 1
     nag_app_versions ["1.0"]
     nag_title "New Version Available"
-    nag_message "A new version of BabyCards is available."
+    nag_message "A new version of babygrams is available."
     nag_action "Update"
     nag_target "TODO"
-    share_caption "Check out this card I got from NAME! #babycards"
-    invite_sms_message "I've been sending great pictures of BABY_NAME to people in the mail with BabyCards, check it out! LINK"
-    invite_share_message "#BabyCards lets you send amazing photos of your baby in the mail. check it out!"
-    invite_url_prefix "http://sendbabycards.com/ref"
-    invite_share_image "http://www.sendbabycards.com/images/iphone.png"
+    share_caption "Check out this card I got from NAME! #babygrams"
+    invite_sms_message "I've been sending amazing baby photo postcards in the mail with babygrams, check it out! LINK"
+    invite_share_message "#babygrams lets you send amazing baby photo postcards in the mail. check it out!"
+    invite_url_prefix "http://babygramsapp.com/ref"
+    invite_share_image "http://www.lulcards.com/images/iphone.png"
     invite_disabled false
     tutorial_postcard_line_1 "Send a beautiful printed photo postcard of your baby."
     tutorial_postcard_line_2 "Friends and relatives alike will love it!"
     subject_gender_info_line_1 "Tell us a bit about your new family member."
     subject_gender_info_line_2 "Our cards are personalized for your baby."
+    subject_info_info_line_1 "Congratulations!"
+    subject_info_info_line_2 "We'll include $$$ name and age on the babygrams that you send."
+    subject_default_name_boy "(Ex. Michael Joseph)"
+    subject_default_name_girl "(Ex. Mary Elizabeth)"
+    subject_name_field_label "Your baby's first & middle name:"
+    subject_birthday_field_label "@@@'s birthday:"
+
+    facebook_connect_messages [
+      { type: "recipient", message: "To choose your recipients you'll need to connect to Facebook." },
+      { type: "friends_photos", message: "To view your friends' shared photos you'll need to connect to Facebook." },
+      { type: "facebook_photos", message: "To view your Facebook photos you'll need to connect to Facebook." },
+      { type: "send_message", message: "To send messages, you'll need to grant permission on Facebook." },
+      { type: "post_tutorial", message: "Earn 30 credits (and mail 3 free babygrams) by connecting to Facebook." },
+      { type: "share_card", message: "Share your cards on Facebook." },
+    ]
+
+    open_graph_share_enabled true
+    open_graph_share_header "Share on Facebook"
+    open_graph_share_message "Share your babygram on Facebook?"
+    open_graph_share_delay_days 0
+    referral_credits 20
   end
 
   if Rails.env == "development"
@@ -100,8 +139,8 @@ CONFIG = SampleableConfig.define do
       share_url_path "http://lulcards.com/v/"
     end
 
-    app "babycards" do
-      share_url_path "http://sendbabycards.com/v/"
+    app "babygrams" do
+      share_url_path "http://babygramsapp.com/v/"
     end
   end
 
@@ -116,29 +155,14 @@ CONFIG = SampleableConfig.define do
   number_of_clicks_before_tooltip 1
   design_edit_hint_mode "tooltip"
   server_debug false
-  fb_permissions ["email", "read_mailbox", "xmpp_login", "user_location", "user_birthday", "friends_location", "user_photos", "friends_photos", "friends_birthday"]
   fb_message_permissions ["read_mailbox", "xmpp_login"]
   fb_share_permissions ["publish_actions"]
   fb_fields ["gender", "birthday"]
-  open_graph_share_enabled true
-  open_graph_share_header "Share on Facebook"
-  open_graph_share_message "Share your card after it arrives?"
-  open_graph_share_delay_days 9
-
-  facebook_connect_messages [
-    { type: "recipient", message: "To choose your recipients you'll need to connect to Facebook." },
-    { type: "friends_photos", message: "To view your friends' shared photos you'll need to connect to Facebook." },
-    { type: "facebook_photos", message: "To view your Facebook photos you'll need to connect to Facebook." },
-    { type: "send_message", message: "To send messages, you'll need to grant permission on Facebook." },
-    { type: "post_tutorial", message: "Earn 30 credits (and mail 3 free cards) by connecting to Facebook." },
-    { type: "share_card", message: "Share your cards on Facebook." },
-  ]
 
   processing_fee -1
   card_fee 125
   processing_credits 0
   card_credits 10
-  referral_credits 5
   signup_credits 30
   signup_credits_title "You Earned CREDITS Credits"
   signup_credits_message "You earned CREDITS credits by connecting your Facebook account!"
