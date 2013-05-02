@@ -298,7 +298,7 @@ CONFIG = SampleableConfig.define do
   birthday_reminder_version 1
   birthday_reminder_update_message "Your birthday reminders have been updated. You now have NUMBER reminders."
   birthday_reminder_post_checkout_nag_header "Set Reminders"
-  birthday_reminder_post_checkout_nag_action "Remind Me"
+  birthday_reminder_post_checkout_nag_action "Set Up"
   birthday_reminder_post_checkout_nag_when_empty true
   birthday_reminder_post_checkout_nag_on_birthday true
 
