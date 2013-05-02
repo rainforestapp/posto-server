@@ -86,6 +86,7 @@ CONFIG = SampleableConfig.define do
     referral_credits 5
     order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting friends."
     ask_for_last_recipients true
+    allow_lowercase_caption false
   end
 
   app "babygrams" do
@@ -142,6 +143,7 @@ CONFIG = SampleableConfig.define do
     referral_credits 10
     order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting other parents."
     ask_for_last_recipients true
+    allow_lowercase_caption false
   end
 
   if Rails.env == "development"
