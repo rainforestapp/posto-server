@@ -80,6 +80,8 @@ CONFIG = SampleableConfig.define do
     open_graph_share_message "Share your card after it arrives?"
     open_graph_share_delay_days 9
     referral_credits 5
+    order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting friends."
+    ask_for_last_recipients true
   end
 
   app "babygrams" do
@@ -124,9 +126,11 @@ CONFIG = SampleableConfig.define do
 
     open_graph_share_enabled true
     open_graph_share_header "Share on Facebook"
-    open_graph_share_message "Share your babygram on Facebook?"
+    open_graph_share_message "Share your babygram?"
     open_graph_share_delay_days 0
-    referral_credits 20
+    referral_credits 10
+    order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting other parents."
+    ask_for_last_recipients true
   end
 
   if Rails.env == "development"
@@ -186,7 +190,6 @@ CONFIG = SampleableConfig.define do
   order_submitted_credit_prompt_cancel_action "Not Now"
   order_submitted_credit_prompt_action "Refill Now"
   order_submitted_invite_prompt_header "Earn Free Credits"
-  order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting friends."
   order_submitted_invite_prompt_cancel_action "No Thanks"
   order_submitted_invite_prompt_action "Earn Credits"
 
