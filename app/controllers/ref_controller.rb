@@ -7,7 +7,8 @@ class RefController < ApplicationController
     if promo
       redirect_to "https://api.lulcards.com/apps/#{promo.app.name}/promo?promo_code=#{params[:id]}"
     else
-      redirect_to "https://api.lulcards.com/apps/#{promo.app.name}/signup?referral_code=#{params[:id]}"
+      app = params[:app] || "lulcards"
+      redirect_to "https://api.lulcards.com/apps/#{app}/signup?referral_code=#{params[:id]}"
     end
   end
 end
