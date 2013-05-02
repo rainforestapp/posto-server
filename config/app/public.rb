@@ -31,10 +31,10 @@ CONFIG = SampleableConfig.define do
     urban_airship_application_key ENV["URBAN_AIRSHIP_APP_KEY"]
     urban_airship_application_secret ENV["URBAN_AIRSHIP_APP_SECRET"]
     urban_airship_master_secret ENV["URBAN_AIRSHIP_MASTER_SECRET"]
-    nag_version 2
-    nag_app_versions ["1.0", "1.0.1"]
+    nag_version 3
+    nag_app_versions ["1.0", "1.0.1", "1.1", "1.1.1"]
     nag_title "New Version Available"
-    nag_message "A new version of lulcards is available. Upgrade now to get 3 *free* cards!"
+    nag_message "A new version of lulcards is available. Upgrade now to send birthday lulcards and share cards on Facebook!"
     nag_action "Update"
     nag_target "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
     share_caption "Check out this card I got from NAME! #lulcards"
