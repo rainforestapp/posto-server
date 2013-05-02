@@ -301,7 +301,8 @@ class User < ActiveRecord::Base
                         .merge(design_type: :lulcards_alpha, app: app)
                         .merge(image_ids)
                         .merge(note: payload["note"], 
-                               photo_is_user_generated: payload["photo_is_user_generated"])
+                               photo_is_user_generated: payload["photo_is_user_generated"],
+                               postcard_subject_json: payload["postcard_subject_json"])
 
     card_design = self.authored_card_designs.create!(card_design_args)
 
