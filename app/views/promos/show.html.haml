@@ -1,11 +1,10 @@
 .promo
   .span6{ class: "offset4 header" }
     .logo
-      =image_tag "InviteLogo.png", width: 162, height: 43
+      =image_tag "#{@app.name}/InviteLogo.png", width: 162, height: 43
   .span6{ class: "offset4 header hide-on-signed-in" }
-    .description.lead
-      Send hilarious <b>real</b> photos.<br>Right from your phone. 
-    =image_tag "InviteHandCard.png", width: 208, height: 267
+    .description.lead= @tagline
+    =image_tag "#{@app.name}/InviteHandCard.png", width: 208, height: 267
   .span6{ class: "offset4 header hide-on-signed-in" }
     .description.lead
       Log in to get #{@promo.credits} credits.

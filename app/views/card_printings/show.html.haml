@@ -4,23 +4,24 @@
       %a{ target:"_blank", href: @image_url }
         %img{ border:0, src: @image_url }
   .span6
-    .author
-      - if @message
-        .author-message
-          %h4
-            #{@message}
-      .author-from
-        %h5
-          From:
-      .author-image
-        %a{ target:"_blank", href: "http://facebook.com/#{@sender.facebook_id}" }
-          %img{ border: 0, width: 64, height: 64, src: @profile_image_url }
-      .author-info
-        .author-name
+    - if @app == App.lulcards
+      .author
+        - if @message
+          .author-message
+            %h4
+              #{@message}
+        .author-from
+          %h5
+            From:
+        .author-image
           %a{ target:"_blank", href: "http://facebook.com/#{@sender.facebook_id}" }
-            = @sender.user_profile.name
-        .author-sent
-          = "Sent on #{@sent_on}"
+            %img{ border: 0, width: 64, height: 64, src: @profile_image_url }
+        .author-info
+          .author-name
+            %a{ target:"_blank", href: "http://facebook.com/#{@sender.facebook_id}" }
+              = @sender.user_profile.name
+          .author-sent
+            = "Sent on #{@sent_on}"
     .actions
       .fb-like{ "send-data" => true, "data-width" => 450, "data-show-faces" => true, "data-colorscheme" => "dark",
                 "ref" => "card_printing", "data-href" => @meta_url }
@@ -33,7 +34,7 @@
       .sent-by-image
         %p
           %a{ href: @config.itunes_url }
-            = image_tag "SentByLogo.png", width: 102, height: 27
+            = image_tag "#{@app.name}/SentByLogo.png", width: 102, height: 27
         %p
           %a{ href: @config.itunes_url }
             = image_tag "AppStore.png", width: 175, height: 52

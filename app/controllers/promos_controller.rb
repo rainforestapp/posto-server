@@ -4,12 +4,15 @@ class PromosController < ApplicationController
   layout "black"
 
   def show
-    @title = "lulcards: send hilarious REAL photos in the mail"
+    @app = App.by_name(params[:app_id])
+    @config = CONFIG.for_app(@app)
+
+    @title = @config.page_title
+    @tagline = @config.page_tagline
     
     @promo = CreditPromo.where(uid: params[:promo_code]).first
     @number_of_free_cards = @promo.credits / (@config.processing_credits + @config.card_credits)
-    @app = App.by_name(params[:app_id])
-    @meta_image = view_context.image_path("InviteHandCard.png")
+    @meta_image = view_context.image_path("#{@app.name}/InviteHandCard.png")
     @meta_creator = @app.name
     @disable_itunes_link = true
   end
@@ -26,7 +29,7 @@ class PromosController < ApplicationController
     return head :bad_request unless app
 
     @app = app
-    @meta_image = view_context.image_path("InviteHandCard.png")
+    @meta_image = view_context.image_path("#{@app.name}/InviteHandCard.png")
     @meta_creator = @app.name
     @app_url = @config.itunes_url
 

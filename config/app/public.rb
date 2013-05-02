@@ -20,6 +20,9 @@ CONFIG = SampleableConfig.define do
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
 
   app "lulcards" do
+    page_title "lulcards: send hilarious real meme postcards"
+    page_tagline "Send hilarious meme postcards, right from your phone."
+    from_email "lulcards orders <orders@lulcards.com>"
     facebook_app_id ENV["FB_API_KEY"]
     facebook_api_secret ENV["FB_API_SECRET"]
     fb_permissions ["email", "read_mailbox", "xmpp_login", "user_location", "user_birthday", "friends_location", "user_photos", "friends_photos", "friends_birthday"]
@@ -42,7 +45,7 @@ CONFIG = SampleableConfig.define do
     invite_disabled false
     sent_timeline_alert_header "Post to Timeline"
     birthday_reminder_post_checkout_nag "lulcards make hilarious birthday gifts! Set up reminders to send cards to friends for their birthday. We'll look up their birthdays on Facebook."
-    open_graph_type "lulcards:card"
+    open_graph_type "sendbabycards:postcard"
     open_graph_endpoint "https://graph.facebook.com/me/lulcards:mail"
     referral_credits 5
     sent_timeline_posts [
@@ -85,6 +88,9 @@ CONFIG = SampleableConfig.define do
   end
 
   app "babygrams" do
+    page_title "babygrams: send amazing baby photo postcards in the mail"
+    page_tagline "Send amazing baby photo postcards in the mail."
+    from_email "babygrams orders <orders@lulcards.com>"
     facebook_app_id ENV["BABYCARDS_FB_API_KEY"]
     facebook_api_secret ENV["BABYCARDS_FB_API_SECRET"]
     fb_permissions ["email", "user_location", "user_photos", "friends_photos"]
@@ -126,7 +132,7 @@ CONFIG = SampleableConfig.define do
 
     open_graph_share_enabled true
     open_graph_share_header "Share on Facebook"
-    open_graph_share_message "Share your babygram?"
+    open_graph_share_message "Do you want to share your babygram on Facebook?"
     open_graph_share_delay_days 0
     referral_credits 10
     order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting other parents."

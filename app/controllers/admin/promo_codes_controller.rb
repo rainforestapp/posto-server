@@ -4,7 +4,7 @@ module Admin
     end
 
     def create
-      app = App.lulcards
+      app = App.by_name(params[:app])
       credits = params[:credits].to_i
       credit_promo = CreditPromo.create!(app_id: app.app_id, credits: credits)
       credit_promo.state = :pending

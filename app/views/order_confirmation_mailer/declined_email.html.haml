@@ -2,6 +2,6 @@
   Your order has been cancelled.
 %div{ style: "color: #303030" }
   %p
-    Your lulcards order <b>##{@card_order.order_number}</b> had to be cancelled because your payment method was declined.
+    Your #{@app.name} order <b>##{@card_order.order_number}</b> had to be cancelled because your payment method was declined.
   %p
-    We're really sorry for the inconvenience. If you re-submit your order using the lulcards app you can enter new payment info.
+    We're really sorry for the inconvenience. If you re-submit your order using the #{@app.name} app you can enter new payment info.
