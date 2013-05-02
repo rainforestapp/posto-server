@@ -113,7 +113,7 @@ CONFIG = SampleableConfig.define do
     invite_url_prefix "http://babygramsapp.com/ref"
     invite_share_image "http://www.lulcards.com/images/iphone.png"
     invite_disabled false
-    tutorial_postcard_line_1 "Send a beautiful printed photo postcard of your baby."
+    tutorial_postcard_line_1 "Send an amazing printed photo postcard of your baby."
     tutorial_postcard_line_2 "Friends and relatives alike will love it!"
     subject_gender_info_line_1 "Tell us a bit about your new family member."
     subject_gender_info_line_2 "Our cards are personalized for your baby."
@@ -129,7 +129,7 @@ CONFIG = SampleableConfig.define do
       { type: "friends_photos", message: "To view your friends' shared photos you'll need to connect to Facebook." },
       { type: "facebook_photos", message: "To view your Facebook photos you'll need to connect to Facebook." },
       { type: "send_message", message: "To send messages, you'll need to grant permission on Facebook." },
-      { type: "post_tutorial", message: "Connect to Facebook to set up your babygrams account. You'll earn 30 credits, enough to mail 3 free postcards!" },
+      { type: "post_tutorial", message: "Connect to Facebook to set up your account. You'll earn 30 credits, enough to mail 3 free postcards!" },
       { type: "share_card", message: "Share your cards on Facebook." },
     ]
 
