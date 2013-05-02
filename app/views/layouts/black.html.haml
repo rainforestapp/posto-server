@@ -5,7 +5,7 @@
     %meta{ property: "og:title", content: @og_title || @title }
     %meta{ property: "twitter:card", content: "summary" }
     %meta{ property: "twitter:title", content: @title }
-    %meta{ property: "twitter:description", content: "Send hilarious REAL photos in the mail to your friends with lulcards." }
+    %meta{ property: "twitter:description", content: @tagline }
 
     - if @app
       %meta{ property: "og:site_name", content: @app.name }
@@ -48,7 +48,7 @@
       window.fbAsyncInit = function() {
         // init the FB JS SDK
         FB.init({
-          appId      : '487965654580467', // App ID from the App Dashboard
+          appId      : '#{@config.facebook_app_id}', // App ID from the App Dashboard
           channelUrl : 'https://api.lulcards.com/channel.html', // Channel File for x-domain communication
           status     : true, // check the login status upon init?
           cookie     : true, // set sessions cookies to allow your server to access the session?

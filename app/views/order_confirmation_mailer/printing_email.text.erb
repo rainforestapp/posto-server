@@ -1,6 +1,6 @@
 Thank you for your order.
 
-Your lulcards order #<%= @card_order.order_number %> is being processed. This is your receipt.
+Your <%= @app.name %> order #<%= @card_order.order_number %> is being processed. This is your receipt.
 
 We are printing your card<%= @card_printings.size > 1 ? "s" : "" %> for <%= @card_printings.map { |p| p.name_or_self("yourself") }.to_sentence %> and will notify you once <%= @card_printings.size > 1 ? "they" : "it" %> ha<%= @card_printings.size > 1 ? "ve" : "s" %> been mailed.
 

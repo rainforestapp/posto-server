@@ -22,8 +22,25 @@ class CardPrintingsController < ApplicationController
     @full_text = (@card_design.top_caption + " " + @card_design.bottom_caption).truncate(30)
     @full_text = @full_text.gsub(/  /, " ").gsub(/^ */, "").gsub(/ *$/, "")
 
-    @title = "#{@full_text} card by #{@sender_name} - #{@app.name}"
-    @og_title = "#{@full_text} card"
+    if @app == App.lulcards
+      @title = "#{@full_text} card by #{@sender_name} - made with #{@app.name}".strip
+      @og_title = "#{@full_text} card".strip
+    elsif @app == App.babygrams
+      baby_name = ""
+
+      postcard_subject = @card_design.postcard_subject
+
+      if postcard_subject && postcard_subject[:name]
+        baby_name = " of #{postcard_subject[:name]}"
+      end
+
+      @title = "#{@full_text} postcard#{baby_name} - made with #{@app.name}".strip
+      @og_title = "#{@full_text} postcard#{baby_name}".strip
+    else
+      @title = @config.page_title
+    end
+
+    @tagline = @config.page_tagline
 
     unless @card_printing
       head :bad_request

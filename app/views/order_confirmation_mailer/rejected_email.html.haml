@@ -2,7 +2,7 @@
   We're sorry, we had to cancel your order.
 %div{ style: "color: #303030" }
   %p
-    Your lulcards order <b>##{@card_order.order_number}</b> has been cancelled.
+    Your #{@app.name} order <b>##{@card_order.order_number}</b> has been cancelled.
   %p
-    We're sorry for the inconvenience. There are a number of reasons we may cancel your order. If there is inappropriate material on your card we are unable to mail it. Or, your recipients may not have mailing addresses we are able to send cards to (currently only U.S. mailing addresses are supported.) Please try your order again if you do feel it was erroneously cancelled. If you have any questions please contact support@lulcards.com.
+    We're sorry for the inconvenience. There are a number of reasons we may cancel your order. If there is inappropriate material on your card we are unable to mail it. Or, your recipients may not have mailing addresses we are able to send cards to (currently only U.S. mailing addresses are supported.) Please try your order again if you do feel it was erroneously cancelled. If you have any questions please contact support@#{@app.name}.com.
 %p

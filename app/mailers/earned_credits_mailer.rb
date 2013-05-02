@@ -11,7 +11,8 @@ class EarnedCreditsMailer < ActionMailer::Base
         @app = app
 
         mail(to: recipient_address,
-            subject: "You earned #{@earned_credits} #{app.name} credits")
+             from: config.from_email,
+             subject: "You earned #{@earned_credits} #{app.name} credits")
       end
     end
   end
