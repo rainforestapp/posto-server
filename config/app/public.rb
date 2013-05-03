@@ -5,7 +5,7 @@ CONFIG = SampleableConfig.define do
   kill_switch false
   really_kill_switch false
   mixpanel_enabled true
-  mixpanel_event_screen []
+  mixpanel_event_screen ["address_info_failed"]
   support_email "support@lulcards.com"
   uservoice_enabled true
   testflight_enabled true
