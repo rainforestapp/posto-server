@@ -73,7 +73,7 @@ CONFIG = SampleableConfig.define do
       { type: "friends_photos", message: "To view your friends' shared photos you'll need to connect to Facebook." },
       { type: "facebook_photos", message: "To view your Facebook photos you'll need to connect to Facebook." },
       { type: "send_message", message: "To send messages, you'll need to grant permission on Facebook." },
-      { type: "post_tutorial", message: "Earn 30 credits (and mail 3 free cards) by connecting to Facebook." },
+      { type: "post_tutorial", message: "Connect to Facebook to create a card with your friends' shared photos." },
       { type: "share_card", message: "Share your cards on Facebook." },
     ]
 
@@ -148,6 +148,14 @@ CONFIG = SampleableConfig.define do
     ask_for_last_recipients true
     allow_lowercase_caption true
     min_baby_birthday_reminder_delay_days 7
+
+    baby_birthday_reminders [
+      { weeks: 2, months: 0, notification: "FIRST is two weeks old! Send a babygram to update family and friends.", message: "I'm 2 weeks old!" },
+      { weeks: 0, months: 1, notification: "One month old already? Send a babygram of FIRST before PRONOUN grows up on you!", message: "I'm a month old!" },
+      { weeks: 1, months: 1, notification: "FIRST is already six weeks old! Send a babygram to update family and friends.", message: "I'm 6 weeks old!" },
+      { weeks: 0, months: 2, notification: "It's FIRST's 2 month birthday! Send a new photo as a babygram to celebrate.", message: "It's my 2 month birthday!" },
+      { weeks: 1, months: 2, notification: "FIRST is already ten weeks old! Send a babygram to update family and friends.", message: "I'm 10 weeks old!" },
+    ]
   end
 
   if Rails.env == "development"
@@ -196,7 +204,7 @@ CONFIG = SampleableConfig.define do
   min_birthday_days 0
   max_birthday_days 14
   birthday_nag "Send a surprise birthday lulcard."
-  note_max_length 140
+  note_max_length 500
   facebook_prompt_post_tutorial true
   default_notes [ { occasion: "birthday", note: "Happy birthday!" } ]
 
