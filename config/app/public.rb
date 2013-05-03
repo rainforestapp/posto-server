@@ -73,7 +73,7 @@ CONFIG = SampleableConfig.define do
       { type: "friends_photos", message: "To view your friends' shared photos you'll need to connect to Facebook." },
       { type: "facebook_photos", message: "To view your Facebook photos you'll need to connect to Facebook." },
       { type: "send_message", message: "To send messages, you'll need to grant permission on Facebook." },
-      { type: "post_tutorial", message: "Connect to Facebook to create a card with your friends' shared photos." },
+      { type: "post_tutorial", message: "Connect to view your friends' shared Facebook photos." },
       { type: "share_card", message: "Share your cards on Facebook." },
     ]
 
