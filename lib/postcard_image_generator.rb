@@ -168,7 +168,7 @@ class PostcardImageGenerator < ImageGenerator
 
                                     note_offset = 0
 
-                                    word_wrap(note, 40).split(/\n/).each do |line|
+                                    word_wrap(note, 38).split(/\n/).each do |line|
                                       back_with_text.annotate(back, 680, 0, 1134, 320 + note_offset, line) do
                                         self.fill = "#FFFFFF"
                                         self.stroke = 'transparent'
