@@ -109,7 +109,7 @@ class PostcardImageGenerator < ImageGenerator
                                       #front_with_subject.fill = "#0000FF"
                                       #front_with_subject.stroke = 'transparent'
                                       #front_with_subject.pointsize = 48
-                                      #front_with_subject.font("'/Users/gfodor/lulcards/server/posto/resources/fonts/vagrounded-bold.ttf'")
+                                      #front_with_subject.font("'/resources/fonts/vagrounded-bold.ttf'")
                                       #front_with_subject.text_align(Magick::LeftAlign)
                                       #front_with_subject.text(0, 100, "What up")
                                       #front_with_subject.draw(front)
@@ -128,7 +128,7 @@ class PostcardImageGenerator < ImageGenerator
                                     back_with_text.fill = "#FFFFFF"
                                     back_with_text.stroke = 'transparent'
                                     back_with_text.pointsize = use_big_font ? 48 : 32
-                                    back_with_text.font("#{File.dirname(__FILE__)}/../resources/fonts/HelveticaNeueCondensedBold.ttf")
+                                    back_with_text.font("'#{Rails.root}/resources/fonts/HelveticaNeueCondensedBold.ttf'")
                                     back_with_text.text_align(Magick::LeftAlign)
                                     back_with_text.text(1310, name_y_offset, fb_name)
                                     back_with_text.draw(back)
@@ -156,7 +156,6 @@ class PostcardImageGenerator < ImageGenerator
                                         self.fill = "#FFFFFF"
                                         self.stroke = 'transparent'
                                         self.pointsize = 36
-                                        self.font("#{File.dirname(__FILE__)}/../resources/fonts/HelveticaNeueCondensedBold.ttf")
                                         self.text_align(Magick::LeftAlign)
                                       end
 
@@ -167,7 +166,6 @@ class PostcardImageGenerator < ImageGenerator
                                       self.fill = "#AAAAAA"
                                       self.stroke = 'transparent'
                                       self.pointsize = 32
-                                      self.font("#{File.dirname(__FILE__)}/../resources/fonts/HelveticaNeueCondensedBold.ttf")
                                       self.text_align(Magick::LeftAlign)
                                     end
 
