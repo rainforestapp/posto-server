@@ -58,13 +58,22 @@ class PostcardImageGenerator < ImageGenerator
       profile_image_url = sender_user.profile_image_url(true)
 
       front_file = nil
+      back_file = nil
 
-      if card_design.app == App.lulcards
-        front_file = template_path + "/FrontTemplate#{render_qr_on_front ? (title_on_top ? "Flipped" : "") : (title_on_top ? "FlippedCodeless.png" : "Codeless.png")}"
-      else
+      if card_design.app == App.babygrams
         frame = card_design.frame_type || "grey"
         front_file = template_path + "/frames/frame_#{frame}.png"
+        prefix = "Blue"
+
+        if card_design.postcard_subject && card_design.postcard_subject[:gender] == "girl"
+          prefix = "Pink"
+        end
+
+        back_file = template_path + "/#{prefix}BackTemplate.png"
         title_on_top = false
+      else
+        front_file = template_path + "/FrontTemplate#{render_qr_on_front ? (title_on_top ? "Flipped" : "") : (title_on_top ? "FlippedCodeless.png" : "Codeless.png")}"
+        back_file = template_path + "/BackTemplate.png"
       end
 
       with_closed_tempfile do |front_pdf_file|
@@ -80,7 +89,7 @@ class PostcardImageGenerator < ImageGenerator
                       with_closed_tempfile do |front_image_file|
                         with_closed_tempfile do |back_image_file|
                           with_image(front_file) do |front_template|
-                            with_image(template_path + "/BackTemplate.png") do |back|
+                            with_image(back_file) do |back|
                               cols = composite.columns
                               rows = composite.rows
 
@@ -125,7 +134,13 @@ class PostcardImageGenerator < ImageGenerator
                                     back_with_text.fill = "#FFFFFF"
                                     back_with_text.stroke = 'transparent'
                                     back_with_text.pointsize = use_big_font ? 48 : 32
+
                                     back_with_text.font("'#{Rails.root}/resources/fonts/HelveticaNeueCondensedBold.ttf'")
+
+                                    if app == App.babygrams
+                                      back_with_text.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
+                                    end
+
                                     back_with_text.text_align(Magick::LeftAlign)
                                     back_with_text.text(1310, name_y_offset, fb_name)
                                     back_with_text.draw(back)
@@ -135,6 +150,11 @@ class PostcardImageGenerator < ImageGenerator
                                     word_wrap(sent_text, 35).split(/\n/).each do |line|
                                       back_with_text.annotate(back, 550, 0, 1310, sent_y_offset + sent_text_line_offset, line) do
                                         self.fill = "#FF8E32"
+
+                                        if app == App.babygrams
+                                          self.fill = "#EEEEEE"
+                                        end
+
                                         self.stroke = 'transparent'
                                         self.pointsize = 28
                                         self.text_align(Magick::LeftAlign)
@@ -161,6 +181,11 @@ class PostcardImageGenerator < ImageGenerator
 
                                     back_with_text.annotate(back, 0, 0, 100, 1228, @card_printing.card_number) do
                                       self.fill = "#AAAAAA"
+
+                                      if app == App.babygrams
+                                        self.fill = "#EEEEEE"
+                                      end
+
                                       self.stroke = 'transparent'
                                       self.pointsize = 32
                                       self.text_align(Magick::LeftAlign)
