@@ -296,12 +296,19 @@ class User < ActiveRecord::Base
       end
     end
 
+    photo_taken_at = nil
+
+    if payload["photo_taken_at"]
+      photo_taken_at = Chronic.parse(payload["photo_taken_at"])
+    end
+
     card_design_args = payload["card_design"]
                         .except(*image_types)
                         .merge(design_type: :lulcards_alpha, app: app)
                         .merge(image_ids)
                         .merge(note: payload["note"], 
-                               photo_is_user_generated: payload["photo_is_user_generated"])
+                               photo_is_user_generated: payload["photo_is_user_generated"],
+                               photo_taken_at: photo_taken_at)
 
     card_design = self.authored_card_designs.create!(card_design_args)
 
