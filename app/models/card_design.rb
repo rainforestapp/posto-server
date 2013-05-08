@@ -20,7 +20,7 @@ class CardDesign < ActiveRecord::Base
 
   has_one_audited :card_preview_composition
 
-  symbolize :design_type, in: [:lulcards_alpha], validates: true
+  symbolize :design_type, in: [:lulcards_alpha, :babygrams_alpha], validates: true
 
   def postcard_subject
     return {} unless self.postcard_subject_json
