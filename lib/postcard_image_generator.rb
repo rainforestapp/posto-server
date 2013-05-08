@@ -14,8 +14,9 @@ class PostcardImageGenerator < ImageGenerator
 
     card_order = @card_printing.card_order
     card_design = card_order.card_design
+    app = card_design.app
 
-    CONFIG.for_app(card_design.app) do |config|
+    CONFIG.for_app(app) do |config|
       template_path = "resources/postcards/#{card_design.design_type.to_s.gsub("_", "/")}"
       front_scan_key = @card_printing.front_scan_key
       back_scan_key = @card_printing.back_scan_key
@@ -92,7 +93,27 @@ class PostcardImageGenerator < ImageGenerator
                                     front.rotate!(title_on_top ? 90 : 270)
                                     wallet_card = composite.rotate(270)
                                     wallet_card.resize_to_fill!(1050, 750)
-                                    front.composite!(front_template, 0, 0, Magick::OverCompositeOp)
+
+                                    unless app == App.babygrams
+                                      front.composite!(front_template, 0, 0, Magick::OverCompositeOp)
+                                    else
+                                      front_with_subject = Magick::Draw.new
+                                      front_with_subject.fill = "#FFFFFF"
+                                      front_with_subject.stroke = '#B8B8B8'
+                                      front_with_subject.stroke_width = 2
+                                      #front_with_subject.roundrectangle(430,1678,(430 + 462),(1678 + 128),14,14)
+                                      front_with_subject.roundrectangle(0,430,200,430 + 462,14,14)
+                                      front_with_subject.draw(front)
+                                      name = "Alexander Alexander"
+                                      age = "2 and a half months old"
+                                      #front_with_subject.fill = "#0000FF"
+                                      #front_with_subject.stroke = 'transparent'
+                                      #front_with_subject.pointsize = 48
+                                      #front_with_subject.font("'/Users/gfodor/lulcards/server/posto/resources/fonts/vagrounded-bold.ttf'")
+                                      #front_with_subject.text_align(Magick::LeftAlign)
+                                      #front_with_subject.text(0, 100, "What up")
+                                      #front_with_subject.draw(front)
+                                    end
 
                                     back.composite!(wallet_card, 20, 20, Magick::DstOverCompositeOp)
                                     back.composite!(back_qr_image, 94, 811, Magick::DstOverCompositeOp)
@@ -104,13 +125,13 @@ class PostcardImageGenerator < ImageGenerator
                                     name_y_offset = use_big_font ? 620 : 610
                                     sent_y_offset = use_big_font ? 660 : 650
 
-                                    back_with_text.annotate(back, 0, 0, 1310, name_y_offset, fb_name) do
-                                      self.fill = "#FFFFFF"
-                                      self.stroke = 'transparent'
-                                      self.pointsize = use_big_font ? 48 : 32
-                                      self.font("#{File.dirname(__FILE__)}/../resources/fonts/HelveticaNeueCondensedBold.ttf")
-                                      self.text_align(Magick::LeftAlign)
-                                    end
+                                    back_with_text.fill = "#FFFFFF"
+                                    back_with_text.stroke = 'transparent'
+                                    back_with_text.pointsize = use_big_font ? 48 : 32
+                                    back_with_text.font("#{File.dirname(__FILE__)}/../resources/fonts/HelveticaNeueCondensedBold.ttf")
+                                    back_with_text.text_align(Magick::LeftAlign)
+                                    back_with_text.text(1310, name_y_offset, fb_name)
+                                    back_with_text.draw(back)
 
                                     sent_text_line_offset = 0
 
@@ -119,7 +140,6 @@ class PostcardImageGenerator < ImageGenerator
                                         self.fill = "#FF8E32"
                                         self.stroke = 'transparent'
                                         self.pointsize = 28
-                                        self.font("#{File.dirname(__FILE__)}/../resources/fonts/HelveticaNeueCondensedBold.ttf")
                                         self.text_align(Magick::LeftAlign)
                                       end
 

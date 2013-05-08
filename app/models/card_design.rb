@@ -8,7 +8,7 @@ class CardDesign < ActiveRecord::Base
                   :design_type, 
                   :original_full_photo_image, :edited_full_photo_image, :composed_full_photo_image, 
                   :source_card_design_id, :stock_design_id, :note, :photo_is_user_generated,
-                  :postcard_subject_json
+                  :postcard_subject_json, :frame_type, :photo_taken_at
 
   belongs_to :app
   belongs_to :author_user, class_name: "User"
