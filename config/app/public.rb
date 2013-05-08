@@ -88,6 +88,18 @@ CONFIG = SampleableConfig.define do
     order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting friends."
     ask_for_last_recipients true
     allow_lowercase_caption false
+    processing_fee -1
+    card_fee 125
+    processing_credits 0
+    card_credits 10
+
+    credit_packages [
+      { credit_package_id: 6, credits: 40, price: 475, savings: 5 },
+      { credit_package_id: 7, credits: 90, price: 999, savings: 10 },
+      { credit_package_id: 8, credits: 190, price: 1999, savings: 15 },
+      { credit_package_id: 9, credits: 300, price: 2999, savings: 20 },
+      { credit_package_id: 10, credits: 540, price: 4999, savings: 25 },
+    ]
   end
 
   app "babygrams" do
@@ -187,6 +199,19 @@ CONFIG = SampleableConfig.define do
 
     baby_birthday_reminder_switch "Remind me to share milestones"
     baby_birthday_remind_when_no_credits false
+    processing_fee -1
+    card_fee 150
+    processing_credits 0
+    card_credits 10
+
+    credit_packages [
+      { credit_package_id: 95, credits: 30, price: 425, savings: 5 },
+      { credit_package_id: 96, credits: 70, price: 949, savings: 10 },
+      { credit_package_id: 97, credits: 160, price: 1999, savings: 15 },
+      { credit_package_id: 98, credits: 250, price: 2999, savings: 20 },
+      { credit_package_id: 99, credits: 450, price: 4999, savings: 25 },
+    ]
+
   end
 
   if Rails.env == "development"
@@ -219,10 +244,6 @@ CONFIG = SampleableConfig.define do
   fb_share_permissions ["publish_actions"]
   fb_fields ["gender", "birthday"]
 
-  processing_fee -1
-  card_fee 125
-  processing_credits 0
-  card_credits 10
   signup_credits 30
   signup_credits_title "You Earned CREDITS Credits"
   signup_credits_message "You earned CREDITS credits by connecting your Facebook account!"
@@ -251,14 +272,6 @@ CONFIG = SampleableConfig.define do
 
   credit_order_submitted_header "Thanks!"
   credit_order_submitted_message "CREDITS credits have been added to your account. You now have TOTAL credits."
-
-  credit_packages [
-    { credit_package_id: 6, credits: 40, price: 475, savings: 5 },
-    { credit_package_id: 7, credits: 90, price: 999, savings: 10 },
-    { credit_package_id: 8, credits: 190, price: 1999, savings: 15 },
-    { credit_package_id: 9, credits: 300, price: 2999, savings: 20 },
-    { credit_package_id: 10, credits: 540, price: 4999, savings: 25 },
-  ]
 
   shuffle_captions do
     variant 1, true
