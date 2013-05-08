@@ -57,6 +57,16 @@ class PostcardImageGenerator < ImageGenerator
       composed_image_url = card_design.composed_full_photo_image.public_url
       profile_image_url = sender_user.profile_image_url(true)
 
+      front_file = nil
+
+      if card_design.app == App.lulcards
+        front_file = template_path + "/FrontTemplate#{render_qr_on_front ? (title_on_top ? "Flipped" : "") : (title_on_top ? "FlippedCodeless.png" : "Codeless.png")}"
+      else
+        frame = card_design.frame_type || "grey"
+        front_file = template_path + "/frames/frame_#{frame}.png"
+        title_on_top = false
+      end
+
       with_closed_tempfile do |front_pdf_file|
         with_closed_tempfile do |back_pdf_file| 
           with_closed_tempfile do |front_jpg_image_file|
@@ -69,12 +79,12 @@ class PostcardImageGenerator < ImageGenerator
                     with_closed_tempfile do |front_qr_file|
                       with_closed_tempfile do |front_image_file|
                         with_closed_tempfile do |back_image_file|
-                          with_image(template_path + "/FrontTemplate#{render_qr_on_front ? (title_on_top ? "Flipped" : "") : (title_on_top ? "FlippedCodeless.png" : "Codeless.png")}") do |front_template|
+                          with_image(front_file) do |front_template|
                             with_image(template_path + "/BackTemplate.png") do |back|
                               cols = composite.columns
                               rows = composite.rows
 
-                              border_pixels = (BORDER_SIZE * [cols, rows].max.to_f).floor
+                              front_template.rotate!(270) if app == App.babygrams
 
                               front_qr = RQRCode::QRCode.new(URI.escape(config.qr_path + front_scan_key), size: 4, level: :h)
                               front_qr_png = front_qr.to_img.resize(175,175).save(front_qr_file.path)
@@ -93,26 +103,13 @@ class PostcardImageGenerator < ImageGenerator
                                     front.rotate!(title_on_top ? 90 : 270)
                                     wallet_card = composite.rotate(270)
                                     wallet_card.resize_to_fill!(1050, 750)
+                                    
+                                    front.composite!(front_template, 0, 0, Magick::OverCompositeOp)
 
-                                    unless app == App.babygrams
-                                      front.composite!(front_template, 0, 0, Magick::OverCompositeOp)
-                                    else
-                                      front_with_subject = Magick::Draw.new
-                                      front_with_subject.fill = "#FFFFFF"
-                                      front_with_subject.stroke = '#B8B8B8'
-                                      front_with_subject.stroke_width = 2
-                                      #front_with_subject.roundrectangle(430,1678,(430 + 462),(1678 + 128),14,14)
-                                      front_with_subject.roundrectangle(0,430,200,430 + 462,14,14)
-                                      front_with_subject.draw(front)
-                                      name = "Alexander Alexander"
-                                      age = "2 and a half months old"
-                                      #front_with_subject.fill = "#0000FF"
-                                      #front_with_subject.stroke = 'transparent'
-                                      #front_with_subject.pointsize = 48
-                                      #front_with_subject.font("'/resources/fonts/vagrounded-bold.ttf'")
-                                      #front_with_subject.text_align(Magick::LeftAlign)
-                                      #front_with_subject.text(0, 100, "What up")
-                                      #front_with_subject.draw(front)
+                                    if app == App.babygrams
+                                      if card_design.postcard_subject && card_design.postcard_subject[:name]
+                                        draw_subject(card_design, front)
+                                      end
                                     end
 
                                     back.composite!(wallet_card, 20, 20, Magick::DstOverCompositeOp)
@@ -225,6 +222,119 @@ class PostcardImageGenerator < ImageGenerator
               end
             end
           end
+        end
+      end
+    end
+  end
+
+  def draw_subject(card_design, front)
+    draw = Magick::Draw.new
+    draw.fill = "#FFFFFF"
+    draw.stroke = '#B8B8B8'
+    draw.stroke_width = 2
+    draw.roundrectangle(1620,395,1620 + 146,395 + 530,14,14)
+    draw.draw(front)
+    name = card_design.postcard_subject[:name]
+    draw = Magick::Draw.new
+    draw.fill = "#686868"
+    draw.stroke = 'transparent'
+
+    if name.size > 18
+      draw.pointsize = 48
+    else
+      draw.pointsize = 56
+    end
+
+    draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
+    draw.text_align(Magick::CenterAlign)
+    draw.rotate(270)
+    draw.text(-660, 1688, name)
+    draw.draw(front)
+
+    birthday = card_design.postcard_subject[:birthday]
+
+    if birthday
+      birthday = Chronic.parse(birthday)
+      photo_taken_at = card_design.photo_taken_at || Time.now
+
+      if photo_taken_at > birthday
+        age = printable_age(photo_taken_at, birthday)
+
+        draw = Magick::Draw.new
+        draw.fill = "#A8A8A8"
+        draw.stroke = 'transparent'
+        draw.pointsize = 38
+        draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
+        draw.text_align(Magick::CenterAlign)
+        draw.rotate(270)
+        draw.text(-660, 1740, age)
+        draw.draw(front)
+      end
+    end
+  end
+
+  def printable_age(photo_taken_at, birthday)
+    return unless photo_taken_at > birthday
+
+    diff = photo_taken_at - birthday
+    number_of_days = (diff / (24 * 60 * 60)).floor
+
+    number_of_months_old = 0
+    number_of_extra_days_old = 0
+    current = birthday
+
+    loop do
+      current += 1.day
+
+      if current.day == birthday.day
+        number_of_months_old += 1
+        number_of_extra_days_old = 0
+      else
+        number_of_extra_days_old += 1
+      end
+
+      break if current.day == photo_taken_at.day && current.month == photo_taken_at.month && current.year == photo_taken_at.year
+    end
+
+    number_of_years_old = number_of_months_old / 12
+    number_of_extra_months_old = number_of_months_old % 12
+    number_of_weeks_old = (number_of_months_old * 4) + (number_of_extra_days_old / 7)
+
+    syear = number_of_years_old > 1 ? "years" : "year"
+    smonth = number_of_months_old > 1 ? "months" : "month"
+    sday = number_of_extra_days_old > 1 ? "days" : "day"
+    sweek = number_of_weeks_old > 1 ? "weeks" : "week"
+
+    if number_of_years_old > 0
+      if number_of_extra_months_old == 6
+        "#{number_of_years_old} and a half years old"
+      else
+        if number_of_extra_months_old > 0
+          "#{number_of_years_old} #{syear} and #{number_of_extra_months_old} #{smonth} old"
+        else
+          "#{number_of_years_old} #{syear} old"
+        end
+      end
+    else
+      if number_of_weeks_old == 0
+        "#{number_of_extra_days_old} #{sday} old"
+      elsif number_of_months_old == 0
+        "#{number_of_weeks_old} #{sweek} old"
+      elsif number_of_months_old <= 6
+        if number_of_extra_days_old < 8
+          "#{number_of_months_old} #{smonth} old"
+        elsif number_of_extra_days_old < 15
+          "#{number_of_weeks_old} #{sweek} old"
+        elsif number_of_extra_days_old < 22
+          "#{number_of_months_old} and a half #{smonth} old"
+        else
+          "#{number_of_weeks_old} #{sweek} old"
+        end
+      else
+        if number_of_extra_days_old < 14
+          "#{number_of_months_old} #{smonth} old"
+        else
+          "#{number_of_months_old} and a half #{smonth} old"
         end
       end
     end

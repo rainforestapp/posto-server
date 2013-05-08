@@ -25,22 +25,19 @@ class PreviewImageGenerator < ImageGenerator
             hbw = 10
 
             treated_image = Magick::Draw.new
-            
-            unless @card_design.app == App.babygrams
-              treated_image.stroke_width(bw)
-              treated_image.stroke('white')
-              treated_image.line(-hbw,hbw,w+hbw,hbw)
-              treated_image.line(hbw,-hbw,hbw,h+hbw)
-              treated_image.line(-hbw,h-hbw,w+hbw,h-hbw)
-              treated_image.line(w-hbw,hbw,w-hbw,h+hbw)
-              treated_image.stroke_width(1)
-              treated_image.stroke('gray')
-              treated_image.line(bw,bw,w-bw,bw)
-              treated_image.line(bw,bw,bw,h-bw)
-              treated_image.line(w-bw,bw,w-bw,h-bw)
-              treated_image.line(bw,h-bw,w-bw,h-bw)
-              treated_image.draw(preview_image)
-            end
+            treated_image.stroke_width(bw)
+            treated_image.stroke('white')
+            treated_image.line(-hbw,hbw,w+hbw,hbw)
+            treated_image.line(hbw,-hbw,hbw,h+hbw)
+            treated_image.line(-hbw,h-hbw,w+hbw,h-hbw)
+            treated_image.line(w-hbw,hbw,w-hbw,h+hbw)
+            treated_image.stroke_width(1)
+            treated_image.stroke('gray')
+            treated_image.line(bw,bw,w-bw,bw)
+            treated_image.line(bw,bw,bw,h-bw)
+            treated_image.line(w-bw,bw,w-bw,h-bw)
+            treated_image.line(bw,h-bw,w-bw,h-bw)
+            treated_image.draw(preview_image)
 
             #gloss = Magick::Image.new(w, h, Magick::GradientFill.new(0, h * 2, w * 2, 0, "rgba(88%,88%,88%,100%)", "rgba(33%,33%,33%,0%)"))
 
