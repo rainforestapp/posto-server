@@ -256,7 +256,7 @@ CONFIG = SampleableConfig.define do
   min_birthday_days 0
   max_birthday_days 14
   birthday_nag "Send a surprise birthday lulcard."
-  note_max_length 500
+  note_max_length 120 
   facebook_prompt_post_tutorial true
   default_notes [ { occasion: "birthday", note: "Happy birthday!" } ]
 
