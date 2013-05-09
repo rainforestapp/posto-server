@@ -1,8 +1,9 @@
 require "image_generator"
 
 class StoryImageGenerator < ImageGenerator
-  def initialize(card_design)
-    @card_design = card_design
+  def initialize(card_order)
+    @card_order = card_order
+    @card_design = card_order.card_design
   end
 
   STORY_IMAGE_WIDTH = 480
@@ -13,10 +14,19 @@ class StoryImageGenerator < ImageGenerator
     raise "Must set card design" unless @card_design
     raise "Must supply block with one argument" unless block_given? && block.arity == 1
 
-    with_image_for_url(@card_design.composed_full_photo_image.public_url) do |composite|
+    source_url = nil
+
+    if @card_design.app == App.lulcards
+      source_url = @card_design.composed_full_photo_image.public_url
+    else
+      source_url = @card_order.card_printings[0].card_printing_composition.jpg_card_front_image.public_url
+    end
+
+    with_image_for_url(source_url) do |composite|
       with_closed_tempfile do |story_image_file|
-        w = CardImage::CARD_PREVIEW_WIDTH
-        h = CardImage::CARD_PREVIEW_HEIGHT
+        w = composite.columns
+        h = composite.rows
+
         aspect = w.to_f / h.to_f
 
         sh = STORY_IMAGE_HEIGHT - (INSET * 2)
@@ -29,16 +39,18 @@ class StoryImageGenerator < ImageGenerator
 
           begin
             story_draw = Magick::Draw.new
-
             card_x = (STORY_IMAGE_WIDTH / 2.0) - (sw / 2.0)
-            story_draw.fill('black')
-            story_draw.rectangle(0,0,STORY_IMAGE_WIDTH,STORY_IMAGE_HEIGHT)
 
-            wallet_back = Magick::Image.read("resources/images/WalletBack.png").first
+            if @card_design.app == App.lulcards
+              story_draw.fill('black')
+              story_draw.rectangle(0,0,STORY_IMAGE_WIDTH,STORY_IMAGE_HEIGHT)
+            end
+
+            background_image = Magick::Image.read("resources/images/#{@card_design.app.name}_story_background.png").first
 
             begin
-              background = story_draw.pattern("hatch", 0, 0, wallet_back.columns, wallet_back.rows) do
-                story_draw.composite(0,0,0,0,wallet_back)
+              background = story_draw.pattern("hatch", 0, 0, background_image.columns, background_image.rows) do
+                story_draw.composite(0,0,0,0,background_image)
               end
 
               story_draw.fill("hatch")
@@ -52,7 +64,7 @@ class StoryImageGenerator < ImageGenerator
 
               yield story_image_file.path
             ensure
-              wallet_back.destroy!
+              background_image.destroy!
             end
           ensure
             story_image.destroy!
