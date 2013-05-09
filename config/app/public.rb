@@ -69,11 +69,11 @@ CONFIG = SampleableConfig.define do
     ]
 
     facebook_connect_messages [
-      { type: "recipient", message: "To choose your recipients you'll need to connect to Facebook." },
+      { type: "recipient", message: "To choose your recipients you'll need to connect to Facebook.", force: true },
       { type: "friends_photos", message: "To view your friends' shared photos you'll need to connect to Facebook." },
       { type: "facebook_photos", message: "To view your Facebook photos you'll need to connect to Facebook." },
       { type: "send_message", message: "To send messages, you'll need to grant permission on Facebook." },
-      { type: "post_tutorial", message: "Connect to use photos you and your friends have shared on Facebook." },
+      { type: "post_tutorial", message: "Connect to use photos you and your friends have shared on Facebook.", force: true },
       { type: "share_card", message: "Share your cards on Facebook." },
     ]
 
