@@ -359,9 +359,7 @@ class PostcardImageGenerator < ImageGenerator
 
   def add_note(card_design, back)
     note = card_design.note || ""
-    note = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae leo nec ipsum accumsan accumsan. Morbi neque purus, cursus eget commodo id, faucibus ac odio. Phasellus quis dia"
-    #note = note[0..CONFIG.note_max_length]
-    note = note[0..120]
+    note = note[0..CONFIG.note_max_length]
 
     note_offset = 0
 
