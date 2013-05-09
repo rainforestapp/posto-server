@@ -163,21 +163,7 @@ class PostcardImageGenerator < ImageGenerator
                                       sent_text_line_offset += 32
                                     end
 
-                                    note = card_design.note || ""
-                                    note = note[0..CONFIG.note_max_length]
-
-                                    note_offset = 0
-
-                                    word_wrap(note, 38).split(/\n/).each do |line|
-                                      back_with_text.annotate(back, 680, 0, 1134, 320 + note_offset, line) do
-                                        self.fill = "#FFFFFF"
-                                        self.stroke = 'transparent'
-                                        self.pointsize = 36
-                                        self.text_align(Magick::LeftAlign)
-                                      end
-
-                                      note_offset += 40
-                                    end
+                                    add_note(card_design, back)
 
                                     back_with_text.annotate(back, 0, 0, 100, 1228, @card_printing.card_number) do
                                       self.fill = "#AAAAAA"
@@ -369,5 +355,33 @@ class PostcardImageGenerator < ImageGenerator
     text.split("\n").collect do |line|
       line.length > columns ? line.gsub(/(.{1,#{columns}})(\s+|$)/, "\\1\n").strip : line
     end * "\n"
+  end
+
+  def add_note(card_design, back)
+    note = card_design.note || ""
+    note = note[0..CONFIG.note_max_length]
+
+    note_offset = 0
+
+    draw = Magick::Draw.new
+
+    draw.fill = "#FFFFFF"
+    draw.stroke = 'transparent'
+    draw.roundrectangle(1110,280,1110+655,280+200,12,12)
+    draw.draw(back)
+
+    draw = Magick::Draw.new
+
+    word_wrap(note, 36).split(/\n/).each do |line|
+      draw.fill = "#444444"
+      draw.stroke = 'transparent'
+      draw.pointsize = 34
+      draw.font("'#{Rails.root}/resources/fonts/RobotoSlab-Regular.ttf'")
+      draw.text_align(Magick::LeftAlign)
+      draw.text(1134, 330 + note_offset, line)
+      draw.draw(back)
+
+      note_offset += 41
+    end
   end
 end
