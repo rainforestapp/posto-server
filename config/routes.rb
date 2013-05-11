@@ -16,6 +16,7 @@ Posto::Application.routes.draw do
   resources :apps do
     resource :signup
     resource :promo
+    resources :gift_credits
   end
 
   namespace :api, defaults: { format: 'json' } do
