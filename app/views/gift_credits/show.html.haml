@@ -1,5 +1,5 @@
 .row.gift-page
-  .span6
+  .span4
     .left-panel
       = image_tag "#{@app.name}/MainLogo.png", width: 300, height: 84
 
@@ -7,32 +7,40 @@
         Want more babygrams of #{@postcard_subject_first_name}?
       %h4{width: "100%"}
         .div
-          Buy a credit package for #{@sender_profile.name} so #{@sender_profile.subject_pronoun} can send you more!
+          Buy some credits for #{@sender_profile.name} so #{@sender_profile.subject_pronoun} can send more!
         .div
           #{@credit_message}
 
-  .span6
-    %form{ id: "purchase-form", class: "form-horizontal", method: "POST", action: "/apps/#{@app.name}/gift_credits" }
-      .control-group
-        %label.control-label{ for: "name" }
-          Your Name:
-        .controls
-          %input{type: "text", name: "name", id: "name", value: @recipient_name }
-      .control-group
-        %label.control-label{ for: "email" }
-          Your E-mail:
-        .controls
-          %input{type: "text", name: "email", id: "email" }
-      .control-group
-        %label.control-label{ for: "note" }
-          Note for #{@sender_profile.first_name} (Optional):
-        .controls
-          %textarea{name: "note", id: "note", rows: 3 }
-      .control-group
-        .controls
-          %label.checkbox
-            %input{type: "checkbox", name: "remind-empty", id: "remind-empty", checked: "" }
-              Let me know when #{@sender_profile.first_name} runs out of credits.
-      .control-group
-        .controls
-          %input{ type: "button", name: "purchase", id: "purchase-button", class: "btn btn-success", value: "Pay with Card" }
+  .span8
+    .packages
+      .packages-header
+        Choose a package:
+      - @packages.each do |package|
+        %a.package{ "href" => "#", "data-credit-package-id" => package[:credit_package_id], "data-credit-package-name" => package[:name], "class" => "package-#{package[:name]} #{package[:credit_package_id] == @packages.last[:credit_package_id] ? "last" : ""}#{package[:credit_package_id] == @packages.first[:credit_package_id] ? "first" : ""}", "data-credits" => package[:credits], "data-price" => package[:price] }
+          %img{ src: image_path("babygrams/#{package[:name]}_package_selected.png"), style: "visibility: hidden;" }
+          %img{ src: image_path("babygrams/#{package[:name]}_package_unselected.png"), style: "visibility: hidden;" }
+    .purchase-form
+      %form{ id: "purchase-form", class: "form-horizontal", method: "POST", action: "/apps/#{@app.name}/gift_credits" }
+        .control-group
+          %label.control-label{ for: "name" }
+            Your Name:
+          .controls
+            %input{type: "text", name: "name", id: "name", value: @recipient_name }
+        .control-group
+          %label.control-label{ for: "email" }
+            Your E-mail:
+          .controls
+            %input{type: "text", name: "email", id: "email" }
+        .control-group
+          %label.control-label{ for: "note" }
+            Note for #{@sender_profile.first_name} (Optional):
+          .controls
+            %textarea{name: "note", id: "note", rows: 3 }
+        .control-group
+          .controls
+            %label.checkbox
+              %input{type: "checkbox", name: "remind-empty", id: "remind-empty", checked: "" }
+                Let me know when #{@sender_profile.first_name} runs out of credits.
+        .control-group
+          .controls
+            %input{ type: "button", name: "purchase", id: "purchase-button", class: "btn btn-success", value: "Pay with Card" }

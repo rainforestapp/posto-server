@@ -7,8 +7,25 @@ class GiftCreditsController
     $("#lookup-controls").removeClass("info");
     $("#lookup-code-error").text("")
 
+  sync_with_selected_package: ->
+    self = this
+
+    if self.selected_package_id
+      $("#purchase-button").val("Buy #{self.selected_package_credits} credits for #{$("body").attr("data-sender-first-name")}").show()
+    else
+      $("#purchase-button").hide()
+
+    $(".package").each ->
+      $(this).toggleClass("selected", $(this).attr("data-credit-package-id") == self.selected_package_id)
+
+
   init: ->
     self = this
+    self.selected_package_id = null
+    self.selected_package_name = null
+    self.selected_package_credits = null
+    self.selected_package_price = null
+    self.sync_with_selected_package()
 
     $("#lookup").click ->
       lookup_code = $("#lookup-code").val()
@@ -35,14 +52,22 @@ class GiftCreditsController
 
       StripeCheckout.open
         key: $("body").attr("data-stripe-key"),
-        amount: 1000,
+        amount: parseInt(self.selected_package_price),
         name: $("body").attr("data-app"),
-        description: "A bag of chips",
+        description: self.selected_package_name + " - " + self.selected_package_credits + " Credits",
         panelLabel: "Checkout",
         token: (res) ->
           input = $("<input type=hidden name=stripeToken />").val(res.id)
           $("purchase-form").append(input).submit()
 
+      false
+
+    $(".package").click ->
+      self.selected_package_id = $(this).attr("data-credit-package-id")
+      self.selected_package_price = $(this).attr("data-price")
+      self.selected_package_credits = $(this).attr("data-credits")
+      self.selected_package_name = $(this).attr("data-credit-package-name")
+      self.sync_with_selected_package()
       false
 
 window.Posto.gift_credits = GiftCreditsController
