@@ -15,14 +15,13 @@ class GiftCreditsController
     self = this
 
     if self.selected_package_id
-      $("#purchase-button").val("Buy #{self.selected_package_credits} credits for #{$("body").attr("data-sender-first-name")}").show()
+      $("#purchase-button").val("Buy #{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}").show()
       $("#purchase-form").show()
     else
       $("#purchase-form").hide()
 
     $(".package").each ->
       $(this).toggleClass("selected", $(this).attr("data-credit-package-id") == self.selected_package_id)
-
 
   init: ->
     self = this
@@ -55,17 +54,39 @@ class GiftCreditsController
       false
 
     $("#purchase-button").click ->
+      # TODO validate form
+      email = $("#email").val()
+      name = $("#name").val()
+      note = $("#note").val()
 
-      StripeCheckout.open
-        key: $("body").attr("data-stripe-key"),
-        amount: parseInt(self.selected_package_price),
-        name: self.capitalize($("body").attr("data-app")),
-        description: "#{self.capitalize(self.selected_package_name)} - #{self.selected_package_credits} Credits",
-        panelLabel: "Checkout",
-        image: self.selected_package_icon,
-        token: (res) ->
-          input = $("<input type=hidden name=stripeToken />").val(res.id)
-          $("purchase-form").append(input).submit()
+      $("#name-error").text("")
+      $("#email-error").text("")
+      $("#purchase-form .control-group").removeClass("info")
+
+      failed = false
+
+      if name.length < 2
+        $("#name-error").text("Your name is required.")
+        $("#name-controls").addClass("info")
+        failed = true
+
+      if email.length < 2 || !email.match(/\@/) || !email.match(/\./)
+        $("#email-error").text("Your e-mail is required.")
+        $("#email-controls").addClass("info")
+        failed = true
+
+      unless failed
+        StripeCheckout.open
+          key: $("body").attr("data-stripe-key"),
+          amount: parseInt(self.selected_package_price),
+          name: self.capitalize($("body").attr("data-app")),
+          description: "#{self.capitalize(self.selected_package_name)} - #{self.selected_package_credits} Credits",
+          panelLabel: "Checkout",
+          image: self.selected_package_icon,
+          token: (res) ->
+            input = $("<input type=hidden name=stripe_token />").val(res.id)
+            package_id = $("<input type=hidden name=credit_package_id />").val(self.selected_package_id)
+            $("#purchase-form").append(input).append(package_id).submit()
 
       false
 

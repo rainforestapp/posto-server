@@ -1,0 +1,11 @@
+.row.gift-page
+  .span6
+    .left-panel
+      = image_tag "#{@app.name}/MainLogo.png", width: 300, height: 84
+
+      %h3{width: "100%"}
+        Thank you for your order!
+      %h4
+        You purchased #{@package[:credits]} credits for #{@giftee.user_profile.name}.<br/>We'll e-mail your receipt to #{params[:email]}.
+  .span6
+    &nbsp;
