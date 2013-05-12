@@ -1,6 +1,8 @@
 class GiftCreditsController < ApplicationController
   layout "gift"
 
+  PACKAGE_MAP = { "sheep" => 96, "monkey" => 97, "turtle" => 98, "elephant" => 99 }
+
   def index
     @app = App.by_name(params[:app_id])
     @title = "babygrams: enter your babygram code"
@@ -26,9 +28,16 @@ class GiftCreditsController < ApplicationController
       @number_of_cards = @credits / @config.card_credits
 
       if @number_of_cards <= 0
-        @credit_message = "#{@sender} is all out of credits."
+        @credit_message = "#{@sender_profile.first_name} is all out of credits."
       else
         @credit_message = "#{@sender_profile.subject_pronoun.capitalize} currently has #{@credits} credits, enough to send #{@number_of_cards} more #{"card".pluralize(@number_of_cards)}."
+      end
+
+      @packages = []
+
+      PACKAGE_MAP.each do |name, package_id|
+        package = @config.credit_packages.find { |p| p[:credit_package_id] == package_id }
+        @packages << package.merge(name: name)
       end
     end
 

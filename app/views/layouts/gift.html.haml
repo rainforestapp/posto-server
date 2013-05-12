@@ -14,7 +14,7 @@
     = javascript_include_tag "application"
     = #javascript_include_tag "gift_credits"
     = csrf_meta_tags
-  %body{ "data-controller" => controller.controller_path, "data-action" => controller.action_name, "data-app" => @app.name, "data-stripe-key" => @config.stripe_publishable_key, class: "gift" }
+  %body{ "data-controller" => controller.controller_path, "data-action" => controller.action_name, "data-app" => @app.name, "data-stripe-key" => @config.stripe_publishable_key, "data-sender-first-name" => @sender.try(:user_profile).try(:first_name), class: "gift" }
     .container
       = yield
 
