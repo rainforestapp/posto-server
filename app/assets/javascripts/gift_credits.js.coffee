@@ -45,10 +45,13 @@ class GiftCreditsController
 
       self.clear_lookup_error()
 
+      $(this).button("loading")
+
       $.ajax "/apps/#{app_name}/gift_credits/#{lookup_code}.json", dataType: "json", success: (data) ->
         if data.card_printing_id?
           document.location.href = "/apps/#{app_name}/gift_credits/#{lookup_code}"
         else
+          $("#lookup").button("reset")
           self.show_lookup_error("We couldn't find your card. Please double check your code.")
 
       false
