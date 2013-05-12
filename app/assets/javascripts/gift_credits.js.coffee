@@ -7,13 +7,18 @@ class GiftCreditsController
     $("#lookup-controls").removeClass("info");
     $("#lookup-code-error").text("")
 
+  capitalize: (s) ->
+    return s unless s && s.length > 1
+    return s.substr(0,1).toUpperCase() + s.substr(1)
+
   sync_with_selected_package: ->
     self = this
 
     if self.selected_package_id
       $("#purchase-button").val("Buy #{self.selected_package_credits} credits for #{$("body").attr("data-sender-first-name")}").show()
+      $("#purchase-form").show()
     else
-      $("#purchase-button").hide()
+      $("#purchase-form").hide()
 
     $(".package").each ->
       $(this).toggleClass("selected", $(this).attr("data-credit-package-id") == self.selected_package_id)
@@ -25,6 +30,7 @@ class GiftCreditsController
     self.selected_package_name = null
     self.selected_package_credits = null
     self.selected_package_price = null
+    self.selected_package_icon = null
     self.sync_with_selected_package()
 
     $("#lookup").click ->
@@ -53,9 +59,10 @@ class GiftCreditsController
       StripeCheckout.open
         key: $("body").attr("data-stripe-key"),
         amount: parseInt(self.selected_package_price),
-        name: $("body").attr("data-app"),
-        description: self.selected_package_name + " - " + self.selected_package_credits + " Credits",
+        name: self.capitalize($("body").attr("data-app")),
+        description: "#{self.capitalize(self.selected_package_name)} - #{self.selected_package_credits} Credits",
         panelLabel: "Checkout",
+        image: self.selected_package_icon,
         token: (res) ->
           input = $("<input type=hidden name=stripeToken />").val(res.id)
           $("purchase-form").append(input).submit()
@@ -67,6 +74,7 @@ class GiftCreditsController
       self.selected_package_price = $(this).attr("data-price")
       self.selected_package_credits = $(this).attr("data-credits")
       self.selected_package_name = $(this).attr("data-credit-package-name")
+      self.selected_package_icon = $(this).attr("data-credit-package-icon")
       self.sync_with_selected_package()
       false
 

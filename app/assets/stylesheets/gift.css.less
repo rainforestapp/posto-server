@@ -2,9 +2,18 @@ body.gift {
   background-color: white;
 }
 
-.left-panel {
-  float: right;
-  text-align: right;
+@media only screen and (max-width:767px) { 
+  .left-panel {
+    margin: auto;
+    text-align: center;
+  }
+}
+
+@media only screen and (min-width:768px) { 
+  .left-panel {
+    float: right;
+    text-align: right;
+  }
 }
 
 .gift-page {
@@ -30,10 +39,21 @@ label {
   font-size: 20px;
 }
 
-.packages {
-  min-width: 800px;
-  float: left;
-  margin-bottom: 20px;
+@media only screen and (max-width:1370px) { 
+  .packages {
+    float: auto;
+    margin: auto;
+    width: 400px;
+    margin-bottom: 20px;
+  }
+}
+
+@media only screen and (min-width:1371px) { 
+  .packages {
+    float: left;
+    width: 800px;
+    margin-bottom: 20px;
+  }
 }
 
 .packages-header {
@@ -49,6 +69,7 @@ label {
 
 .purchase-form {
   float: left;
+  margin-top: 20px;
 }
 
 .package {
