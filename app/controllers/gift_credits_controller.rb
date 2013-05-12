@@ -83,6 +83,8 @@ class GiftCreditsController < ApplicationController
 
     return head :bad_request unless @package
 
+    @title = "babygrams: Thank you for your order!"
+
     note = (params[:note] || "")[0..512]
     remind_empty = params[:remind_empty] == "on"
 
