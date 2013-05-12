@@ -87,6 +87,7 @@ class GiftCreditsController
           panelLabel: "Checkout",
           image: self.selected_package_icon,
           token: (res) ->
+            $("#purchase-button").button("loading")
             input = $("<input type=hidden name=stripe_token />").val(res.id)
             package_id = $("<input type=hidden name=credit_package_id />").val(self.selected_package_id)
             $("#purchase-form").append(input).append(package_id).submit()

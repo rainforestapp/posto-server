@@ -26,13 +26,13 @@
           %label.control-label{ for: "name" }
             Your Name:
           .controls
-            %input{type: "text", name: "name", id: "name", value: @recipient_name }
+            %input{type: "text", autocapitalize: "words", autocorrect: "off", name: "name", id: "name", value: @recipient_name }
             %div{ class: "help-inline info", id: "name-error" }
         .control-group{ id: "email-controls" }
           %label.control-label{ for: "email" }
             Your E-mail:
           .controls
-            %input{type: "text", name: "email", id: "email" }
+            %input{type: "email", name: "email", id: "email" }
             %div{ class: "help-inline info", id: "email-error" }
         .control-group
           %label.control-label{ for: "note" }
