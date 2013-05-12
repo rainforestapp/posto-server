@@ -16,11 +16,11 @@
       .packages-header
         Choose a package:
       - @packages.each do |package|
-        %a.package{ "href" => "#", "data-credit-package-id" => package[:credit_package_id], "data-credit-package-name" => package[:name], "class" => "package-#{package[:name]} #{package[:credit_package_id] == @packages.last[:credit_package_id] ? "last" : ""}#{package[:credit_package_id] == @packages.first[:credit_package_id] ? "first" : ""}", "data-credits" => package[:credits], "data-price" => package[:price] }
+        %a.package{ "href" => "#", "data-credit-package-icon" => image_path("babygrams/package_icon.png"), "data-credit-package-id" => package[:credit_package_id], "data-credit-package-name" => package[:name], "class" => "package-#{package[:name]} #{package[:credit_package_id] == @packages.last[:credit_package_id] ? "last" : ""}#{package[:credit_package_id] == @packages.first[:credit_package_id] ? "first" : ""}", "data-credits" => package[:credits], "data-price" => package[:price] }
           %img{ src: image_path("babygrams/#{package[:name]}_package_selected.png"), style: "visibility: hidden;" }
           %img{ src: image_path("babygrams/#{package[:name]}_package_unselected.png"), style: "visibility: hidden;" }
     .purchase-form
-      %form{ id: "purchase-form", class: "form-horizontal", method: "POST", action: "/apps/#{@app.name}/gift_credits" }
+      %form{ id: "purchase-form", class: "form-horizontal", method: "POST", action: "/apps/#{@app.name}/gift_credits", style: "display:none" }
         .control-group
           %label.control-label{ for: "name" }
             Your Name:
@@ -43,4 +43,4 @@
                 Let me know when #{@sender_profile.first_name} runs out of credits.
         .control-group
           .controls
-            %input{ type: "button", name: "purchase", id: "purchase-button", class: "btn btn-success", value: "Pay with Card" }
+            %input{ type: "button", name: "purchase", id: "purchase-button", class: "btn btn-info", value: "Pay with Card" }
