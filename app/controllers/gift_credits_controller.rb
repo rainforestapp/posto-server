@@ -1,4 +1,6 @@
 class GiftCreditsController < ApplicationController
+  include ForceSsl
+
   layout "gift"
 
   PACKAGE_MAP = { "sheep" => 96, "monkey" => 97, "turtle" => 98, "elephant" => 99 }
@@ -57,5 +59,33 @@ class GiftCreditsController < ApplicationController
   end
 
   def create
+    name = params[:name]
+    return head :bad_request unless name.try(:size) > 2
+
+    email = params[:email]
+    return head :bad_request unless email.try(:size) > 2 && email.to_s =~ /\@/ && email.to_s =~ /\./
+
+    giftee_user_id = params[:giftee_user_id]
+    @giftee = User.find(giftee_user_id)
+    return head :bad_request unless @giftee
+
+    package_id = params[:credit_package_id]
+    return head :bad_request unless package_id
+
+    stripe_token = params[:stripe_token]
+    return head :bad_request unless stripe_token
+
+    @app = App.by_name(params[:app_id])
+    return head :bad_request unless @app
+
+    @config = CONFIG.for_app(@app)
+    @package = @config.credit_packages.find { |p| p[:credit_package_id] == package_id.to_i }
+
+    return head :bad_request unless @package
+
+    note = (params[:note] || "")[0..512]
+    remind_empty = params[:remind_empty] == "on"
+
+    render
   end
 end

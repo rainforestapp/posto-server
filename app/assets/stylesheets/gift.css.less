@@ -72,14 +72,6 @@ label {
   margin-top: 20px;
 }
 
-.package {
-  width: 200px;
-  height: 256px;
-  float: left;
-  display: block;
-  cursor: pointer;
-}
-
 .package.last {
   clear: right;
 }
@@ -88,44 +80,103 @@ label {
   clear: left;
 }
 
-.package.package-monkey {
-	background: transparent image-url("babygrams/monkey_package_unselected.png") no-repeat top left;
-  background-size: 200px 256px;
+@media only screen and (min-width:481px) { 
+  .package {
+    width: 200px;
+    height: 256px;
+    float: left;
+    display: block;
+    cursor: pointer;
+  }
+
+  .package.package-monkey {
+    background: transparent image-url("babygrams/monkey_package_unselected.png") no-repeat top left;
+    background-size: 200px 256px;
+  }
+
+  .package.package-sheep {
+    background: transparent image-url("babygrams/sheep_package_unselected.png") no-repeat top left;
+    background-size: 200px 256px;
+  }
+
+  .package.package-elephant {
+    background: transparent image-url("babygrams/elephant_package_unselected.png") no-repeat top left;
+    background-size: 200px 256px;
+  }
+
+  .package.package-turtle {
+    background: transparent image-url("babygrams/turtle_package_unselected.png") no-repeat top left;
+    background-size: 200px 256px;
+  }
+
+  .package.package-monkey.selected {
+    background: transparent image-url("babygrams/monkey_package_selected.png") no-repeat top left;
+    background-size: 200px 256px;
+  }
+
+  .package.package-sheep.selected {
+    background: transparent image-url("babygrams/sheep_package_selected.png") no-repeat top left;
+    background-size: 200px 256px;
+  }
+
+  .package.package-elephant.selected {
+    background: transparent image-url("babygrams/elephant_package_selected.png") no-repeat top left;
+    background-size: 200px 256px;
+  }
+
+  .package.package-turtle.selected {
+    background: transparent image-url("babygrams/turtle_package_selected.png") no-repeat top left;
+    background-size: 200px 256px;
+  }
 }
 
-.package.package-sheep {
-	background: transparent image-url("babygrams/sheep_package_unselected.png") no-repeat top left;
-  background-size: 200px 256px;
+@media only screen and (max-width:480px) { 
+  .package {
+    width: 143px;
+    height: 182px;
+    float: left;
+    display: block;
+    cursor: pointer;
+  }
+
+  .package.package-monkey {
+    background: transparent image-url("babygrams/monkey_package_unselected.png") no-repeat top left;
+    background-size: 143px 182px;
+  }
+
+  .package.package-sheep {
+    background: transparent image-url("babygrams/sheep_package_unselected.png") no-repeat top left;
+    background-size: 143px 182px;
+  }
+
+  .package.package-elephant {
+    background: transparent image-url("babygrams/elephant_package_unselected.png") no-repeat top left;
+    background-size: 143px 182px;
+  }
+
+  .package.package-turtle {
+    background: transparent image-url("babygrams/turtle_package_unselected.png") no-repeat top left;
+    background-size: 143px 182px;
+  }
+
+  .package.package-monkey.selected {
+    background: transparent image-url("babygrams/monkey_package_selected.png") no-repeat top left;
+    background-size: 143px 182px;
+  }
+
+  .package.package-sheep.selected {
+    background: transparent image-url("babygrams/sheep_package_selected.png") no-repeat top left;
+    background-size: 143px 182px;
+  }
+
+  .package.package-elephant.selected {
+    background: transparent image-url("babygrams/elephant_package_selected.png") no-repeat top left;
+    background-size: 143px 182px;
+  }
+
+  .package.package-turtle.selected {
+    background: transparent image-url("babygrams/turtle_package_selected.png") no-repeat top left;
+    background-size: 143px 182px;
+  }
 }
 
-.package.package-elephant {
-	background: transparent image-url("babygrams/elephant_package_unselected.png") no-repeat top left;
-  background-size: 200px 256px;
-}
-
-
-.package.package-turtle {
-	background: transparent image-url("babygrams/turtle_package_unselected.png") no-repeat top left;
-  background-size: 200px 256px;
-}
-
-
-.package.package-monkey.selected {
-	background: transparent image-url("babygrams/monkey_package_selected.png") no-repeat top left;
-  background-size: 200px 256px;
-}
-
-.package.package-sheep.selected {
-	background: transparent image-url("babygrams/sheep_package_selected.png") no-repeat top left;
-  background-size: 200px 256px;
-}
-
-.package.package-elephant.selected {
-	background: transparent image-url("babygrams/elephant_package_selected.png") no-repeat top left;
-  background-size: 200px 256px;
-}
-
-.package.package-turtle.selected {
-	background: transparent image-url("babygrams/turtle_package_selected.png") no-repeat top left;
-  background-size: 200px 256px;
-}
