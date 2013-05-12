@@ -16,7 +16,7 @@
       .packages-header
         Choose a package:
       - @packages.each do |package|
-        %a.package{ "href" => "#", "data-credit-package-icon" => image_path("babygrams/package_icon.png"), "data-credit-package-id" => package[:credit_package_id], "data-credit-package-name" => package[:name], "class" => "package-#{package[:name]} #{package[:credit_package_id] == @packages.last[:credit_package_id] ? "last" : ""}#{package[:credit_package_id] == @packages.first[:credit_package_id] ? "first" : ""}", "data-credits" => package[:credits], "data-price" => package[:price] }
+        .package{ "href" => "#", "data-credit-package-icon" => image_path("babygrams/package_icon.png"), "data-credit-package-id" => package[:credit_package_id], "data-credit-package-name" => package[:name], "class" => "package-#{package[:name]} #{package[:credit_package_id] == @packages.last[:credit_package_id] ? "last" : ""}#{package[:credit_package_id] == @packages.first[:credit_package_id] ? "first" : ""}", "data-credits" => package[:credits], "data-price" => package[:price] }
           %img{ src: image_path("babygrams/#{package[:name]}_package_selected.png"), style: "visibility: hidden;" }
           %img{ src: image_path("babygrams/#{package[:name]}_package_unselected.png"), style: "visibility: hidden;" }
     .purchase-form
