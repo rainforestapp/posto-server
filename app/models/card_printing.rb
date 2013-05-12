@@ -49,5 +49,13 @@ class CardPrinting < ActiveRecord::Base
     return self_text if self.recipient_user == self.card_order.order_sender_user
     self.recipient_user.user_profile.try(:name)
   end
+
+  def lookup_number
+    (self.card_printing_id * 13) + 17
+  end
+
+  def self.find_by_lookup_number(lookup_number)
+    CardPrinting.where(card_printing_id: (lookup_number - 17) / 13).first
+  end
 end
 
