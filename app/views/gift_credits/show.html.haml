@@ -12,7 +12,7 @@
           #{@credit_message}
 
   .span6
-    %form{ class: "form-horizontal", method: "POST", action: "/apps/#{@app.name}/gift_credits" }
+    %form{ id: "purchase-form", class: "form-horizontal", method: "POST", action: "/apps/#{@app.name}/gift_credits" }
       .control-group
         %label.control-label{ for: "name" }
           Your Name:
@@ -33,3 +33,6 @@
           %label.checkbox
             %input{type: "checkbox", name: "remind-empty", id: "remind-empty", checked: "" }
               Let me know when #{@sender_profile.first_name} runs out of credits.
+      .control-group
+        .controls
+          %input{ type: "button", name: "purchase", id: "purchase-button", class: "btn btn-success", value: "Pay with Card" }
