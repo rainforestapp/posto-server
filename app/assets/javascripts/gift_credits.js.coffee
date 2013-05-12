@@ -31,4 +31,18 @@ class GiftCreditsController
 
       false
 
+    $("#purchase-button").click ->
+
+      StripeCheckout.open
+        key: $("body").attr("data-stripe-key"),
+        amount: 1000,
+        name: $("body").attr("data-app"),
+        description: "A bag of chips",
+        panelLabel: "Checkout",
+        token: (res) ->
+          input = $("<input type=hidden name=stripeToken />").val(res.id)
+          $("purchase-form").append(input).submit()
+
+      false
+
 window.Posto.gift_credits = GiftCreditsController
