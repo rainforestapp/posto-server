@@ -1,2 +1,8 @@
 Certificate chain should be pem encoded *backwards!*
 
+Must do this:
+[ gfodor ] openssl x509 -inform PEM -in EssentialSSLCA_2.crt > chained.pem                          fuzzcone:~/s/certs/ssl/secure.babygra.ms
+[ gfodor ] openssl x509 -inform PEM -in ComodoUTNSGCCA.crt >> chained.pem                           fuzzcone:~/s/certs/ssl/secure.babygra.ms
+[ gfodor ] openssl x509 -inform PEM -in UTNAddTrustSGCCA.crt >> chained.pem                         fuzzcone:~/s/certs/ssl/secure.babygra.ms
+[ gfodor ] openssl x509 -inform PEM -in AddTrustExternalCARoot.crt >> chained.pem 
+
