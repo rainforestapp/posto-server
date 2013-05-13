@@ -111,7 +111,7 @@ class GiftCreditsController < ApplicationController
       )
 
       @success = false if charge["failure_message"]
-    rescue Stripe::CardError => e
+    rescue Exception => e
       Airbrake.notify_or_ignore(e, parameters: params)
       @success = false
     end
