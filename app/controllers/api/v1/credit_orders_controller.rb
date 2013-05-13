@@ -44,8 +44,10 @@ module Api
           begin
             stripe_customer.stripe_customer_card.mark_as_declined!
             stripe_customer.stripe_customer_card.append_to_metadata!(message: e.message)
-          rescue Exception => e
+          rescue Exception => ex
           end
+
+          Airbrake.notify_or_ignore(e, parameters: params)
 
           return head :bad_request
         end

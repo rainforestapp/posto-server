@@ -3,9 +3,15 @@
     .left-panel
       = image_tag "#{@app.name}/MainLogo.png", width: 300, height: 84
 
-      %h3{width: "100%"}
-        Thank you for your order!
-      %h4
-        You purchased #{@package[:credits]} credits for #{@giftee.user_profile.name}.<br/>We'll e-mail your receipt to #{params[:email]}.
+      - if @success
+        %h3{width: "100%"}
+          Thank you for your order!
+        %h4
+          You purchased #{@package[:credits]} credits for #{@giftee.user_profile.name}.<br/>We'll e-mail your receipt to #{params[:email]}.
+      - else
+        %h3{width: "100%"}
+          We're sorry.
+        %h4
+          We had some trouble processing your order. Please check your payment info and go back and try again.
   .span6
     &nbsp;

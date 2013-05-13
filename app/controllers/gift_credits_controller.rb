@@ -88,6 +88,55 @@ class GiftCreditsController < ApplicationController
     note = (params[:note] || "")[0..512]
     remind_empty = params[:remind_empty] == "on"
 
+    @gifter = nil
+
+    Person.transaction_with_retry do
+      @gifter = Person.where(email: email).lock(true).first
+      @gifter ||= Person.create!(email: email)
+      @gifter.person_profiles.create!(name: name)
+      @gifter.person_notification_preferences.create!(target_id: @giftee.user_id,
+                                                      notification_type: :empty_credits,
+                                                      enabled: remind_empty)
+    end
+
+    charge = nil
+    @success = true
+
+    begin
+      charge = Stripe::Charge.create(
+        amount: @package[:price],
+        currency: "usd",
+        card: stripe_token,
+        description: "Charge #{@package[:credits]} Gift Credits"
+      )
+
+      @success = false if charge["failure_message"]
+    rescue Stripe::CardError => e
+      Airbrake.notify_or_ignore(e, parameters: params)
+      @success = false
+    end
+
+    if @success
+      begin
+        CreditOrder.transaction_with_retry do
+          @credit_order = @giftee.credit_orders.create!(app_id: @app.app_id,
+                                                        credits: @package[:credits],
+                                                        gifter_person_id: @gifter.person_id,
+                                                        price: @package[:price],
+                                                        note: note)
+
+          @giftee.add_credits!(@package[:credits],
+                               app: @app,
+                               source_type: :credit_order,
+                               source_id: @credit_order.credit_order_id)
+        end
+      rescue Exception => e
+        charge.refund rescue nil
+        Airbrake.notify_or_ignore(e, parameters: params)
+        @success = false
+      end
+    end
+
     render
   end
 end
