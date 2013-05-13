@@ -15,29 +15,39 @@ class ManualActivities
     AWS::SQS.new.queues.named(queue_name).send_message(payload.to_json)
 
     if ENV["MANUAL_NOTIFY_EMAIL_ADDRESS"]
-      AWS::SimpleEmailService.new.send_email(
-        subject: "[POSTO MANUAL] Address Request ##{address_request_id}",
-        from: "orders@lulcards.com",
-        to: ENV["MANUAL_NOTIFY_EMAIL_ADDRESS"],
-        body_text: ""
-      ) rescue nil
+      if rand() <= CONFIG.address_request_admin_notify
+        AWS::SimpleEmailService.new.send_email(
+          subject: "[POSTO MANUAL] Address Request ##{address_request_id}",
+          from: "orders@lulcards.com",
+          to: ENV["MANUAL_NOTIFY_EMAIL_ADDRESS"],
+          body_text: ""
+        ) rescue nil
+      end
     end
 
     true
   end
 
   def manually_verify_order(card_order_id)
+    unless rand() <= CONFIG.card_order_approve_amount
+      AWS::SimpleWorkflow::Client.new().respond_activity_task_completed(:task_token => self.task_token, 
+                                                                        :result => "verified".to_json)
+      return true
+    end
+
     queue_name = "#{queue_prefix}-manual-verify-order"
     payload = { card_order_id: card_order_id, task_token: self.task_token }
     AWS::SQS.new.queues.named(queue_name).send_message(payload.to_json)
 
     if ENV["MANUAL_NOTIFY_EMAIL_ADDRESS"]
-      AWS::SimpleEmailService.new.send_email(
-        subject: "[POSTO MANUAL] Verify Order ##{card_order_id}",
-        from: "orders@lulcards.com",
-        to: ENV["MANUAL_NOTIFY_EMAIL_ADDRESS"],
-        body_text: ""
-      ) rescue nil
+      if rand() <= CONFIG.card_order_admin_notify
+        AWS::SimpleEmailService.new.send_email(
+          subject: "[POSTO MANUAL] Verify Order ##{card_order_id}",
+          from: "orders@lulcards.com",
+          to: ENV["MANUAL_NOTIFY_EMAIL_ADDRESS"],
+          body_text: ""
+        ) rescue nil
+      end
     end
 
     true
@@ -49,15 +59,16 @@ class ManualActivities
     AWS::SQS.new.queues.named(queue_name).send_message(payload.to_json)
 
     if ENV["MANUAL_NOTIFY_EMAIL_ADDRESS"]
-      AWS::SimpleEmailService.new.send_email(
-        subject: "[POSTO MANUAL] Birthday Request ##{birthday_request_id}",
-        from: "orders@lulcards.com",
-        to: ENV["MANUAL_NOTIFY_EMAIL_ADDRESS"],
-        body_text: ""
-      ) rescue nil
+      if rand() <= CONFIG.birthday_request_admin_notify
+        AWS::SimpleEmailService.new.send_email(
+          subject: "[POSTO MANUAL] Birthday Request ##{birthday_request_id}",
+          from: "orders@lulcards.com",
+          to: ENV["MANUAL_NOTIFY_EMAIL_ADDRESS"],
+          body_text: ""
+        ) rescue nil
+      end
     end
 
     true
   end
-
 end
