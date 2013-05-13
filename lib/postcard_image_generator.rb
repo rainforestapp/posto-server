@@ -113,6 +113,14 @@ class PostcardImageGenerator < ImageGenerator
                                     wallet_card = composite.rotate(270)
                                     wallet_card.resize_to_fill!(1050, 750)
                                     
+                                    if app == App.babygrams
+                                      # Move it inside for the babygram frame
+                                      resized_front = composite.resize_to_fill(front_template.rows - 44, front_template.columns - 44)
+                                      resized_front.rotate!(title_on_top ? 90 : 270)
+                                      front.composite!(resized_front, 22, 22, Magick::OverCompositeOp)
+                                      resized_front.try(:destroy!)
+                                    end
+
                                     front.composite!(front_template, 0, 0, Magick::OverCompositeOp)
 
                                     if app == App.babygrams
@@ -243,7 +251,7 @@ class PostcardImageGenerator < ImageGenerator
     draw.fill = "#FFFFFF"
     draw.stroke = '#B8B8B8'
     draw.stroke_width = 2
-    draw.roundrectangle(1620,395,1620 + 146,395 + 530,14,14)
+    draw.roundrectangle(1600,395,1600 + 146,395 + 530,14,14)
     draw.draw(front)
     name = card_design.postcard_subject[:name]
     draw = Magick::Draw.new
@@ -259,7 +267,7 @@ class PostcardImageGenerator < ImageGenerator
     draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
     draw.text_align(Magick::CenterAlign)
     draw.rotate(270)
-    draw.text(-660, 1688, name)
+    draw.text(-660, 1668, name)
     draw.draw(front)
 
     birthday = card_design.postcard_subject[:birthday]
@@ -278,7 +286,7 @@ class PostcardImageGenerator < ImageGenerator
         draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
         draw.text_align(Magick::CenterAlign)
         draw.rotate(270)
-        draw.text(-660, 1740, age)
+        draw.text(-660, 1720, age)
         draw.draw(front)
       end
     end
