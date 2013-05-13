@@ -1,0 +1,8 @@
+Thank you for your order.
+
+Thank you for your <%= @app.name %> order of <%= @credit_order.credits %> credits<%= @credit_order.is_gift? ? " for #{@credit_order.recipient_name}" : "" %>. Your order number is #<%= @credit_order.order_number %>. This is your receipt.
+<% if @credit_order.is_gift? %>
+We have notified <%= @credit_order.recipient_name %> of your order so they can start sending you cards!
+
+<% end %>
+Total charges: <%= @credit_order.printable_total_price %>

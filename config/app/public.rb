@@ -13,6 +13,8 @@ CONFIG = SampleableConfig.define do
   card_order_approve_amount 1.0
   address_request_admin_notify 1.0
   birthday_request_admin_notify 1.0
+  admin_credit_order_audit_email "gfodor@gmail.com"
+  admin_credit_order_enabled true
 
   card_image_host "data.lulcards.com"
   card_image_bucket "posto-data"

@@ -1,0 +1,9 @@
+%b
+  Thank you for your order.
+%div{ style: "color: #303030" }
+  %p
+    Thank you for your #{@app.name} order of <b>#{@credit_order.credits} credits</b>#{@credit_order.is_gift? ? " for #{@credit_order.recipient_name}" : ""}. Your order number is <b>##{@credit_order.order_number}</b>. This is your receipt.
+  - if @credit_order.is_gift?
+    We have notified #{@credit_order.recipient_name} of your order so they can start sending you cards!
+  %p
+    Total charges: <b>#{@credit_order.printable_total_price}</b>
