@@ -1,0 +1,15 @@
+%b
+  #{@credit_order.orderer_name} just sent you #{@app.name} credits!
+
+%div{ style: "color: #303030" }
+  %p
+    You received #{@credit_order.credits} credits from #{@credit_order.orderer_name} to send postcards.
+
+- if @credit_order.note && @credit_order.note.size > 0
+  %p
+    #{@credit_order.orderer_name.split(" ")[0]} also included a note:
+
+  %p
+    %div{ style: "background-color: #ffffff; margin: 0px auto; width: 90%; border-radius: 8px; padding: 15px; min-height: 125px; color: black;" }
+      <i>#{@credit_order.note}</i>
+

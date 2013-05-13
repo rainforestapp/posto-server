@@ -137,6 +137,23 @@ class GiftCreditsController < ApplicationController
       end
     end
 
+    if @success
+      [:credit_order_receipt, :giftee_receipt, :admin_audit_credit_order].each do |email_type|
+        begin
+          CreditOrderMailer.send(email_type, @credit_order).try(:deliver)
+        rescue Exception => e
+          Airbrake.notify_or_ignore(e)
+        end
+      end
+
+      begin
+        message = "#{@credit_order.orderer_name} just bought you #{@credit_order.credits} #{@app.name} credits!"
+        @credit_order.user.send_notification(message, app: @app)
+      rescue Exception => e
+        Airbrake.notify_or_ignore(e)
+      end
+    end
+
     render
   end
 end

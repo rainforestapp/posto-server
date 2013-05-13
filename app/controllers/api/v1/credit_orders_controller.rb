@@ -66,18 +66,26 @@ module Api
 
         begin
           CreditOrder.transaction_with_retry do
-            credit_order = @current_user.credit_orders.create!(app_id: app.app_id,
+            @credit_order = @current_user.credit_orders.create!(app_id: app.app_id,
                                                                credits: config_package[:credits],
                                                                price: config_package[:price])
 
             @current_user.add_credits!(config_package[:credits],
                                        app: app,
                                        source_type: :credit_order,
-                                       source_id: credit_order.credit_order_id)
+                                       source_id: @credit_order.credit_order_id)
           end
         rescue Exception => e
           charge.refund rescue nil
           return head :bad_request
+        end
+
+        [:credit_order_receipt, :admin_audit_credit_order].each do |email_type|
+          begin
+            CreditOrderMailer.send(email_type, @credit_order).try(:deliver)
+          rescue Exception => e
+            Airbrake.notify_or_ignore(e)
+          end
         end
 
         render json: config_package

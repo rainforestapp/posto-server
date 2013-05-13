@@ -1,0 +1,13 @@
+<%= @credit_order.orderer_name %> just sent you <%= @credit_order.credits %> <%= @app.name %> credits!
+
+<% if @credit_order.note && @credit_order.note.size > 0 %>
+<%= @credit_order.orderer_name.split(" ")[0] %> included a note:
+
+-- 
+
+<%= @credit_order.note %>
+
+--
+
+<% end %>
+Enjoy!
