@@ -9,6 +9,10 @@ CONFIG = SampleableConfig.define do
   support_email "support@lulcards.com"
   uservoice_enabled true
   testflight_enabled true
+  card_order_admin_notify 1.0
+  card_order_approve_amount 1.0
+  address_request_admin_notify 1.0
+  birthday_request_admin_notify 1.0
 
   card_image_host "data.lulcards.com"
   card_image_bucket "posto-data"
