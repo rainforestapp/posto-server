@@ -153,6 +153,10 @@ class PostcardImageGenerator < ImageGenerator
                                     back_with_text.text(1310, name_y_offset, fb_name)
                                     back_with_text.draw(back)
 
+                                    if app == App.babygrams
+                                      draw_credits_nag(back)
+                                    end
+
                                     sent_text_line_offset = 0
 
                                     word_wrap(sent_text, 35).split(/\n/).each do |line|
@@ -393,5 +397,28 @@ class PostcardImageGenerator < ImageGenerator
 
       note_offset += 41
     end
+  end
+
+  def draw_credits_nag(back)
+    card_order = @card_printing.card_order
+    sender_user = card_order.order_sender_user
+
+    draw = Magick::Draw.new
+    draw.stroke = 'transparent'
+    draw.fill = "#ffffff"
+    draw.pointsize = 38
+    draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
+    draw.text_align(Magick::LeftAlign)
+    draw.text(122, 1032, "Buy credits for #{sender_user.user_profile.first_name} to send you more!")
+    draw.draw(back)
+
+    draw = Magick::Draw.new
+    draw.stroke = 'transparent'
+    draw.fill = "#000000"
+    draw.pointsize = 48 
+    draw.font("'#{Rails.root}/resources/fonts/RobotoSlab-Regular.ttf'")
+    draw.text_align(Magick::CenterAlign)
+    draw.text(575, 956, "#{@card_printing.lookup_number}")
+    draw.draw(back)
   end
 end
