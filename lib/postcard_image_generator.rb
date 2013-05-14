@@ -47,6 +47,7 @@ class PostcardImageGenerator < ImageGenerator
       end
 
       title_on_top = card_design.top_caption.size < card_design.bottom_caption.size
+      draw_credits_nag = @card_printing.should_draw_credits_nag?
       render_qr_on_front = false
 
       #if card_design.top_caption.size > 0 && card_design.bottom_caption.size > 0
@@ -69,7 +70,7 @@ class PostcardImageGenerator < ImageGenerator
           prefix = "Pink"
         end
 
-        back_file = template_path + "/#{prefix}BackTemplate.png"
+        back_file = template_path + "/#{prefix}BackTemplate#{draw_credits_nag ? "CreditsNag" : ""}.png"
         title_on_top = false
       else
         front_file = template_path + "/FrontTemplate#{render_qr_on_front ? (title_on_top ? "Flipped" : "") : (title_on_top ? "FlippedCodeless.png" : "Codeless.png")}"
@@ -153,7 +154,7 @@ class PostcardImageGenerator < ImageGenerator
                                     back_with_text.text(1310, name_y_offset, fb_name)
                                     back_with_text.draw(back)
 
-                                    if app == App.babygrams
+                                    if app == App.babygrams && draw_credits_nag
                                       draw_credits_nag(back)
                                     end
 
