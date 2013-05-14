@@ -50,6 +50,10 @@ class CardPrinting < ActiveRecord::Base
     self.recipient_user.user_profile.try(:name)
   end
 
+  def should_draw_credits_nag?
+    self.recipient_user != self.card_order.order_sender_user
+  end
+
   def lookup_number
     (self.card_printing_id * 13) + 17
   end
