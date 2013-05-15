@@ -156,6 +156,7 @@ CONFIG = SampleableConfig.define do
       { type: "share_card", message: "Share your cards on Facebook." },
     ]
 
+    card_credits_nag_minimum_left_credits 30
     open_graph_share_enabled true
     open_graph_share_header "Share on Facebook"
     open_graph_share_message "Do you want to share your babygram on Facebook?"
