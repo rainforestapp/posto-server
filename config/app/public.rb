@@ -92,6 +92,7 @@ CONFIG = SampleableConfig.define do
     open_graph_type "lulcards:card"
     open_graph_object "postcard"
     open_graph_endpoint "https://graph.facebook.com/me/lulcards:mail"
+    recipient_sort_by_last_name false
     referral_credits 5
     order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting friends."
     ask_for_last_recipients true
@@ -166,6 +167,7 @@ CONFIG = SampleableConfig.define do
     open_graph_type "sendbabycards:postcard"
     open_graph_object "postcard"
     open_graph_endpoint "https://graph.facebook.com/me/sendbabycards:mail"
+    recipient_sort_by_last_name true
     referral_credits 10
     order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting other parents."
     ask_for_last_recipients true
