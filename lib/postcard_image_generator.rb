@@ -387,7 +387,7 @@ class PostcardImageGenerator < ImageGenerator
 
     draw = Magick::Draw.new
 
-    word_wrap(note, 36).split(/\n/).each do |line|
+    word_wrap(note, 34).split(/\n/).each do |line|
       draw.fill = "#444444"
       draw.stroke = 'transparent'
       draw.pointsize = 34
