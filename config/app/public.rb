@@ -35,6 +35,7 @@ CONFIG = SampleableConfig.define do
     fb_permissions ["email", "read_mailbox", "xmpp_login", "user_location", "user_birthday", "friends_location", "user_photos", "friends_photos", "friends_birthday"]
     fb_photo_permissions ["user_photos", "friends_photos"]
     itunes_url "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
+    marketing_url "http://lulcards.com"
     kill_message "lulcards is unavailable."
     urban_airship_application_key ENV["URBAN_AIRSHIP_APP_KEY"]
     urban_airship_application_secret ENV["URBAN_AIRSHIP_APP_SECRET"]
@@ -120,6 +121,7 @@ CONFIG = SampleableConfig.define do
     fb_permissions ["email", "user_location", "user_photos", "friends_photos", "friends_location"]
     fb_photo_permissions ["user_photos", "friends_photos"]
     itunes_url "itms://itunes.apple.com/us/app/babygrams/id634710276?ls=1&mt=8"
+    marketing_url "http://babygra.ms"
     kill_message "babygrams is unavailable."
     urban_airship_application_key ENV["BABYCARDS_URBAN_AIRSHIP_APP_KEY"]
     urban_airship_application_secret ENV["BABYCARDS_URBAN_AIRSHIP_APP_SECRET"]
