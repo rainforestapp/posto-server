@@ -51,7 +51,21 @@ class CardPrinting < ActiveRecord::Base
   end
 
   def should_draw_credits_nag?
-    self.recipient_user != self.card_order.order_sender_user
+    return false if self.recipient_user == self.card_order.order_sender_user
+
+    # Draw the nag if they either have less than the minimum left in the config after this one, or
+    # if they have less than they need to make another order of this size.
+
+    app = self.card_order.app
+    config = CONFIG.for_app(app)
+    number_of_recipients = self.card_order.card_printings.size
+    credits_from_order = number_of_recipients * config.card_credits
+    remaining_credits = self.card_order.order_sender_user.credits_for_app(app) - credits_from_order
+
+    has_less_than_minimum_left = remaining_credits < config.card_credits_nag_minimum_left_credits
+    has_insufficient_for_another_order = remaining_credits < (number_of_recipients * config.card_credits + config.processing_credits)
+
+    has_less_than_minimum_left || has_insufficient_for_another_order
   end
 
   def lookup_number

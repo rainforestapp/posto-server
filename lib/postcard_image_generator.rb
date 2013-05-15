@@ -407,10 +407,10 @@ class PostcardImageGenerator < ImageGenerator
     draw = Magick::Draw.new
     draw.stroke = 'transparent'
     draw.fill = "#ffffff"
-    draw.pointsize = 38
+    draw.pointsize = 42
     draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
     draw.text_align(Magick::LeftAlign)
-    draw.text(122, 1032, "Buy credits for #{sender_user.user_profile.first_name} to send you more!")
+    draw.text(122, 846, "Like this card? Want more from #{sender_user.user_profile.first_name}?")
     draw.draw(back)
 
     draw = Magick::Draw.new
@@ -419,7 +419,7 @@ class PostcardImageGenerator < ImageGenerator
     draw.pointsize = 48 
     draw.font("'#{Rails.root}/resources/fonts/RobotoSlab-Regular.ttf'")
     draw.text_align(Magick::CenterAlign)
-    draw.text(575, 956, "#{@card_printing.lookup_number}")
+    draw.text(575, 1022, "#{@card_printing.lookup_number}")
     draw.draw(back)
   end
 end
