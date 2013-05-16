@@ -276,7 +276,7 @@ CONFIG = SampleableConfig.define do
   order_submitted_header "Thanks!"
   order_submitted_message "Your order has been submitted. We'll notify and e-mail you as we process it."
   order_submitted_credit_prompt_header "Thanks!"
-  order_submitted_credit_prompt_message "Thank you for your order. You can save up to 25% on your next order by using credits."
+  order_submitted_credit_prompt_message "Thank you for your order. You can save up to 25% by refilling your credits."
   order_submitted_credit_prompt_cancel_action "Not Now"
   order_submitted_credit_prompt_action "Refill Now"
   order_submitted_invite_prompt_header "Earn Free Credits"
