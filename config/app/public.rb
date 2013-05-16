@@ -230,6 +230,8 @@ CONFIG = SampleableConfig.define do
   recipient_suggested_table_header "Relatives:"
   recipient_suggested_expiration_days 30
   suggested_recipients_enabled true
+  suggested_recipients_non_retina 16
+  suggested_recipients_retina 24
 
   if Rails.env == "development"
     qr_path "http://posto.dev/qr/"
