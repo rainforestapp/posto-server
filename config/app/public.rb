@@ -119,7 +119,7 @@ CONFIG = SampleableConfig.define do
     from_email "babygrams orders <orders@lulcards.com>"
     facebook_app_id ENV["BABYCARDS_FB_API_KEY"]
     facebook_api_secret ENV["BABYCARDS_FB_API_SECRET"]
-    fb_permissions ["email", "user_location", "user_photos", "friends_photos", "friends_location"]
+    fb_permissions ["email", "user_location", "user_photos", "user_relationships", "friends_photos", "friends_location"]
     fb_photo_permissions ["user_photos", "friends_photos"]
     itunes_url "itms://itunes.apple.com/us/app/babygrams/id634710276?ls=1&mt=8"
     marketing_url "http://babygra.ms"
