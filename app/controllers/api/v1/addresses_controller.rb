@@ -1,7 +1,7 @@
 module Api
   module V1
     class AddressesController < ApplicationController
-      include ApiSecureEndpoint
+      #include ApiSecureEndpoint # TODO race condition in app causing token to not be in there :P
 
       def show
         unless params[:q]
