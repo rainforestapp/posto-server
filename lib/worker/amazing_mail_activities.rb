@@ -11,8 +11,12 @@ class AmazingMailActivities
     ENV["AMAZING_MAIL_PASSWORD"]
   end
 
-  def az_dmid
-    ENV["AMAZING_MAIL_DMID"]
+  def az_dmid_for_app(app)
+    if app == App.babygrams
+      ENV["AMAZING_MAIL_UNPERFORATED_DMID"] || ENV["AMAZING_MAIL_DMID"]
+    else
+      ENV["AMAZING_MAIL_DMID"]
+    end
   end
 
   def submit_images_to_amazing_mail(card_order_id)
@@ -119,7 +123,7 @@ class AmazingMailActivities
           end
 
           csv << [
-            az_dmid,
+            az_dmid_for_app(card_printing.card_order.app),
             card_printing_id,
             first_name,
             last_name,
