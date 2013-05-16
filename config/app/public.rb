@@ -77,7 +77,7 @@ CONFIG = SampleableConfig.define do
     ]
 
     facebook_connect_messages [
-      { type: "recipient", message: "To choose your recipients you'll need to connect to Facebook.", force: true },
+      { type: "recipient", message: "To choose your recipients you'll need to connect to Facebook.", force: true, force_nonintegrated: true, force_integrated: false },
       { type: "friends_photos", message: "To view your friends' shared photos you'll need to connect to Facebook." },
       { type: "facebook_photos", message: "To view your Facebook photos you'll need to connect to Facebook." },
       { type: "send_message", message: "To send messages, you'll need to grant permission on Facebook." },
@@ -227,7 +227,7 @@ CONFIG = SampleableConfig.define do
 
   end
 
-  recipient_suggested_table_header "Suggestions:"
+  recipient_suggested_table_header "Relatives:"
   recipient_suggested_expiration_days 30
   suggested_recipients_enabled true
 
