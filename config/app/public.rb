@@ -93,9 +93,6 @@ CONFIG = SampleableConfig.define do
     open_graph_object "postcard"
     open_graph_endpoint "https://graph.facebook.com/me/lulcards:mail"
     recipient_sort_by_last_name false
-    recipient_suggested_table_header "Suggestions:"
-    recipient_suggested_expiration_days 30
-    suggested_recipients_enabled true
     referral_credits 5
     order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting friends."
     ask_for_last_recipients true
@@ -229,6 +226,10 @@ CONFIG = SampleableConfig.define do
     ]
 
   end
+
+  recipient_suggested_table_header "Suggestions:"
+  recipient_suggested_expiration_days 30
+  suggested_recipients_enabled true
 
   if Rails.env == "development"
     qr_path "http://posto.dev/qr/"
