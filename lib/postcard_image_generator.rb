@@ -284,21 +284,24 @@ class PostcardImageGenerator < ImageGenerator
       if photo_taken_at > birthday
         age = printable_age(photo_taken_at, birthday)
 
-        draw = Magick::Draw.new
-        draw.fill = "#A8A8A8"
-        draw.stroke = 'transparent'
-        draw.pointsize = 38
-        draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
-        draw.text_align(Magick::CenterAlign)
-        draw.rotate(270)
-        draw.text(-660, 1720, age)
-        draw.draw(front)
+        if age
+          draw = Magick::Draw.new
+          draw.fill = "#A8A8A8"
+          draw.stroke = 'transparent'
+          draw.pointsize = 38
+          draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
+          draw.text_align(Magick::CenterAlign)
+          draw.rotate(270)
+          draw.text(-660, 1720, age)
+          draw.draw(front)
+        end
       end
     end
   end
 
   def printable_age(photo_taken_at, birthday)
     return unless photo_taken_at > birthday
+    return if photo_taken_at - birthday < 60 * 60 * 25
 
     diff = photo_taken_at - birthday
     number_of_days = (diff / (24 * 60 * 60)).floor
