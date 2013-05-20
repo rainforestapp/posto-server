@@ -212,7 +212,7 @@ CONFIG = SampleableConfig.define do
     ]
 
     baby_birthday_reminder_switch "Remind me to share milestones"
-    baby_birthday_remind_when_no_credits false
+    baby_birthday_remind_when_no_credits true
     processing_fee -1
     card_fee 150
     processing_credits 0
