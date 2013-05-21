@@ -10,15 +10,15 @@ class UserProfile < ActiveRecord::Base
   end
 
   def direct_object_pronoun
-    gender_pronoun ["him", "her", self.first_name]
+    gender_pronoun ["him", "her", "them"]
   end
 
   def possessive_pronoun
-    gender_pronoun ["his", "her", self.first_name + "'s"]
+    gender_pronoun ["his", "her", "their"]
   end
 
   def subject_pronoun
-    gender_pronoun ["he", "she", self.first_name]
+    gender_pronoun ["he", "she", "they"]
   end
 
   def gender_pronoun(pronouns)

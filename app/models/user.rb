@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   include TransactionRetryable
   include HasUid
 
+  CONTACT_REMOTE_ID_PREFIX = "ios_c_"
+
   has_one_audited :user_profile
   has_one_audited :api_key
   has_one_audited :facebook_token
@@ -321,7 +323,9 @@ class User < ActiveRecord::Base
 
     card_order.tap do |card_order|
       payload["recipients"].each do |recipient|
-        recipient_user = User.where(facebook_id: recipient["facebook_id"]).lock(true).first_or_create!
+        remote_id = recipient["recipient_id"] || recipient["facebook_id"]
+
+        recipient_user = User.where(facebook_id: remote_id).lock(true).first_or_create!
         card_order.card_printings.create!(recipient_user: recipient_user)
 
         if recipient_user.requires_address_request?
@@ -526,6 +530,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def is_contact?
+    self.facebook_id =~ /^#{CONTACT_REMOTE_ID_PREFIX}/
+  end
+
   private 
 
   def execute_birthday_requests_workflow!(birthday_requests)
@@ -564,12 +572,38 @@ class User < ActiveRecord::Base
     raise_order_exception.(:max_recipients_reached) if number_of_cards_to_send > CONFIG.for_app(app).max_cards_to_send
 
     payload["recipients"].each do |recipient|
-      facebook_id = recipient["facebook_id"]
+      remote_id = recipient["facebook_id"]
+      recipient_type = :facebook
+
+      if recipient["recipient_id"]
+        raise_order_exception.(:no_recipient_type) unless ["facebook", "contact"].include?(recipient["recipient_type"])
+        recipient_type = recipient["recipient_type"].to_sym
+
+        if recipient_type == :contact
+          remote_id = recipient["recipient_id"]
+
+          unless remote_id =~ /^#{CONTACT_REMOTE_ID_PREFIX}/ && remote_id =~ /_#{self.facebook_id}$/
+            raise_order_exception.(:bad_contact_recipient_id)
+          end
+        end
+      end
+
       granted = recipient["granted_address_request_permission"]
       sent = recipient["sent_address_request"]
       message = recipient["address_request_message"]
 
-      recipient_user = User.where(facebook_id: facebook_id).lock(true).first_or_create!
+      recipient_user = User.where(facebook_id: remote_id).lock(true).first_or_create!
+
+      # Create or update the profile if this is a contact.
+      if recipient_type == :contact
+        recipient_user_profile_fields = recipient.slice("first_name", "last_name", "name").symbolize_keys
+        recipient_user_profile_fields[:user_id] = recipient_user.user_id
+
+        unless recipient_user_profile_fields[:name].blank? ||
+               recipient_user.user_profile.try(:name) == recipient_user_profile_fields[:name]
+          UserProfile.where(recipient_user_profile_fields).first_or_create!
+        end
+      end
 
       if recipient_user.requires_address_request? 
         unless recipient["granted_address_request_permission"] || recipient["sent_address_request"] || recipient["supplied_address_api_response_id"]
