@@ -201,6 +201,18 @@ describe User do
     }
   end
 
+  def stub_order_request_recipient_for_contact_id(contact_id)
+    { 
+      "recipient_id" => contact_id, 
+      "address_request_message" => "What's your address?",
+      "granted_address_request_permission" => true,
+      "recipient_type" => "contact",
+      "first_name" => "Bubba", 
+      "last_name" => "Jones", 
+      "name" => "Bubba Jones", 
+    }
+  end
+
   def stub_order_request_card_design
     {
       "source_card_design_id" => nil,
@@ -234,6 +246,46 @@ describe User do
                                               "quoted_total_price" => 124 }, api: stub_api)
 
     order.card_printings.size.should == 1
+  end
+
+  it "should create order and user profile with legit contact id" do
+    user = create(:greg_user)
+    user.stub(payment_info_state: :active)
+    friend_id = Random.new.rand(10000).to_s
+    stub_api = stub_api_with(profile: default_profile, friends: [{ "id" => friend_id }])
+
+    recipient = stub_order_request_recipient_for_contact_id("ios_c_123_#{user.facebook_id}") 
+
+    card_design = stub_order_request_card_design
+
+    order = user.create_order_from_payload!({ "facebook_token" => "foobar", 
+                                              "app" => "lulcards",
+                                              "recipients" => [recipient], 
+                                              "card_design" => card_design,
+                                              "quoted_total_price" => 124 }, api: stub_api)
+
+    order.card_printings.size.should == 1
+    recipient_user = User.where(facebook_id: "ios_c_123_#{user.facebook_id}").first
+    recipient_user.user_profile.first_name.should == "Bubba"
+    recipient_user.user_profile.last_name.should == "Jones"
+    recipient_user.user_profile.name.should == "Bubba Jones"
+  end
+
+  it "should not create order with contact recipient with bad remote id" do
+    user = create(:greg_user)
+    user.stub(payment_info_state: :active)
+    friend_id = Random.new.rand(10000).to_s
+    stub_api = stub_api_with(profile: default_profile, friends: [{ "id" => friend_id }])
+    recipient = stub_order_request_recipient_for_contact_id("foobar")
+    card_design = stub_order_request_card_design
+
+    expect(lambda do
+      order = user.create_order_from_payload!({ "facebook_token" => "foobar", 
+                                                "app" => "lulcards",
+                                                "recipients" => [recipient], 
+                                                "card_design" => card_design,
+                                                "quoted_total_price" => 124 }, api: stub_api)
+    end).to raise_error(OrderCreationException, /bad_contact_recipient_id/)
   end
 
   it "should not create order with credits if insufficient credits" do

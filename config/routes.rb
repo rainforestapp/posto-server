@@ -50,6 +50,10 @@ Posto::Application.routes.draw do
         resources :facebook, controller: "Users" do
           resource :birthday, controller: "Birthday"
         end
+
+        resources :contact, controller: "Users" do
+          resource :birthday, controller: "Birthday"
+        end
       end
 
       resource :addresses
