@@ -230,10 +230,21 @@ CONFIG = SampleableConfig.define do
 
   recipient_suggested_table_header "Relatives:"
   recipient_suggested_expiration_days 30
-  suggested_recipients_enabled true
+
+  suggested_recipients_enabled do
+    variant 1, true
+    variant 1, false
+  end
+
   suggested_recipients_non_retina 16
   suggested_recipients_retina 24
-  share_dialog_type "preview_full"
+
+  share_dialog_type do
+    variant 1, "preview_full"
+    variant 1, "alert"
+  end
+
+  contact_recipients_enabled true
 
   if Rails.env == "development"
     qr_path "http://posto.dev/qr/"
@@ -294,20 +305,11 @@ CONFIG = SampleableConfig.define do
   credit_order_submitted_header "Thanks!"
   credit_order_submitted_message "CREDITS credits have been added to your account. You now have TOTAL credits."
 
-  shuffle_captions do
-    variant 1, true
-  end
+  shuffle_captions true
 
-  card_io do
-    variant 1, true
-    variant 2, false
-  end
+  card_io true
 
-  permission_caption do
-    variant 1, "is_needed", "Chat and Inbox access is needed to ask your friends for their addresses."
-    variant 1, "is_needed_spam", "Access is used to ask for addresses.\nWe promise we won't spam."
-    variant 1, "without_asking", "We'll never post anything to Facebook without asking first."
-  end
+  permission_caption "Chat and Inbox access is needed to ask your friends for their addresses."
 
   facebook_allow_messages do
     variant 1, "hey want send", {
@@ -378,16 +380,14 @@ CONFIG = SampleableConfig.define do
   birthday_reminder_post_checkout_nag_when_empty true
   birthday_reminder_post_checkout_nag_on_birthday true
 
-  default_captions do
-    variant 1, "many", [
+  default_captions [
       "lol", "haha", "lulz", "sup", "wat", "oh hai", "wtf", "fail", "yolo", "nope", "meh", "woof",
       "soon.", "uh no", "win", "douche", "fuuuuu", "fuck yea", "zomg", "fml", "derp", "dat ass", "ohshi",
       "fuck it", "pwned", "what is this i don't even", "not bad", "o rly?", "mother of god", "dafuq",
       "like a boss", "shit just got real", "u mad?", "cool story bro", "sucks to suck", "haters gonna hate",
       "seems legit", "i have no idea what i'm doing", "whatcha thinkin bout?", "oh god why", "its a trap",
       "bitch please", "i am not good with computer",
-    ]
-  end
+  ]
 
   memes_enabled true
 
