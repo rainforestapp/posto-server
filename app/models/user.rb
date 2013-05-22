@@ -578,10 +578,9 @@ class User < ActiveRecord::Base
       if recipient["recipient_id"]
         raise_order_exception.(:no_recipient_type) unless ["facebook", "contact"].include?(recipient["recipient_type"])
         recipient_type = recipient["recipient_type"].to_sym
+        remote_id = recipient["recipient_id"]
 
         if recipient_type == :contact
-          remote_id = recipient["recipient_id"]
-
           unless remote_id =~ /^#{CONTACT_REMOTE_ID_PREFIX}/ && remote_id =~ /_#{self.facebook_id}$/
             raise_order_exception.(:bad_contact_recipient_id)
           end
