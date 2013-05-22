@@ -122,6 +122,9 @@ CONFIG = SampleableConfig.define do
     facebook_api_secret ENV["BABYCARDS_FB_API_SECRET"]
     fb_permissions ["email", "user_location", "user_photos", "user_relationships", "friends_photos", "friends_location", "friends_relationships"]
     fb_photo_permissions ["user_photos", "friends_photos"]
+    fb_basic_permissions ["email"]
+    fb_basic_photo_permissions ["user_photos"]
+    fb_relationship_permissions ["user_relationships", "friends_relationships"]
     itunes_url "itms://itunes.apple.com/us/app/babygrams/id634710276?ls=1&mt=8"
     marketing_url "http://babygra.ms"
     kill_message "babygrams is unavailable."
@@ -152,10 +155,10 @@ CONFIG = SampleableConfig.define do
     subject_birthday_field_label "@@@'s birthday:"
 
     facebook_connect_messages [
-      { type: "recipient", message: "To choose your recipients you'll need to connect to Facebook.", force: true, force_nonintegrated: true, force_integrated: false, two_buttons_nonintegrated: false, two_buttons_integrated: true },
-      { type: "friends_photos", message: "To view your friends' shared photos you'll need to connect to Facebook." },
-      { type: "facebook_photos", message: "To view your Facebook photos you'll need to connect to Facebook." },
-      { type: "send_message", message: "To send messages, you'll need to grant permission on Facebook." },
+      { type: "recipient", message: "To send your card, set up a babygrams account by connecting to Facebook.", force: true, force_nonintegrated: false, force_integrated: false, two_buttons_nonintegrated: false, two_buttons_integrated: false },
+      { type: "friends_photos", message: "To view your friends' shared photos you'll need to grant access on Facebook." },
+      { type: "facebook_photos", message: "To view your Facebook photos you'll need to grant access on Facebook." },
+      { type: "send_message", message: "To send messages, you'll need to grant access on Facebook." },
       { type: "post_tutorial", message: "Connect to Facebook to set up your account. You'll earn 30 credits, enough to mail 3 free postcards!" },
       { type: "share_card", message: "Share your cards on Facebook." },
     ]
