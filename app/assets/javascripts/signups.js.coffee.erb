@@ -1,7 +1,7 @@
 class SignupsController
   init: ->
     $(".login").click ->
-      FB.login((-> ), { scope: '<%= CONFIG.for_app(App.lulcards).fb_permissions.join(",") %>' })
+      FB.login((-> ), { scope: '<%= CONFIG.for_app(App.babygrams).fb_basic_permissions.join(",") %>' })
 
     handle_auth = (response) ->
       if response.status == "connected"
