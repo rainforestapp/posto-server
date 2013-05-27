@@ -155,7 +155,7 @@ CONFIG = SampleableConfig.define do
     subject_birthday_field_label "@@@'s birthday:"
 
     facebook_connect_messages [
-      { type: "recipient", message: "To send your card, set up a babygrams account by connecting to Facebook.", force: true, force_nonintegrated: false, force_integrated: false, two_buttons_nonintegrated: false, two_buttons_integrated: false },
+      { type: "recipient", message: "To send your card, set up a babygrams account by connecting to Facebook.", force: true, force_nonintegrated: true, force_integrated: false, two_buttons_nonintegrated: false, two_buttons_integrated: false },
       { type: "friends_photos", message: "To view your friends' shared photos you'll need to grant access on Facebook." },
       { type: "facebook_photos", message: "To view your Facebook photos you'll need to grant access on Facebook." },
       { type: "send_message", message: "To send messages, you'll need to grant access on Facebook." },
