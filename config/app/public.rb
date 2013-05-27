@@ -131,10 +131,10 @@ CONFIG = SampleableConfig.define do
     urban_airship_application_key ENV["BABYCARDS_URBAN_AIRSHIP_APP_KEY"]
     urban_airship_application_secret ENV["BABYCARDS_URBAN_AIRSHIP_APP_SECRET"]
     urban_airship_master_secret ENV["BABYCARDS_URBAN_AIRSHIP_MASTER_SECRET"]
-    nag_version 1
+    nag_version 2
     nag_app_versions ["1.0"]
     nag_title "New Version Available"
-    nag_message "A new version of babygrams is available."
+    nag_message "Babygrams 1.1 now available! What's new: send cards to anyone in your contacts (not just people on Facebook), new share preview, suggested relatives from your Facebook friends"
     nag_action "Update"
     nag_target "TODO"
     share_caption "Check out this card I got from NAME! #babygrams"
@@ -181,19 +181,19 @@ CONFIG = SampleableConfig.define do
     baby_birthday_reminder_recipient_placeholder "family and friends"
 
     baby_birthday_reminders [
-      { weeks: 2, months: 0, notification: "FIRST is two weeks old today! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 2 weeks old!" },
+      #{ weeks: 2, months: 0, notification: "FIRST is two weeks old today! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 2 weeks old!" },
       { weeks: 0, months: 1, notification: "One month old already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm a month old!" },
-      { weeks: 2, months: 1, notification: "FIRST is already six weeks! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 6 weeks old!" },
+      #{ weeks: 2, months: 1, notification: "FIRST is already six weeks! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 6 weeks old!" },
       { weeks: 0, months: 2, notification: "It's FIRST's 2 month birthday today! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 2 month birthday!" },
-      { weeks: 2, months: 2, notification: "FIRST is already ten weeks! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 10 weeks old!" },
+      #{ weeks: 2, months: 2, notification: "FIRST is already ten weeks! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 10 weeks old!" },
       { weeks: 0, months: 3, notification: "Three months old already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm 3 months old!" },
-      { weeks: 2, months: 3, notification: "FIRST is 14 weeks old today! Mail a photo to share the news with RECIPIENTS.", message: "I'm 14 weeks old!" },
+      #{ weeks: 2, months: 3, notification: "FIRST is 14 weeks old today! Mail a photo to share the news with RECIPIENTS.", message: "I'm 14 weeks old!" },
       { weeks: 0, months: 4, notification: "It's FIRST's 4 month birthday! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 4 month birthday!" },
-      { weeks: 2, months: 4, notification: "FIRST is already 18 weeks! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 18 weeks old!" },
+      #{ weeks: 2, months: 4, notification: "FIRST is already 18 weeks! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 18 weeks old!" },
       { weeks: 0, months: 5, notification: "FIRST is 5 months old today! Mail a photo to share the news with RECIPIENTS.", message: "I'm 5 months old!" },
-      { weeks: 2, months: 5, notification: "FIRST is already 5 and a half months! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 22 weeks old!" },
-      { weeks: 0, months: 6, notification: "FIRST is half a year old! Mail a photo to RECIPIENTS for this big milestone.", message: "I'm 6 months old!" },
-      { weeks: 2, months: 6, notification: "FIRST is already six and a half months! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 6 and 1/2 months old!" },
+      #{ weeks: 2, months: 5, notification: "FIRST is already 5 and a half months! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 22 weeks old!" },
+      { weeks: 0, months: 6, notification: "FIRST is six months old! Mail a photo to RECIPIENTS for this big milestone.", message: "I'm 6 months old!" },
+      #{ weeks: 2, months: 6, notification: "FIRST is already six and a half months! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 6 and 1/2 months old!" },
       { weeks: 0, months: 7, notification: "FIRST is 7 months old today! Mail a photo to share the news with RECIPIENTS.", message: "I'm 7 months old!" },
       { weeks: 0, months: 8, notification: "It's FIRST's 8 month birthday! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 8 month birthday!" },
       { weeks: 0, months: 9, notification: "Nine months old already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm 9 months old!" },
