@@ -110,7 +110,13 @@ class FacebookMessageActivities
     req = Net::HTTP::Post.new(fb_uri.request_uri)
     req.set_form_data(params)
     response = http.request(req)
-    raise response.body unless response.code.to_i == 200
+
+    unless response.code.to_i == 200
+      # Error with permissions, let it slide because if they hit "Skip" on UI then we still post share request.
+      return true if response.body =~ /OAuthException/
+      raise response.body
+    end
+
     true
   end
 end
