@@ -1,0 +1,38 @@
+419, 420, 421, 422, 423, 424, 426, 427, 428, 431, 434, 435, 436, 
+select user_id, email, name from user_profiles where user_id in (select distinct order_sender_user_id from card_orders where card_order_id in (419, 420, 421, 422, 423, 424, 426, 427, 428, 431, 434, 435, 436))
+send middle next week:
+469, 473, 478, 481, 484, 486, 491, 
+--
+Hi Lyndsay, my name is Greg Fodor, and I am one of the developers of babygrams. Thanks again for your babygrams order! 
+
+As a new product in the App Store, we're gathering feedback from early adopters. I was wondering if you could share your experience with the app. Did the person who you sent the card to enjoy it? Is there anything we could improve? Could you see yourself using this app to send more cards in the future? Any feedback you can give is greatly appreciated!
+
+Also, next week we will be releasing a version that addresses the most common feature request: you will be able to mail cards to people in your contacts, not just folks on Facebook.
+
+To thank you in advance for your response, here is a link for 10 free babygrams credits you can use to send a free card. Enjoy! 
+
+https://api.lulcards.com/ref/At9gqoR
+
+Thanks again,
+
+Greg Fodor
+Founder, Minddrop LLC
+
+-- sent to:
++---------+------------------------------+--------------------------------+
+| user_id | email                        | name                           |
++---------+------------------------------+--------------------------------+
+|     301 | lyndsay.k.mitchell@gmail.com | Lyndsay Krodel Mitchell        |
+|     369 | humphreydeedee@yahoo.com     | Sonya Dee Dee Humphrey         |
+|     375 | williamtylerdavis@gmail.com  | Tyler Davis                    |
+|     425 | ultrarach@gmail.com          | Rachel Wester                  |
+|     427 | kristin.h.williams@gmail.com | Kristin Williams               |
+|     428 | sal2113@hotmail.com          | Sallee Ramm                    |
+|     431 | saklingz@gmail.com           | Stephanie Klingzahn            |
+|     435 | sarah.kolb@ymail.com         | Sarah Kolb                     |
+|     443 | meli8161@yahoo.com           | PaulorMeli Spangler            |
+|     450 | j-frantz@md.northwestern.edu | Jamie Frantz                   |
+|     456 | abbyandrickyjones@gmail.com  | Abby Jones                     |
+|     458 | bclowery@gmail.com           | Brandie Carroll Stegall Lowery |
+|     462 | saravalkenburg@yahoo.com     | Sara Valkenburg                |
++---------+------------------------------+--------------------------------+
