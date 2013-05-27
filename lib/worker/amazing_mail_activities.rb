@@ -110,7 +110,7 @@ class AmazingMailActivities
 
           first_name = recipient.user_profile.first_name.to_s
           last_name = recipient.user_profile.last_name.to_s
-          encoding_options = { invalid: :replace, undef: :replace, replace: "", universal_newline: true }
+          encoding_options = { invalid: :replace, undef: :replace, replace: "" }
 
           first_name = first_name.encode Encoding.find('ASCII'), encoding_options
           last_name = last_name.encode Encoding.find('ASCII'), encoding_options
