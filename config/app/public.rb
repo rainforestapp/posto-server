@@ -157,7 +157,7 @@ CONFIG = SampleableConfig.define do
       nonintegrated: true,
       integrated: true,
       main_label: "First, set up your account.",
-      secondary_label: "You'll be able to send three free cards.",
+      secondary_label: "You'll be able to send three free cards!",
       button_text: "Connect"
     })
 
@@ -287,8 +287,8 @@ CONFIG = SampleableConfig.define do
   fb_fields ["gender", "birthday"]
 
   signup_credits 30
-  signup_credits_title "You Earned CREDITS Credits"
-  signup_credits_message "You earned CREDITS credits by connecting your Facebook account!"
+  signup_credits_title "You Have CREDITS Credits"
+  signup_credits_message "You now have CREDITS credits and can send 3 free cards!"
   max_cards_to_send 9
   max_photo_byte_size 24 * 1024 * 1024
   recipient_address_expiration_days 31 * 6
