@@ -136,7 +136,7 @@ CONFIG = SampleableConfig.define do
     nag_title "New Version Available"
     nag_message "Babygrams 1.1 now available! What's new: send cards to anyone in your contacts (not just people on Facebook), new share preview, suggested relatives from your Facebook friends"
     nag_action "Update"
-    nag_target "TODO"
+    nag_target "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
     share_caption "Check out this card I got from NAME! #babygrams"
     invite_sms_message "I've been sending amazing baby photo postcards in the mail with babygrams, check it out! LINK"
     invite_share_message "#babygrams lets you send amazing baby photo postcards in the mail. check it out!"
@@ -153,6 +153,13 @@ CONFIG = SampleableConfig.define do
     subject_default_name_girl "(Ex. Mary Elizabeth)"
     subject_name_field_label "Your baby's first & middle name:"
     subject_birthday_field_label "@@@'s birthday:"
+    tutorial_connect({
+      nonintegrated: true,
+      integrated: true,
+      main_label: "First, set up your account.",
+      secondary_label: "You'll be able to send three free cards.",
+      button_text: "Connect"
+    })
 
     facebook_connect_messages [
         { type: "recipient", message: "Connect now to set up your account and send three *free* babygrams!", force: true, force_nonintegrated: true, force_integrated: false, two_buttons_nonintegrated: false, two_buttons_integrated: false },
