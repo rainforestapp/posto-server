@@ -20,7 +20,7 @@ CREATE TABLE `address_api_responses` (
   `arguments` varchar(512) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`address_api_response_id`),
   KEY `index_address_api_responses_on_arguments` (`arguments`(255))
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `address_request_facebook_threads` (
   `address_request_facebook_thread_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -46,7 +46,7 @@ CREATE TABLE `address_request_states` (
   PRIMARY KEY (`address_request_state_id`),
   KEY `index_address_request_states_on_address_request_id` (`address_request_id`),
   KEY `index_address_request_states_on_latest` (`latest`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `address_requests` (
   `address_request_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -62,7 +62,7 @@ CREATE TABLE `address_requests` (
   PRIMARY KEY (`address_request_id`),
   KEY `index_address_requests_on_sender_user_id` (`request_sender_user_id`),
   KEY `index_address_requests_on_recipient_user_id` (`request_recipient_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `api_keys` (
   `api_key_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -77,7 +77,7 @@ CREATE TABLE `api_keys` (
   KEY `index_api_keys_on_user_id` (`user_id`),
   KEY `index_api_keys_on_token` (`token`),
   KEY `index_api_keys_on_latest` (`latest`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `apps` (
   `app_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -204,7 +204,7 @@ CREATE TABLE `card_designs` (
   KEY `index_card_designs_on_original_full_photo_image_id` (`original_full_photo_image_id`),
   KEY `index_card_designs_on_composed_full_photo_image_id` (`composed_full_photo_image_id`),
   KEY `index_card_designs_on_edited_full_photo_image_id` (`edited_full_photo_image_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `card_images` (
   `card_image_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -222,7 +222,7 @@ CREATE TABLE `card_images` (
   PRIMARY KEY (`card_image_id`),
   UNIQUE KEY `index_card_images_on_uuid` (`uuid`),
   KEY `index_card_images_on_author_user_id` (`author_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `card_order_credit_allocations` (
   `card_order_credit_allocation_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -237,7 +237,7 @@ CREATE TABLE `card_order_credit_allocations` (
   PRIMARY KEY (`card_order_credit_allocation_id`),
   KEY `index_card_order_credit_allocations_on_card_order_id` (`card_order_id`),
   KEY `index_card_order_credit_allocations_on_card_order_id_and_latest` (`card_order_id`,`latest`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `card_order_states` (
   `card_order_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -267,7 +267,7 @@ CREATE TABLE `card_orders` (
   UNIQUE KEY `index_card_orders_on_uid` (`uid`),
   KEY `index_card_orders_on_sender_user_id` (`order_sender_user_id`),
   KEY `index_card_orders_on_card_design_id` (`card_design_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `card_preview_compositions` (
   `card_preview_composition_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -327,7 +327,7 @@ CREATE TABLE `card_printings` (
   KEY `index_card_printings_on_card_order_id` (`card_order_id`),
   KEY `index_card_printings_on_recipient_user_id` (`recipient_user_id`),
   KEY `index_card_printings_on_print_number` (`print_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `card_scan_authors` (
   `card_scan_author_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -373,7 +373,7 @@ CREATE TABLE `credit_journal_entries` (
   PRIMARY KEY (`credit_journal_entry_id`),
   KEY `index_credit_journal_entries_on_user_id` (`user_id`),
   KEY `index_credit_journal_entries_on_source_type_and_source_id` (`source_type`,`source_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `credit_orders` (
   `credit_order_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -417,6 +417,29 @@ CREATE TABLE `credit_promos` (
   KEY `index_credit_promos_on_granted_to_user_id` (`granted_to_user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `email_opt_out_states` (
+  `email_opt_out_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `email_opt_out_id` bigint(20) NOT NULL,
+  `state` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `latest` tinyint(1) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `meta` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`email_opt_out_state_id`),
+  KEY `index_email_opt_out_states_on_email_opt_out_id` (`email_opt_out_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `email_opt_outs` (
+  `email_opt_out_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `recipient_user_id` bigint(20) NOT NULL,
+  `email_class` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `meta` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`email_opt_out_id`),
+  KEY `index_email_opt_outs_on_recipient_user_id` (`recipient_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `facebook_token_states` (
   `facebook_token_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `facebook_token_id` bigint(20) NOT NULL,
@@ -440,7 +463,35 @@ CREATE TABLE `facebook_tokens` (
   PRIMARY KEY (`facebook_token_id`),
   KEY `index_facebook_tokens_on_user_id` (`user_id`),
   KEY `index_facebook_tokens_on_token` (`token`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `outgoing_email_task_states` (
+  `outgoing_email_task_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `outgoing_email_task_id` bigint(20) NOT NULL,
+  `state` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `latest` tinyint(1) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `meta` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`outgoing_email_task_state_id`),
+  KEY `index_outgoing_email_task_states_on_outgoing_email_task_id` (`outgoing_email_task_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `outgoing_email_tasks` (
+  `outgoing_email_task_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `workload_id` varchar(512) COLLATE utf8_unicode_ci NOT NULL,
+  `workload_index` int(11) NOT NULL,
+  `email_type` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `email_variant` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `email_args` varchar(2048) COLLATE utf8_unicode_ci NOT NULL,
+  `recipient_user_id` bigint(20) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `meta` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`outgoing_email_task_id`),
+  KEY `index_outgoing_email_tasks_on_workload_id_and_workload_index` (`workload_id`(255),`workload_index`),
+  KEY `index_outgoing_email_tasks_on_recipient_user_id` (`recipient_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `people` (
   `person_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -451,7 +502,7 @@ CREATE TABLE `people` (
   `meta` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`person_id`),
   KEY `index_people_on_email` (`email`(255))
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `person_notification_preferences` (
   `person_notification_preference_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -465,7 +516,7 @@ CREATE TABLE `person_notification_preferences` (
   PRIMARY KEY (`person_notification_preference_id`),
   KEY `index_person_notification_preferences_on_person_id` (`person_id`),
   KEY `index_person_notification_preferences_on_target_id` (`target_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `person_profiles` (
   `person_profile_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -479,7 +530,7 @@ CREATE TABLE `person_profiles` (
   KEY `index_person_profiles_on_person_id` (`person_id`),
   KEY `index_person_profiles_on_person_id_and_latest` (`person_id`,`latest`),
   KEY `index_person_profiles_on_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `rails_admin_histories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -830,3 +881,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130501235923');
 INSERT INTO schema_migrations (version) VALUES ('20130507224302');
 
 INSERT INTO schema_migrations (version) VALUES ('20130512085953');
+
+INSERT INTO schema_migrations (version) VALUES ('20130529042352');
