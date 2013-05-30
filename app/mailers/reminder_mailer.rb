@@ -4,13 +4,13 @@ class ReminderMailer < ActionMailer::Base
   default from: "babygrams <support@babygrams.com>"
   layout "email_action"
 
-  def birthday_reminder(card_design, outgoing_email_task)
-    @card_design = card_design
-    @task = outgoing_email_task
+  def birthday_reminder(params)
+    @card_design = CardDesign.find(params[:card_design_id])
+    @task = params[:outgoing_email_task]
 
-    @app = card_design.app
+    @app = @card_design.app
     @config = CONFIG.for_app(@app)
-    @author = card_design.author_user
+    @author = @card_design.author_user
 
     return if @author.is_opted_out_of_email_class?(:reminders)
 
@@ -28,18 +28,18 @@ class ReminderMailer < ActionMailer::Base
 
     @gender_color = "#5FB5E5"
 
-    if card_design.postcard_subject
-      if card_design.postcard_subject[:name]
-        @subject_first_name = card_design.postcard_subject[:name].split(/\s+/)[0]
+    if @card_design.postcard_subject
+      if @card_design.postcard_subject[:name]
+        @subject_first_name = @card_design.postcard_subject[:name].split(/\s+/)[0]
       else
         @subject_first_name = "your baby"
       end
 
-      if card_design.postcard_subject[:gender] == "girl"
+      if @card_design.postcard_subject[:gender] == "girl"
         @gender_color = "#EB6C9A"
       end
 
-      birthday = Chronic.parse(card_design.postcard_subject[:birthday])
+      birthday = Chronic.parse(@card_design.postcard_subject[:birthday])
       @age = DateHelper.printable_age(Time.now, birthday - 2.days, false)
     end
 

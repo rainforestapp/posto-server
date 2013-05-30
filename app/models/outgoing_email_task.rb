@@ -21,4 +21,29 @@ class OutgoingEmailTask < ActiveRecord::Base
   def has_been_sent?
     self.state != :outgoing
   end
+
+  def send!
+    return if has_been_sent?
+
+    email_class = EMAIL_CLASS_MAP[self.email_type]
+
+    mailer_klass = nil
+
+    case email_class
+    when :reminders
+      mailer_klass = ReminderMailer
+    else
+      raise "No mailer for #{email_class}"
+    end
+
+    params = { outgoing_email_task: self }.merge(self.email_args)
+    mail = mailer_klass.send(self.email_type, params)
+
+    if mail
+      mail.deliver
+      self.state = :sent
+    else
+      self.state = :failed
+    end
+  end
 end
