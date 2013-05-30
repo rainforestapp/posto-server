@@ -534,6 +534,10 @@ class User < ActiveRecord::Base
     self.facebook_id =~ /^#{CONTACT_REMOTE_ID_PREFIX}/
   end
 
+  def last_card_order
+    self.card_orders.sort_by(&:created_at)[-1]
+  end
+
   private 
 
   def execute_birthday_requests_workflow!(birthday_requests)
