@@ -480,6 +480,7 @@ CREATE TABLE `outgoing_email_task_states` (
 CREATE TABLE `outgoing_email_tasks` (
   `outgoing_email_task_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `workload_id` varchar(512) COLLATE utf8_unicode_ci NOT NULL,
+  `uid` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `workload_index` int(11) NOT NULL,
   `email_type` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `email_variant` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
