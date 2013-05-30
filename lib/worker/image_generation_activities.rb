@@ -3,11 +3,25 @@ require "postcard_image_generator"
 
 class ImageGenerationActivities
   def generate_preview_images(card_order_id)
+    generate_preview_images_for_design(CardOrder.find(card_order_id).card_design)
+  end
+
+  def generate_preview_images_for_outgoing_email_task(outgoing_email_task_id)
+    task = OutgoingEmailTask.find(outgoing_email_task_id)
+
+    if task.email_args[:card_design_id]
+      generate_preview_images_for_design(CardDesign.find(task.email_args[:card_design_id]))
+    end
+
+    true
+  end
+
+  def generate_preview_images_for_design(card_design)
     card_order = CardOrder.find(card_order_id)
     card_design = card_order.card_design
     card_design_author = card_design.author_user
     generator = PreviewImageGenerator.new(card_design)
-    app = card_order.app
+    app = card_design.app
 
     generator.generate! do |preview_file_path, treated_preview_file_path|
       preview_image = card_design_author.create_and_publish_image_file!(preview_file_path, app: app, image_type: :card_preview)
