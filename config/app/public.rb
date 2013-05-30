@@ -222,6 +222,7 @@ CONFIG = SampleableConfig.define do
       { weeks: 0, months: 24, notification: "Happy 2nd birthday to FIRST! Send a birthday photo to RECIPIENTS to mark this special day!", message: "Happy 2nd birthday to me!" },
     ]
 
+    reminder_app_url "babycards://reminder"
     baby_birthday_reminder_switch "Remind me to share milestones"
     baby_birthday_remind_when_no_credits true
     processing_fee -1

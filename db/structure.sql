@@ -222,7 +222,7 @@ CREATE TABLE `card_images` (
   PRIMARY KEY (`card_image_id`),
   UNIQUE KEY `index_card_images_on_uuid` (`uuid`),
   KEY `index_card_images_on_author_user_id` (`author_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `card_order_credit_allocations` (
   `card_order_credit_allocation_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -281,7 +281,7 @@ CREATE TABLE `card_preview_compositions` (
   PRIMARY KEY (`card_preview_composition_id`),
   KEY `index_card_preview_compositions_on_card_design_id` (`card_design_id`),
   KEY `index_card_preview_compositions_on_card_preview_image_id` (`card_preview_image_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `card_printing_compositions` (
   `card_printing_composition_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -475,7 +475,7 @@ CREATE TABLE `outgoing_email_task_states` (
   `meta` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`outgoing_email_task_state_id`),
   KEY `index_outgoing_email_task_states_on_outgoing_email_task_id` (`outgoing_email_task_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `outgoing_email_tasks` (
   `outgoing_email_task_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -489,10 +489,11 @@ CREATE TABLE `outgoing_email_tasks` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `meta` text COLLATE utf8_unicode_ci,
+  `app_id` bigint(20) NOT NULL,
   PRIMARY KEY (`outgoing_email_task_id`),
   KEY `index_outgoing_email_tasks_on_workload_id_and_workload_index` (`workload_id`(255),`workload_index`),
   KEY `index_outgoing_email_tasks_on_recipient_user_id` (`recipient_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `people` (
   `person_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -884,3 +885,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130507224302');
 INSERT INTO schema_migrations (version) VALUES ('20130512085953');
 
 INSERT INTO schema_migrations (version) VALUES ('20130529042352');
+
+INSERT INTO schema_migrations (version) VALUES ('20130530225137');
