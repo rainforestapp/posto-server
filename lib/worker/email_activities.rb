@@ -65,4 +65,19 @@ class EmailActivities
   def send_email_of_birthday_request_expired(birthday_request_id)
     true
   end
+
+  def send_outgoing_email_task(workload_id, workload_index)
+    OutgoingEmailTask.where(workload_id: workload_id, workload_index: workload_index).send!
+    true
+  end
+
+  def generate_outgoing_email_tasks
+    tasks = OutgoingEmailTaskGenerator.new.generate_birthday_reminder_tasks!
+
+    if tasks.size == 0
+      return ["","0"]
+    else
+      return [tasks[0].workload_id, tasks.size.to_s]
+    end
+  end
 end
