@@ -36,5 +36,18 @@ module Admin
       render file: 'order_confirmation_mailer/expired_email.html.haml',
              layout: 'email'
     end
+
+    def preview_reminder
+      @card_design = CardDesign.find(26)
+      @target_url = "http://foobar"
+      @last_names = ["Bubba Jones", "Sally Mae"]
+      @age = "stupid"
+      @subject_first_name = "Narf"
+      @gender_color = "#EB6C9A"
+      @gender_color = "#5FB5E5"
+
+      render file: 'reminder_mailer/birthday_reminder.html.haml',
+             layout: 'email_action'
+    end
   end
 end

@@ -16,12 +16,18 @@ class OutgoingEmailTaskGenerator
       birthday = postcard_subject[:birthday]
       next unless birthday
       birthday = Chronic.parse(birthday).to_time
+      next unless card_design.app == App.babygrams
 
-      CONFIG.for_app(card_design.app).baby_birthday_reminders.each do |reminder|
+      author = card_design.author_user
+      config = CONFIG.for_app(card_design.app)
+
+      config.baby_birthday_reminders.each do |reminder|
         reminder_date = birthday.advance(months: reminder[:months], weeks: reminder[:weeks]).to_date
 
         if reminder_date == today
-          reminder_map[card_design.author_user_id] = { reminder: reminder, card_design_id: card_design.card_design_id }
+          unless author.last_card_order && author.last_card_order.created_at > Time.now - config.min_baby_birthday_reminder_delay_days.days
+            reminder_map[card_design.author_user_id] = { reminder: reminder, card_design_id: card_design.card_design_id }
+          end
         end
       end
     end

@@ -1,3 +1,4 @@
+require "date_helper"
 require "image_generator"
 
 class PostcardImageGenerator < ImageGenerator
@@ -282,7 +283,7 @@ class PostcardImageGenerator < ImageGenerator
       photo_taken_at = card_design.photo_taken_at || Time.now
 
       if photo_taken_at > birthday
-        age = printable_age(photo_taken_at, birthday)
+        age = DateHelper.printable_age(photo_taken_at, birthday)
 
         if age
           draw = Magick::Draw.new
@@ -292,76 +293,8 @@ class PostcardImageGenerator < ImageGenerator
           draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
           draw.text_align(Magick::CenterAlign)
           draw.rotate(270)
-          draw.text(-660, 1720, age)
+          draw.text(-660, 1720, "#{age} old")
           draw.draw(front)
-        end
-      end
-    end
-  end
-
-  def printable_age(photo_taken_at, birthday)
-    return unless photo_taken_at > birthday
-    return if photo_taken_at - birthday < 60 * 60 * 25
-
-    diff = photo_taken_at - birthday
-    number_of_days = (diff / (24 * 60 * 60)).floor
-
-    number_of_months_old = 0
-    number_of_extra_days_old = 0
-    current = birthday
-
-    loop do
-      current += 1.day
-
-      if current.day == birthday.day
-        number_of_months_old += 1
-        number_of_extra_days_old = 0
-      else
-        number_of_extra_days_old += 1
-      end
-
-      break if current.day == photo_taken_at.day && current.month == photo_taken_at.month && current.year == photo_taken_at.year
-    end
-
-    number_of_years_old = number_of_months_old / 12
-    number_of_extra_months_old = number_of_months_old % 12
-    number_of_weeks_old = (number_of_months_old * 4) + (number_of_extra_days_old / 7)
-
-    syear = number_of_years_old > 1 ? "years" : "year"
-    smonth = number_of_months_old > 1 ? "months" : "month"
-    sday = number_of_extra_days_old > 1 ? "days" : "day"
-    sweek = number_of_weeks_old > 1 ? "weeks" : "week"
-
-    if number_of_years_old > 0
-      if number_of_extra_months_old == 6
-        "#{number_of_years_old} and a half years old"
-      else
-        if number_of_extra_months_old > 0
-          "#{number_of_years_old} #{syear} and #{number_of_extra_months_old} #{smonth} old"
-        else
-          "#{number_of_years_old} #{syear} old"
-        end
-      end
-    else
-      if number_of_weeks_old == 0
-        "#{number_of_extra_days_old} #{sday} old"
-      elsif number_of_months_old == 0
-        "#{number_of_weeks_old} #{sweek} old"
-      elsif number_of_months_old <= 6
-        if number_of_extra_days_old < 8
-          "#{number_of_months_old} #{smonth} old"
-        elsif number_of_extra_days_old < 15
-          "#{number_of_weeks_old} #{sweek} old"
-        elsif number_of_extra_days_old < 22
-          "#{number_of_months_old} and a half #{smonth} old"
-        else
-          "#{number_of_weeks_old} #{sweek} old"
-        end
-      else
-        if number_of_extra_days_old < 14
-          "#{number_of_months_old} #{smonth} old"
-        else
-          "#{number_of_months_old} and a half #{smonth} old"
         end
       end
     end
