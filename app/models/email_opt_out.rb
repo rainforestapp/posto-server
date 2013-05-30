@@ -7,4 +7,6 @@ class EmailOptOut < ActiveRecord::Base
   belongs_to :recipient_user, class_name: "User"
   symbolize :email_class, in: OutgoingEmailTask::EMAIL_CLASS_MAP.values.uniq, validate: true
   has_audited_state_through :email_opt_out_state
+  def is_opted_out_from_email_of_class(email_class)
+  end
 end

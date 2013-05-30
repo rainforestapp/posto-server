@@ -538,6 +538,16 @@ class User < ActiveRecord::Base
     self.card_orders.sort_by(&:created_at)[-1]
   end
 
+  def is_opted_out_of_email_class?(email_class)
+    opt_out = EmailOptOut.where(recipient_user_id: self.user_id, email_class: email_class).first
+    opt_out && opt_out.try(:state) == :opted_out
+  end
+
+  def opt_out_of_email_class!(email_class)
+    opt_out = EmailOptOut.where(recipient_user_id: self.user_id, email_class: email_class).first_or_create!
+    opt_out.state = :opted_out
+  end
+
   private 
 
   def execute_birthday_requests_workflow!(birthday_requests)
