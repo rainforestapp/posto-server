@@ -26,7 +26,7 @@ class OutgoingEmailTaskGenerator
 
         if reminder_date == today
           unless author.last_card_order && author.last_card_order.created_at > Time.now - config.min_baby_birthday_reminder_delay_days.days
-            reminder_map[card_design.author_user_id] = { reminder: reminder, card_design_id: card_design.card_design_id }
+            reminder_map[card_design.author_user_id] = { reminder: reminder, app_id: card_design.app_id, card_design_id: card_design.card_design_id }
           end
         end
       end
@@ -41,9 +41,7 @@ class OutgoingEmailTaskGenerator
           card_design_id = info[:card_design_id]
 
           email_type = :birthday_reminder
-          email_args = { card_design_id: card_design_id,
-                         months: reminder[:months],
-                         weeks: reminder[:weeks] }
+          email_args = { card_design_id: card_design_id }
           
           already_sent = false
 
@@ -57,6 +55,7 @@ class OutgoingEmailTaskGenerator
                                                                email_type: email_type,
                                                                email_variant: "default",
                                                                email_args: email_args,
+                                                               app_id: info[:app_id],
                                                                recipient_user_id: recipient_user_id)
           end
         end
