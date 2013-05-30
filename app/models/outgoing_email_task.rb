@@ -2,6 +2,8 @@ class OutgoingEmailTask < ActiveRecord::Base
   include AppendOnlyModel
   include HasOneAudited
   include HasAuditedState
+  include HasUid
+  include TransactionRetryable
 
   EMAIL_CLASS_MAP = {
     birthday_reminder: :reminders,

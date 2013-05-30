@@ -6,6 +6,7 @@ class AddEmailTasks < ActiveRecord::Migration
   def up
     create_posto_table :outgoing_email_tasks do |t|
       t.string :workload_id, null: false, limit: 512
+      t.string :uid, null: false, limit: 64
       t.integer :workload_index, null: false
       t.string :email_type, null: false, limit: 64
       t.string :email_variant, null: false, limit: 64
