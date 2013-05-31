@@ -42,9 +42,9 @@ class DripMailer < ActionMailer::Base
 
     recipient_address = "gfodor@gmail.com"
 
-    #unless Rails.env == "development"
-    #  recipient_address = @user.user_profile.email
-    #end
+    unless Rails.env == "development"
+      recipient_address = @user.user_profile.email
+    end
 
     mail(to: recipient_address,
          from: @config.from_reminder_email,
