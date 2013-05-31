@@ -5,7 +5,7 @@
         %a{href: @target_url}
           %img{style: "border: 1px solid #aaa", src: @card_design.card_preview_composition.treated_card_preview_image.public_url, width: 200}
     %div{style: "font-size: 20px; text-align: center; color: #444444; font-weight: bold; padding-top: 16px;"}
-      Happy #{@age} birthday to #{@subject_first_name}!
+      Happy #{@age_singular} birthday to #{@subject_first_name}!
   %div{style: "font-size: 16px; text-align: center; color: #666666; padding-top: 10px; padding-left: 8px; padding-right: 8px;"}
     - if @last_names.size == 1
       We hope #{@last_names[0]} enjoyed #{@last_recipient_profile.try(:possessive_pronoun) || "their"} babygram.&nbsp;
