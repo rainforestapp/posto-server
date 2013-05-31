@@ -14,7 +14,7 @@ class ReminderMailer < ActionMailer::Base
 
     return if @author.is_opted_out_of_email_class?(:reminders)
 
-    last_orders = @author.card_orders.select { |o| o.app == @app }.sort_by(&:created_at)
+    last_orders = @author.card_orders.select { |o| o.app_id == @app.app_id }.sort_by(&:created_at)
 
     if last_orders.size > 3
       last_orders = last_orders[-3..-1]
