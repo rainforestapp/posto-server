@@ -10,13 +10,25 @@ class DateHelper
     number_of_extra_days_old = 0
     current = birthday
 
+    month_incremented_this_month = true
+
     loop do
       current += 1.day
+
+      if current.day == 1
+        if !month_incremented_this_month && birthday.day != 1
+          number_of_months_old += 1
+          number_of_extra_days_old = 0
+        end
+
+        month_incremented_this_month = false
+      end
 
       if current.day == birthday.day
         number_of_months_old += 1
         number_of_extra_days_old = 0
-      else
+        month_incremented_this_month = true
+      elsif current.day < birthday.day
         number_of_extra_days_old += 1
       end
 
@@ -66,5 +78,4 @@ class DateHelper
       end
     end
   end
-
 end
