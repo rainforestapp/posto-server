@@ -23,7 +23,7 @@ class ReminderMailer < ActionMailer::Base
     return if last_orders.size == 0
 
     last_recipients = last_orders.map(&:card_printings).flatten.map(&:recipient_user).uniq.select { |u| u != @author }
-    last_names = last_recipients.map(&:user_profile).compact.map(&:name).compact
+    last_names = last_recipients.map(&:user_profile).compact.map { |profile| profile.first_name || profile.name }.compact
 
     if last_names.size > 0
       @last_names = last_names
