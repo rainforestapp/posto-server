@@ -104,7 +104,7 @@ namespace :worker do
             is_execute_once = worker.respond_to?(:execute_once?) && worker.execute_once?
             result = nil
 
-            if is_execute_once
+            if is_execute_once && args.size > 0
               execution = ActivityExecution.where(method: activity_method, worker:class_name,
                                                   arguments: YAML.dump({ args: args })).first
 
