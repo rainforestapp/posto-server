@@ -30,7 +30,7 @@ class DripMailer < ActionMailer::Base
     @user = User.find(params[:user_id])
     @app = App.find(params[:app_id])
     @task = nil
-    @task = OutgoingEmailTask.find(params[:outgoing_email_task_id]) if params[:outgoing_email_task_id]
+    @task = params[:outgoing_email_task]
     @config = CONFIG.for_app(@app)
     return if @user.is_opted_out_of_email_class?(:drip)
 
