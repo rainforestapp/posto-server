@@ -49,6 +49,7 @@ class DateHelper
         "#{number_of_years_old} and a half #{pluralize ? "years" : "year"}"
       else
         if number_of_extra_months_old > 0
+          smonth = number_of_extra_months_old > 1 && pluralize ? "months" : "month"
           "#{number_of_years_old} #{syear} and #{number_of_extra_months_old} #{smonth}"
         else
           "#{number_of_years_old} #{syear}"
