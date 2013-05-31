@@ -37,6 +37,17 @@ module Admin
              layout: 'email'
     end
 
+    def preview_drip
+      @user = User.all.first
+      @app = App.babygrams
+      @number_of_free_cards = 3
+      @gender_color = "#5FB5E5"
+      @gender_color = "#EB6C9A"
+
+      render file: 'drip_mailer/drip_3_week.html.haml',
+             layout: 'email_action'
+    end
+
     def preview_reminder
       @card_design = CardDesign.find(26)
       @target_url = "http://foobar"
