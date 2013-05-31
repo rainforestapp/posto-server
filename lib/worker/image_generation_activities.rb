@@ -17,8 +17,6 @@ class ImageGenerationActivities
   end
 
   def generate_preview_images_for_design(card_design)
-    card_order = CardOrder.find(card_order_id)
-    card_design = card_order.card_design
     card_design_author = card_design.author_user
     generator = PreviewImageGenerator.new(card_design)
     app = card_design.app
