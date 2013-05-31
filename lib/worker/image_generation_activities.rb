@@ -6,8 +6,8 @@ class ImageGenerationActivities
     generate_preview_images_for_design(CardOrder.find(card_order_id).card_design)
   end
 
-  def generate_preview_images_for_outgoing_email_task(outgoing_email_task_id)
-    task = OutgoingEmailTask.find(outgoing_email_task_id)
+  def generate_preview_images_for_outgoing_email_task(workload_id, workload_index)
+    task = OutgoingEmailTask.where(workload_id: workload_id, workload_index: workload_index)
 
     if task.email_args[:card_design_id]
       generate_preview_images_for_design(CardDesign.find(task.email_args[:card_design_id]))
