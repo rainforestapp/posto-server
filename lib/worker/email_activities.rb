@@ -1,3 +1,5 @@
+require "outgoing_email_task_generator"
+
 class EmailActivities
   def execute_once?
     true
