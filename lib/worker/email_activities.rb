@@ -74,7 +74,7 @@ class EmailActivities
   end
 
   def generate_outgoing_email_tasks
-    tasks = OutgoingEmailTaskGenerator.new.generate_birthday_reminder_tasks!
+    tasks = OutgoingEmailTaskGenerator.new.generate_tasks!
 
     if tasks.size == 0
       return ["","0"]

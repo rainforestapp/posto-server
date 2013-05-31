@@ -7,7 +7,10 @@ class OutgoingEmailTask < ActiveRecord::Base
 
   EMAIL_CLASS_MAP = {
     birthday_reminder: :reminders,
-    inactive_beckon: :drip,
+    drip_1_week: :drip,
+    drip_3_week: :drip,
+    drip_8_week: :drip,
+    drip_12_week: :drip,
   }
 
   attr_accessible :app_id, :workload_id, :workload_index, :email_type, :email_variant, :email_args, :recipient_user_id
@@ -32,6 +35,8 @@ class OutgoingEmailTask < ActiveRecord::Base
     case email_class
     when :reminders
       mailer_klass = ReminderMailer
+    when :drip
+      mailer_klass = DripMailer
     else
       raise "No mailer for #{email_class}"
     end
