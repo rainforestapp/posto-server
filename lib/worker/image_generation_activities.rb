@@ -7,9 +7,9 @@ class ImageGenerationActivities
   end
 
   def generate_preview_images_for_outgoing_email_task(workload_id, workload_index)
-    task = OutgoingEmailTask.where(workload_id: workload_id, workload_index: workload_index)
+    task = OutgoingEmailTask.where(workload_id: workload_id, workload_index: workload_index).first
 
-    if task.email_args[:card_design_id]
+    if task && task.email_args[:card_design_id]
       generate_preview_images_for_design(CardDesign.find(task.email_args[:card_design_id]))
     end
 

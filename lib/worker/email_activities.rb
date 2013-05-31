@@ -69,7 +69,7 @@ class EmailActivities
   end
 
   def send_outgoing_email_task(workload_id, workload_index)
-    OutgoingEmailTask.where(workload_id: workload_id, workload_index: workload_index).send!
+    OutgoingEmailTask.where(workload_id: workload_id, workload_index: workload_index).first.try(:send!)
     true
   end
 
