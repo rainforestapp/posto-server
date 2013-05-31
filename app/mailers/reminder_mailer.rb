@@ -52,9 +52,9 @@ class ReminderMailer < ActionMailer::Base
 
     recipient_address = "gfodor@gmail.com"
 
-    #unless Rails.env == "development"
-    #  recipient_address = @author.user_profile.email
-    #end
+    unless Rails.env == "development"
+      recipient_address = @author.user_profile.email
+    end
 
     @target_url = "http://#{@app.domain}/email_clicks/#{@task.try(:uid)}"
     @unsubscribe_url = "http://#{@app.domain}/unsubscribes/#{@task.try(:uid)}"
