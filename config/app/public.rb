@@ -278,7 +278,7 @@ CONFIG = SampleableConfig.define do
 
   order_workflow_version "2.2"
   birthday_request_workflow_version "2.1"
-  outgoing_email_workflow_version "2.1"
+  outgoing_email_workflow_version "2.3"
 
   effects true
   caption_swap_button false

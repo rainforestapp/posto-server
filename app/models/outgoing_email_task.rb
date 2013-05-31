@@ -40,7 +40,12 @@ class OutgoingEmailTask < ActiveRecord::Base
     mail = mailer_klass.send(self.email_type, params)
 
     if mail
-      mail.deliver
+      begin
+        mail.deliver
+      rescue Exception => e
+        self.state = :failed
+      end
+
       self.state = :sent
     else
       self.state = :failed
