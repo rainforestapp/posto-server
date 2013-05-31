@@ -47,7 +47,7 @@ class ReminderMailer < ActionMailer::Base
       end
 
       birthday = Chronic.parse(@card_design.postcard_subject[:birthday])
-      @age = DateHelper.printable_age(Time.now, birthday - 2.days, false)
+      @age = DateHelper.printable_age(Time.now, birthday - 2.days, true)
     end
 
     recipient_address = "gfodor@gmail.com"
@@ -61,6 +61,6 @@ class ReminderMailer < ActionMailer::Base
 
     mail(to: recipient_address,
          from: @config.from_reminder_email,
-         subject: "Happy #{@age} birthday to #{@subject_first_name} from #{@app.name}!")
+         subject: "#{@subject_first_name} is #{@age} old! Happy birthday from #{@app.name}.")
   end
 end
