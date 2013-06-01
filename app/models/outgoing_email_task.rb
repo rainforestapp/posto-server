@@ -11,6 +11,7 @@ class OutgoingEmailTask < ActiveRecord::Base
     drip_3_week: :drip,
     drip_8_week: :drip,
     drip_12_week: :drip,
+    drip_welcome: :drip,
   }
 
   attr_accessible :app_id, :workload_id, :workload_index, :email_type, :email_variant, :email_args, :recipient_user_id
