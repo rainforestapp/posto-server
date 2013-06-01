@@ -117,8 +117,8 @@ CONFIG = SampleableConfig.define do
     mixpanel_revenue_enabled false
     page_title "babygrams: send amazing baby photo postcards in the mail"
     page_tagline "Send amazing baby photo postcards in the mail."
-    from_email "babygrams orders <orders@lulcards.com>"
-    from_reminder_email "babygrams <orders@lulcards.com>"
+    from_email "babygrams orders <orders@babygra.ms>"
+    from_reminder_email "babygrams <support@babygra.ms>"
     facebook_app_id ENV["BABYCARDS_FB_API_KEY"]
     facebook_api_secret ENV["BABYCARDS_FB_API_SECRET"]
     fb_permissions ["email", "user_location", "user_photos", "user_relationships", "friends_photos", "friends_location", "friends_relationships"]

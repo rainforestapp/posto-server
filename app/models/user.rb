@@ -538,6 +538,10 @@ class User < ActiveRecord::Base
     self.card_orders.sort_by(&:created_at)[-1]
   end
 
+  def first_order
+    self.card_orders.sort_by(&:created_at)[0]
+  end
+
   def is_opted_out_of_email_class?(email_class)
     opt_out = EmailOptOut.where(recipient_user_id: self.user_id, email_class: email_class).first
     opt_out && opt_out.try(:state) == :opted_out

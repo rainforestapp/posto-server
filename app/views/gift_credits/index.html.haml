@@ -6,10 +6,11 @@
       %h3{width: "100%"}
         Enter the code on the back of your babygram.
       .control-group{ id: "lookup-controls" }
-        .controls
-          %div{ class: "help-inline", id: "lookup-code-error" }
-          %input{ type: "number", name: "lookup_code", id: "lookup-code" }
-        .controls
-          %input{ type: "button", id: "lookup", class: "btn", value: "Lookup" }
+        %form{ id: "lookup_form", method:"get", action:"#" }
+          .controls
+            %div{ class: "help-inline", id: "lookup-code-error" }
+            %input{ type: "number", name: "lookup_code", id: "lookup-code" }
+          .controls
+            %input{ type: "submit", id: "lookup", class: "btn", value: "Lookup" }
   .span6
     %img{ src: image_path("#{@app.name}/CodeExample.png"), width: 562, height: 423 }

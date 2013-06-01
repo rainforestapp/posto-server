@@ -32,14 +32,14 @@ class GiftCreditsController
     self.selected_package_icon = null
     self.sync_with_selected_package()
 
-    $("#lookup").click ->
+    $("#lookup_form").submit ->
       lookup_code = $("#lookup-code").val()
 
-      return if lookup_code == ""
+      return false if lookup_code == ""
 
       unless lookup_code.match(/^[0-9]+$/)
         self.show_lookup_error("Your code should be all numbers.")
-        return
+        return false
 
       app_name = $("body").attr("data-app")
 
