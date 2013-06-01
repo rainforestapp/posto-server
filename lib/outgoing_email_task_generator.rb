@@ -66,6 +66,19 @@ class OutgoingEmailTaskGenerator
           end
         end
       end
+
+      # Email welcome email 9 days after order is mailed
+      orders = CardOrderState.where(created_at: (today - 10.days)..(today - 9.days), state: :finished).map(&:card_order)
+
+      orders.each do |order|
+        if order.order_sender_user.first_order == order
+          drip_map[order.order_sender_user.user_id] = {
+            app_id: order.app_id,
+            email_type: :drip_welcome,
+            email_args: { user_id: order.order_sender_user_id, app_id: order.app_id }
+          }
+        end
+      end
     end
   end
 

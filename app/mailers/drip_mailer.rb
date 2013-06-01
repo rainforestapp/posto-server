@@ -4,6 +4,39 @@ class DripMailer < ActionMailer::Base
   default from: "babygrams <support@babygrams.com>"
   layout "email_action"
 
+  def drip_welcome(params)
+    @user = User.find(params[:user_id])
+    @app = App.find(params[:app_id])
+    return if @user.is_opted_out_of_email_class?(:drip)
+    return unless @app == App.babygrams
+
+    recipient_address = "gfodor@gmail.com"
+
+    #unless Rails.env == "development"
+    #  recipient_address = @user.user_profile.email
+    #end
+
+    orders = @user.card_orders.where(app_id: @app.app_id)
+    subject = "How did your #{@app.name} order go?"
+    card_name = @app == App.babygrams ? "babygram" : "lulcard"
+
+    if orders.size > 0
+      profiles = orders.map(&:card_printings).flatten.select { |p| p.recipient_user != @user }.map(&:recipient_user).uniq.map(&:user_profile).compact
+
+      if profiles.size == 1
+        if profiles[0].first_name
+          subject = "How did #{profiles[0].first_name} enjoy #{profiles[0].possessive_pronoun} #{card_name}?"
+        end
+      elsif profiles.size > 1
+        subject = "How did #{profiles.map(&:first_name).compact.to_sentence} enjoy their #{card_name.pluralize}?"
+      end
+    end
+
+    mail(to: recipient_address,
+         from: "Greg Fodor <gfodor@babygra.ms>",
+         subject: subject)
+  end
+
   def drip_1_week(params)
     @gender_color = "#5FB5E5"
     send_drip_email("A surprise in the mail for grandparents", params)
