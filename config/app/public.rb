@@ -91,7 +91,7 @@ CONFIG = SampleableConfig.define do
     open_graph_share_message "Share your card after it arrives?"
     open_graph_share_delay_days 9
     open_graph_type "lulcards:card"
-    open_graph_object "postcard"
+    open_graph_object "card"
     open_graph_endpoint "https://graph.facebook.com/me/lulcards:mail"
     recipient_sort_by_last_name false
     referral_credits 5
