@@ -24,10 +24,10 @@ class GiftCreditsController
       self.selected_package_icon = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-icon")
 
       if self.selected_package_id == ""
-        mixpanel.track("gift_credits_package_selected", { has_package: false })
+        mixpanel.track("gift_credits_package_selected")
         $("#purchase-button").val("Thank #{$("body").attr("data-sender-name")} for your card").show()
       else
-        mixpanel.track("gift_credits_package_selected", { has_package: true })
+        mixpanel.track("gift_credits_package_selected")
         $("#purchase-button").val("Purchase #{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}").show()
 
   init: ->
@@ -84,6 +84,7 @@ class GiftCreditsController
 
       $("#name-error").text("")
       $("#email-error").text("")
+      $("#note-error").text("")
       $("#purchase-form .control-group").removeClass("info")
 
       failed = false
@@ -100,7 +101,15 @@ class GiftCreditsController
         mixpanel.track("gift_credits_validation_error_email")
         failed = true
 
+      if note.length < 2
+        $("#note-error").text("Your note is required.")
+        $("#note-controls").addClass("info")
+        mixpanel.track("gift_credits_validation_error_note")
+        failed = true
+
       unless failed
+        mixpanel.track("gift_credits_submit", { has_package: self.selected_package_id != "" })
+
         if self.selected_package_id == ""
           $("#purchase-button").button("loading")
           package_id = $("<input type=hidden name=credit_package_id />").val(self.selected_package_id)
@@ -110,7 +119,7 @@ class GiftCreditsController
             key: $("body").attr("data-stripe-key"),
             amount: parseInt(self.selected_package_price),
             name: self.capitalize($("body").attr("data-app")),
-            description: "Purchase #{self.selected_package_credits} Credits",
+            description: "#{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}",
             panelLabel: "Checkout",
             image: self.selected_package_icon,
             token: (res) ->
