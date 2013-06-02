@@ -346,7 +346,7 @@ class PostcardImageGenerator < ImageGenerator
     draw.pointsize = 42
     draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
     draw.text_align(Magick::LeftAlign)
-    draw.text(122, 846, "Like this card? Want more from #{sender_user.user_profile.first_name}?")
+    draw.text(122, 846, "Like this card? Send #{sender_user.user_profile.first_name} a thank-you-note:")
     draw.draw(back)
 
     draw = Magick::Draw.new

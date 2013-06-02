@@ -25,6 +25,7 @@ CONFIG = SampleableConfig.define do
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
 
   app "lulcards" do
+    mixpanel_token "949dc3069c44a97df45c04d8293ec2ed"
     mixpanel_people_enabled false
     mixpanel_revenue_enabled false
     page_title "lulcards: send hilarious real meme postcards"
@@ -113,6 +114,7 @@ CONFIG = SampleableConfig.define do
   end
 
   app "babygrams" do
+    mixpanel_token "6f1c33737007e79a8500d3ac57c1a95b"
     mixpanel_people_enabled false
     mixpanel_revenue_enabled false
     page_title "babygrams: send amazing baby photo postcards in the mail"
