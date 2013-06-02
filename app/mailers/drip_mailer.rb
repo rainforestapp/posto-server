@@ -10,6 +10,8 @@ class DripMailer < ActionMailer::Base
     return if @user.is_opted_out_of_email_class?(:drip)
     return unless @app == App.babygrams
 
+    @config = CONFIG.for_app(@app)
+
     recipient_address = "gfodor@gmail.com"
 
     unless Rails.env == "development"
@@ -37,6 +39,10 @@ class DripMailer < ActionMailer::Base
         subject = "How did #{profiles.map(&:first_name).compact.to_sentence} enjoy their #{card_name.pluralize}?"
       end
     end
+
+    promo = CreditPromo.create!(app_id: @app.app_id, credits: @config.card_credits)
+
+    @promo_url = "https://secure.babygra.ms/ref/#{promo.uid}"
 
     mail(to: recipient_address,
          from: "Greg Fodor <gfodor@babygra.ms>",
