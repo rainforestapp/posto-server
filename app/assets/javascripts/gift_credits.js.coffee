@@ -4,7 +4,7 @@ class GiftCreditsController
     $("#lookup-code-error").text(error)
     
   clear_lookup_error: ->
-    $("#lookup-controls").removeClass("info");
+    $("#lookup-controls").removeClass("info")
     $("#lookup-code-error").text("")
 
   capitalize: (s) ->
@@ -13,20 +13,24 @@ class GiftCreditsController
 
   sync_with_selected_package: ->
     self = this
-
-    if self.selected_package_id
-      $("#purchase-button").val("Buy #{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}").show()
-      $("#purchase-form").show()
+    
+    if $("#purchase-form input:radio[name=credit_package_id]:checked").length == 0
+      $("#purchase-button").hide()
     else
-      $("#purchase-form").hide()
+      $("#purchase-button").show()
+      self.selected_package_id = $("#purchase-form input:radio[name=credit_package_id]:checked").val()
+      self.selected_package_credits = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-credits")
+      self.selected_package_price = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-price")
+      self.selected_package_icon = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-icon")
 
-    $(".package").each ->
-      $(this).toggleClass("selected", $(this).attr("data-credit-package-id") == self.selected_package_id)
+      if self.selected_package_id == ""
+        $("#purchase-button").val("Thank #{$("body").attr("data-sender-name")} for your card").show()
+      else
+        $("#purchase-button").val("Purchase #{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}").show()
 
   init: ->
     self = this
     self.selected_package_id = null
-    self.selected_package_name = null
     self.selected_package_credits = null
     self.selected_package_price = null
     self.selected_package_icon = null
@@ -55,6 +59,10 @@ class GiftCreditsController
           self.show_lookup_error("We couldn't find your card. Please double check your code.")
 
       false
+      
+    $("#purchase-form input:radio[name=credit_package_id]").click ->
+      self.sync_with_selected_package()
+      true
 
     $("#purchase-button").click ->
       # TODO validate form
@@ -79,28 +87,24 @@ class GiftCreditsController
         failed = true
 
       unless failed
-        StripeCheckout.open
-          key: $("body").attr("data-stripe-key"),
-          amount: parseInt(self.selected_package_price),
-          name: self.capitalize($("body").attr("data-app")),
-          description: "#{self.capitalize(self.selected_package_name)} - #{self.selected_package_credits} Credits",
-          panelLabel: "Checkout",
-          image: self.selected_package_icon,
-          token: (res) ->
-            $("#purchase-button").button("loading")
-            input = $("<input type=hidden name=stripe_token />").val(res.id)
-            package_id = $("<input type=hidden name=credit_package_id />").val(self.selected_package_id)
-            $("#purchase-form").append(input).append(package_id).submit()
+        if self.selected_package_id == ""
+          $("#purchase-button").button("loading")
+          package_id = $("<input type=hidden name=credit_package_id />").val(self.selected_package_id)
+          $("#purchase-form").append(input).append(package_id).submit()
+        else
+          StripeCheckout.open
+            key: $("body").attr("data-stripe-key"),
+            amount: parseInt(self.selected_package_price),
+            name: self.capitalize($("body").attr("data-app")),
+            description: "Purchase #{self.selected_package_credits} Credits",
+            panelLabel: "Checkout",
+            image: self.selected_package_icon,
+            token: (res) ->
+              $("#purchase-button").button("loading")
+              input = $("<input type=hidden name=stripe_token />").val(res.id)
+              package_id = $("<input type=hidden name=credit_package_id />").val(self.selected_package_id)
+              $("#purchase-form").append(input).append(package_id).submit()
 
-      false
-
-    $(".package").click ->
-      self.selected_package_id = $(this).attr("data-credit-package-id")
-      self.selected_package_price = $(this).attr("data-price")
-      self.selected_package_credits = $(this).attr("data-credits")
-      self.selected_package_name = $(this).attr("data-credit-package-name")
-      self.selected_package_icon = $(this).attr("data-credit-package-icon")
-      self.sync_with_selected_package()
       false
 
 window.Posto.gift_credits = GiftCreditsController

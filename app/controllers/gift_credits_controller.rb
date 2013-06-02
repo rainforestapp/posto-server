@@ -3,7 +3,9 @@ class GiftCreditsController < ApplicationController
 
   layout "gift"
 
-  PACKAGE_MAP = { "sheep" => 96, "monkey" => 97, "turtle" => 98, "elephant" => 99 }
+  PACKAGE_MAP = { 
+    "sheep" => 96, "monkey" => 97, "turtle" => 98, "elephant" => 99 
+  }
 
   def index
     @app = App.by_name(params[:app_id])
@@ -20,7 +22,7 @@ class GiftCreditsController < ApplicationController
       @card_order = @card_printing.card_order
       @sender = @card_order.order_sender_user
       @sender_profile = @sender.user_profile
-      @title = "babygrams: Buy credits for #{@sender_name}"
+      @title = "babygrams: Thank #{@sender_name} for your babygram"
       @postcard_subject = @card_order.card_design.postcard_subject
       @postcard_subject_first_name = @postcard_subject[:name].split(" ").first
       @recipient_name = @card_printing.recipient_user.try(:user_profile).try(:name) || ""
