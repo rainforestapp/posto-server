@@ -51,7 +51,7 @@ class GiftCreditsController
         if data.card_printing_id?
           document.location.href = "/apps/#{app_name}/gift_credits/#{lookup_code}"
         else
-          $("#lookup").button("reset")
+          $("#lookup_form").button("reset")
           self.show_lookup_error("We couldn't find your card. Please double check your code.")
 
       false
