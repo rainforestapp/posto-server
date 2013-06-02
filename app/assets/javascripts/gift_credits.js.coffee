@@ -24,8 +24,10 @@ class GiftCreditsController
       self.selected_package_icon = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-icon")
 
       if self.selected_package_id == ""
+        mixpanel.track("gift_credits_package_selected", { has_package: false })
         $("#purchase-button").val("Thank #{$("body").attr("data-sender-name")} for your card").show()
       else
+        mixpanel.track("gift_credits_package_selected", { has_package: true })
         $("#purchase-button").val("Purchase #{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}").show()
 
   init: ->
@@ -35,6 +37,15 @@ class GiftCreditsController
     self.selected_package_price = null
     self.selected_package_icon = null
     self.sync_with_selected_package()
+
+    if $("#lookup-code").length > 0
+      mixpanel.track("gift_credits_lookup_index")
+    else if $("#purchase-form").length > 0
+      mixpanel.track("gift_credits_lookup_show")
+    else if $("#gift-credit-create-ok").length > 0
+      mixpanel.track("gift_credits_lookup_create_ok")
+    else if $("#gift-credit-create-fail").length > 0
+      mixpanel.track("gift_credits_lookup_create_fail")
 
     $("#lookup_form").submit ->
       lookup_code = $("#lookup-code").val()
@@ -55,6 +66,7 @@ class GiftCreditsController
         if data.card_printing_id?
           document.location.href = "/apps/#{app_name}/gift_credits/#{lookup_code}"
         else
+          mixpanel.track("gift_credits_lookup_fail")
           $("#lookup_form").button("reset")
           self.show_lookup_error("We couldn't find your card. Please double check your code.")
 
@@ -79,11 +91,13 @@ class GiftCreditsController
       if name.length < 2
         $("#name-error").text("Your name is required.")
         $("#name-controls").addClass("info")
+        mixpanel.track("gift_credits_validation_error_name")
         failed = true
 
       if email.length < 2 || !email.match(/\@/) || !email.match(/\./)
         $("#email-error").text("Your e-mail is required.")
         $("#email-controls").addClass("info")
+        mixpanel.track("gift_credits_validation_error_email")
         failed = true
 
       unless failed
