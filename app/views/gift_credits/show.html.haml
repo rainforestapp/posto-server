@@ -7,7 +7,7 @@
         Thank #{@sender_profile.first_name} for your card of #{@postcard_subject_first_name}!
       %h4{width: "100%"}
         .div
-          Send #{@sender_profile.first_name} a thank-you note to let #{@sender_profile.direct_object_pronoun} know that you enjoyed your card!
+          Send #{@sender_profile.first_name} a thank-you-note to let #{@sender_profile.direct_object_pronoun} know that you enjoyed your card!
 
   .purchase-form
     %form{ id: "purchase-form", class: "form-horizontal", method: "POST", action: "/apps/#{@app.name}/gift_credits" }
@@ -26,10 +26,11 @@
           %div{ class: "help-inline info", id: "email-error" }
       .control-group
         %label.control-label{ for: "note" }
-          Your note:
+          Your Note:
         .controls
           %textarea{name: "note", id: "note", rows: 6 }
-      .control-group
+          %div{ class: "help-inline info", id: "note-error" }
+      .control-group{ style: "#{@show_packages ? "" : "display:none" }" }
         .controls
           %div{ style: "color: #666; font-size: 1.5em; font-family: \"Neuton\", sans-serif; padding-bottom: 12px;" }
             Help #{@sender_profile.first_name} send you more cards by buying #{@sender_profile.direct_object_pronoun} credits!
@@ -42,11 +43,11 @@
               %div{ style: "color: #666; font-size: 1.0em; font-family: \"Neuton\", sans-serif; padding-top: 4px;" }
                 Lets #{@sender_profile.first_name} send you #{package[:credits] / @config.card_credits} more cards. Save #{package[:savings]}%!
           %label{ class: "radio" }
-            %input{ "type" => "radio", "name" => "credit_package_id", "value" => "" }
+            %input{ "type" => "radio", "name" => "credit_package_id", "value" => "", (@show_packages ? "" : "checked") => "" }
               Don't purchase credits for #{@sender_profile.first_name}.
               %div{ style: "color: #666; font-size: 1.0em; font-family: \"Neuton\", sans-serif; padding-top: 4px;" }
                 (To send you more cards, #{@sender_profile.first_name} will need to buy credits.)
-      .control-group
+      .control-group{ style: "#{@show_packages ? "" : "display:none" }" }
         .controls
           %label.checkbox
             %input{type: "checkbox", name: "remind_empty", id: "remind-empty", checked: "" }

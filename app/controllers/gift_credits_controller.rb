@@ -4,7 +4,7 @@ class GiftCreditsController < ApplicationController
   layout "gift"
 
   PACKAGE_MAP = { 
-    "sheep" => 96, "monkey" => 97, "turtle" => 98, "elephant" => 99 
+    "sheep" => 96, "monkey" => 97, "elephant" => 99 
   }
 
   def index
@@ -36,6 +36,8 @@ class GiftCreditsController < ApplicationController
       else
         @credit_message = "#{@sender_profile.subject_pronoun.capitalize} currently has #{@credits} credits, enough to send #{@number_of_cards} more #{"card".pluralize(@number_of_cards)}."
       end
+
+      @show_packages = @number_of_cards < 3
 
       @packages = []
 
