@@ -11,7 +11,7 @@ class ThankYouMailer < ActionMailer::Base
     @card_design = @card_printing.card_order.card_design
     @app = @card_printing.card_order.app
     @config = CONFIG.for_app(@app)
-    @recipient = @card_printing.recipient_user
+    @recipient = @card_printing.card_order.order_sender_user
     @target_url = "http://#{@app.domain}/email_clicks/#{@task.try(:uid)}"
     @unsubscribe_url = "http://#{@app.domain}/unsubscribes/#{@task.try(:uid)}"
 

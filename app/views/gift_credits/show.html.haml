@@ -1,7 +1,7 @@
 .row.gift-page
   .span4
     .left-panel
-      = image_tag @card_printing.card_printing_composition.jpg_card_front_image.public_url, width: 299
+      = image_tag @card_printing.card_printing_composition.jpg_card_front_image.public_ssl_url, width: 299
 
       %h3{width: "100%"}
         Thank #{@sender_profile.first_name} for your card of #{@postcard_subject_first_name}!
