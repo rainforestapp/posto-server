@@ -247,6 +247,15 @@ CONFIG = SampleableConfig.define do
   recipient_suggested_table_header "Relatives:"
   recipient_suggested_expiration_days 30
 
+  preorder_credit_nag({
+    enabled: true,
+    title: "Refill Credits",
+    message_no_credits: "You have no credits left! Refill them now to save money on your next order.",
+    message_some_credits: "You only have CREDITS credits left! Refill them to save money on your next order.",
+    refill_button: "Refill Now",
+    cancel_buttonk "No Thanks",
+  })
+
   suggested_recipients_enabled do
     variant 1, true
     variant 1, false
