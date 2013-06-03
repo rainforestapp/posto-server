@@ -239,7 +239,6 @@ CONFIG = SampleableConfig.define do
     credit_packages [
       { credit_package_id: 96, credits: 70, price: 949, savings: 10 },
       { credit_package_id: 97, credits: 160, price: 1999, savings: 15 },
-      { credit_package_id: 98, credits: 250, price: 2999, savings: 20 },
       { credit_package_id: 99, credits: 450, price: 4999, savings: 25 },
     ]
 
