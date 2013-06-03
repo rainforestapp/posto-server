@@ -12,6 +12,7 @@
   .purchase-form
     %form{ id: "purchase-form", class: "form-horizontal", method: "POST", action: "/apps/#{@app.name}/gift_credits" }
       %input{type: "hidden", name: "giftee_user_id", id: "giftee_user_id", value: @sender.user_id }
+      %input{type: "hidden", name: "card_printing_id", id: "card_printing_id", value: @card_printing.card_printing_id }
       .control-group{ id: "name-controls" }
         %label.control-label{ for: "name" }
           Your Name:

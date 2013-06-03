@@ -25,6 +25,7 @@ CONFIG = SampleableConfig.define do
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
 
   app "lulcards" do
+    entity "lulcard"
     mixpanel_token "949dc3069c44a97df45c04d8293ec2ed"
     mixpanel_people_enabled false
     mixpanel_revenue_enabled false
@@ -114,6 +115,7 @@ CONFIG = SampleableConfig.define do
   end
 
   app "babygrams" do
+    entity "babygram"
     mixpanel_token "6f1c33737007e79a8500d3ac57c1a95b"
     mixpanel_people_enabled false
     mixpanel_revenue_enabled false
@@ -121,6 +123,7 @@ CONFIG = SampleableConfig.define do
     page_tagline "Send amazing baby photo postcards in the mail."
     from_email "babygrams orders <orders@babygra.ms>"
     from_reminder_email "babygrams <support@babygra.ms>"
+    from_thank_you_email "babygrams <support@babygra.ms>"
     facebook_app_id ENV["BABYCARDS_FB_API_KEY"]
     facebook_api_secret ENV["BABYCARDS_FB_API_SECRET"]
     fb_permissions ["email", "user_location", "user_photos", "user_relationships", "friends_photos", "friends_location", "friends_relationships"]

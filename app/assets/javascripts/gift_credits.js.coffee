@@ -113,7 +113,7 @@ class GiftCreditsController
         if self.selected_package_id == ""
           $("#purchase-button").button("loading")
           package_id = $("<input type=hidden name=credit_package_id />").val(self.selected_package_id)
-          $("#purchase-form").append(input).append(package_id).submit()
+          $("#purchase-form").append(package_id).submit()
         else
           StripeCheckout.open
             key: $("body").attr("data-stripe-key"),
