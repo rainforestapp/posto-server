@@ -178,6 +178,10 @@ class GiftCreditsController < ApplicationController
       begin
         message = "#{@gifter.person_profile.name} e-mailed you a thank-you-note for your babygram!"
 
+        if note && note.size < 80
+          message = "#{@gifter.person_profile.name} thanked you for your babygram: #{note}"
+        end
+
         if @credit_order
           message = "#{@credit_order.orderer_name} just bought you #{@credit_order.credits} #{@app.name} credits!"
         end
