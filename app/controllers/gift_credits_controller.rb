@@ -182,7 +182,7 @@ class GiftCreditsController < ApplicationController
           message = "#{@credit_order.orderer_name} just bought you #{@credit_order.credits} #{@app.name} credits!"
         end
 
-        @giftee.user.send_notification(message, app: @app)
+        @giftee.send_notification(message, app: @app)
       rescue Exception => e
         Airbrake.notify_or_ignore(e)
       end
