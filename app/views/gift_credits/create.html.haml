@@ -4,14 +4,20 @@
       = image_tag "#{@app.name}/MainLogo.png", width: 300, height: 84
 
       - if @success
-        %h3{width: "100%", id: "#gift-credit-create-ok"}
-          Thank you for your order!
-        %h4
-          You purchased #{@package[:credits]} credits for #{@giftee.user_profile.name}.<br/>We'll e-mail your receipt to #{params[:email]}.
+        - if @credit_order
+          %h3{width: "100%", id: "#gift-credit-create-ok"}
+            Thank you for your order! Your thank-you-note has been sent.
+          %h4
+            You purchased #{@package[:credits]} credits for #{@giftee.user_profile.name}.<br/>We'll e-mail your receipt to #{params[:email]}.
+        - else
+          %h3{width: "100%", id: "#gift-credit-create-ok"}
+            Your thank-you-note has been sent!
+          %h4
+            We e-mailed your note to #{@giftee.user_profile.name}.
       - else
         %h3{width: "100%", id: "#gift-credit-create-fail"}
           We're sorry.
         %h4
           We had some trouble processing your order. Please check your payment info and go back and try again.
   .span6
-    &nbsp;
+    %img{style: "border: 1px solid #aaa", src: @card_printing.card_order.card_design.card_preview_composition.treated_card_preview_image.public_url}

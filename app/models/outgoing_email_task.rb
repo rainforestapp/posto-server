@@ -12,6 +12,7 @@ class OutgoingEmailTask < ActiveRecord::Base
     drip_8_week: :drip,
     drip_12_week: :drip,
     drip_welcome: :drip,
+    thank_you: :thank_you
   }
 
   attr_accessible :app_id, :workload_id, :workload_index, :email_type, :email_variant, :email_args, :recipient_user_id
@@ -38,6 +39,8 @@ class OutgoingEmailTask < ActiveRecord::Base
       mailer_klass = ReminderMailer
     when :drip
       mailer_klass = DripMailer
+    when :thank_you
+      mailer_klass = ThankYouMailer
     else
       raise "No mailer for #{email_class}"
     end
