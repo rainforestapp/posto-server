@@ -346,9 +346,16 @@ class PostcardImageGenerator < ImageGenerator
     draw.stroke = 'transparent'
     draw.fill = "#ffffff"
     draw.pointsize = 42
+
     draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
     draw.text_align(Magick::LeftAlign)
-    draw.text(122, 846, "Like this? Send #{sender_user.user_profile.first_name} a thank-you-note:")
+
+    if sender_user.user_profile.first_name.size >= 8
+      draw.text(122, 846, "Like this? Send #{sender_user.user_profile.first_name} a thank you:")
+    else
+      draw.text(122, 846, "Like this? Send #{sender_user.user_profile.first_name} a thank-you-note:")
+    end
+
     draw.draw(back)
 
     draw = Magick::Draw.new
