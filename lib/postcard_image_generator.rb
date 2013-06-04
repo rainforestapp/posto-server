@@ -264,10 +264,10 @@ class PostcardImageGenerator < ImageGenerator
     draw.fill = "#686868"
     draw.stroke = 'transparent'
 
-    if name.size > 18
-      draw.pointsize = 48
-    elsif name.size > 22
+    if name.size > 22
       draw.pointsize = 36
+    elsif name.size > 18
+      draw.pointsize = 48
     else
       draw.pointsize = 56
     end
