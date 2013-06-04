@@ -266,6 +266,8 @@ class PostcardImageGenerator < ImageGenerator
 
     if name.size > 18
       draw.pointsize = 48
+    elsif name.size > 22
+      draw.pointsize = 36
     else
       draw.pointsize = 56
     end
