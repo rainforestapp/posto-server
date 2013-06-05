@@ -49,6 +49,11 @@ class DripMailer < ActionMailer::Base
          subject: subject)
   end
 
+  def drip_1_day(params)
+    @gender_color = "#5FB5E5"
+    send_drip_email("You can still send NUMBER_OF_FREE_CARDS free babygrams!", params)
+  end
+
   def drip_1_week(params)
     @gender_color = "#5FB5E5"
     send_drip_email("You still have NUMBER_OF_FREE_CARDS free babygrams!", params)
