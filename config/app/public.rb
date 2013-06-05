@@ -10,7 +10,7 @@ CONFIG = SampleableConfig.define do
   uservoice_enabled true
   testflight_enabled true
   card_order_admin_notify 1.0
-  card_order_approve_amount 1.0
+  card_order_approve_amount 0.0
   address_request_admin_notify 1.0
   birthday_request_admin_notify 1.0
   admin_credit_order_audit_email "gfodor@gmail.com"
