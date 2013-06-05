@@ -1,0 +1,33 @@
+%div{style: "width: 95%; margin: auto; border-radius: 8px; background-color: #f8f8f8; margin-top: 20px; padding: 8px;"}
+  %div
+    %div{style: "padding-top: 20px; text-align: center;"}
+      %a{href: @target_url}
+        %img{src: "http://d1vgp5rbple5yc.cloudfront.net/babygrams/boy_card.png", width: 200}
+    %div{style: "font-size: 20px; text-align: center; color: #444444; font-weight: bold; padding-top: 16px;"}
+      Make grandparents smile.
+  %div{style: "font-size: 16px; text-align: center; color: #666666; padding-top: 10px; padding-left: 8px; padding-right: 8px;"}
+    Surprise grandparents with a free baby photo postcard. You still have #{@number_of_free_cards} <b>free</b> babygrams left to send. They'll love it!
+
+  %div{style: "font-size: 18px; text-align: center; color: #444444; padding-top: 14px;"}
+    %a{href: @target_url, style: "text-decoration:none; color: white;"}
+      %div{style: "background-color: #{@gender_color}; width: 225px; margin: auto; font-weight: bold; padding: 16px; margin-top: 12px; border-radius: 8px;"}
+        Send a free babygram!
+
+  %div{style: "font-size: 14px; text-align: center; color: #666666; padding-top: 10px; padding-left: 8px; padding-right: 8px;"}
+    What people are saying about babygrams:
+  %div{style: "font-size: 12px; text-align: center; color: #666666; padding-top: 10px; padding-left: 8px; padding-right: 8px;"}
+    <i>This app is great for grandparents and great grandparents that do not have access to the technology of today. This is a great way to send her pictures of my son whenever I have a great picture I would like to share. Thank you for this product and I can't wait to send out more babygrams.</i>
+  %div{style: "font-size: 12px; text-align: center; color: #666666; padding-top: 10px; padding-left: 8px; padding-right: 8px;"}
+    <i>Firstly, my mom absolutely loved the card! The process of creating and sending it was super easy. It's a great way to print photos for grandparents rather than just having them on my phone and sending them through text message. I'll definitely try to send the grandparents these cards on a monthly basis.</i>
+  %div{style: "font-size: 12px; text-align: center; color: #666666; padding-top: 10px; padding-left: 8px; padding-right: 8px;"}
+    <i>It was very easy and fun to use and I was really impressed with all the different effects you can apply to the photos. Grandma will LOVE to get cards like this in the mail.</i>
+
+  %div{style: "font-size: 18px; text-align: center; color: #444444; padding-top: 14px;"}
+    %a{href: @target_url, style: "text-decoration:none; color: white;"}
+      %div{style: "background-color: #{@gender_color}; width: 225px; margin: auto; font-weight: bold; padding: 16px; margin-top: 12px; margin-bottom: 12px; border-radius: 8px;"}
+        Send a free babygram!
+
+%div{style: "font-size: 14px; text-align: center; color: #aaa; padding-top: 14px; padding-bottom: 10px;"}
+  To stop these e-mails,
+  %a{href: @unsubscribe_url, style: "color: #aaa"}
+    click here.
