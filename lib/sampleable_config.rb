@@ -59,13 +59,15 @@ class SampleableConfig < Hash
 
       variant_value = nil
       variant_name = nil
+      residual = 0.0
 
       self.each do |name, tuple|
         weight = tuple[:weight]
         variant_value = tuple[:value]
         variant_name = name.to_s
 
-        break if r <= (weight.to_f / weight_sum.to_f)
+        break if r <= residual + (weight.to_f / weight_sum.to_f)
+        residual += (weight.to_f / weight_sum.to_f)
       end
 
       if variant_value.nil?
