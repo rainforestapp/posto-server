@@ -258,7 +258,7 @@ CONFIG = SampleableConfig.define do
     message_no_credits: "You have no credits left! Refill them now to save money on your next order.",
     message_some_credits: "You only have CREDITS credits left! Refill them to save money on your next order.",
     refill_button: "Refill Now",
-    cancel_button: "No Thanks",
+    cancel_button: "Pay As I Go",
   })
 
   green_buy_button_disabled do
