@@ -160,13 +160,24 @@ CONFIG = SampleableConfig.define do
     subject_default_name_girl "(Ex. Mary Elizabeth)"
     subject_name_field_label "Your baby's first & middle name:"
     subject_birthday_field_label "@@@'s birthday:"
-    tutorial_connect({
-      nonintegrated: true,
-      integrated: true,
-      main_label: "First, set up your account.",
-      secondary_label: "You'll be able to send three free cards!",
-      button_text: "Connect"
-    })
+
+    tutorial_connect do
+      variant "tutor_button_connect", {
+        nonintegrated: true,
+        integrated: false,
+        main_label: "First, set up your account.",
+        secondary_label: "You'll be able to send 3 free cards!",
+        button_text: "Connect"
+      }
+
+      variant "tutor_button_free", {
+        nonintegrated: true,
+        integrated: false,
+        main_label: "First, set up your account.",
+        secondary_label: "You'll be able to send 3 free cards!",
+        button_text: "Send 3 Free Cards"
+      }
+    end
 
     facebook_connect_messages [
         { type: "recipient", message: "Connect now to set up your account and send three *free* babygrams!", force: true, force_nonintegrated: true, force_integrated: false, two_buttons_nonintegrated: false, two_buttons_integrated: false },
