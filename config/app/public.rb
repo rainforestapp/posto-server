@@ -288,7 +288,10 @@ CONFIG = SampleableConfig.define do
     cancel_button: "Pay As I Go",
   })
 
-  green_buy_button_disabled true
+  green_buy_button_disabled do
+    variant 1, true
+    variant 1, false
+  end
 
   suggested_recipients_enabled do
     variant 1, true
