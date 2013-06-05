@@ -162,7 +162,7 @@ CONFIG = SampleableConfig.define do
     subject_birthday_field_label "@@@'s birthday:"
 
     tutorial_connect do
-      variant "tutor_button_connect", {
+      variant 1, "tutor_button_connect", {
         nonintegrated: true,
         integrated: false,
         main_label: "First, set up your account.",
@@ -170,7 +170,7 @@ CONFIG = SampleableConfig.define do
         button_text: "Connect"
       }
 
-      variant "tutor_button_free", {
+      variant 1, "tutor_button_free", {
         nonintegrated: true,
         integrated: false,
         main_label: "First, set up your account.",
