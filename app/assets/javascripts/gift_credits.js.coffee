@@ -64,7 +64,7 @@ class GiftCreditsController
 
       $.ajax "/apps/#{app_name}/gift_credits/#{lookup_code}.json", dataType: "json", success: (data) ->
         if data.card_printing_id?
-          document.location.href = "/apps/#{app_name}/gift_credits/#{lookup_code}"
+          document.location.href = "/apps/#{app_name}/gift_credits/#{lookup_code}.html"
         else
           mixpanel.track("gift_credits_lookup_fail")
           $("#lookup_form").button("reset")
@@ -77,7 +77,6 @@ class GiftCreditsController
       true
 
     $("#purchase-button").click ->
-      # TODO validate form
       email = $("#email").val()
       name = $("#name").val()
       note = $("#note").val()
@@ -117,7 +116,9 @@ class GiftCreditsController
         else
           StripeCheckout.open
             key: $("body").attr("data-stripe-key"),
+            address: false,
             amount: parseInt(self.selected_package_price),
+            currency: "usd",
             name: self.capitalize($("body").attr("data-app")),
             description: "#{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}",
             panelLabel: "Checkout",
