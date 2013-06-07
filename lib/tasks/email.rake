@@ -6,7 +6,7 @@ namespace :email do
     workflow_id = "outgoing-emails-#{SecureRandom.hex}"
 
     repeat = true
-    input = ["[Ljava.lang.Object;", [["java.lang.Boolean", repeat]]].to_json
+    input = ["[Ljava.lang.Object;", []].to_json
     workflow_type.start_execution input: input, workflow_id: workflow_id, tag_list: []
   end
 end
