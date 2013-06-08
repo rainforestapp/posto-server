@@ -285,10 +285,7 @@ CONFIG = SampleableConfig.define do
   suggested_recipients_non_retina 16
   suggested_recipients_retina 24
 
-  share_dialog_type do
-    variant 1, "preview_full"
-    variant 1, "alert"
-  end
+  share_dialog_type "preview_full"
 
   contact_recipients_enabled true
 
