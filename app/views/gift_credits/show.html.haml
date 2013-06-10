@@ -1,48 +1,58 @@
 .row.gift-page
   .span4
     .left-panel
-      = image_tag "#{@app.name}/MainLogo.png", width: 300, height: 84
+      = image_tag @card_printing.card_printing_composition.jpg_card_front_image.public_ssl_url, width: 299
 
       %h3{width: "100%"}
-        Want more babygrams of #{@postcard_subject_first_name}?
+        Thank #{@sender_profile.first_name} for your card of #{@postcard_subject_first_name}!
       %h4{width: "100%"}
         .div
-          Buy some credits for #{@sender_profile.name} so #{@sender_profile.subject_pronoun} can send more!
-          #{@credit_message}
+          Send #{@sender_profile.first_name} a thank-you-note to let #{@sender_profile.direct_object_pronoun} know that you enjoyed your card!
 
-  .span8
-    .packages
-      .packages-header
-        Choose a package:
-      - @packages.each do |package|
-        .package{ "href" => "#", "data-credit-package-icon" => image_path("babygrams/package_icon.png"), "data-credit-package-id" => package[:credit_package_id], "data-credit-package-name" => package[:name], "class" => "package-#{package[:name]} #{package[:credit_package_id] == @packages.last[:credit_package_id] ? "last" : ""}#{package[:credit_package_id] == @packages.first[:credit_package_id] ? "first" : ""}", "data-credits" => package[:credits], "data-price" => package[:price] }
-          %img{ src: image_path("babygrams/#{package[:name]}_package_selected.png"), style: "visibility: hidden;" }
-          %img{ src: image_path("babygrams/#{package[:name]}_package_unselected.png"), style: "visibility: hidden;" }
-    .purchase-form
-      %form{ id: "purchase-form", class: "form-horizontal", method: "POST", action: "/apps/#{@app.name}/gift_credits", style: "display:none" }
-        %input{type: "hidden", name: "giftee_user_id", id: "giftee_user_id", value: @sender.user_id }
-        .control-group{ id: "name-controls" }
-          %label.control-label{ for: "name" }
-            Your Name:
-          .controls
-            %input{type: "text", autocapitalize: "words", autocorrect: "off", name: "name", id: "name", value: @recipient_name }
-            %div{ class: "help-inline info", id: "name-error" }
-        .control-group{ id: "email-controls" }
-          %label.control-label{ for: "email" }
-            Your E-mail:
-          .controls
-            %input{type: "email", name: "email", id: "email" }
-            %div{ class: "help-inline info", id: "email-error" }
-        .control-group
-          %label.control-label{ for: "note" }
-            Note for #{@sender_profile.first_name} (Optional):
-          .controls
-            %textarea{name: "note", id: "note", rows: 3 }
-        .control-group
-          .controls
-            %label.checkbox
-              %input{type: "checkbox", name: "remind_empty", id: "remind-empty", checked: "" }
-                Let me know when #{@sender_profile.first_name} runs out of credits.
-        .control-group
-          .controls
-            %input{ type: "button", name: "purchase", id: "purchase-button", class: "btn btn-info", value: "Pay with Card" }
+  .purchase-form
+    %form{ id: "purchase-form", class: "form-horizontal", method: "POST", action: "/apps/#{@app.name}/gift_credits" }
+      %input{type: "hidden", name: "giftee_user_id", id: "giftee_user_id", value: @sender.user_id }
+      %input{type: "hidden", name: "card_printing_id", id: "card_printing_id", value: @card_printing.card_printing_id }
+      .control-group{ id: "name-controls" }
+        %label.control-label{ for: "name" }
+          Your Name:
+        .controls
+          %input{type: "text", autocapitalize: "words", autocorrect: "off", name: "name", id: "name", value: @recipient_name }
+          %div{ class: "help-inline info", id: "name-error" }
+      .control-group{ id: "email-controls" }
+        %label.control-label{ for: "email" }
+          Your E-mail:
+        .controls
+          %input{type: "email", name: "email", id: "email" }
+          %div{ class: "help-inline info", id: "email-error" }
+      .control-group
+        %label.control-label{ for: "note" }
+          Your Note:
+        .controls
+          %textarea{name: "note", id: "note", rows: 6 }
+          %div{ class: "help-inline info", id: "note-error" }
+      .control-group{ style: "#{@show_packages ? "" : "display:none" }" }
+        .controls
+          %div{ style: "color: #666; font-size: 1.5em; font-family: \"Neuton\", sans-serif; padding-bottom: 12px;" }
+            Help #{@sender_profile.first_name} send you more cards by buying #{@sender_profile.direct_object_pronoun} credits!
+          - @packages.each do |package|
+            %label{ class: "radio"}
+              %input{ "type" => "radio", "name" => "credit_package_id", "value" => package[:credit_package_id], "data-credits" => package[:credits], "data-price" => package[:price], "data-icon" => image_path("babygrams/package_icon.png") }
+              #{package[:credits]} credits for #{number_to_currency(package[:price].to_f / 100)}
+              %span{style: "font-style: italic; font-size: 0.9em; font-weight: bold; color: #0cf;"}
+                #{package[:credit_package_id] == 97 ? "Most popular!" : ""}
+              %div{ style: "color: #666; font-size: 1.0em; font-family: \"Neuton\", sans-serif; padding-top: 4px;" }
+                Lets #{@sender_profile.first_name} send you #{package[:credits] / @config.card_credits} more cards. Save #{package[:savings]}%!
+          %label{ class: "radio" }
+            %input{ "type" => "radio", "name" => "credit_package_id", "value" => "", (@show_packages ? "" : "checked") => "" }
+              Don't purchase credits for #{@sender_profile.first_name}.
+              %div{ style: "color: #666; font-size: 1.0em; font-family: \"Neuton\", sans-serif; padding-top: 4px;" }
+                (To send you more cards, #{@sender_profile.first_name} will need to buy credits.)
+      .control-group{ style: "#{@show_packages ? "" : "display:none" }" }
+        .controls
+          %label.checkbox
+            %input{type: "checkbox", name: "remind_empty", id: "remind-empty", checked: "" }
+              Let me know when #{@sender_profile.first_name} runs out of credits.
+      .control-group
+        .controls
+          %input{ type: "button", name: "purchase", id: "purchase-button", class: "btn btn-info", value: "Pay with Card" }

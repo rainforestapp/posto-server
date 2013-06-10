@@ -10,13 +10,14 @@ CONFIG = SampleableConfig.define do
   uservoice_enabled true
   testflight_enabled true
   card_order_admin_notify 1.0
-  card_order_approve_amount 1.0
+  card_order_approve_amount 0.0
   address_request_admin_notify 1.0
   birthday_request_admin_notify 1.0
   admin_credit_order_audit_email "gfodor@gmail.com"
   admin_credit_order_enabled true
 
   card_image_host "data.lulcards.com"
+  ssl_card_image_host "d19ku6gs1135cx.cloudfront.net"
   card_image_bucket "posto-data"
 
   csv_host "d19ku6gs1135cx.cloudfront.net"
@@ -25,6 +26,8 @@ CONFIG = SampleableConfig.define do
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
 
   app "lulcards" do
+    entity "lulcard"
+    mixpanel_token "949dc3069c44a97df45c04d8293ec2ed"
     mixpanel_people_enabled false
     mixpanel_revenue_enabled false
     page_title "lulcards: send hilarious real meme postcards"
@@ -113,12 +116,15 @@ CONFIG = SampleableConfig.define do
   end
 
   app "babygrams" do
+    entity "babygram"
+    mixpanel_token "6f1c33737007e79a8500d3ac57c1a95b"
     mixpanel_people_enabled false
     mixpanel_revenue_enabled false
     page_title "babygrams: send amazing baby photo postcards in the mail"
     page_tagline "Send amazing baby photo postcards in the mail."
     from_email "babygrams orders <orders@babygra.ms>"
     from_reminder_email "babygrams <support@babygra.ms>"
+    from_thank_you_email "babygrams <support@babygra.ms>"
     facebook_app_id ENV["BABYCARDS_FB_API_KEY"]
     facebook_api_secret ENV["BABYCARDS_FB_API_SECRET"]
     fb_permissions ["email", "user_location", "user_photos", "user_relationships", "friends_photos", "friends_location", "friends_relationships"]
@@ -154,13 +160,24 @@ CONFIG = SampleableConfig.define do
     subject_default_name_girl "(Ex. Mary Elizabeth)"
     subject_name_field_label "Your baby's first & middle name:"
     subject_birthday_field_label "@@@'s birthday:"
-    tutorial_connect({
-      nonintegrated: true,
-      integrated: true,
-      main_label: "First, set up your account.",
-      secondary_label: "You'll be able to send three free cards!",
-      button_text: "Connect"
-    })
+
+    tutorial_connect do
+      variant 1, "tutor_button_connect", {
+        nonintegrated: true,
+        integrated: false,
+        main_label: "First, set up your account.",
+        secondary_label: "You'll be able to send 3 free cards!",
+        button_text: "Connect"
+      }
+
+      variant 1, "tutor_button_next", {
+        nonintegrated: true,
+        integrated: false,
+        main_label: "First, set up your account.",
+        secondary_label: "You'll be able to send 3 free cards!",
+        button_text: "Next"
+      }
+    end
 
     facebook_connect_messages [
         { type: "recipient", message: "Connect now to set up your account and send three *free* babygrams!", force: true, force_nonintegrated: true, force_integrated: false, two_buttons_nonintegrated: false, two_buttons_integrated: false },
@@ -184,7 +201,7 @@ CONFIG = SampleableConfig.define do
     order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting other parents."
     ask_for_last_recipients true
     allow_lowercase_caption true
-    min_baby_birthday_reminder_delay_days 13
+    min_baby_birthday_reminder_delay_days 10
 
     baby_birthday_reminder_recipient_placeholder "family and friends"
 
@@ -233,14 +250,32 @@ CONFIG = SampleableConfig.define do
     credit_packages [
       { credit_package_id: 96, credits: 70, price: 949, savings: 10 },
       { credit_package_id: 97, credits: 160, price: 1999, savings: 15 },
-      { credit_package_id: 98, credits: 250, price: 2999, savings: 20 },
       { credit_package_id: 99, credits: 450, price: 4999, savings: 25 },
     ]
 
+    frame_types do
+      variant 1, "all"
+      variant 2, "plain"
+      variant 3, "animals"
+    end
   end
 
   recipient_suggested_table_header "Relatives:"
   recipient_suggested_expiration_days 30
+
+  preorder_credit_nag({
+    enabled: true,
+    title: "Refill Credits",
+    message_no_credits: "You have no credits left! Refill them now to save money on your next order.",
+    message_some_credits: "You only have CREDITS credits left! Refill them to save money on your next order.",
+    refill_button: "Refill Now",
+    cancel_button: "Pay As I Go",
+  })
+
+  green_buy_button_disabled do
+    variant 1, true
+    variant 1, false
+  end
 
   suggested_recipients_enabled do
     variant 1, true
@@ -250,10 +285,7 @@ CONFIG = SampleableConfig.define do
   suggested_recipients_non_retina 16
   suggested_recipients_retina 24
 
-  share_dialog_type do
-    variant 1, "preview_full"
-    variant 1, "alert"
-  end
+  share_dialog_type "preview_full"
 
   contact_recipients_enabled true
 

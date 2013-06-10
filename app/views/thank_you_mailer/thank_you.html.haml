@@ -1,0 +1,22 @@
+%div{style: "width: 95%; margin: auto; border-radius: 8px; background-color: #f8f8f8; margin-top: 20px; padding: 8px;"}
+  %div
+    %div{style: "padding-top: 20px; text-align: center;"}
+      %a{href: @target_url}
+        %img{style: "border: 1px solid #aaa", src: @card_design.card_preview_composition.treated_card_preview_image.public_url, width: 200}
+    %div{style: "font-size: 20px; text-align: center; color: #444444; font-weight: bold; padding-top: 16px;"}
+      #{@header_text}
+  %div{style: "font-size: 16px; text-align: center; color: #666666; padding-top: 10px; padding-left: 8px; padding-right: 8px;"}
+    #{@person.person_profile.first_name} included a note:
+
+  %div{style: "background-color: white; border-radius: 8px; font-size: 14px; text-align: center; color: #666666; padding: 8px; margin-top: 20px; margin-left: 12px; margin-right: 12px;"}
+    <i>#{@note}</i>
+
+  %div{style: "font-size: 18px; text-align: center; color: #444444; padding-top: 14px;"}
+    %a{href: @target_url, style: "text-decoration:none; color: white;"}
+      %div{style: "background-color: #{@gender_color}; width: 225px; margin: auto; font-weight: bold; padding: 16px; margin-top: 12px; margin-bottom: 12px; border-radius: 8px;"}
+        Send another babygram!
+
+%div{style: "font-size: 14px; text-align: center; color: #aaa; padding-top: 14px; padding-bottom: 10px;"}
+  To stop these e-mails,
+  %a{href: @unsubscribe_url, style: "color: #aaa"}
+    click here.

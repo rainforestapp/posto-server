@@ -4,7 +4,7 @@ class GiftCreditsController
     $("#lookup-code-error").text(error)
     
   clear_lookup_error: ->
-    $("#lookup-controls").removeClass("info");
+    $("#lookup-controls").removeClass("info")
     $("#lookup-code-error").text("")
 
   capitalize: (s) ->
@@ -13,24 +13,39 @@ class GiftCreditsController
 
   sync_with_selected_package: ->
     self = this
-
-    if self.selected_package_id
-      $("#purchase-button").val("Buy #{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}").show()
-      $("#purchase-form").show()
+    
+    if $("#purchase-form input:radio[name=credit_package_id]:checked").length == 0
+      $("#purchase-button").hide()
     else
-      $("#purchase-form").hide()
+      $("#purchase-button").show()
+      self.selected_package_id = $("#purchase-form input:radio[name=credit_package_id]:checked").val()
+      self.selected_package_credits = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-credits")
+      self.selected_package_price = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-price")
+      self.selected_package_icon = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-icon")
 
-    $(".package").each ->
-      $(this).toggleClass("selected", $(this).attr("data-credit-package-id") == self.selected_package_id)
+      if self.selected_package_id == ""
+        mixpanel.track("gift_credits_package_selected")
+        $("#purchase-button").val("Thank #{$("body").attr("data-sender-name")} for your card").show()
+      else
+        mixpanel.track("gift_credits_package_selected")
+        $("#purchase-button").val("Purchase #{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}").show()
 
   init: ->
     self = this
     self.selected_package_id = null
-    self.selected_package_name = null
     self.selected_package_credits = null
     self.selected_package_price = null
     self.selected_package_icon = null
     self.sync_with_selected_package()
+
+    if $("#lookup-code").length > 0
+      mixpanel.track("gift_credits_lookup_index")
+    else if $("#purchase-form").length > 0
+      mixpanel.track("gift_credits_lookup_show")
+    else if $("#gift-credit-create-ok").length > 0
+      mixpanel.track("gift_credits_lookup_create_ok")
+    else if $("#gift-credit-create-fail").length > 0
+      mixpanel.track("gift_credits_lookup_create_fail")
 
     $("#lookup_form").submit ->
       lookup_code = $("#lookup-code").val()
@@ -49,21 +64,26 @@ class GiftCreditsController
 
       $.ajax "/apps/#{app_name}/gift_credits/#{lookup_code}.json", dataType: "json", success: (data) ->
         if data.card_printing_id?
-          document.location.href = "/apps/#{app_name}/gift_credits/#{lookup_code}"
+          document.location.href = "/apps/#{app_name}/gift_credits/#{lookup_code}.html"
         else
+          mixpanel.track("gift_credits_lookup_fail")
           $("#lookup_form").button("reset")
           self.show_lookup_error("We couldn't find your card. Please double check your code.")
 
       false
+      
+    $("#purchase-form input:radio[name=credit_package_id]").click ->
+      self.sync_with_selected_package()
+      true
 
     $("#purchase-button").click ->
-      # TODO validate form
       email = $("#email").val()
       name = $("#name").val()
       note = $("#note").val()
 
       $("#name-error").text("")
       $("#email-error").text("")
+      $("#note-error").text("")
       $("#purchase-form .control-group").removeClass("info")
 
       failed = false
@@ -71,36 +91,44 @@ class GiftCreditsController
       if name.length < 2
         $("#name-error").text("Your name is required.")
         $("#name-controls").addClass("info")
+        mixpanel.track("gift_credits_validation_error_name")
         failed = true
 
       if email.length < 2 || !email.match(/\@/) || !email.match(/\./)
         $("#email-error").text("Your e-mail is required.")
         $("#email-controls").addClass("info")
+        mixpanel.track("gift_credits_validation_error_email")
+        failed = true
+
+      if note.length < 2
+        $("#note-error").text("Your note is required.")
+        $("#note-controls").addClass("info")
+        mixpanel.track("gift_credits_validation_error_note")
         failed = true
 
       unless failed
-        StripeCheckout.open
-          key: $("body").attr("data-stripe-key"),
-          amount: parseInt(self.selected_package_price),
-          name: self.capitalize($("body").attr("data-app")),
-          description: "#{self.capitalize(self.selected_package_name)} - #{self.selected_package_credits} Credits",
-          panelLabel: "Checkout",
-          image: self.selected_package_icon,
-          token: (res) ->
-            $("#purchase-button").button("loading")
-            input = $("<input type=hidden name=stripe_token />").val(res.id)
-            package_id = $("<input type=hidden name=credit_package_id />").val(self.selected_package_id)
-            $("#purchase-form").append(input).append(package_id).submit()
+        mixpanel.track("gift_credits_submit", { has_package: self.selected_package_id != "" })
 
-      false
+        if self.selected_package_id == ""
+          $("#purchase-button").button("loading")
+          package_id = $("<input type=hidden name=credit_package_id />").val(self.selected_package_id)
+          $("#purchase-form").append(package_id).submit()
+        else
+          StripeCheckout.open
+            key: $("body").attr("data-stripe-key"),
+            address: false,
+            amount: parseInt(self.selected_package_price),
+            currency: "usd",
+            name: self.capitalize($("body").attr("data-app")),
+            description: "#{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}",
+            panelLabel: "Checkout",
+            image: self.selected_package_icon,
+            token: (res) ->
+              $("#purchase-button").button("loading")
+              input = $("<input type=hidden name=stripe_token />").val(res.id)
+              package_id = $("<input type=hidden name=credit_package_id />").val(self.selected_package_id)
+              $("#purchase-form").append(input).append(package_id).submit()
 
-    $(".package").click ->
-      self.selected_package_id = $(this).attr("data-credit-package-id")
-      self.selected_package_price = $(this).attr("data-price")
-      self.selected_package_credits = $(this).attr("data-credits")
-      self.selected_package_name = $(this).attr("data-credit-package-name")
-      self.selected_package_icon = $(this).attr("data-credit-package-icon")
-      self.sync_with_selected_package()
       false
 
 window.Posto.gift_credits = GiftCreditsController
