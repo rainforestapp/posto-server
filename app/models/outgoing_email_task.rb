@@ -7,11 +7,13 @@ class OutgoingEmailTask < ActiveRecord::Base
 
   EMAIL_CLASS_MAP = {
     birthday_reminder: :reminders,
+    drip_1_day: :drip,
     drip_1_week: :drip,
     drip_3_week: :drip,
     drip_8_week: :drip,
     drip_12_week: :drip,
     drip_welcome: :drip,
+    thank_you: :thank_you
   }
 
   attr_accessible :app_id, :workload_id, :workload_index, :email_type, :email_variant, :email_args, :recipient_user_id
@@ -38,6 +40,8 @@ class OutgoingEmailTask < ActiveRecord::Base
       mailer_klass = ReminderMailer
     when :drip
       mailer_klass = DripMailer
+    when :thank_you
+      mailer_klass = ThankYouMailer
     else
       raise "No mailer for #{email_class}"
     end
@@ -49,12 +53,18 @@ class OutgoingEmailTask < ActiveRecord::Base
       begin
         mail.deliver
       rescue Exception => e
-        self.state = :failed
+        OutgoingEmailTask.transaction_with_retry do
+          self.state = :failed
+        end
       end
 
-      self.state = :sent
+      OutgoingEmailTask.transaction_with_retry do
+        self.state = :sent
+      end
     else
-      self.state = :failed
+      OutgoingEmailTask.transaction_with_retry do
+        self.state = :failed
+      end
     end
   end
 end
