@@ -11,7 +11,7 @@ class App < ActiveRecord::Base
   end
 
   def self.by_name(name)
-    raise "Bad app name" unless name == "lulcards" || name == "babygrams"
+    raise "Bad app name #{name}" unless name == "lulcards" || name == "babygrams"
     name == "lulcards" ? self.lulcards : self.babygrams
   end
 end

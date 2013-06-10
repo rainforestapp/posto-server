@@ -45,7 +45,9 @@ class OutgoingEmailTaskGenerator
 
     {}.tap do |drip_map|
       # send drip email to users who have email addresses, no orders, and credits for an app 
-      { drip_1_week: 1.weeks, 
+      { 
+        drip_1_day: 1.day, 
+        drip_1_week: 1.weeks, 
         drip_3_week: 3.weeks, 
         drip_8_week: 7.weeks,
         drip_12_week: 11.weeks,
