@@ -170,6 +170,14 @@ CONFIG = SampleableConfig.define do
         button_text: "Connect"
       }
 
+      variant 1, "tutor_button_create", {
+        nonintegrated: true,
+        integrated: false,
+        main_label: "First, set up your account.",
+        secondary_label: "You'll be able to send 3 free cards!",
+        button_text: "Create Account"
+      }
+
       variant 1, "tutor_button_next", {
         nonintegrated: true,
         integrated: false,
