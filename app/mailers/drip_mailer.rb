@@ -51,27 +51,27 @@ class DripMailer < ActionMailer::Base
 
   def drip_1_day(params)
     @gender_color = "#5FB5E5"
-    send_drip_email("You can still send NUMBER_OF_FREE_CARDS free babygrams!", params)
+    send_drip_email("You can still send NUMBER_OF_FREE_CARDS free ENTITY!", params)
   end
 
   def drip_1_week(params)
     @gender_color = "#5FB5E5"
-    send_drip_email("You still have NUMBER_OF_FREE_CARDS free babygrams!", params)
+    send_drip_email("You still have NUMBER_OF_FREE_CARDS free ENTITY left to send!", params)
   end
 
   def drip_3_week(params)
     @gender_color = "#EB6C9A"
-    send_drip_email("Surprise grandparents with NUMBER_OF_FREE_CARDS free babygrams", params)
+    send_drip_email("Surprise grandparents with NUMBER_OF_FREE_CARDS free ENTITY", params)
   end
 
   def drip_8_week(params)
     @gender_color = "#5FB5E5"
-    send_drip_email("You can still send NUMBER_OF_FREE_CARDS babygrams for free!", params)
+    send_drip_email("You can still send NUMBER_OF_FREE_CARDS ENTITY for free!", params)
   end
 
   def drip_12_week(params)
     @gender_color = "#EB6C9A"
-    send_drip_email("You still have NUMBER_OF_FREE_CARDS free babygrams!", params)
+    send_drip_email("You still have NUMBER_OF_FREE_CARDS free ENTITY!", params)
   end
 
   private
@@ -87,7 +87,8 @@ class DripMailer < ActionMailer::Base
     @number_of_free_cards = (@user.credits_for_app(@app) / @config.card_credits).floor.to_i
     return if @number_of_free_cards <= 0
 
-    subject = subject.gsub(/NUMBER_OF_FREE_CARDS/, @number_of_free_cards.to_s)
+    subject = subject.gsub(/NUMBER_OF_FREE_CARDS/, @number_of_free_cards == 1 ? "a" : @number_of_free_cards.to_s)
+    subject = subject.gsub(/ENTITY/, @config.entity.pluralize(@number_of_free_cards))
 
     @target_url = "http://#{@app.domain}/email_clicks/#{@task.try(:uid)}"
     @unsubscribe_url = "http://#{@app.domain}/unsubscribes/#{@task.try(:uid)}"

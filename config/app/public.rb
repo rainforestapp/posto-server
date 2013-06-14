@@ -166,21 +166,29 @@ CONFIG = SampleableConfig.define do
         nonintegrated: true,
         integrated: false,
         main_label: "First, set up your account.",
-        secondary_label: "You'll be able to send 3 free cards!",
+        secondary_label: "You'll be able to send a free card!",
         button_text: "Connect"
+      }
+
+      variant 1, "tutor_button_create", {
+        nonintegrated: true,
+        integrated: false,
+        main_label: "First, set up your account.",
+        secondary_label: "You'll be able to send a free card!",
+        button_text: "Create Account"
       }
 
       variant 1, "tutor_button_next", {
         nonintegrated: true,
         integrated: false,
         main_label: "First, set up your account.",
-        secondary_label: "You'll be able to send 3 free cards!",
+        secondary_label: "You'll be able to send a free card!",
         button_text: "Next"
       }
     end
 
     facebook_connect_messages [
-        { type: "recipient", message: "Connect now to set up your account and send three *free* babygrams!", force: true, force_nonintegrated: true, force_integrated: false, two_buttons_nonintegrated: false, two_buttons_integrated: false },
+        { type: "recipient", message: "Connect now to set up your account and send a *free* babygram!", force: true, force_nonintegrated: true, force_integrated: false, two_buttons_nonintegrated: false, two_buttons_integrated: false },
         { type: "friends_photos", message: "To view your friends' shared photos you'll need to grant access on Facebook." },
         { type: "facebook_photos", message: "To view your Facebook photos you'll need to grant access on Facebook." },
         { type: "send_message", message: "To send messages, you'll need to grant access on Facebook." },
@@ -320,9 +328,9 @@ CONFIG = SampleableConfig.define do
   fb_share_permissions ["publish_actions"]
   fb_fields ["gender", "birthday"]
 
-  signup_credits 30
+  signup_credits 10
   signup_credits_title "You Have CREDITS Credits"
-  signup_credits_message "You now have CREDITS credits and can send 3 free cards!"
+  signup_credits_message "You now have CREDITS credits and can send a free card!"
   max_cards_to_send 9
   max_photo_byte_size 24 * 1024 * 1024
   recipient_address_expiration_days 31 * 6
