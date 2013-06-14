@@ -53,12 +53,18 @@ class OutgoingEmailTask < ActiveRecord::Base
       begin
         mail.deliver
       rescue Exception => e
-        self.state = :failed
+        OutgoingEmailTask.transaction_with_retry do
+          self.state = :failed
+        end
       end
 
-      self.state = :sent
+      OutgoingEmailTask.transaction_with_retry do
+        self.state = :sent
+      end
     else
-      self.state = :failed
+      OutgoingEmailTask.transaction_with_retry do
+        self.state = :failed
+      end
     end
   end
 end
