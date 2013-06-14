@@ -255,8 +255,8 @@ CONFIG = SampleableConfig.define do
 
     frame_types do
       variant 1, "all"
-      variant 2, "plain"
-      variant 3, "animals"
+      variant 1, "plain"
+      variant 1, "animals"
     end
   end
 
