@@ -274,8 +274,8 @@ CONFIG = SampleableConfig.define do
   preorder_credit_nag({
     enabled: true,
     title: "Refill Credits",
-    message_no_credits: "You have no credits left! Refill them now to save money on your next order.",
-    message_some_credits: "You only have CREDITS credits left! Refill them to save money on your next order.",
+    message_no_credits: "You have no credits left! You can pay as you go for just $1.49 per card, or refill your credits to save up to 25%.",
+    message_some_credits: "You only have CREDITS credits left! You can pay as you go for just $1.49 per card, or refill your credits to save up to 25%.",
     refill_button: "Refill Now",
     cancel_button: "Pay As I Go",
   })

@@ -29,7 +29,13 @@ class OutgoingEmailTask < ActiveRecord::Base
   end
 
   def send!
-    return if has_been_sent?
+    sent_already = false
+
+    OutgoingEmailTask.transaction_with_retry do
+      sent_already = has_been_sent?
+    end
+
+    return if sent_already
 
     email_class = EMAIL_CLASS_MAP[self.email_type]
 
