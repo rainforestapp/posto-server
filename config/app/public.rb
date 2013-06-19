@@ -261,11 +261,7 @@ CONFIG = SampleableConfig.define do
       { credit_package_id: 99, credits: 450, price: 4999, savings: 25 },
     ]
 
-    frame_types do
-      variant 1, "all"
-      variant 1, "plain"
-      variant 1, "animals"
-    end
+    frame_types "all"
   end
 
   recipient_suggested_table_header "Relatives:"
