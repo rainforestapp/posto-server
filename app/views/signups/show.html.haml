@@ -8,7 +8,10 @@
   .span6{ class: "offset4 header hide-on-submit" }
     - if @number_of_free_cards > 0
       .description.lead
-        Your first #{@number_of_free_cards} are <b>free</b>!
+        - if @number_of_free_cards == 1
+          Your first card is <b>free</b>!
+        - else
+          Your first #{@number_of_free_cards} cards are <b>free</b>!
     %div{ :class => "fb-login-button", "data-show-faces" => "false", "data-width" => 300, "data-max-rows" => 1, "size" => "xlarge", "scope" => @config.fb_permissions.join(",")}
   .span6{ class: "offset4 header hide-on-submit" }
     %div{ :class => "fb-facepile", "data-width" => 300, "data-max-rows" => 1, "data-colorscheme" => "dark"}
