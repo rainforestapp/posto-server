@@ -177,14 +177,6 @@ CONFIG = SampleableConfig.define do
         secondary_label: "You'll be able to send a free card!",
         button_text: "Create Account"
       }
-
-      variant 1, "tutor_button_next", {
-        nonintegrated: true,
-        integrated: false,
-        main_label: "First, set up your account.",
-        secondary_label: "You'll be able to send a free card!",
-        button_text: "Next"
-      }
     end
 
     facebook_connect_messages [
