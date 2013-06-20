@@ -282,9 +282,9 @@ class PostcardImageGenerator < ImageGenerator
 
     if birthday
       birthday = Chronic.parse(birthday)
-      photo_taken_at = card_design.photo_taken_at || Time.now
+      photo_taken_at = card_design.photo_taken_at
 
-      if photo_taken_at > birthday
+      if photo_taken_at && photo_taken_at > birthday
         age = DateHelper.printable_age(photo_taken_at, birthday)
 
         if age
