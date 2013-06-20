@@ -255,6 +255,13 @@ class PostcardImageGenerator < ImageGenerator
   def draw_subject(card_design, front)
     drew_age = false
 
+    draw = Magick::Draw.new
+    draw.fill = "#FFFFFF"
+    draw.stroke = '#B8B8B8'
+    draw.stroke_width = 2
+    draw.roundrectangle(1600,395,1600 + 146,395 + 530,14,14)
+    draw.draw(front)
+
     birthday = card_design.postcard_subject[:birthday]
 
     if birthday
@@ -279,12 +286,6 @@ class PostcardImageGenerator < ImageGenerator
       end
     end
 
-    draw = Magick::Draw.new
-    draw.fill = "#FFFFFF"
-    draw.stroke = '#B8B8B8'
-    draw.stroke_width = 2
-    draw.roundrectangle(1600,395,1600 + 146,395 + 530,14,14)
-    draw.draw(front)
     name = card_design.postcard_subject[:name]
     draw = Magick::Draw.new
     draw.fill = "#686868"
