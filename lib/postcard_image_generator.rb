@@ -253,6 +253,32 @@ class PostcardImageGenerator < ImageGenerator
   end
 
   def draw_subject(card_design, front)
+    drew_age = false
+
+    birthday = card_design.postcard_subject[:birthday]
+
+    if birthday
+      birthday = Chronic.parse(birthday)
+      photo_taken_at = card_design.photo_taken_at
+
+      if photo_taken_at && photo_taken_at > birthday
+        age = DateHelper.printable_age(photo_taken_at, birthday)
+
+        if age
+          drew_age = true
+          draw = Magick::Draw.new
+          draw.fill = "#A8A8A8"
+          draw.stroke = 'transparent'
+          draw.pointsize = 38
+          draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
+          draw.text_align(Magick::CenterAlign)
+          draw.rotate(270)
+          draw.text(-660, 1720, "#{age} old")
+          draw.draw(front)
+        end
+      end
+    end
+
     draw = Magick::Draw.new
     draw.fill = "#FFFFFF"
     draw.stroke = '#B8B8B8'
@@ -275,31 +301,8 @@ class PostcardImageGenerator < ImageGenerator
     draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
     draw.text_align(Magick::CenterAlign)
     draw.rotate(270)
-    draw.text(-660, 1668, name)
+    draw.text(-660, drew_age ? 1668 : 1688, name)
     draw.draw(front)
-
-    birthday = card_design.postcard_subject[:birthday]
-
-    if birthday
-      birthday = Chronic.parse(birthday)
-      photo_taken_at = card_design.photo_taken_at
-
-      if photo_taken_at && photo_taken_at > birthday
-        age = DateHelper.printable_age(photo_taken_at, birthday)
-
-        if age
-          draw = Magick::Draw.new
-          draw.fill = "#A8A8A8"
-          draw.stroke = 'transparent'
-          draw.pointsize = 38
-          draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
-          draw.text_align(Magick::CenterAlign)
-          draw.rotate(270)
-          draw.text(-660, 1720, "#{age} old")
-          draw.draw(front)
-        end
-      end
-    end
   end
 
   def word_wrap(text, columns = 80)
