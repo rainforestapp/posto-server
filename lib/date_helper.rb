@@ -44,6 +44,8 @@ class DateHelper
     sday = number_of_extra_days_old > 1 && pluralize ? "days" : "day"
     sweek = number_of_weeks_old > 1 && pluralize ? "weeks" : "week"
 
+    return if number_of_years_old == 0 && number_of_weeks_old == 0 && number_of_extra_days_old == 0
+
     if number_of_years_old > 0
       if number_of_extra_months_old == 6
         "#{number_of_years_old} and a half #{pluralize ? "years" : "year"}"
