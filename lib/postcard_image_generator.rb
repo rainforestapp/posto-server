@@ -269,7 +269,7 @@ class PostcardImageGenerator < ImageGenerator
       photo_taken_at = card_design.photo_taken_at
 
       if photo_taken_at && photo_taken_at > birthday
-        age = DateHelper.printable_age(photo_taken_at, birthday)
+        age = DateHelper.printable_age(photo_taken_at + 5.days, birthday)
 
         if age
           drew_age = true
