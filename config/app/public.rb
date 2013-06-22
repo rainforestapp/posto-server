@@ -191,7 +191,7 @@ CONFIG = SampleableConfig.define do
         integrated: false,
         main_label: "",
         secondary_label: "Verify your name & e-mail with Facebook. Then, send a free babygram to try it out!",
-        button_text: "Connect"
+        button_text: "Let's Go!"
       }
     end
 
