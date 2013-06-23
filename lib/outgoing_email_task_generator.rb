@@ -95,6 +95,8 @@ class OutgoingEmailTaskGenerator
         postcard_subject = card_design.postcard_subject
         birthday = postcard_subject[:birthday]
         next unless birthday
+        next unless postcard_subject[:subject_type] == "baby"
+
         birthday = Chronic.parse(birthday).to_time
         next unless card_design.app == App.babygrams
 
