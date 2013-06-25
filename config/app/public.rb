@@ -162,30 +162,6 @@ CONFIG = SampleableConfig.define do
     subject_birthday_field_label "@@@'s birthday:"
 
     tutorial_connect do
-      variant 1, "tutor_button_connect", {
-        nonintegrated: true,
-        integrated: false,
-        main_label: "First, set up your account.",
-        secondary_label: "You'll be able to send a free card!",
-        button_text: "Connect"
-      }
-
-      #variant 1, "tutor_button_create", {
-      #  nonintegrated: true,
-      #  integrated: false,
-      #  main_label: "First, set up your account.",
-      #  secondary_label: "You'll be able to send a free card!",
-      #  button_text: "Create Account"
-      #}
-
-      #variant 1, "tutor_button_create", {
-      #  nonintegrated: true,
-      #  integrated: false,
-      #  main_label: "",
-      #  secondary_label: "Set up your account using Facebook. We only access your name & e-mail, that's it.",
-      #  button_text: "Connect"
-      #}
-
       variant 1, "tutor_button_verify", {
         nonintegrated: true,
         integrated: false,
