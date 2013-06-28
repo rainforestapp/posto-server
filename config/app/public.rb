@@ -159,7 +159,7 @@ CONFIG = SampleableConfig.define do
     subject_info_info_line_2 "We'll include $$$ name and age on the babygrams that you send."
     subject_default_name_boy "(Ex. Michael Joseph)"
     subject_default_name_girl "(Ex. Mary Elizabeth)"
-    subject_name_field_label "Your baby's first & middle name:"
+    subject_name_field_label "Your childs's first & middle name:"
     subject_birthday_field_label "@@@'s birthday:"
 
     tutorial_connect do
