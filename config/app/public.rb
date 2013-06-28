@@ -146,6 +146,7 @@ CONFIG = SampleableConfig.define do
     nag_target "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
     share_caption "Check out this card I got from NAME! #babygrams"
     invite_sms_message "I've been sending amazing baby photo postcards in the mail with babygrams, check it out! LINK"
+    invite_sms_message_with_name "I've been using this app to mail printed pictures of FIRST_NAME from my phone, it's awesome! LINK"
     invite_share_message "#babygrams lets you send amazing baby photo postcards in the mail. check it out!"
     invite_url_prefix "http://babygramsapp.com/ref"
     invite_share_image "http://www.lulcards.com/images/iphone.png"
