@@ -145,7 +145,7 @@ CONFIG = SampleableConfig.define do
     nag_action "Update"
     nag_target "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
     share_caption "Check out this card I got from NAME! #babygrams"
-    invite_sms_message "I've been sending amazing baby photo postcards in the mail with babygrams, check it out! LINK"
+    invite_sms_message "I've been using this app to mail printed pictures from my phone, it's awesome! LINK"
     invite_sms_message_with_name "I've been using this app to mail printed pictures of FIRST_NAME from my phone, it's awesome! LINK"
     invite_share_message "#babygrams lets you send amazing baby photo postcards in the mail. check it out!"
     invite_url_prefix "http://babygramsapp.com/ref"
@@ -304,7 +304,7 @@ CONFIG = SampleableConfig.define do
 
   signup_credits 10
   signup_credits_title "You Have CREDITS Credits"
-  signup_credits_message "You now have CREDITS credits to send a free card!"
+  signup_credits_message "You now have CREDITS credits to send a free card with!"
   max_cards_to_send 9
   max_photo_byte_size 24 * 1024 * 1024
   recipient_address_expiration_days 31 * 6
