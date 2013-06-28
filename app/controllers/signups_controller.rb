@@ -5,6 +5,8 @@ class SignupsController < ApplicationController
 
   def show
     @app = App.by_name(params[:app_id])
+    @theme_color = "white" if @app == App.babygrams
+
     @config = CONFIG.for_app(@app)
 
     @title = @config.page_title
@@ -15,6 +17,32 @@ class SignupsController < ApplicationController
     @meta_image = view_context.image_path("#{@app.name}/InviteHandCard.png")
     @meta_creator = @app.name
     @disable_itunes_link = true
+    @card_image = "#{@app.name}/InviteHandCard.png"
+
+    if params[:referral_code]
+      referring_user = User.where(uid: params[:referral_code]).first
+
+      if referring_user
+        @card_order = nil
+
+        referring_user.card_orders.each do |card_order|
+          next unless card_order.app == @app
+
+          if card_order.card_design.postcard_subject &&
+             card_order.card_design.postcard_subject[:subject_type] == "baby" &&
+             card_order.card_design.card_preview_composition
+            @card_order = card_order
+          end
+        end
+
+        if @card_order
+          subject_first = @card_order.card_design.postcard_subject[:name].split(/\s+/)[0]
+          @tagline = "#{@card_order.order_sender_user.user_profile.first_name} has been mailing real printed pictures of #{subject_first} with #{@app.name}!"
+          @card_image = @card_order.card_design.card_preview_composition.treated_card_preview_image.public_url
+          @lead_extra = "Connect with Facebook and install the app, and you'll earn an extra bonus card for both you and #{@card_order.order_sender_user.user_profile.first_name}!"
+        end
+      end
+    end
   end
 
   def create

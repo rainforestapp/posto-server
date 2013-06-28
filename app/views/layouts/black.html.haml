@@ -33,6 +33,20 @@
     %meta{ property: "og:app_id", content: @config.facebook_app_id }
     %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0"}
 
+    %script{ type: "text/javascript" }
+      :erb
+        (function(c,a){window.mixpanel=a;var b,d,h,e;b=c.createElement("script");
+        b.type="text/javascript";b.async=!0;b.src=("https:"===c.location.protocol?"https:":"http:")+
+        '//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';d=c.getElementsByTagName("script")[0];
+        d.parentNode.insertBefore(b,d);a._i=[];a.init=function(b,c,f){function d(a,b){
+        var c=b.split(".");2==c.length&&(a=a[c[0]],b=c[1]);a[b]=function(){a.push([b].concat(
+        Array.prototype.slice.call(arguments,0)))}}var g=a;"undefined"!==typeof f?g=a[f]=[]:
+        f="mixpanel";g.people=g.people||[];h=['disable','track','track_pageview','track_links',
+        'track_forms','register','register_once','unregister','identify','alias','name_tag','set_config',
+        'people.set','people.set_once','people.increment','people.track_charge','people.append'];
+        for(e=0;e<h.length;e++)d(g,h[e]);a._i.push([b,c,f])};a.__SV=1.2;})(document,window.mixpanel||[]);
+        mixpanel.init("<%= @config.mixpanel_token %>");
+
     %title
       = @title
     = stylesheet_link_tag "application", media: "all"
@@ -42,7 +56,7 @@
     = javascript_include_tag "application"
     = javascript_include_tag "signups"
     = csrf_meta_tags
-  %body{ "data-controller" => controller.controller_path, "data-action" => controller.action_name, class: "black" }
+  %body{ "data-controller" => controller.controller_path, "data-action" => controller.action_name, class: "#{@theme_color || "black"}" }
     #fb-root
     :javascript
       window.fbAsyncInit = function() {

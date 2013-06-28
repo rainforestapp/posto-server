@@ -7,6 +7,12 @@ body.black {
   margin: 0;
 }
 
+body.white {
+  background: #fcfcfc;
+  padding: 0;
+  margin: 0;
+}
+
 @media only screen 
 and (min-width : 768px) {
   .card-printing {
@@ -22,9 +28,17 @@ body.black .container {
   margin: 0;
 }
 
+body.white .container {
+  #gradient > .vertical(#fff, #fcfcfc);
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
 .card {
-  border: 1px solid #222222;
   margin-bottom: 25px;
+  box-shadow: 2px 2px 2px #ccc;
 }
 
 .author {
@@ -83,12 +97,18 @@ body.black .container {
   float: left;
   clear: both;
   text-align: left;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  padding-right: 30px;
+  padding-left: 30px;
 }
 
 .sent-by-caption {
   color: #AAAAAA;
-  font-size: 14px;
+  font-weight: 200;
+  font-size: 24px;
+  line-height: 28px;
   margin-top: 8px;
+  padding-bottom: 8px;
 }
 
 .sent-by-image {

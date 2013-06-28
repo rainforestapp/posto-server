@@ -3,8 +3,11 @@ class SignupsController
     $(".login").click ->
       FB.login((-> ), { scope: '<%= CONFIG.for_app(App.babygrams).fb_basic_permissions.join(",") %>' })
 
+    mixpanel.track("referral_page_index")
+
     handle_auth = (response) ->
       if response.status == "connected"
+        mixpanel.track("referral_page_connect")
         $("#ready-form .facebook-token").val(response.authResponse.accessToken)
         $(".hide-on-submit").hide()
         $(".show-on-submit").show()

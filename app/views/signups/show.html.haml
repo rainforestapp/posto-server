@@ -4,17 +4,21 @@
       =image_tag "#{@app.name}/InviteLogo.png", width: 162, height: 43
   .span6{ class: "offset4 header hide-on-submit" }
     .description.lead= @tagline
-    =image_tag "#{@app.name}/InviteHandCard.png", width: 208, height: 267
+    =image_tag @card_image, width: 208, height: 267
   .span6{ class: "offset4 header hide-on-submit" }
     - if @number_of_free_cards > 0
       .description.lead
+        %p
         - if @number_of_free_cards == 1
-          Your first card is <b>free</b>!
+          Try it yourself, your first card is <b>free</b>!
         - else
-          Your first #{@number_of_free_cards} cards are <b>free</b>!
+          Try it yourself, your first #{@number_of_free_cards} cards are <b>free</b>!
+      .description.lead
+        %p
+          #{@lead_extra}
     %div{ :class => "fb-login-button", "data-show-faces" => "false", "data-width" => 300, "data-max-rows" => 1, "size" => "xlarge", "scope" => @config.fb_permissions.join(",")}
   .span6{ class: "offset4 header hide-on-submit" }
-    %div{ :class => "fb-facepile", "data-width" => 300, "data-max-rows" => 1, "data-colorscheme" => "dark"}
+    %div{ :class => "fb-facepile", "data-width" => 300, "data-max-rows" => 1, "data-colorscheme" => "#{@theme_color == "white" ? "light" : "dark"}"}
     %form{ action: "/apps/#{params[:app_id]}/signup", method: "POST", id: "ready-form" }
       %input{ type: "hidden", name: "facebook_token", class: "facebook-token" }
       %input{ type: "hidden", name: "referral_code", value: params[:referral_code] }

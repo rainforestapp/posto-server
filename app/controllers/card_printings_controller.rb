@@ -19,6 +19,9 @@ class CardPrintingsController < ApplicationController
     @meta_url = "http://#{@app.domain}/card_printings/#{@card_printing.uid}"
     @og_type = @config.open_graph_type
 
+    @theme_color = "white" if @app == App.babygrams
+    @sent_by_caption = "Sent by #{@sender.user_profile.name} with #{@app.name}"
+
     @full_text = (@card_design.top_caption + " " + @card_design.bottom_caption).truncate(30)
     @full_text = @full_text.gsub(/  /, " ").gsub(/^ */, "").gsub(/ *$/, "")
 
@@ -32,10 +35,12 @@ class CardPrintingsController < ApplicationController
 
       if postcard_subject && postcard_subject[:name]
         baby_name = " of #{postcard_subject[:name]}"
+        short_baby_name = " of #{postcard_subject[:name].split(/\s+/)[0]}"
       end
 
       @title = "#{@full_text} postcard#{baby_name} - made with #{@app.name}".strip
       @og_title = "#{@full_text} postcard#{baby_name}".strip
+      @sent_by_caption = "#{@sender.user_profile.first_name} mailed this printed photo#{short_baby_name} from #{@sender.user_profile.possessive_pronoun} iPhone with #{@app.name}."
     else
       @title = @config.page_title
     end
