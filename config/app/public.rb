@@ -156,7 +156,7 @@ CONFIG = SampleableConfig.define do
     subject_gender_info_line_1 "Tell us a bit about your new family member."
     subject_gender_info_line_2 "Our cards are personalized for your baby."
     subject_info_info_line_1 "Congratulations!"
-    subject_info_info_line_2 "We'll include $$$ name and age on the babygrams that you send."
+    subject_info_info_line_2 "We can print $$$ name and age on the babygrams that you send."
     subject_default_name_boy "(Ex. Michael Joseph)"
     subject_default_name_girl "(Ex. Mary Elizabeth)"
     subject_name_field_label "Your child's first & middle name:"
