@@ -117,7 +117,7 @@ class AmazingMailActivities
 
           if (first_name.size <= 2 && recipient.user_profile.first_name.to_s.size > 2) || 
              (last_name.size <= 2 && recipient.user_profile.last_name.to_s.size > 2) ||
-             first_name.size == 0 || last_name.size == 0
+             first_name.size == 0
             first_name = "Current" 
             last_name = "Resident"
           end
