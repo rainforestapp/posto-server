@@ -452,7 +452,9 @@ class User < ActiveRecord::Base
                             source_id: self.user_id)
 
           referrals = UserReferral.where(referred_user_id: self.user_id,
-                                        app_id: app.app_id)
+                                         app_id: app.app_id)
+
+          self_referral_granted = false
 
           referrals.each do |referral|
             unless referral.state == :granted
@@ -462,6 +464,15 @@ class User < ActiveRecord::Base
                                           app: app,
                                           source_type: :referral,
                                           source_id: self.user_id)
+
+              unless self_referral_granted
+                self_referral_granted = true
+
+                self.add_credits!(config.referral_credits,
+                                  app: app,
+                                  source_type: :referral,
+                                  source_id: self.user_id)
+              end
 
               unless sent_referral_notification
                 message = "#{self.user_profile.name} joined #{config.app_name}, so you earned #{config.referral_credits} credits!"

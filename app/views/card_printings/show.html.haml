@@ -1,3 +1,7 @@
+%script
+  :erb
+    $(function() { mixpanel.track("card_printing_index"); });
+
 .card-printing{ class: "row-fluid" }
   .span6
     .card
@@ -22,15 +26,9 @@
               = @sender.user_profile.name
           .author-sent
             = "Sent on #{@sent_on}"
-    .actions
-      .fb-like{ "send-data" => true, "data-width" => 450, "data-show-faces" => true, "data-colorscheme" => "dark",
-                "ref" => "card_printing", "data-href" => @meta_url }
-    .comments
-      .fb-comments{ "data-href" => @meta_url, "data-width" => 470, "data-num-posts" => 20, "data-colorscheme" => "dark"}
-
     .sent-by
       .sent-by-caption
-        Sent with
+        #{@sent_by_caption}
       .sent-by-image
         %p
           %a{ href: @config.marketing_url }
@@ -38,4 +36,8 @@
         %p
           %a{ href: @config.itunes_url }
             = image_tag "AppStore.png", width: 175, height: 52
+
+    .actions
+      .fb-like{ "send-data" => true, "data-width" => 450, "data-show-faces" => true, "data-colorscheme" => "#{@theme_color == "white" ? "light" : "dark" }",
+                "ref" => "card_printing", "data-href" => @meta_url }
 
