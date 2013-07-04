@@ -151,8 +151,8 @@ CONFIG = SampleableConfig.define do
     invite_url_prefix "http://babygramsapp.com/ref"
     invite_share_image "http://www.lulcards.com/images/iphone.png"
     invite_disabled false
-    tutorial_postcard_line_1 "Send a gorgeous, high-qualilty printed photo in the mail."
-    tutorial_postcard_line_2 "Friends and relatives alike will love it!"
+    tutorial_postcard_line_1 "Send grandparents a beautiful printed photo in the mail."
+    tutorial_postcard_line_2 "It's a surprise that they'll love."
     subject_gender_info_line_1 "Tell us a bit about your newest family member."
     subject_gender_info_line_2 "Our cards are personalized for your child."
     subject_info_info_line_1 "Congratulations!"
@@ -167,7 +167,7 @@ CONFIG = SampleableConfig.define do
         nonintegrated: true,
         integrated: false,
         main_label: "",
-        secondary_label: "Verify your name & e-mail with Facebook. Then, send a free babygram to try it out!",
+        secondary_label: "Verify your name & e-mail with Facebook. Then, send a free babygram to try it out.",
         button_text: "Let's Go!"
       }
     end
