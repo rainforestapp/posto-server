@@ -138,12 +138,12 @@ CONFIG = SampleableConfig.define do
     urban_airship_application_key ENV["BABYCARDS_URBAN_AIRSHIP_APP_KEY"]
     urban_airship_application_secret ENV["BABYCARDS_URBAN_AIRSHIP_APP_SECRET"]
     urban_airship_master_secret ENV["BABYCARDS_URBAN_AIRSHIP_MASTER_SECRET"]
-    nag_version 2
-    nag_app_versions ["1.0", "1.1", "1.1.1"]
+    nag_version 3
+    nag_app_versions ["1.0", "1.1", "1.1.1", "1.1.2"]
     nag_title "New Version Available"
-    nag_message "Babygrams 1.1.2 now available! This version fixes a number of bugs and crashing issues."
+    nag_message "Update to Babygrams version 1.2 to be able to set the name on your photo to any of your children!"
     nag_action "Update"
-    nag_target "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
+    nag_target "itms://itunes.apple.com/us/app/babygrams/id634710276?ls=1&mt=8"
     share_caption "Check out this card I got from NAME! #babygrams"
     invite_sms_message "I've been using this app to mail printed pictures from my phone, it's awesome! LINK"
     invite_sms_message_with_name "I've been using this app to mail printed pictures of FIRST_NAME from my phone, it's awesome! LINK"
