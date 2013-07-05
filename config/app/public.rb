@@ -139,7 +139,7 @@ CONFIG = SampleableConfig.define do
     urban_airship_application_secret ENV["BABYCARDS_URBAN_AIRSHIP_APP_SECRET"]
     urban_airship_master_secret ENV["BABYCARDS_URBAN_AIRSHIP_MASTER_SECRET"]
     nag_version 3
-    nag_app_versions ["1.0", "1.1", "1.1.1", "1.1.2"]
+    nag_app_versions ["1.0", "1.1", "1.1.1", "1.1.2", "1.1.3"]
     nag_title "New Version Available"
     nag_message "Update to Babygrams version 1.2 to be able to set the name on your photo to any of your children!"
     nag_action "Update"
