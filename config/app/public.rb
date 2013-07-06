@@ -16,7 +16,7 @@ CONFIG = SampleableConfig.define do
   admin_credit_order_audit_email "gfodor@gmail.com"
   admin_credit_order_enabled true
 
-  card_image_host "data.lulcards.com"
+  card_image_host "54.239.132.44"
   ssl_card_image_host "d19ku6gs1135cx.cloudfront.net"
   card_image_bucket "posto-data"
 
