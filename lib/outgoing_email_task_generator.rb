@@ -69,8 +69,8 @@ class OutgoingEmailTaskGenerator
         end
       end
 
-      # Email welcome email 12 days after order is mailed
-      orders = CardOrderState.where(created_at: (today - 12.days)..(today - 11.days), state: :finished).map(&:card_order)
+      # Email welcome email 11 days after order is mailed
+      orders = CardOrderState.where(created_at: (today - 11.days)..(today - 10.days), state: :finished).map(&:card_order)
 
       orders.each do |order|
         if order.order_sender_user.first_order == order
