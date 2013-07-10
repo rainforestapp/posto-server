@@ -4,7 +4,8 @@ module Api
       include ApiSecureEndpoint
 
       def index
-        @card_orders = CardOrder.where(order_sender_user_id: @current_user.user_id).includes(
+        app = App.by_name(params[:app_id])
+        @card_orders = CardOrder.where(order_sender_user_id: @current_user.user_id, app_id: app.app_id).includes(
           :card_order_states, 
           card_design: [ :original_full_photo_image, :edited_full_photo_image, 
                          :composed_full_photo_image, { card_preview_compositions: :treated_card_preview_image }], 
