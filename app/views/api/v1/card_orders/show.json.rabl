@@ -1,6 +1,6 @@
 object @card_order
 
-attributes :card_order_id, :state, :app_id, :created_at
+attributes :card_order_id, :order_sender_user_id, :state, :app_id, :created_at
 
 node(:created_ago) do |card_order|
   time_ago_in_words card_order.created_at
