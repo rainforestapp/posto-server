@@ -41,6 +41,7 @@ Posto::Application.routes.draw do
       resources :apps do
         resource :current_user, controller: "CurrentUser" do
           resources :birthday_reminders
+          resources :card_orders
         end
 
         resources :config, controller: "Conf"
