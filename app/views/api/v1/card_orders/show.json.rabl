@@ -2,6 +2,10 @@ object @card_order
 
 attributes :card_order_id, :state, :app_id, :created_at
 
+note(:created_ago) do |card_order|
+  card_order.created_at.time_ago_in_words
+end
+
 child :card_design do
   attributes :top_caption, :bottom_caption, :top_caption_font_size, :bottom_caption_fnt_size, :postcard_subject
 
