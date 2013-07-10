@@ -2,7 +2,7 @@ object @card_order
 
 attributes :card_order_id, :state, :app_id, :created_at
 
-note(:created_ago) do |card_order|
+node(:created_ago) do |card_order|
   card_order.created_at.time_ago_in_words
 end
 
