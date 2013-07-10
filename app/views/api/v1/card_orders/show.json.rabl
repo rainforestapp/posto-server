@@ -25,6 +25,8 @@ child :card_design do
 end
 
 child :card_printings do
+  attributes :recipient_user_id
+
   [:first_name, :last_name, :name].each do |attribute|
     node(attribute) do |printing|
       printing.recipient_user.user_profile.try(attribute)
