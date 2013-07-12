@@ -27,11 +27,7 @@ class ApiKey < ActiveRecord::Base
   end
 
   def active?
-    active_api_key_id = Rails.cache.fetch(active_cache_key) do
-      self.user.api_key.api_key_id
-    end
-
-    active_api_key_id == self.api_key_id
+    !expired?
   end
 
   private
