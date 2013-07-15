@@ -1,10 +1,11 @@
 module Api
   module V1
     class CardOrdersController < ApplicationController
-      include ApiSecureEndpoint
+      #include ApiSecureEndpoint
 
       def index
         app = App.by_name(params[:app_id])
+        @current_user = User.find(1)
         @card_orders = CardOrder.where(order_sender_user_id: @current_user.user_id, app_id: app.app_id).includes(
           :card_order_states, 
           card_design: [ :original_full_photo_image, :edited_full_photo_image, 

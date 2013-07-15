@@ -6,20 +6,22 @@ node(:created_ago) do |card_order|
   time_ago_in_words card_order.created_at
 end
 
+node(:card_printing_image) do |card_order|
+  { url: card_order.card_printings.first.card_printing_composition.try(:jpg_card_front_image).try(:public_url) }
+end
+
 child :card_design do
   attributes :top_caption, :bottom_caption, :top_caption_font_size, :bottom_caption_fnt_size, :postcard_subject
 
   [:original_full_photo_image, :edited_full_photo_image, :composed_full_photo_image].each do |image|
     node(image) do |design|
-      { public_url: design.send(image).try(:public_url),
-        public_ssl_url: design.send(image).try(:public_ssl_url) }
+      { url: design.send(image).try(:public_url) }
     end
   end
 
   [:card_preview_image, :treated_card_preview_image].each do |image|
     node(image) do |design|
-      { public_url: design.card_preview_composition.send(image).try(:public_url),
-        public_ssl_url: design.card_preview_composition.send(image).try(:public_ssl_url) }
+      { url: design.card_preview_composition.send(image).try(:public_url) }
     end
   end
 end
