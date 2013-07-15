@@ -11,7 +11,7 @@ node(:card_printing_image) do |card_order|
 end
 
 child :card_design do
-  attributes :top_caption, :bottom_caption, :top_caption_font_size, :bottom_caption_fnt_size, :postcard_subject, :frame_type, :photo_taken_at
+  attributes :top_caption, :bottom_caption, :top_caption_font_size, :bottom_caption_font_size, :postcard_subject, :frame_type, :photo_taken_at
 
   [:original_full_photo_image, :edited_full_photo_image, :composed_full_photo_image].each do |image|
     node(image) do |design|
