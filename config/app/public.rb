@@ -333,7 +333,7 @@ CONFIG = SampleableConfig.define do
 
   shuffle_captions true
 
-  card_io true
+  card_io false
 
   permission_caption "Chat and Inbox access is needed to ask your friends for their addresses."
 
