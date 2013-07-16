@@ -25,7 +25,11 @@ child :card_design do
 
   [:card_preview_image, :treated_card_preview_image].each do |image|
     node(image) do |design|
-      { url: design.card_preview_composition.send(image).try(:public_url) }
+      if design.card_preview_composition
+        { url: design.card_preview_composition.send(image).try(:public_url) }
+      else
+        { url: nil }
+      end
     end
   end
 end
