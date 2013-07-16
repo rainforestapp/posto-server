@@ -144,7 +144,7 @@ CONFIG = SampleableConfig.define do
     nag_message "Update to Babygrams version 1.2 to be able to set the name on your photo to any of your children!"
     nag_action "Update"
     nag_target "itms://itunes.apple.com/us/app/babygrams/id634710276?ls=1&mt=8"
-    share_caption "Check out this photo I sent of SUBJECT_NAME with #babygrams! http://babygra.ms"
+    share_caption "Check out this photo I sent of SUBJECT_NAME with #babygrams!"
     invite_sms_message "I've been using this app to mail printed pictures from my phone, it's awesome! LINK"
     invite_sms_message_with_name "I've been using this app to mail printed pictures of FIRST_NAME from my phone, it's awesome! LINK"
     invite_share_message "#babygrams lets you send amazing printed photos in the mail. check it out!"
