@@ -3,7 +3,7 @@ object @card_order
 attributes :card_order_id, :order_sender_user_id, :state, :app_id, :created_at
 
 node(:share_uid) do |card_order|
-  card_order.card_printings.first.try(:uid)
+  "f" + (card_order.card_printings.first.try(:uid) || "")
 end
 
 node(:created_ago) do |card_order|
