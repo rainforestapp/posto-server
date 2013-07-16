@@ -1,6 +1,10 @@
 object @card_order
 
-attributes :card_order_id, :order_sender_user_id, :state, :app_id, :created_at, :uid
+attributes :card_order_id, :order_sender_user_id, :state, :app_id, :created_at
+
+note(:share_uid) do |card_order|
+  card_order.card_printings.first.try(:uid)
+end
 
 node(:created_ago) do |card_order|
   time_ago_in_words card_order.created_at
