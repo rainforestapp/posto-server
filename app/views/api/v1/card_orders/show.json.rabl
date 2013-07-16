@@ -2,7 +2,7 @@ object @card_order
 
 attributes :card_order_id, :order_sender_user_id, :state, :app_id, :created_at
 
-note(:share_uid) do |card_order|
+node(:share_uid) do |card_order|
   card_order.card_printings.first.try(:uid)
 end
 
