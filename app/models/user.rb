@@ -446,10 +446,12 @@ class User < ActiveRecord::Base
     CONFIG.for_app(app) do |config|
       self.class.transaction_with_retry do
         if self.has_empty_credit_journal_for_app?(app)
-          self.add_credits!(config.signup_credits,
-                            app: app,
-                            source_type: :signup,
-                            source_id: self.user_id)
+          if config.signup_credits > 0
+            self.add_credits!(config.signup_credits,
+                              app: app,
+                              source_type: :signup,
+                              source_id: self.user_id)
+          end
 
           referrals = UserReferral.where(referred_user_id: self.user_id,
                                          app_id: app.app_id)
