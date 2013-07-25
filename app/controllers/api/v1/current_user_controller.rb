@@ -12,19 +12,14 @@ module Api
           app = App.by_name(params[:app_id])
           return head :bad_request unless app
 
-          # Handle new user, the way we know is if their credit journal is empty.
-          
-          if @config.signup_credits <= 0
-            # Signup credits has to be > 0 right now, because the check below is used to determine if this user 
-            # was just created. If so, the bonuses are handles below. If signup credits is zero, then no journal
-            # entry will be created and the bonuses will not be applied (referrals). So, if signup credits becomes
-            # zero we need another way to know when this is the first time the user was accessed by the app.
-            raise "Must have signup credits -- see code comment"
-          end
-
-          if @current_user.has_empty_credit_journal_for_app?(app)
+          unless @current_user.signup_credits_awarded
             @current_user.handle_signup_bonuses_for_app!(app)
-            @granted_initial_credits = true
+            @current_user.signup_credits_awarded = true
+            @current_user.save
+
+            if @current_user.credits_for_app(app) > 0
+              @granted_initial_credits = true
+            end
           end
         end
 
