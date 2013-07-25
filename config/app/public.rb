@@ -302,7 +302,7 @@ CONFIG = SampleableConfig.define do
   fb_share_permissions ["publish_actions"]
   fb_fields ["gender", "birthday"]
 
-  signup_credits 0
+  signup_credits 10
   signup_credits_title "You Have CREDITS Credits"
   signup_credits_message "You now have CREDITS credits to send a free card with!"
   max_cards_to_send 9
