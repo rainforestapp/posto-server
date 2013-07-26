@@ -12,6 +12,8 @@ module Api
           app = App.by_name(params[:app_id])
           return head :bad_request unless app
 
+          @current_user.reload
+
           unless @current_user.signup_credits_awarded
             @current_user.handle_signup_bonuses_for_app!(app)
             @current_user.signup_credits_awarded = true
