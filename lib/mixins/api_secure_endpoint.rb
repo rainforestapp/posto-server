@@ -28,7 +28,7 @@ module ApiSecureEndpoint
         #  return true
         #end
 
-        api_key = Rails.cache.fetch([:api_key_by_token_with_user, token]) do
+        api_key = Rails.cache.fetch([Api::V1::TokensController::TOKEN_CACHE_KEY_PREFIX, token]) do
           ApiKey.where(token: token).includes(:user).first
         end
 

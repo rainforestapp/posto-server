@@ -12,15 +12,19 @@ module Api
           app = App.by_name(params[:app_id])
           return head :bad_request unless app
 
-          @current_user.reload
-
+          # Current user may be a stale cached copy
           unless @current_user.signup_credits_awarded
-            @current_user.handle_signup_bonuses_for_app!(app)
-            @current_user.signup_credits_awarded = true
-            @current_user.save
+            @current_user.reload
 
-            if @current_user.credits_for_app(app) > 0
-              @granted_initial_credits = true
+            unless @current_user.signup_credits_awarded
+              @current_user.handle_signup_bonuses_for_app!(app)
+              @current_user.signup_credits_awarded = true
+              @current_user.save
+              Api::V1::TokensController.clear_token_cache_for_user_id(@current_user.user_id)
+
+              if @current_user.credits_for_app(app) > 0
+                @granted_initial_credits = true
+              end
             end
           end
         end
