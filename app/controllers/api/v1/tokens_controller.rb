@@ -6,6 +6,14 @@ module Api
     class TokensController < ApplicationController
       respond_to :json
 
+      TOKEN_CACHE_KEY_PREFIX = :api_key_by_token_with_user_2
+
+      def self.clear_token_cache_for_user_id(user_id)
+        ApiKey.where(user_id: user_id).each do |api_key|
+          Rails.cache.delete([TOKEN_CACHE_KEY_PREFIX, api_key.token])
+        end
+      end
+
       def create
         token = params[:posto_token]
         facebook_token = params[:facebook_token]
@@ -13,7 +21,7 @@ module Api
         api_key = nil
 
         unless token.blank?
-          api_key = Rails.cache.fetch([:api_key_by_token_with_user_2, token]) do
+          api_key = Rails.cache.fetch([TOKEN_CACHE_KEY_PREFIX, token]) do
             ApiKey.where(token: token).includes(:user).first
           end
         end
