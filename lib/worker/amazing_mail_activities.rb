@@ -12,11 +12,7 @@ class AmazingMailActivities
   end
 
   def az_dmid_for_app(app)
-    if app == App.babygrams
-      ENV["AMAZING_MAIL_UNPERFORATED_DMID"] || ENV["AMAZING_MAIL_DMID"]
-    else
-      ENV["AMAZING_MAIL_DMID"]
-    end
+    ENV["AMAZING_MAIL_UNPERFORATED_DMID"]
   end
 
   def submit_images_to_amazing_mail(card_order_id)
