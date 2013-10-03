@@ -287,9 +287,27 @@ CONFIG = SampleableConfig.define do
   preorder_credit_nag({
     enabled: true,
     title: "Refill Credits",
-    message_no_credits: "You have no credits left! You can pay as you go for just $1.49 per card, or refill your credits to save up to 25%.",
-    message_some_credits: "You only have CREDITS credits left! You can pay as you go for just $1.49 per card, or refill your credits to save up to 25%.",
+    message_no_credits: "You have no credits left! You can pay as you go for just $1.99 per card, or use credits to save up to 35%.",
+    message_some_credits: "You only have CREDITS credits left! You can pay as you go for just $1.99 per card, or refill your credits to save up to 35%.",
     refill_button: "Refill Now",
+    cancel_button: "Pay As I Go",
+  })
+
+  preorder_credit_package_nag({
+    enabled: true,
+    title: "Refill Credits",
+    message_no_credits: "You have no credits left! You can pay as you go for just $1.99 per card, or use credits to save up to 35%.",
+    message_some_credits: "You only have CREDITS credits left! You can pay as you go for just $1.99 per card, or refill your credits to save up to 35%.",
+    refill_button: "Refill Now",
+    cancel_button: "Pay As I Go",
+  })
+
+  preorder_credit_plan_nag({
+    enabled: true,
+    title: "Upgrade Plan",
+    message_no_credits: "You have no credits left! You can pay as you go for just $1.99 per card, or upgrade your credit plan to save up to 35%.",
+    message_some_credits: "You only have CREDITS credits left! You can pay as you go for just $1.99 per card, or upgrade your credit plan to save up to 35%.",
+    refill_button: "Upgrade Now",
     cancel_button: "Pay As I Go",
   })
 
@@ -353,7 +371,7 @@ CONFIG = SampleableConfig.define do
   order_submitted_header "Thanks!"
   order_submitted_message "Your order has been submitted. We'll notify and e-mail you as we process it."
   order_submitted_credit_prompt_header "Thanks!"
-  order_submitted_credit_prompt_message "Thank you for your order. You can save up to 25% by refilling your credits."
+  order_submitted_credit_prompt_message "Thank you for your order. You can save up to 35% by using credits."
   order_submitted_credit_prompt_cancel_action "Not Now"
   order_submitted_credit_prompt_action "Refill Now"
   order_submitted_invite_prompt_header "Earn Free Credits"
