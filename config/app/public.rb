@@ -235,8 +235,8 @@ CONFIG = SampleableConfig.define do
     reminder_app_url "babycards://reminder"
     baby_birthday_reminder_switch "Remind me to share milestones"
     baby_birthday_remind_when_no_credits true
-    processing_fee -1
-    card_fee 150
+    processing_fee 0
+    card_fee 199
     processing_credits 0
     card_credits 10
 
@@ -246,7 +246,39 @@ CONFIG = SampleableConfig.define do
       { credit_package_id: 99, credits: 450, price: 4999, savings: 25 },
     ]
 
+    credit_plans [
+      { credit_plan_id: 196, credits: 30, price: 499, savings: 15 },
+      { credit_plan_id: 197, credits: 70, price: 999, savings: 25 },
+      { credit_plan_id: 198, credits: 120, price: 1499, savings: 35 },
+    ]
+
+    available_credit_plans [196, 197, 198]
+
+    use_credit_plans true
+
+    send_self_free_card do
+      variant 1, true
+      variant 1, false
+    end
+
     frame_types "all"
+
+    credit_buy_captions({
+      plans: {
+        main: "Use credits and save up to SAVINGS",
+        secondary: "We'll refill your credits each month."
+      },
+
+      packages: {
+        main: "Use credits and save up to SAVINGS",
+        secondary: "You'll use 10 credits per card."
+      },
+
+      existing_plan: {
+        main: "Your current credit plan.",
+        secondary: "We'll refill your credits each month."
+      }
+    })
   end
 
   recipient_suggested_table_header "Relatives:"

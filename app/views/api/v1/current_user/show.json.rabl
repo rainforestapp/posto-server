@@ -6,6 +6,11 @@ node(:current_credits) do
     "babygrams" => @current_user.credits_for_app(App.babygrams) }
 end
 
+node(:current_credit_plans) do
+  { "lulcards" => @current_user.credit_plan_id_for_app(App.lulcards),
+    "babygrams" => @current_user.credit_plan_id_for_app(App.babygrams) }
+end
+
 node(:granted_initial_credits) do
   @granted_initial_credits
 end

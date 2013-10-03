@@ -19,6 +19,12 @@ module Api
           p[:credit_package_id] == package[:credit_package_id].to_i
         end
 
+        unless config_package
+          config_package = @config.credit_plans.find do |p| 
+            p[:credit_plan_id] == package[:credit_plan_id].to_i
+          end
+        end
+
         return head :bad_request unless config_package
 
         [:credits, :price].each do |k|
@@ -86,6 +92,17 @@ module Api
           rescue Exception => e
             Airbrake.notify_or_ignore(e)
           end
+        end
+
+        if config_package[:credit_plan_id]
+          @current_user.credit_plan_membership_for_app(app).try(:cancel!)
+
+          @current_user.credit_plan_memberships.create!(
+            app_id: app.app_id, 
+            credit_plan_price: config_package[:price],
+            credit_plan_credits: config_package[:credits],
+            credit_plan_id: config_package[:credit_plan_id]
+          )
         end
 
         render json: config_package

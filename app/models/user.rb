@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
   has_many :user_logins
   has_many :credit_orders
   has_many :credit_journal_entries
+  has_many :credit_plan_memberships, order: "created_at desc"
 
   attr_accessible :uid
 
@@ -232,6 +233,30 @@ class User < ActiveRecord::Base
     )
   end
 
+  def credit_plan_id_for_app(app)
+    membership_map = Rails.cache.fetch(credit_plan_membership_state_cache_key) do
+      {}.tap do |map|
+        self.credit_plan_memberships.each do |membership|
+          if membership.active?
+            map[membership.app_id] ||= membership.credit_plan_id
+          end
+        end
+      end
+    end
+
+    membership_map[app.app_id]
+  end
+
+  def credit_plan_membership_for_app(app)
+    return nil unless credit_plan_id_for_app(app)
+
+    self.credit_plan_memberships.each do |membership|
+      if membership.app == app && membership.active?
+        return membership
+      end
+    end
+  end
+
   def payment_info_state
     Rails.cache.fetch(payment_info_state_cache_key) do
       if self.stripe_customer
@@ -372,6 +397,10 @@ class User < ActiveRecord::Base
 
   def invalidate_payment_info_state!
     Rails.cache.delete(payment_info_state_cache_key)
+  end
+
+  def invalidate_credit_plan_membership_state!
+    Rails.cache.delete(credit_plan_membership_state_cache_key)
   end
 
   def profile_image_url(secure = false)
@@ -686,6 +715,10 @@ class User < ActiveRecord::Base
 
   def payment_info_state_cache_key
     [:payment_info_state, self]
+  end
+
+  def credit_plan_membership_state_cache_key
+    [:credit_plan_membership, self]
   end
 end
 
