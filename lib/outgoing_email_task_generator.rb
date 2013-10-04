@@ -100,6 +100,10 @@ class OutgoingEmailTaskGenerator
         birthday = Chronic.parse(birthday).to_time
         next unless card_design.app == App.babygrams
 
+        # Don't spam people with credits or plans
+        next if card_design.author_user.credit_plan_id_for_app(card_design.app)
+        next if card_design.author_user.credits_for_app(card_design.app) > 0
+
         author = card_design.author_user
         config = CONFIG.for_app(card_design.app)
 
