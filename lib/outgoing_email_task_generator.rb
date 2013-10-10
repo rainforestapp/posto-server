@@ -53,8 +53,7 @@ class OutgoingEmailTaskGenerator
         drip_12_week: 11.weeks,
       }.each do |email_type, timespan|
         users = User.where(created_at: (today - timespan - 1.day) .. (today - timespan))
-        users = users.select { |u| u.user_profile.try(:email) }
-        users = users.select { |u| u.card_orders.size == 0 }
+        users = users.select { |u| u.user_profile.try(:email) && !u.has_sent_orders? }
 
         [App.babygrams].each do |drippable_app|
           users.each do |u|

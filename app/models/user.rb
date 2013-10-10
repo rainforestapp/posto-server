@@ -155,6 +155,10 @@ class User < ActiveRecord::Base
     received_address_requests.first.try(:pending?)
   end
 
+  def has_sent_orders?
+    self.card_orders.reject { |o| o.is_promo }.size > 0
+  end
+
   def self.user_id_for_facebook_id(facebook_id)
     Rails.cache.fetch(["user_id_for_fb_id", facebook_id]) do
       User.where(facebook_id: facebook_id).first_or_create!.user_id
