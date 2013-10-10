@@ -350,35 +350,43 @@ class PostcardImageGenerator < ImageGenerator
 
   def draw_credits_nag(back)
     card_order = @card_printing.card_order
-    sender_user = card_order.order_sender_user
 
-    draw = Magick::Draw.new
-    draw.stroke = 'transparent'
-    draw.fill = "#ffffff"
-    draw.pointsize = 42
+    CONFIG.for_app(card_order.app) do |config|
+      sender_user = card_order.order_sender_user
 
-    draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
-    draw.text_align(Magick::LeftAlign)
+      draw = Magick::Draw.new
+      draw.stroke = 'transparent'
+      draw.fill = "#ffffff"
+      draw.pointsize = 42
 
-    unless card_order.is_promo
-      if sender_user.user_profile.first_name.size >= 8
-        draw.text(122, 846, "Like this? Send #{sender_user.user_profile.first_name} a thank you:")
+      draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
+      draw.text_align(Magick::LeftAlign)
+
+      unless card_order.is_promo
+        if sender_user == @card_printing.recipient_user
+          max_savings = config.credit_packages.map { |x| x[:savings] }.max
+          draw.text(122, 846, "Refill your credits to save up to #{max_savings}%!")
+        else
+          if sender_user.user_profile.first_name.size >= 8
+            draw.text(122, 846, "Like this? Send #{sender_user.user_profile.first_name} a thank you:")
+          else
+            draw.text(122, 846, "Like this? Send #{sender_user.user_profile.first_name} a thank-you-note:")
+          end
+        end
       else
-        draw.text(122, 846, "Like this? Send #{sender_user.user_profile.first_name} a thank-you-note:")
+        draw.text(122, 846, "You can send another #{config.entity} for free!")
       end
-    else
-      draw.text(122, 846, "Send another #{card_order.app.name} for free:")
+
+      draw.draw(back)
+
+      draw = Magick::Draw.new
+      draw.stroke = 'transparent'
+      draw.fill = "#000000"
+      draw.pointsize = 48 
+      draw.font("'#{Rails.root}/resources/fonts/RobotoSlab-Regular.ttf'")
+      draw.text_align(Magick::CenterAlign)
+      draw.text(575, 1022, "#{@card_printing.lookup_number}")
+      draw.draw(back)
     end
-
-    draw.draw(back)
-
-    draw = Magick::Draw.new
-    draw.stroke = 'transparent'
-    draw.fill = "#000000"
-    draw.pointsize = 48 
-    draw.font("'#{Rails.root}/resources/fonts/RobotoSlab-Regular.ttf'")
-    draw.text_align(Magick::CenterAlign)
-    draw.text(575, 1022, "#{@card_printing.lookup_number}")
-    draw.draw(back)
   end
 end

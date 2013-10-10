@@ -51,7 +51,13 @@ class CardPrinting < ActiveRecord::Base
   end
 
   def should_draw_credits_nag?
-    self.recipient_user != self.card_order.order_sender_user# && !card_order.is_promo
+    return true if card_order.is_promo
+    return true if self.recipient_user != self.card_order.order_sender_user
+    return true if self.recipient_user == self.card_order.order_sender_user &&
+                   self.card_order.order_sender_user.credit_plan_id_for_app(card_order.app) == nil &&
+                   self.card_order.order_sender_user.credits_for_app(card_order.app) == 0
+
+    return false
   end
 
   def lookup_number

@@ -5,15 +5,34 @@
 
       - if @success
         - if @credit_order
-          %h3{width: "100%", id: "#gift-credit-create-ok"}
-            Thank you for your order! Your thank-you-note has been sent.
-          %h4
-            You purchased #{@package[:credits]} credits for #{@giftee.user_profile.name}.<br/>We'll e-mail your receipt to #{params[:email]}.
+          - if @is_self
+            %h3{width: "100%", id: "#gift-credit-create-ok"}
+              Thank you for your order! 
+            %h4
+              You purchased #{@package[:credits]} credits.
+
+              - if @is_plan
+                We'll refill your credits each month.
+
+              <br/>
+              - if @is_promo
+                We also added 10 free credits to your account.
+          - else
+            %h3{width: "100%", id: "#gift-credit-create-ok"}
+              Thank you for your order! Your thank-you-note has been sent.
+            %h4
+              You purchased #{@package[:credits]} credits for #{@giftee.user_profile.name}.<br/>We'll e-mail your receipt to #{params[:email]}.
         - else
-          %h3{width: "100%", id: "#gift-credit-create-ok"}
-            Your thank-you-note has been sent!
-          %h4
-            We e-mailed your note to #{@giftee.user_profile.name}.
+          - if @is_self
+            %h3{width: "100%", id: "#gift-credit-create-ok"}
+              Your free credits have been added!
+            %h4
+              Thanks for using #{@app.name}!
+          - else
+            %h3{width: "100%", id: "#gift-credit-create-ok"}
+              Your thank-you-note has been sent!
+            %h4
+              We e-mailed your note to #{@giftee.user_profile.name}.
       - else
         %h3{width: "100%", id: "#gift-credit-create-fail"}
           We're sorry.

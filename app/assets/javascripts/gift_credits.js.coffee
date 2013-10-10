@@ -22,13 +22,24 @@ class GiftCreditsController
       self.selected_package_credits = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-credits")
       self.selected_package_price = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-price")
       self.selected_package_icon = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-icon")
+      self.is_self = $("#purchase-form").attr("data-is-self") == "true"
+      self.use_plans = $("#purchase-form").attr("data-use-plans") == "true"
+      self.is_promo = $("#purchase-form").attr("data-use-plans") == "true"
 
       if self.selected_package_id == ""
         mixpanel.track("gift_credits_package_selected")
-        $("#purchase-button").val("Thank #{$("body").attr("data-sender-name")} for your card").show()
+
+        if self.is_self
+          $("#purchase-button").val("Get your 10 free credits").show()
+        else
+          $("#purchase-button").val("Thank #{$("body").attr("data-sender-name")} for your card").show()
       else
         mixpanel.track("gift_credits_package_selected")
-        $("#purchase-button").val("Purchase #{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}").show()
+
+        if self.is_self
+          $("#purchase-button").val("Purchase #{self.selected_package_credits} credits#{ if self.is_promo then " + 10 free credits" else ""}").show()
+        else
+          $("#purchase-button").val("Purchase #{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}").show()
 
   init: ->
     self = this
@@ -77,6 +88,9 @@ class GiftCreditsController
       true
 
     $("#purchase-button").click ->
+      is_self = $("#purchase-form").attr("data-is-self") == "true"
+      use_plans = $("#purchase-form").attr("data-use-plans") == "true"
+
       email = $("#email").val()
       name = $("#name").val()
       note = $("#note").val()
@@ -88,23 +102,24 @@ class GiftCreditsController
 
       failed = false
 
-      if name.length < 2
-        $("#name-error").text("Your name is required.")
-        $("#name-controls").addClass("info")
-        mixpanel.track("gift_credits_validation_error_name")
-        failed = true
+      unless is_self
+        if name.length < 2
+          $("#name-error").text("Your name is required.")
+          $("#name-controls").addClass("info")
+          mixpanel.track("gift_credits_validation_error_name")
+          failed = true
 
-      if email.length < 2 || !email.match(/\@/) || !email.match(/\./)
-        $("#email-error").text("Your e-mail is required.")
-        $("#email-controls").addClass("info")
-        mixpanel.track("gift_credits_validation_error_email")
-        failed = true
+        if email.length < 2 || !email.match(/\@/) || !email.match(/\./)
+          $("#email-error").text("Your e-mail is required.")
+          $("#email-controls").addClass("info")
+          mixpanel.track("gift_credits_validation_error_email")
+          failed = true
 
-      if note.length < 2
-        $("#note-error").text("Your note is required.")
-        $("#note-controls").addClass("info")
-        mixpanel.track("gift_credits_validation_error_note")
-        failed = true
+        if note.length < 2
+          $("#note-error").text("Your note is required.")
+          $("#note-controls").addClass("info")
+          mixpanel.track("gift_credits_validation_error_note")
+          failed = true
 
       unless failed
         mixpanel.track("gift_credits_submit", { has_package: self.selected_package_id != "" })
@@ -114,13 +129,18 @@ class GiftCreditsController
           package_id = $("<input type=hidden name=credit_package_id />").val(self.selected_package_id)
           $("#purchase-form").append(package_id).submit()
         else
+          if is_self
+            description = "#{self.selected_package_credits} credits#{ if use_plans then " per month" else ""}"
+          else
+            description = "#{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}"
+
           StripeCheckout.open
             key: $("body").attr("data-stripe-key"),
             address: false,
             amount: parseInt(self.selected_package_price),
             currency: "usd",
             name: self.capitalize($("body").attr("data-app")),
-            description: "#{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}",
+            description: description,
             panelLabel: "Checkout",
             image: self.selected_package_icon,
             token: (res) ->

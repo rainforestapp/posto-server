@@ -3,56 +3,90 @@
     .left-panel
       = image_tag @card_printing.card_printing_composition.jpg_card_front_image.public_ssl_url, width: 299
 
-      %h3{width: "100%"}
-        Thank #{@sender_profile.first_name} for your card of #{@postcard_subject_first_name}!
-      %h4{width: "100%"}
-        .div
-          Send #{@sender_profile.first_name} a thank-you-note to let #{@sender_profile.direct_object_pronoun} know that you enjoyed your card!
+      - if @is_self
+        %h3{width: "100%"}
+          We hope you enjoyed your #{@config.entity}!
+        %h4{width: "100%"}
+          .div
+            - if @is_promo
+              As an additional free gift, we'll give you 10 more credits.<br/>
+
+            Buy additional credits and save up to #{@max_savings}%!<br/>
+            - if @use_plans
+              We'll refill your credits every month.
+      - else
+        %h3{width: "100%"}
+          Thank #{@sender_profile.first_name} for your card of #{@postcard_subject_first_name}!
+        %h4{width: "100%"}
+          .div
+            Send #{@sender_profile.first_name} a thank-you-note to let #{@sender_profile.direct_object_pronoun} know that you enjoyed your card!
 
   .purchase-form
-    %form{ id: "purchase-form", class: "form-horizontal", method: "POST", action: "/apps/#{@app.name}/gift_credits" }
+    %form{ :id => "purchase-form", :class => "form-horizontal", :method => "POST", :action => "/apps/#{@app.name}/gift_credits", "data-is-self" => @is_self.to_s, "data-use-plans" => @use_plans.to_s, "data-is-promo" => @is_promo.to_s }
       %input{type: "hidden", name: "giftee_user_id", id: "giftee_user_id", value: @sender.user_id }
       %input{type: "hidden", name: "card_printing_id", id: "card_printing_id", value: @card_printing.card_printing_id }
-      .control-group{ id: "name-controls" }
-        %label.control-label{ for: "name" }
-          Your Name:
-        .controls
-          %input{type: "text", autocapitalize: "words", autocorrect: "off", name: "name", id: "name", value: @recipient_name }
-          %div{ class: "help-inline info", id: "name-error" }
-      .control-group{ id: "email-controls" }
-        %label.control-label{ for: "email" }
-          Your E-mail:
-        .controls
-          %input{type: "email", name: "email", id: "email" }
-          %div{ class: "help-inline info", id: "email-error" }
-      .control-group
-        %label.control-label{ for: "note" }
-          Your Note:
-        .controls
-          %textarea{name: "note", id: "note", rows: 6 }
-          %div{ class: "help-inline info", id: "note-error" }
+      - unless @is_self
+        .control-group{ id: "name-controls" }
+          %label.control-label{ for: "name" }
+            Your Name:
+          .controls
+            %input{type: "text", autocapitalize: "words", autocorrect: "off", name: "name", id: "name", value: @recipient_name }
+            %div{ class: "help-inline info", id: "name-error" }
+        .control-group{ id: "email-controls" }
+          %label.control-label{ for: "email" }
+            Your E-mail:
+          .controls
+            %input{type: "email", name: "email", id: "email" }
+            %div{ class: "help-inline info", id: "email-error" }
+        .control-group
+          %label.control-label{ for: "note" }
+            Your Note:
+          .controls
+            %textarea{name: "note", id: "note", rows: 6 }
+            %div{ class: "help-inline info", id: "note-error" }
       .control-group{ style: "#{@show_packages ? "" : "display:none" }" }
         .controls
           %div{ style: "color: #666; font-size: 1.5em; font-family: \"Neuton\", sans-serif; padding-bottom: 12px;" }
-            Help #{@sender_profile.first_name} send you more cards by buying #{@sender_profile.direct_object_pronoun} credits!
+            - if @is_self
+              Keep friends and family up to date on #{@postcard_subject_first_name}!<br/>
+              - if @use_plans
+                We'll refill your credits every month. Save up to #{@max_savings}%!
+              - else 
+                Refill your credits to save up to #{@max_savings}%!
+            - else
+              Help #{@sender_profile.first_name} send you more cards by buying #{@sender_profile.direct_object_pronoun} credits!
           - @packages.each do |package|
             %label{ class: "radio"}
-              %input{ "type" => "radio", "name" => "credit_package_id", "value" => package[:credit_package_id], "data-credits" => package[:credits], "data-price" => package[:price], "data-icon" => image_path("babygrams/package_icon.png") }
-              #{package[:credits]} credits for #{number_to_currency(package[:price].to_f / 100)}
+              %input{ "type" => "radio", "name" => "credit_package_id", "value" => package[@credit_key_name], "data-credits" => package[:credits], "data-price" => package[:price], "data-icon" => image_path("babygrams/package_icon.png") }
+              - if @credit_key_name == :credit_plan_id
+                #{package[:credits]} credits per month for #{number_to_currency(package[:price].to_f / 100)}/mo #{@is_promo ? "(+10 free)" : ""}
+              - else
+                #{package[:credits]} credits for #{number_to_currency(package[:price].to_f / 100)}
               %span{style: "font-style: italic; font-size: 0.9em; font-weight: bold; color: #0cf;"}
-                #{package[:credit_package_id] == 97 ? "Most popular!" : ""}
+                #{package[:credit_package_id] == 97 || package[:credit_plan_id] == 197 ? "Most popular!" : ""}
               %div{ style: "color: #666; font-size: 1.0em; font-family: \"Neuton\", sans-serif; padding-top: 4px;" }
-                Lets #{@sender_profile.first_name} send you #{package[:credits] / @config.card_credits} more cards. Save #{package[:savings]}%!
-          %label{ class: "radio" }
-            %input{ "type" => "radio", "name" => "credit_package_id", "value" => "", (@show_packages ? "" : "checked") => "" }
-              Don't purchase credits for #{@sender_profile.first_name}.
-              %div{ style: "color: #666; font-size: 1.0em; font-family: \"Neuton\", sans-serif; padding-top: 4px;" }
-                (To send you more cards, #{@sender_profile.first_name} will need to buy credits.)
-      .control-group{ style: "#{@show_packages ? "" : "display:none" }" }
-        .controls
-          %label.checkbox
-            %input{type: "checkbox", name: "remind_empty", id: "remind-empty", checked: "" }
-              Let me know when #{@sender_profile.first_name} runs out of credits.
+                - unless @is_self
+                  Lets #{@sender_profile.first_name} send you #{package[:credits] / @config.card_credits} more cards. Save #{package[:savings]}%!
+                - else
+                  Lets you send #{package[:credits] / @config.card_credits} cards#{ @use_plans ? " per month" : ""}. Save #{package[:savings]}%!
+          - unless @is_self and !@is_promo
+            %label{ class: "radio" }
+              %input{ "type" => "radio", "name" => "credit_package_id", "value" => "", (@show_packages ? "" : "checked") => "" }
+                - unless @is_self
+                  Don't purchase credits for #{@sender_profile.first_name}.
+                - else
+                  - if @is_promo
+                    Just redeem my free 10 credits.
+
+              - unless @is_self
+                %div{ style: "color: #666; font-size: 1.0em; font-family: \"Neuton\", sans-serif; padding-top: 4px;" }
+                  (To send you more cards, #{@sender_profile.first_name} will need to buy credits.)
+      - unless @is_self
+        .control-group{ style: "#{@show_packages ? "" : "display:none" }" }
+          .controls
+            %label.checkbox
+              %input{type: "checkbox", name: "remind_empty", id: "remind-empty", checked: "" }
+                Let me know when #{@sender_profile.first_name} runs out of credits.
       .control-group
         .controls
           %input{ type: "button", name: "purchase", id: "purchase-button", class: "btn btn-info", value: "Pay with Card" }
