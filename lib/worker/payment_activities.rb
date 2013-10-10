@@ -10,7 +10,7 @@ class PaymentActivities
     end
 
     CONFIG.for_app(card_order.app) do |config|
-      if card_order.mailable_card_printings.size > 0 && !card_order.is_promo
+      if card_order.mailable_card_printings.size > 0
         amount = 0
 
         CardOrder.transaction_with_retry do

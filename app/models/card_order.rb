@@ -50,7 +50,7 @@ class CardOrder < ActiveRecord::Base
   end
 
   def total_price_to_charge_for_number_of_cards(number_of_cards)
-    return 0 if number_of_cards == 0
+    return 0 if number_of_cards == 0 || self.is_promo
 
     CONFIG.for_app(self.app) do |config|
       config.processing_fee + (config.card_fee * number_of_cards)
