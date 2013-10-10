@@ -1,9 +1,10 @@
-namespace :email do
+namespace :cron do
   task :run => :environment do
     swf = AWS::SimpleWorkflow.new
     domain = swf.domains["posto-#{Rails.env == "production" ? "prod" : "dev"}"]
-    workflow_type = domain.workflow_types['OutgoingEmailWorkflow.sendOutgoingEmails', CONFIG.for_app(App.babygrams).outgoing_email_workflow_version]
-    workflow_id = "outgoing-emails-#{SecureRandom.hex}"
+    workflow_type = domain.workflow_types['CronSchedulerWorkflow.runCron', 
+                                          CONFIG.for_app(App.babygrams).cron_workflow_version]
+    workflow_id = "cron-#{SecureRandom.hex}"
 
     repeat = true
     input = ["[Ljava.lang.Object;", []].to_json

@@ -15,6 +15,7 @@ CONFIG = SampleableConfig.define do
   birthday_request_admin_notify 1.0
   admin_credit_order_audit_email "gfodor@gmail.com"
   admin_credit_order_enabled true
+  admin_error_email "gfodor@gmail.com"
 
   card_image_host "data.lulcards.com"
   ssl_card_image_host "d19ku6gs1135cx.cloudfront.net"
@@ -346,7 +347,7 @@ CONFIG = SampleableConfig.define do
 
   order_workflow_version "2.2"
   birthday_request_workflow_version "2.1"
-  outgoing_email_workflow_version "2.3"
+  cron_workflow_version "2.3"
 
   effects true
   caption_swap_button false

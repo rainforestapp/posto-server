@@ -82,4 +82,9 @@ class EmailActivities
       return [tasks[0].workload_id, tasks.size.to_s]
     end
   end
+
+  def send_admin_error_email(subject, body)
+    AdminMailer.email_errors(subject, body).deliver
+    true
+  end
 end
