@@ -283,6 +283,7 @@ CONFIG = SampleableConfig.define do
     promo_note "Thanks for trying Babygrams! We hope this finds a special place on your fridge :) Feedback? E-mail us at gfodor@babygra.ms!"
     promo_sender_name "Babygrams"
     promo_profile_image_url "http://s3-us-west-1.amazonaws.com/posto-assets/babygrams/AppIcon120x120%402x.png"
+    self_send_enabled true
   end
 
   recipient_suggested_table_header "Relatives:"
@@ -308,10 +309,10 @@ CONFIG = SampleableConfig.define do
 
   preorder_credit_plan_nag({
     enabled: true,
-    title: "Upgrade Plan",
-    message_no_credits: "You have no credits left! You can pay as you go for just $1.99 per card, or upgrade your credit plan to save up to 35%.",
-    message_some_credits: "You only have CREDITS credits left! You can pay as you go for just $1.99 per card, or upgrade your credit plan to save up to 35%.",
-    refill_button: "Upgrade Now",
+    title: "Refill Credits",
+    message_no_credits: "You have no credits left! You can pay as you go for just $1.99 per card, or refill your credits to save up to 35%.",
+    message_some_credits: "You only have CREDITS credits left! You can pay as you go for just $1.99 per card, or refill your credits to save up to 35%.",
+    refill_button: "Refill Now",
     cancel_button: "Pay As I Go",
   })
 
