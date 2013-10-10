@@ -20,7 +20,7 @@ module Api
           encoding_options = { invalid: :replace, undef: :replace, replace: "" }
           payload = payload.encode Encoding.find('ASCII'), encoding_options
 
-          order = @current_user.create_order_from_payload!(JSON.parse(payload))
+          order = @current_user.create_order_from_payload!(JSON.parse(payload), is_promo: params[:promo] == "true")
           order.execute_workflow! if Rails.env == "production"
         end
 

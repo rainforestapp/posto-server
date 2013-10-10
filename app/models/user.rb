@@ -148,7 +148,7 @@ class User < ActiveRecord::Base
   end
 
   def has_up_to_date_address?
-    recipient_address.try(:up_to_date?)
+    !!recipient_address.try(:up_to_date?)
   end
 
   def has_pending_address_request?
@@ -304,6 +304,9 @@ class User < ActiveRecord::Base
 
   def create_order_from_payload!(payload, *args)
     ensure_order_payload_valid(payload, *args)
+    options = args.extract_options!
+    is_promo = !!options[:is_promo]
+
     app = App.by_name(payload["app"])
 
     image_types = %w(original_full_photo composed_full_photo edited_full_photo)
@@ -343,6 +346,7 @@ class User < ActiveRecord::Base
     card_design = self.authored_card_designs.create!(card_design_args)
 
     card_order = self.card_orders.create!(app: app,
+                                          is_promo: is_promo,
                                           card_design: card_design,
                                           quoted_total_price: payload["quoted_total_price"])
 
@@ -615,6 +619,9 @@ class User < ActiveRecord::Base
   def ensure_order_payload_valid(payload, *args)
     errors = []
     options = args.extract_options!
+    is_promo = options[:is_promo]
+
+    ensure_promo_order_payload_valid(payload, *args) if is_promo
 
     raise_order_exception = lambda do |error_type|
       raise OrderCreationException.new(error_type)
@@ -676,20 +683,24 @@ class User < ActiveRecord::Base
     credits_to_allocate = 0
     number_of_credited_cards = 0
 
-    if payload["quoted_total_credits"]
-      if credits_for_app(app) < payload["quoted_total_credits"]
-        raise_order_exception.(:insufficient_credits)
-      end
+    unless is_promo
+      if payload["quoted_total_credits"]
+        if credits_for_app(app) < payload["quoted_total_credits"]
+          raise_order_exception.(:insufficient_credits)
+        end
 
-      number_of_credited_cards = self.number_of_credited_cards_for_order_of_size(number_of_cards_to_send, app: app)
+        number_of_credited_cards = self.number_of_credited_cards_for_order_of_size(number_of_cards_to_send, app: app)
 
-      if number_of_credited_cards > 0
-        credits_to_allocate = self.credits_to_allocate_for_order_of_size(number_of_cards_to_send, app:app)
-      end
+        if number_of_credited_cards > 0
+          credits_to_allocate = self.credits_to_allocate_for_order_of_size(number_of_cards_to_send, app:app)
+        end
 
-      unless payload["quoted_total_credits"] == credits_to_allocate
-        raise_order_exception.(:misquoted_credits)
+        unless payload["quoted_total_credits"] == credits_to_allocate
+          raise_order_exception.(:misquoted_credits)
+        end
       end
+    else
+      number_of_credited_cards = number_of_cards_to_send
     end
 
     total_price = 0
@@ -700,7 +711,7 @@ class User < ActiveRecord::Base
       total_price = CONFIG.for_app(app).processing_fee + (CONFIG.for_app(app).card_fee * number_of_payable_cards)
     end
 
-    unless payload["quoted_total_price"] == total_price
+    unless payload["quoted_total_price"] == total_price || is_promo
       raise_order_exception.(:misquoted_total_price)
     end
 
@@ -711,6 +722,19 @@ class User < ActiveRecord::Base
     end
 
     raise_order_exception.(:no_card_design) unless payload["card_design"]
+  end
+
+  def ensure_promo_order_payload_valid(payload, *args)
+    errors = []
+    options = args.extract_options!
+
+    raise_order_exception = lambda do |error_type|
+      raise OrderCreationException.new(error_type)
+    end
+
+    raise_order_exception.(:invalid_promo_recipients) unless payload["recipients"] && payload["recipients"].size == 1
+    raise_order_exception.(:invalid_promo_recipients) if payload["recipients"][0]["recipient_id"] != self.facebook_id
+    raise_order_exception.(:promo_already_sent) if self.sent_promo_card
   end
 
   def payment_info_state_cache_key

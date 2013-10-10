@@ -279,6 +279,10 @@ CONFIG = SampleableConfig.define do
         secondary: "We'll refill your credits each month."
       }
     })
+
+    promo_note "Thanks for trying Babygrams! We hope this finds a special place on your fridge :) Feedback? E-mail us at gfodor@babygra.ms!"
+    promo_sender_name "Babygrams"
+    promo_profile_image_url "http://s3-us-west-1.amazonaws.com/posto-assets/babygrams/AppIcon120x120%402x.png"
   end
 
   recipient_suggested_table_header "Relatives:"
@@ -355,6 +359,12 @@ CONFIG = SampleableConfig.define do
   signup_credits 10
   signup_credits_title "You Have CREDITS Credits"
   signup_credits_message "You now have CREDITS credits to send a free card with!"
+
+  signup_credits_message_enabled do
+    variant 1, true
+    variant 1, false
+  end
+
   max_cards_to_send 9
   max_photo_byte_size 24 * 1024 * 1024
   recipient_address_expiration_days 31 * 6
@@ -364,9 +374,14 @@ CONFIG = SampleableConfig.define do
   min_birthday_days 0
   max_birthday_days 14
   birthday_nag "Send a surprise birthday lulcard."
-  note_max_length 120 
+  note_max_length 125 
   facebook_prompt_post_tutorial true
   default_notes [ { occasion: "birthday", note: "Happy birthday!" } ]
+
+  promo_card_enabled do
+    variant 1, "force"
+    variant 1, "disabled"
+  end
 
   order_submitted_header "Thanks!"
   order_submitted_message "Your order has been submitted. We'll notify and e-mail you as we process it."

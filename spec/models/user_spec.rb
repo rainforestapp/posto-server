@@ -94,17 +94,18 @@ describe User do
     facebook_token_record.reload.state.should == :expired
   end
 
-  it "should generate api key and expire after regenerated" do
-    user = create(:user)
-    user.api_key.should be nil
-    user.renew_api_key!
-    user.reload.api_key.should_not be_nil
-    current_api_key = user.api_key
-    user.renew_api_key!
-    current_api_key.reload.should_not be_active
-    user.reload.api_key.should_not be_nil
-    user.reload.api_key.should be_active
-  end
+  # Disabled
+  #it "should generate api key and expire after regenerated" do
+  #  user = create(:user)
+  #  user.api_key.should be nil
+  #  user.renew_api_key!
+  #  user.reload.api_key.should_not be_nil
+  #  current_api_key = user.api_key
+  #  user.renew_api_key!
+  #  current_api_key.reload.should_not be_active
+  #  user.reload.api_key.should_not be_nil
+  #  user.reload.api_key.should be_active
+  #end
   
   it "should not let order be created if no recipients" do
     user = create(:greg_user)

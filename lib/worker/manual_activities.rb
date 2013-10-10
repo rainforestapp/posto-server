@@ -29,7 +29,7 @@ class ManualActivities
   end
 
   def manually_verify_order(card_order_id)
-    unless rand() <= CONFIG.card_order_approve_amount || CardOrder.find(card_order_id).order_sender_user_id == 11
+    unless rand() <= CONFIG.card_order_approve_amount || CardOrder.find(card_order_id).order_sender_user_id == 11 || Rails.env == "development"
       AWS::SimpleWorkflow::Client.new().respond_activity_task_completed(:task_token => self.task_token, 
                                                                         :result => "verified".to_json)
       return true

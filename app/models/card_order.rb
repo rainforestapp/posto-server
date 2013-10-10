@@ -5,7 +5,7 @@ class CardOrder < ActiveRecord::Base
   include HasUid
   include TransactionRetryable
 
-  attr_accessible :app, :quoted_total_price, :card_design
+  attr_accessible :app, :quoted_total_price, :card_design, :is_promo
 
   belongs_to :order_sender_user, class_name: "User"
   belongs_to :app
@@ -16,6 +16,8 @@ class CardOrder < ActiveRecord::Base
 
   has_audited_state_through :card_order_state
   has_one_audited :card_order_credit_allocation
+
+  after_create :update_author_promo_bit
 
   def mark_as_cancelled!
     self.card_printings.each(&:mark_as_cancelled!)
@@ -131,6 +133,8 @@ class CardOrder < ActiveRecord::Base
   end
 
   def allocate_and_deduct_credits!
+    return if self.is_promo
+
     CONFIG.for_app(self.app) do |config|
       sender = self.order_sender_user
 
@@ -189,6 +193,13 @@ class CardOrder < ActiveRecord::Base
 
     if number_of_nonmailable_cards > 0
       self.refund_allocated_credits_for_cards!(number_of_nonmailable_cards)
+    end
+  end
+
+  def update_author_promo_bit
+    unless order_sender_user.sent_promo_card
+      order_sender_user.sent_promo_card = true
+      order_sender_user.save!
     end
   end
 end

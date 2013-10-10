@@ -20,7 +20,7 @@ CREATE TABLE `address_api_responses` (
   `arguments` varchar(512) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`address_api_response_id`),
   KEY `index_address_api_responses_on_arguments` (`arguments`(255))
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `address_request_facebook_threads` (
   `address_request_facebook_thread_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -77,7 +77,7 @@ CREATE TABLE `api_keys` (
   KEY `index_api_keys_on_user_id` (`user_id`),
   KEY `index_api_keys_on_token` (`token`),
   KEY `index_api_keys_on_latest` (`latest`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `apps` (
   `app_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -88,7 +88,7 @@ CREATE TABLE `apps` (
   `domain` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `apple_app_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`app_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `aps_tokens` (
   `aps_token_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -263,6 +263,7 @@ CREATE TABLE `card_orders` (
   `card_design_id` bigint(20) NOT NULL,
   `uid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `days_until_share` int(11) DEFAULT NULL,
+  `is_promo` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`card_order_id`),
   UNIQUE KEY `index_card_orders_on_uid` (`uid`),
   KEY `index_card_orders_on_sender_user_id` (`order_sender_user_id`),
@@ -373,7 +374,7 @@ CREATE TABLE `credit_journal_entries` (
   PRIMARY KEY (`credit_journal_entry_id`),
   KEY `index_credit_journal_entries_on_user_id` (`user_id`),
   KEY `index_credit_journal_entries_on_source_type_and_source_id` (`source_type`,`source_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `credit_orders` (
   `credit_order_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -514,7 +515,7 @@ CREATE TABLE `facebook_tokens` (
   PRIMARY KEY (`facebook_token_id`),
   KEY `index_facebook_tokens_on_user_id` (`user_id`),
   KEY `index_facebook_tokens_on_token` (`token`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `outgoing_email_task_states` (
   `outgoing_email_task_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -712,7 +713,7 @@ CREATE TABLE `user_logins` (
   `meta` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`user_login_id`),
   KEY `index_user_logins_on_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `user_profiles` (
   `user_profile_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -739,7 +740,7 @@ CREATE TABLE `user_profiles` (
   KEY `index_user_profiles_on_email` (`email`),
   KEY `index_user_profiles_on_latest` (`latest`),
   KEY `index_user_profiles_on_birthday_day_and_birthday_month` (`birthday_day`,`birthday_month`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `user_referral_states` (
   `user_referral_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -775,10 +776,11 @@ CREATE TABLE `users` (
   `meta` text COLLATE utf8_unicode_ci,
   `uid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `signup_credits_awarded` tinyint(1) DEFAULT NULL,
+  `sent_promo_card` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `index_users_on_facebook_id` (`facebook_id`),
   KEY `index_users_on_uid` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO schema_migrations (version) VALUES ('20130201080909');
 
@@ -943,3 +945,7 @@ INSERT INTO schema_migrations (version) VALUES ('20130530225137');
 INSERT INTO schema_migrations (version) VALUES ('20130725193834');
 
 INSERT INTO schema_migrations (version) VALUES ('20131003021323');
+
+INSERT INTO schema_migrations (version) VALUES ('20131003045311');
+
+INSERT INTO schema_migrations (version) VALUES ('20131009223725');

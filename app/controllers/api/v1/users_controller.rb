@@ -24,6 +24,7 @@ module Api
 
                 recipient[:address_request_required] = user.requires_address_request?
                 recipient[:birthday_request_required] = user.requires_birthday_request?
+                recipient[:has_address] = user.has_up_to_date_address?
 
                 if user.recipient_address
                   recipient[:location] = "#{user.recipient_address.city}, #{user.recipient_address.state}"

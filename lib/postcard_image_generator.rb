@@ -23,6 +23,7 @@ class PostcardImageGenerator < ImageGenerator
       back_scan_key = @card_printing.back_scan_key
       sender_user = card_order.order_sender_user
       fb_name = sender_user.user_profile.name
+      fb_name = config.promo_sender_name if card_order.is_promo
       sent_date = card_order.created_at.strftime("%-m/%-d/%y")
       sent_text = "Sent on #{sent_date}"
 
@@ -58,6 +59,7 @@ class PostcardImageGenerator < ImageGenerator
 
       composed_image_url = card_design.composed_full_photo_image.public_url
       profile_image_url = sender_user.profile_image_url(true)
+      profile_image_url = config.promo_profile_image_url if card_order.is_promo
 
       front_file = nil
       back_file = nil
@@ -177,7 +179,7 @@ class PostcardImageGenerator < ImageGenerator
                                       sent_text_line_offset += 32
                                     end
 
-                                    add_note(card_design, back)
+                                    add_note(card_order, card_design, back)
 
                                     back_with_text.annotate(back, 0, 0, 100, 1228, @card_printing.card_number) do
                                       self.fill = "#AAAAAA"
@@ -314,8 +316,10 @@ class PostcardImageGenerator < ImageGenerator
     end * "\n"
   end
 
-  def add_note(card_design, back)
+  def add_note(card_order, card_design, back)
     note = card_design.note || ""
+    note = CONFIG.for_app(card_order.app).promo_note if card_order.is_promo
+
     return unless note.size > 0
 
     note = note[0..CONFIG.note_max_length]
@@ -356,10 +360,14 @@ class PostcardImageGenerator < ImageGenerator
     draw.font("'#{Rails.root}/resources/fonts/vagrounded-bold.ttf'")
     draw.text_align(Magick::LeftAlign)
 
-    if sender_user.user_profile.first_name.size >= 8
-      draw.text(122, 846, "Like this? Send #{sender_user.user_profile.first_name} a thank you:")
+    unless card_order.is_promo
+      if sender_user.user_profile.first_name.size >= 8
+        draw.text(122, 846, "Like this? Send #{sender_user.user_profile.first_name} a thank you:")
+      else
+        draw.text(122, 846, "Like this? Send #{sender_user.user_profile.first_name} a thank-you-note:")
+      end
     else
-      draw.text(122, 846, "Like this? Send #{sender_user.user_profile.first_name} a thank-you-note:")
+      draw.text(122, 846, "Send another #{card_order.app.name} for free:")
     end
 
     draw.draw(back)
