@@ -257,11 +257,6 @@ CONFIG = SampleableConfig.define do
 
     use_credit_plans true
 
-    send_self_free_card do
-      variant 1, true
-      variant 1, false
-    end
-
     frame_types "all"
 
     credit_buy_captions({
