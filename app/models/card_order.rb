@@ -208,7 +208,11 @@ class CardOrder < ActiveRecord::Base
 
     User.transaction_with_retry do
       unless self.order_sender_user.redeemed_promo_card
-        self.order_sender_user.add_credits!(CONFIG.for_app(self.app).card_credits, app: self.app)
+        self.order_sender_user.add_credits!(CONFIG.for_app(self.app).card_credits, 
+                                            app: self.app,
+                                            source_type: :promo,
+                                            source_id: self.card_order_id)
+
         self.order_sender_user.redeemed_promo_card = true
         self.order_sender_user.save
       end

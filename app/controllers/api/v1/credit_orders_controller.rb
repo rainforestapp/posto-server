@@ -82,6 +82,7 @@ module Api
                                        source_id: @credit_order.credit_order_id)
           end
         rescue Exception => e
+          Airbrake.notify_or_ignore(e)
           charge.refund rescue nil
           return head :bad_request
         end

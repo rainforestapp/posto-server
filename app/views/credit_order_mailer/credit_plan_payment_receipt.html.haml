@@ -1,0 +1,7 @@
+%b
+  Your #{@app.name} credits have been refilled.
+%div{ style: "color: #303030" }
+  %p
+    Thank you for using #{@app.name}. We've refilled <b>#{@credit_plan_membership.credit_plan_credits} credits</b> to your account. Your order number is <b>##{@credit_plan_payment.order_number}</b>. This is your receipt.
+  %p
+    Total charges: <b>#{@credit_plan_membership.printable_total_price}</b>

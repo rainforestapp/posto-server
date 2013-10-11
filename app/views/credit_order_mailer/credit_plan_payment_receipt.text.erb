@@ -1,0 +1,5 @@
+Your <%= @app.name %> credits have been refilled.
+
+Thank you for using <%= @app.name %>. We've refilled <%= @credit_plan_membership.credit_plan_credits %> credits to your account. Your order number is #<%= @credit_plan_payment.order_number %>. This is your receipt.
+
+Total charges: <%= @credit_plan_membership.printable_total_price %>

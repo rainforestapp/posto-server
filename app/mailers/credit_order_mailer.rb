@@ -38,6 +38,27 @@ class CreditOrderMailer < ActionMailer::Base
          from: @from,
          subject: "[POSTO CREDITS] #{@credit_order.credits} Credit Order ##{@credit_order.credit_order_id}")
   end
+  
+  def credit_plan_payment_receipt(credit_plan_payment)
+    @credit_plan_membership = credit_play_payment.credit_plan_membership
+    @credit_plan_payment = credit_plan_payment
+    @user = @credit_plan_membership.user
+    @app = @credit_plan_membership.app
+    @profile = @user.user_profile
+    @config = CONFIG.for_app(@app)
+
+    return unless @profile
+
+    recipient_email_address = "#{@profile.name} <#{@profile.email}>"
+
+    if Rails.env == "development"
+      recipient_email_address = "gfodor@gmail.com"
+    end
+
+    mail(to: recipient_email_address,
+         from: @config.from_email,
+         subject: "Your #{@app.name} credits receipt")
+  end
 
   def with_address_for_credit_order(credit_order, address_type)
     @credit_order = credit_order
