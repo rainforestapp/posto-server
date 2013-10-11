@@ -5,6 +5,7 @@ class GiftCreditsController < ApplicationController
 
   def index
     @app = App.by_name(params[:app_id])
+    @review_url = "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=#{@app.apple_app_id}&pageNumber=0&sortOrdering=1&type=Purple+Software&mt=8"
     @title = "babygrams: enter your babygram code"
   end
 
@@ -97,6 +98,8 @@ class GiftCreditsController < ApplicationController
 
     @app = App.by_name(params[:app_id])
     return head :bad_request unless @app
+
+    @review_url = "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=#{@app.apple_app_id}&pageNumber=0&sortOrdering=1&type=Purple+Software&mt=8"
 
     @is_plan = false
 
