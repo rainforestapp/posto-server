@@ -34,7 +34,11 @@
             %h3{width: "100%", id: "#gift-credit-create-ok"}
               Your free credits have been added!
             %h4
-              Thanks for using #{@app.name}!
+              If you enjoyed #{@app.name}, please leave us a review on the App Store!
+              <p>
+              %a{ href: @config.itunes_url.gsub(/^itms/, "http")}=@config.itunes_url.gsub(/^itms/, "http")
+              <p>
+              Thanks!
           - else
             %h3{width: "100%", id: "#gift-credit-create-ok"}
               Your thank-you-note has been sent!
