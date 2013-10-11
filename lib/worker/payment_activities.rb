@@ -122,5 +122,6 @@ class PaymentActivities
   def process_due_plan_payments
     CreditPlanMembership.find_memberships_without_payments.each(&:generate_payments!)
     CreditPlanPayment.find_due_payments.each(&:pay_if_due!)
+    true
   end
 end
