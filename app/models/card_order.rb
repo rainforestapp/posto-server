@@ -29,6 +29,10 @@ class CardOrder < ActiveRecord::Base
     self.state = :finished
   end
 
+  def mark_as_failed!
+    self.state = :failed
+  end
+
   def mailable_card_printings
     self.card_printings.select(&:mailable?)
   end

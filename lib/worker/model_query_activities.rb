@@ -33,6 +33,12 @@ class ModelQueryActivities
     end
   end
 
+  def mark_order_as_failed(card_order_id)
+    CardOrder.transaction_with_retry do
+      CardOrder.find(card_order_id).mark_as_failed!
+    end
+  end
+
   def mark_order_as_rejected(card_order_id)
     CardOrder.transaction_with_retry do
       card_order = CardOrder.find(card_order_id)

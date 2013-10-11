@@ -3,5 +3,5 @@ class CardOrderState < ActiveRecord::Base
   include AuditedStateModel
 
   belongs_to_and_marks_latest_within :card_order
-  valid_states :created, :pending_address_requests, :pending_payment, :pending_printing, :pending_mailing, :cancelled, :finished
+  valid_states :created, :pending_address_requests, :pending_payment, :pending_printing, :pending_mailing, :cancelled, :finished, :failed
 end
