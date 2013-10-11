@@ -23,7 +23,15 @@ class CreditPlanPayment < ActiveRecord::Base
   end
 
   def pay_if_due!(force = false)
-    return unless (due? && pending?) || force
+    return false unless (due? && pending?) || force
+    return false unless self.credit_plan_membership.active?
+
+    # Sanity check
+    app = self.credit_plan_membership.app
+    user = self.credit_plan_membership.user
+
+    current_membership = user.credit_plan_membership_for_app(app)
+    return false unless self.credit_plan_membership == current_membership
 
     failed = false
 
