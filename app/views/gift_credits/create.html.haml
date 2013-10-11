@@ -17,6 +17,13 @@
               <br/>
               - if @is_promo
                 We also added 10 free credits to your account.
+                <p>
+                <p>
+                If you enjoyed #{@app.name}, please leave us a review on the App Store!
+                <p>
+                %a{ href: @config.itunes_url.gsub(/^itms/, "http")}=@config.itunes_url.gsub(/^itms/, "http")
+                <p>
+                Thanks!
           - else
             %h3{width: "100%", id: "#gift-credit-create-ok"}
               Thank you for your order! Your thank-you-note has been sent.
