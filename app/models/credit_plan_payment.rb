@@ -12,13 +12,14 @@ class CreditPlanPayment < ActiveRecord::Base
   def self.find_due_payments(*args)
     options = args.extract_options!
     due_on = options[:on] || Time.now
+    since = options[:since] || 1.week
 
-    payments = CreditPlanPayment.where(due_date: (due_on - 2.months)..due_on)
+    payments = CreditPlanPayment.where(due_date: (due_on - since)..due_on)
     payments.select(&:pending?).select { |p| p.credit_plan_membership.active? }
   end
 
   def due?
-    self.due_on < Time.now
+    self.due_date < Time.now
   end
 
   def pay_if_due!(force = false)

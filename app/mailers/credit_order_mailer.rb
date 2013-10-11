@@ -40,7 +40,7 @@ class CreditOrderMailer < ActionMailer::Base
   end
   
   def credit_plan_payment_receipt(credit_plan_payment)
-    @credit_plan_membership = credit_play_payment.credit_plan_membership
+    @credit_plan_membership = credit_plan_payment.credit_plan_membership
     @credit_plan_payment = credit_plan_payment
     @user = @credit_plan_membership.user
     @app = @credit_plan_membership.app

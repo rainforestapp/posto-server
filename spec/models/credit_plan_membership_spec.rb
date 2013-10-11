@@ -21,18 +21,18 @@ describe CreditPlanMembership do
     membership.generate_payments!
     membership.credit_plan_payments.size.should == 12 * 5
 
-    due_payments = CreditPlanPayment.find_due_payments(on: Time.now + 3.month)
+    due_payments = CreditPlanPayment.find_due_payments(on: Time.now + 3.month, since: 3.months)
 
     size_before_first_payment = due_payments.size
     due_payments.size.should be > 1
     due_payments.size.should be < 5
 
     due_payments.first.mark_as_paid!
-    due_payments = CreditPlanPayment.find_due_payments(on: Time.now + 3.month)
+    due_payments = CreditPlanPayment.find_due_payments(on: Time.now + 3.month, since: 3.months)
     due_payments.size.should == size_before_first_payment - 1
 
     membership.cancel!
-    due_payments = CreditPlanPayment.find_due_payments(on: Time.now + 3.month)
+    due_payments = CreditPlanPayment.find_due_payments(on: Time.now + 3.month, since: 3.months)
     due_payments.should be_empty
   end
 end
