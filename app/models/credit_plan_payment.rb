@@ -109,7 +109,7 @@ class CreditPlanPayment < ActiveRecord::Base
     unless failed
       mark_as_paid!
     else
-      # TODO
+      # TODO need to notify them card was denied, have path to fix
       mark_as_failed!
     end
 
