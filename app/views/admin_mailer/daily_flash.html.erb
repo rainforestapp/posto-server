@@ -1,0 +1,26 @@
+<html>
+<body>
+<pre>
+Jobs
+====
+<%= @completed_order_count %> completed jobs in last 24 hours.
+<%= @failed_order_count %> failed jobs in last 24 hours.
+
+Activity
+========
+<%= @new_order_count %> orders, <%= @promo_count %> promo cards, <%= @new_user_count %> installs yesterday.
+<%= @pay_as_you_go_count %> pay-as-you-go orders, worth <%= @pay_as_you_go_sum %> yesterday.
+<%= @credit_order_count %> credit orders, worth <%= @credit_order_sum %> yesterday.
+<%= @credit_plan_count %> new subscribers.
+
+Totals
+======
+<%= @total_connected_users %> connected users, who have provided addresses for <%= @total_people_with_addresses %> people.
+<%= @total_order_count %> total orders.
+<%= @total_promo_count %> total promo cards sent.
+<%= @total_postcard_count %> total postcards printed.
+<%= @total_paying_customers %> total paying customers, with <%= @total_subscriber_count %> subscribers (and <%= @total_cancelled_subscriber_count %> cancelled subscribers.)
+<%= @total_monthly_subscriber_revenue %> montly subscription revenue.
+</pre>
+</body>
+</html>

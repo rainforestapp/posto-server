@@ -74,6 +74,9 @@ class EmailActivities
   end
 
   def generate_outgoing_email_tasks
+    # Hack send flash here
+    AdminMailer.daily_flash.deliver
+
     tasks = OutgoingEmailTaskGenerator.new.generate_tasks!
 
     if tasks.size == 0
