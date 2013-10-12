@@ -74,3 +74,5 @@ gem "statsd-ruby"
 gem "airbrake"
 
 gem "newrelic_rpm"
+
+gem "twilio-ruby", "~> 3.11"

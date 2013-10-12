@@ -20,7 +20,7 @@ CREATE TABLE `address_api_responses` (
   `arguments` varchar(512) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`address_api_response_id`),
   KEY `index_address_api_responses_on_arguments` (`arguments`(255))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `address_request_facebook_threads` (
   `address_request_facebook_thread_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -77,7 +77,7 @@ CREATE TABLE `api_keys` (
   KEY `index_api_keys_on_user_id` (`user_id`),
   KEY `index_api_keys_on_token` (`token`),
   KEY `index_api_keys_on_latest` (`latest`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `apps` (
   `app_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -621,6 +621,19 @@ CREATE TABLE `schema_migrations` (
   UNIQUE KEY `unique_schema_migrations` (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `sms_log_entries` (
+  `sms_log_entry_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `app_id` bigint(20) NOT NULL,
+  `sms_type` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `destination` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `message` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `meta` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`sms_log_entry_id`),
+  KEY `index_sms_log_entries_on_destination` (`destination`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `stripe_cards` (
   `stripe_card_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `exp_month` int(11) NOT NULL,
@@ -952,3 +965,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131003045311');
 INSERT INTO schema_migrations (version) VALUES ('20131009223725');
 
 INSERT INTO schema_migrations (version) VALUES ('20131010073507');
+
+INSERT INTO schema_migrations (version) VALUES ('20131012175958');

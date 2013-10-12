@@ -23,8 +23,14 @@ CONFIG = SampleableConfig.define do
 
   csv_host "d19ku6gs1135cx.cloudfront.net"
   csv_bucket "posto-data"
+  
+  max_sms_messages_per_destination 10
 
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
+
+  twilio_from_number "+18047672289"
+  twilio_account_sid ENV["TWILIO_ACCOUNT_SID"]
+  twilio_token ENV["TWILIO_TOKEN"]
 
   app "lulcards" do
     entity "lulcard"
@@ -39,6 +45,7 @@ CONFIG = SampleableConfig.define do
     fb_permissions ["email", "read_mailbox", "xmpp_login", "user_location", "user_birthday", "friends_location", "user_photos", "friends_photos", "friends_birthday"]
     fb_photo_permissions ["user_photos", "friends_photos"]
     itunes_url "itms://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
+    sms_onboard_message "Start sending postcards for free! Download lulcards here: http://itunes.apple.com/us/app/lulcards/id585112745?ls=1&mt=8"
     marketing_url "http://lulcards.com"
     kill_message "lulcards is unavailable."
     urban_airship_application_key ENV["URBAN_AIRSHIP_APP_KEY"]
@@ -134,6 +141,7 @@ CONFIG = SampleableConfig.define do
     fb_basic_photo_permissions ["user_photos"]
     fb_relationship_permissions ["user_relationships", "friends_relationships"]
     itunes_url "itms://itunes.apple.com/us/app/babygrams/id634710276?ls=1&mt=8"
+    sms_onboard_message "Send your first babygram for free! Download the app here: http://itunes.apple.com/us/app/babygrams/id634710276?ls=1&mt=8"
     marketing_url "http://babygra.ms"
     kill_message "babygrams is unavailable."
     urban_airship_application_key ENV["BABYCARDS_URBAN_AIRSHIP_APP_KEY"]
