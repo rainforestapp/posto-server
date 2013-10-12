@@ -18,6 +18,7 @@ class CardPrintingsController < ApplicationController
     @meta_creator = @app.name
     @meta_url = "http://#{@app.domain}/card_printings/#{@card_printing.uid}"
     @og_type = @config.open_graph_type
+    @is_mobile = self.mobile_agent?
 
     @theme_color = "white" if @app == App.babygrams
     @sent_by_caption = "Sent by #{@sender.user_profile.name} with #{@app.name}"

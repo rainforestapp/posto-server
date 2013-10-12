@@ -22,4 +22,8 @@ class ApplicationController < ActionController::Base
   def bind_to_app!(app)
     @config = CONFIG.for_app(app)
   end
+
+  def mobile_agent?
+    request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"][/(iPhone|iPad|iPod|BlackBerry|Android)/]
+  end
 end
