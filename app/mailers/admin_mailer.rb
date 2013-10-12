@@ -39,7 +39,7 @@ class AdminMailer < ActionMailer::Base
     
     # Totals
     @total_connected_user_count = get_sql_value.call("select count(distinct user_id) from user_profiles where email is not null")
-    @total_order_count = get_sql_value.call("select count(card_order_id) from card_orders where is_promo is null or is_promo = 0 and order_sender_user_id != 11")
+    @total_order_count = get_sql_value.call("select count(card_order_id) from card_orders where (is_promo is null or is_promo = 0) and order_sender_user_id != 11")
     @total_promo_count = get_sql_value.call("select count(card_order_id) from card_orders where is_promo = 1 and order_sender_user_id != 11")
     @total_postcard_count = get_sql_value.call("select count(card_printing_id) from card_printings where card_order_id in (select card_order_id from card_orders where order_sender_user_id != 11)")
     @total_subscriber_count = get_sql_value.call("select count(distinct user_id) from credit_plan_memberships a where not exists (select * from credit_plan_membership_states where credit_plan_membership_id = a.credit_plan_membership_id and state = 'cancelled' and latest = 1) and user_id != 11")
