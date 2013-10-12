@@ -24,7 +24,7 @@ CONFIG = SampleableConfig.define do
   csv_host "d19ku6gs1135cx.cloudfront.net"
   csv_bucket "posto-data"
   
-  max_sms_messages_per_destination 10
+  max_sms_messages_per_destination 5
 
   stripe_publishable_key ENV["STRIPE_PUBLISHABLE_KEY"]
 
@@ -389,7 +389,7 @@ CONFIG = SampleableConfig.define do
   end
 
   order_submitted_header "Thanks!"
-  order_submitted_message "Your order has been submitted. We'll notify and e-mail you as we process it."
+  order_submitted_message "Your order has been submitted. We'll notify and e-mail you it's processed."
   order_submitted_credit_prompt_header "Thanks!"
   order_submitted_credit_prompt_message "Thank you for your order. You can save up to 35% by using credits."
   order_submitted_credit_prompt_cancel_action "Not Now"

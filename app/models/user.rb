@@ -29,6 +29,8 @@ class User < ActiveRecord::Base
 
   attr_accessible :uid
 
+  after_save :invalidate_token_cache_entry!
+
   def self.first_or_create_with_facebook_token(facebook_token, *args)
     options = args.extract_options!
     api = options[:api] || Koala::Facebook::API.new(facebook_token)
@@ -747,6 +749,10 @@ class User < ActiveRecord::Base
 
   def credit_plan_membership_state_cache_key
     [:credit_plan_membership, self]
+  end
+
+  def invalidate_token_cache_entry!
+    Api::V1::TokensController.clear_token_cache_for_user_id(self.user_id)
   end
 end
 
