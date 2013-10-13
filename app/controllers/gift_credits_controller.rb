@@ -267,7 +267,7 @@ class GiftCreditsController < ApplicationController
       end
     end
 
-    if @success && @card_order.is_promo
+    if @success && @card_order.is_promo && @is_self
       @card_order.redeem_promo!
     end
 
