@@ -29,6 +29,18 @@
     .sent-by
       .sent-by-caption
         #{@sent_by_caption}
+        - unless @is_mobile
+          <br>
+          <br>
+          Send your own for <b>free</b>.
+
+      - unless @is_mobile
+        .sent-by-sms
+          Enter your phone number and we'll text you a link to download the app:
+          .phone-form
+            %form{id: "sms-form"}
+              %input.phone-number{type: "text", name: "phone-number", id: "phone-number", placeholder: "Ex: 650-555-1212"}
+              %input{type: "submit", id: "send-sms-button", class: "btn btn-large disabled", value:"Send Text"}
       .sent-by-image
         %p
           %a{ href: @config.marketing_url }

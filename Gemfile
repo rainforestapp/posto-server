@@ -23,7 +23,7 @@ group :development, :test do
   gem 'rspec-rails'
 end
 
-gem 'twitter-bootstrap-rails'
+gem 'twitter-bootstrap-rails', "~> 2.2.8"
 
 gem 'jquery-rails', "~> 2.2.0"
 
@@ -53,9 +53,9 @@ gem "nokogiri", "~> 1.5.6"
 
 gem "xmpp4r_facebook", "~> 0.1.1"
 
-gem "therubyracer", "~> 0.11.3"
+gem "therubyracer", "~> 0.12.0"
 
-gem "less-rails", "~> 2.2.6"
+gem "less-rails", "~> 2.4.2"
 
 gem "haml-rails", "~> 0.4"
 
