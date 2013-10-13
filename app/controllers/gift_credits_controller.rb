@@ -15,7 +15,7 @@ class GiftCreditsController < ApplicationController
     @config = CONFIG.for_app(@app)
     @card_printing = CardPrinting.find_by_lookup_number(params[:id].to_i)
 
-    if @card_printing && @card_printing.card_order.postcard_subject && @card_printing.card_order.app == App.babygrams
+    if @card_printing && @card_printing.card_order.card_design.postcard_subject && @card_printing.card_order.app == App.babygrams
       @card_order = @card_printing.card_order
       @is_promo = @card_order.is_promo
       @is_self = @card_order.order_sender_user == @card_printing.recipient_user
