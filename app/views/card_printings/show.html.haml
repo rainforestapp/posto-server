@@ -43,10 +43,10 @@
               %input{type: "submit", id: "send-sms-button", class: "btn btn-large disabled", value:"Send Text"}
       .sent-by-image
         %p
-          %a{ href: @config.itunes_url }
+          %a{ href: @config.itunes_url.gsub(/^itms/, "http") }
             = image_tag "#{@app.name}/SentByLogo.png", width: 102, height: 27
         %p
-          %a{ href: @config.itunes_url }
+          %a{ href: @config.itunes_url.gsub(/^itms/, "http") }
             = image_tag "AppStore.png", width: 175, height: 52
 
     .actions
