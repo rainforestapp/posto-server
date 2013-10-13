@@ -1,3 +1,4 @@
 development.log
 test.log
 production.log
+newrelic_agent.log
