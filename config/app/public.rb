@@ -383,7 +383,7 @@ CONFIG = SampleableConfig.define do
   facebook_prompt_post_tutorial true
   default_notes [ { occasion: "birthday", note: "Happy birthday!" } ]
 
-  promo_card_enabled "force_promo"
+  promo_card_enabled "force"
 
   order_submitted_header "Thanks!"
   order_submitted_message "Your order has been submitted. We'll notify and e-mail you it's processed."

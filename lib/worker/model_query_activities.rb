@@ -58,6 +58,11 @@ class ModelQueryActivities
     CardOrder.find(card_order_id).days_until_share || -1
   end
 
+  def process_pending_delayed_promo_cards
+    DelayedPromoCard.where(created_at: ((3.days.ago)..Time.now)).each(&:try_processing!)
+    true
+  end
+
   private
 
   def close_supplied_address_requests_for_order!(card_order_id)
