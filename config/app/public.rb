@@ -384,7 +384,6 @@ CONFIG = SampleableConfig.define do
   default_notes [ { occasion: "birthday", note: "Happy birthday!" } ]
 
   promo_card_enabled do
-    variant 1, "force"
     variant 1, "disabled"
   end
 
