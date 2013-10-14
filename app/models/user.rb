@@ -332,6 +332,9 @@ class User < ActiveRecord::Base
       end
     end
 
+    # Issue where composed image does not show up
+    image_ids["composed_full_photo_image"] ||= image_ids["edited_full_photo"] || image_ids["original_full_photo"]
+
     photo_taken_at = nil
 
     if payload["photo_taken_at"]
