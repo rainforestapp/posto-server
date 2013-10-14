@@ -8,7 +8,13 @@ module HasAuditedState
       has_one_audited model
 
       self.send(:define_method, as_name) do
-        (self.send(model) || self.send(model.to_s.pluralize.to_sym).create!).state
+        current_state_model = self.send(model)
+
+        if current_state_model
+          current_state_model.state
+        else
+          Kernel.const_get(model.to_s.camelize).get_state_values[0][1]
+        end
       end
 
       self.send(:define_method, "#{as_name}=") do |state|
