@@ -10,7 +10,9 @@ class EmailActivities
 
     if card_order.has_unmailable_printing?
       # This email is only relevant if we have work to do for mailing
-      OrderConfirmationMailer.received_email(card_order).deliver
+      unless card_order.is_promo
+        OrderConfirmationMailer.received_email(card_order).deliver
+      end
     end
 
     true
@@ -31,7 +33,10 @@ class EmailActivities
   def send_email_of_submitted_order(card_printing_ids)
     if card_printing_ids.size > 0
       card_order = CardPrinting.find(card_printing_ids[0]).card_order
-      OrderConfirmationMailer.printing_email(card_order, card_printing_ids).deliver
+
+      unless card_order.is_promo
+        OrderConfirmationMailer.printing_email(card_order, card_printing_ids).deliver
+      end
     end
     true
   end
@@ -45,7 +50,9 @@ class EmailActivities
   def send_email_of_printings_mailed(card_printing_ids)
     if card_printing_ids.size > 0
       card_order = CardPrinting.find(card_printing_ids[0]).card_order
-      OrderConfirmationMailer.mailed_email(card_order, card_printing_ids).deliver
+      unless card_order.is_promo
+        OrderConfirmationMailer.mailed_email(card_order, card_printing_ids).deliver
+      end
     end
     true
   end

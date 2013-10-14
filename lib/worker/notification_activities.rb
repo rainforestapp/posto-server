@@ -66,7 +66,9 @@ class NotificationActivities
         end
       end
 
-      card_order.send_order_notification(message)
+      unless card_order.is_promo
+        card_order.send_order_notification(message)
+      end
     end
     true
   end
@@ -74,7 +76,11 @@ class NotificationActivities
   def send_notification_of_payment_declined(card_order_id)
     card_order = CardPrinting.find(card_order_id).card_order
     message = "We're really sorry, but your order had to be cancelled because your payment method was declined."
-    card_order.send_order_notification(message)
+
+    unless card_order.is_promo
+      card_order.send_order_notification(message)
+    end
+
     true
   end
 
@@ -82,7 +88,10 @@ class NotificationActivities
     if card_printing_ids.size > 0
       card_order = CardPrinting.find(card_printing_ids[0]).card_order
       message = "Your order has been mailed! It should arrive in 5-7 business days."
-      card_order.send_order_notification(message)
+
+      unless card_order.is_promo
+        card_order.send_order_notification(message)
+      end
     end
     true
   end
