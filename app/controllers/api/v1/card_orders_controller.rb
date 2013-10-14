@@ -19,13 +19,36 @@ module Api
           payload = params[:payload]
           encoding_options = { invalid: :replace, undef: :replace, replace: "" }
           payload = payload.encode Encoding.find('ASCII'), encoding_options
+          payload = JSON.parse(payload)
 
-          order = @current_user.create_order_from_payload!(JSON.parse(payload), is_promo: params[:promo] == "true")
-          order.execute_workflow! if Rails.env == "production"
+          is_promo = params[:promo] == true
+          create_order = true
+
+          # Hack to delay promo card if user upload failed
+          if is_promo && !payload["card_design"]["composed_full_photo"]
+            if payload["recipients"].try(:size) == 1
+              address_api_response_id = payload["recipients"][0]["supplied_address_api_response_id"]
+
+              if address_api_response_id
+                DelayedPromoCard.create(user_id: @current_user.user_id,
+                                        supplied_address_api_response_id: address_api_response_id)
+              end
+            end
+
+            @current_user.sent_promo_card = true
+            @current_user.save!
+
+            create_order = false
+          end
+
+          if create_order 
+            order = @current_user.create_order_from_payload!(payload, is_promo: is_promo)
+            order.execute_workflow! if Rails.env == "production"
+          end
         end
 
         respond_to do |format|
-          format.json { render json: { card_order_id: order.card_order_id } }
+          format.json { render json: { card_order_id: order.try(:card_order_id) } }
         end
       end
     end
