@@ -21,7 +21,7 @@ module Api
           payload = payload.encode Encoding.find('ASCII'), encoding_options
           payload = JSON.parse(payload)
 
-          is_promo = params[:promo] == true
+          is_promo = params[:promo] == "true"
           create_order = true
 
           # Hack to delay promo card if user upload failed

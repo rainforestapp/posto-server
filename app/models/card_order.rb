@@ -222,4 +222,24 @@ class CardOrder < ActiveRecord::Base
       end
     end
   end
+
+  def to_promo_card_order_with_address_api_response(address_api_response)
+    promo_card_order = self.order_sender_user.card_orders.create!(app: self.app,
+                                                                  is_promo: true,
+                                                                  card_design: self.card_design,
+                                                                  quoted_total_price: 0)
+
+    promo_card_order.card_printings.create!(recipient_user: self.order_sender_user)
+
+    unless self.order_sender_user.has_up_to_date_address?
+      address_request = self.order_sender_user.enqueue_address_request!({ message: "Promo message",
+                                                                          recipient: self.order_sender_user,
+                                                                          app: self.app,
+                                                                          medium: :facebook_message })
+
+      address_request.mark_as_supplied_with_address_api_response!(address_api_response)
+    end
+
+    promo_card_order
+  end
 end
