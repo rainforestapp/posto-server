@@ -65,7 +65,11 @@ class CardPrinting < ActiveRecord::Base
   end
 
   def self.find_by_lookup_number(lookup_number)
-    CardPrinting.where(card_printing_id: (lookup_number - 17) / 13).first
+    lookup_number = (lookup_number.to_f - 17.0) / 13.0
+
+    return nil if lookup_number % 1.0 > 0.01
+
+    CardPrinting.where(card_printing_id: lookup_number.to_i).first
   end
 end
 
