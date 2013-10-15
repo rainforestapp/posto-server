@@ -365,10 +365,7 @@ CONFIG = SampleableConfig.define do
   signup_credits_title "You Have CREDITS Credits"
   signup_credits_message "You now have CREDITS credits to send a free card with!"
 
-  signup_credits_message_enabled do
-    variant 1, true
-    variant 1, false
-  end
+  signup_credits_message_enabled false
 
   max_cards_to_send 9
   max_photo_byte_size 24 * 1024 * 1024
