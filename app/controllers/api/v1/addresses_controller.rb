@@ -23,6 +23,8 @@ module Api
 
               render json: { success: true, address: address, address_api_response_id: address_api_response.address_api_response_id }
             else
+              AddressRequestErrorLogEntry.create(q: params[:q])
+
               render json: { success: false }
             end
           end
