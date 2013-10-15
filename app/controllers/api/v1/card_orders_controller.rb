@@ -41,6 +41,11 @@ module Api
             create_order = false
           end
 
+          # Remove caption on promo cards
+          if is_promo
+            payload["card_design"]["composed_full_photo"] = payload["card_design"]["edited_full_photo"] || payload["card_design"]["original_full_photo"] 
+          end
+
           if create_order 
             order = @current_user.create_order_from_payload!(payload, is_promo: is_promo)
             order.execute_workflow! if Rails.env == "production"

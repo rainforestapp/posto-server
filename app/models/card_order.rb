@@ -224,9 +224,21 @@ class CardOrder < ActiveRecord::Base
   end
 
   def to_promo_card_order_with_address_api_response(address_api_response)
+    promo_card_design_attributes = self.card_design.attributes
+    promo_card_design_attributes.delete("created_at")
+    promo_card_design_attributes.delete("card_design_id")
+    promo_card_design_attributes.delete("updated_at")
+    promo_card_design_attributes.delete("meta")
+
+    # Create new design without caption
+    promo_card_design_attributes["composed_full_photo_image_id"] = promo_card_design_attributes["edited_full_photo_image_id"]
+    promo_card_design_attributes["composed_full_photo_image_id"] ||= promo_card_design_attributes["original_full_photo_image_id"]
+
+    card_design = CardDesign.create(promo_card_design_attributes)
+
     promo_card_order = self.order_sender_user.card_orders.create!(app: self.app,
                                                                   is_promo: true,
-                                                                  card_design: self.card_design,
+                                                                  card_design: card_design,
                                                                   quoted_total_price: 0)
 
     promo_card_order.card_printings.create!(recipient_user: self.order_sender_user)
