@@ -47,7 +47,7 @@ class CardPrintingsController < ApplicationController
       @title = "#{@app.name.capitalize} - Photo postcard#{baby_name}".strip
 
       if baby_name.size > 0
-        @og_title = "Photo postcard#{baby_name}"
+        @og_title = "Photo postcard#{short_baby_name}"
       else
         @og_title = "#{@app.name.capitalize} photo postcard"
       end
