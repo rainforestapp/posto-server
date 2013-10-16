@@ -5,7 +5,7 @@
 .card-printing{ class: "row-fluid" }
   .span6
     .card
-      %a{ target:"_blank", href: @image_url }
+      %a{ href: @config.itunes_url.gsub(/^itms/, "http") }
         %img{ border:0, src: @image_url }
   .span6
     - if @app == App.lulcards
