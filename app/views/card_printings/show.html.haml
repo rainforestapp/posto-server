@@ -27,6 +27,9 @@
           .author-sent
             = "Sent on #{@sent_on}"
     .sent-by
+      .fb-like{ "send-data" => true, "data-width" => 450, "data-show-faces" => true, "data-colorscheme" => "#{@theme_color == "white" ? "light" : "dark" }",
+                "ref" => "card_printing", "data-href" => @meta_url }
+
       .sent-by-caption
         #{@sent_by_caption}
         <br>
@@ -46,8 +49,3 @@
         %p
           %a{ href: @config.itunes_url.gsub(/^itms/, "http") }
             = image_tag "AppStore.png", width: 175, height: 52
-
-    .actions
-      .fb-like{ "send-data" => true, "data-width" => 450, "data-show-faces" => true, "data-colorscheme" => "#{@theme_color == "white" ? "light" : "dark" }",
-                "ref" => "card_printing", "data-href" => @meta_url }
-
