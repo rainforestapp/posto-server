@@ -100,7 +100,7 @@ class FacebookMessageActivities
       StoryImageGenerator.new(card_order).generate! do |story_image_path|
         story_image = sender.create_and_publish_image_file!(story_image_path, app: card_order.app, image_type: :card_preview)
         params["image[0][url]"] = story_image.public_url
-        params["image[0][user_generated]"] = true
+        #params["image[0][user_generated]"] = true
       end
     end
 
