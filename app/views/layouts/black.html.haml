@@ -5,7 +5,13 @@
     %meta{ property: "og:title", content: @og_title || @title }
     %meta{ property: "twitter:card", content: "summary" }
     %meta{ property: "twitter:title", content: @title }
-    %meta{ property: "twitter:description", content: @tagline }
+
+    - if @description
+      %meta{ property: "twitter:description", content: @description }
+      %meta{ property: "og:description", content: @description }
+    - elsif @tagline
+      %meta{ property: "twitter:description", content: @tagline }
+      %meta{ property: "og:description", content: @tagline }
 
     - if @app
       %meta{ property: "og:site_name", content: @app.name }
