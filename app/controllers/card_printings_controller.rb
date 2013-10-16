@@ -45,7 +45,7 @@ class CardPrintingsController < ApplicationController
       @description = "#{@sender_first_name} designed, printed & mailed this photo#{baby_name} to someone special from #{@sender_possessive} iPhone with #{@app.name}."
 
       @title = "#{@app.name.capitalize} - Photo postcard#{baby_name}".strip
-      @og_title = "#{@app.name.capitalize} photo postcard#{baby_name}"
+      @og_title = "Photo postcard#{baby_name}"
 
       @sent_by_caption = "#{@sender.user_profile.first_name} mailed this printed photo#{short_baby_name} from #{@sender.user_profile.possessive_pronoun} iPhone with #{@app.name}."
     else
