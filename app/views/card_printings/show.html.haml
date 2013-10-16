@@ -27,13 +27,8 @@
           .author-sent
             = "Sent on #{@sent_on}"
     .sent-by
-      .fb-like{ "send-data" => true, "data-width" => 450, "data-show-faces" => true, "data-colorscheme" => "#{@theme_color == "white" ? "light" : "dark" }",
-                "ref" => "card_printing", "data-href" => @meta_url }
-
       .sent-by-caption
         #{@sent_by_caption}
-        <br>
-        <br>
         Send your own for <b>free</b>.
 
       .sent-by-sms
@@ -42,6 +37,12 @@
           %form{id: "sms-form"}
             %input.phone-number{type: "text", name: "phone-number", id: "phone-number", placeholder: "Ex: 650-555-1212"}
             %input{type: "submit", id: "send-sms-button", class: "btn btn-large disabled", value:"Send Text"}
+
+      .fb-like{ "send-data" => true, "data-width" => 450, "data-show-faces" => true, "data-colorscheme" => "#{@theme_color == "white" ? "light" : "dark" }",
+                "ref" => "card_printing", "data-href" => @meta_url }
+
+      .fb-comments{ "send-data" => true, "data-width" => 450, "data-show-faces" => true, "data-colorscheme" => "#{@theme_color == "white" ? "light" : "dark" }",
+                "ref" => "card_printing", "data-href" => @meta_url, "data-numposts" => 5 }
       .sent-by-image
         %p
           %a{ href: @config.itunes_url.gsub(/^itms/, "http") }
