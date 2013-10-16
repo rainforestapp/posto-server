@@ -19,7 +19,7 @@ module Api
         respond_to do |format|
           format.json do
             render json: {
-              url: post.url.to_s,
+              url: "http://#{@config.card_image_host}",
               fields: post.fields,
               uuid: uuid
             }
