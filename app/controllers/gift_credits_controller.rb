@@ -48,6 +48,8 @@ class GiftCreditsController < ApplicationController
       @credit_key_name = @use_plans ? :credit_plan_id : :credit_package_id
 
       ["sheep", "monkey", "elephant"].each_with_index do |name, index|
+        available_credit_plans = @config.all_credit_plans.select { |p| @config.available_credit_plans.include?(p[:credit_plan_id]) }
+        # TODO 1.4.2 
         @packages << (@use_plans ? @config.credit_plans : @config.credit_packages)[index].merge(name: name)
       end
 
