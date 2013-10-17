@@ -255,7 +255,14 @@ CONFIG = SampleableConfig.define do
       { credit_package_id: 99, credits: 340, price: 4999, savings: 25 },
     ]
 
+    # Legacy pre-1.4.3, don't change this
     credit_plans [
+      { credit_plan_id: 196, credits: 30, price: 499, savings: 15 },
+      { credit_plan_id: 197, credits: 70, price: 999, savings: 25 },
+      { credit_plan_id: 198, credits: 120, price: 1499, savings: 35 },
+    ]
+
+    all_credit_plans [
       { credit_plan_id: 196, credits: 30, price: 499, savings: 15 },
       { credit_plan_id: 197, credits: 70, price: 999, savings: 25 },
       { credit_plan_id: 198, credits: 120, price: 1499, savings: 35 },
@@ -264,9 +271,8 @@ CONFIG = SampleableConfig.define do
       { credit_plan_id: 192, credits: 150, price: 1499, savings: 50, per_card: 99 },
     ]
 
-    # TODO 1.4.3 update credit_packages to be cheaper
-    available_credit_plans [196, 197, 198]
-    available_credit_plans_1_4_3 [190, 191, 192]
+    # TODO 1.4.2 update credit_packages to be cheaper
+    available_credit_plans [190, 191, 192]
 
     use_credit_plans true
     use_pay_as_you_go false
@@ -276,12 +282,12 @@ CONFIG = SampleableConfig.define do
 
     credit_buy_captions({
       plans: {
-        main: "Use credits and save up to SAVINGS",
+        main: "Buy credits and save up to SAVINGS",
         secondary: "We'll refill your credits each month."
       },
 
       packages: {
-        main: "Use credits and save up to SAVINGS",
+        main: "Buy credits and save up to SAVINGS",
         secondary: "You'll use 10 credits per card."
       },
 
