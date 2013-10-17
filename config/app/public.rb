@@ -264,14 +264,12 @@ CONFIG = SampleableConfig.define do
 
     all_credit_plans [
       { credit_plan_id: 196, credits: 30, price: 499, savings: 15 },
-      { credit_plan_id: 197, credits: 70, price: 999, savings: 25 },
-      { credit_plan_id: 198, credits: 120, price: 1499, savings: 35 },
       { credit_plan_id: 190, credits: 40, price: 596, savings: 25, per_card: 149 },
-      { credit_plan_id: 191, credits: 80, price: 999, savings: 35, per_card: 125 },
-      { credit_plan_id: 192, credits: 150, price: 1485, savings: 50, per_card: 99 },
+      { credit_plan_id: 197, credits: 80, price: 999, savings: 35, per_card: 125 },
+      { credit_plan_id: 198, credits: 150, price: 1485, savings: 50, per_card: 99 },
     ]
 
-    available_credit_plans [190, 191, 192]
+    available_credit_plans [190, 197, 198]
 
     use_credit_plans true
     use_pay_as_you_go false
