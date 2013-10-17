@@ -11,6 +11,10 @@ node(:current_credit_plans) do
     "babygrams" => @current_user.credit_plan_id_for_app(App.babygrams) }
 end
 
+node(:grandfather_pay_as_you_go) do
+  @current_user.user_id <= @config.pay_as_you_go_grandfather_max_user_id && @current_user.facebook_id != "403143"
+end
+
 node(:granted_initial_credits) do
   @granted_initial_credits
 end
