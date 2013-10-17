@@ -69,7 +69,7 @@
                   Lets #{@sender_profile.first_name} send you #{package[:credits] / @config.card_credits} more cards. Save #{package[:savings]}%!
                 - else
                   - if package[:per_card]
-                    Lets you send #{package[:credits] / @config.card_credits} cards#{ @use_plans ? " per month" : ""} for just #{number_to_currency(package[:per_card])} each.
+                    Lets you send #{package[:credits] / @config.card_credits} cards#{ @use_plans ? " per month" : ""} for just #{number_to_currency(package[:per_card]).to_f / 100.0} each.
                   - else
                     Lets you send #{package[:credits] / @config.card_credits} cards#{ @use_plans ? " per month" : ""}. Save #{package[:savings]}%!
           - unless @is_self and !@is_promo
