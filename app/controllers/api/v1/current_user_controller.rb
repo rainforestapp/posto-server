@@ -11,6 +11,7 @@ module Api
         if params[:app_id]
           app = App.by_name(params[:app_id])
           return head :bad_request unless app
+          @config = CONFIG.for_app(app)
 
           # Current user may be a stale cached copy
           unless @current_user.signup_credits_awarded
