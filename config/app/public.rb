@@ -268,7 +268,7 @@ CONFIG = SampleableConfig.define do
       { credit_plan_id: 198, credits: 120, price: 1499, savings: 35 },
       { credit_plan_id: 190, credits: 40, price: 599, savings: 25, per_card: 149 },
       { credit_plan_id: 191, credits: 80, price: 999, savings: 35, per_card: 125 },
-      { credit_plan_id: 192, credits: 150, price: 1499, savings: 50, per_card: 99 },
+      { credit_plan_id: 192, credits: 150, price: 1485, savings: 50, per_card: 99 },
     ]
 
     # TODO 1.4.2 update credit_packages to be cheaper
