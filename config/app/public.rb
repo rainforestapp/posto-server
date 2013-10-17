@@ -258,8 +258,8 @@ CONFIG = SampleableConfig.define do
     # Legacy pre-1.4.3, don't change this
     credit_plans [
       { credit_plan_id: 196, credits: 30, price: 499, savings: 15 },
-      { credit_plan_id: 197, credits: 70, price: 999, savings: 25 },
-      { credit_plan_id: 198, credits: 120, price: 1499, savings: 35 },
+      { credit_plan_id: 197, credits: 80, price: 999, savings: 35 },
+      { credit_plan_id: 198, credits: 150, price: 1499, savings: 50 },
     ]
 
     all_credit_plans [
