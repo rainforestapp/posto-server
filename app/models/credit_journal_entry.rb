@@ -6,7 +6,7 @@ class CreditJournalEntry < ActiveRecord::Base
   belongs_to :user
   belongs_to :app
 
-  symbolize :source_type, in: [:card_order_debit, :card_order_credit, :credit_order, :signup, :referral, :promo, :credit_plan_payment, :unknown], validate: true
+  symbolize :source_type, in: [:card_order_debit, :card_order_credit, :credit_order, :credit_order_bonus, :signup, :referral, :promo, :credit_plan_payment, :unknown], validate: true
 
   after_save on: :create do
     CreditJournalEntry.invalidate_cache_for_user_id!(self.user_id, app_id: self.app_id)

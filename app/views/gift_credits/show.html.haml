@@ -57,9 +57,11 @@
               Help #{@sender_profile.first_name} send you more cards by buying #{@sender_profile.direct_object_pronoun} credits!
           - @packages.each do |package|
             %label{ class: "radio"}
-              %input{ "type" => "radio", "name" => "credit_package_id", "value" => package[@credit_key_name], "data-credits" => package[:credits], "data-price" => package[:price], "data-icon" => image_path("babygrams/package_icon.png") }
+              %input{ "type" => "radio", "name" => "credit_package_id", "value" => package[@credit_key_name], "data-bonus" => package[:bonus] || 0, "data-credits" => package[:credits], "data-price" => package[:price], "data-icon" => image_path("babygrams/package_icon.png") }
               - if @credit_key_name == :credit_plan_id
-                #{package[:credits]} credits per month for #{number_to_currency(package[:price].to_f / 100)}/mo #{@is_promo ? "(+10 free)" : ""}
+                #{package[:credits]} credits per month for #{number_to_currency(package[:price].to_f / 100)}/mo
+                - if @is_promo || (package[:bonus] && package[:bonus] > 0)
+                  (+#{(@is_promo ? 10 : 0) + (package[:bonus] || 0)} <b>bonus</b>)
               - else
                 #{package[:credits]} credits for #{number_to_currency(package[:price].to_f / 100)}
               %span{style: "font-style: italic; font-size: 0.9em; font-weight: bold; color: #0cf;"}
@@ -79,7 +81,7 @@
                   Don't purchase credits for #{@sender_profile.first_name}.
                 - else
                   - if @is_promo
-                    Just redeem my free 10 credits.
+                    Just redeem my 10 bonus credits.
 
               - unless @is_self
                 %div{ style: "color: #666; font-size: 1.0em; font-family: \"Neuton\", sans-serif; padding-top: 4px;" }

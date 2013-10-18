@@ -49,8 +49,7 @@ class GiftCreditsController < ApplicationController
 
       ["sheep", "monkey", "elephant"].each_with_index do |name, index|
         available_credit_plans = @config.all_credit_plans.select { |p| @config.available_credit_plans.include?(p[:credit_plan_id]) }
-        # TODO 1.4.2 
-        @packages << (@use_plans ? @config.credit_plans : @config.credit_packages)[index].merge(name: name)
+        @packages << (@use_plans ? available_credit_plans : @config.credit_packages)[index].merge(name: name)
       end
 
       @max_savings = @packages.map { |x| x[:savings] }.max
@@ -202,6 +201,13 @@ class GiftCreditsController < ApplicationController
                                 app: @app,
                                 source_type: :credit_order,
                                 source_id: @credit_order.credit_order_id)
+
+            if @package[:bonus] && @package[:bonus] > 0
+              @giftee.add_credits!(@package[:bonus],
+                                  app: @app,
+                                  source_type: :credit_order_bonus,
+                                  source_id: @credit_order.credit_order_id)
+            end
           end
 
           if @is_plan && @success

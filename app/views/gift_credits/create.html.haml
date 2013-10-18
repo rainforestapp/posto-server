@@ -15,14 +15,14 @@
                 We'll refill your credits each month.
 
               <br/>
-              - if @is_promo
-                We also added 10 free credits to your account.
-                <p>
-                If you enjoyed #{@app.name}, please leave us a rating on the App Store!
-                <p>
-                <p>
-                %a.btn.btn-large{ href: @review_url}
-                  Leave a Rating
+              - if @is_promo || (@package[:bonus] && @package[:bonus] > 0)
+                We also added #{(@is_promo ? 10 : 0) + (@package[:bonus] || 0)} bonus credits to your account.
+              <p>
+              If you enjoyed #{@app.name}, please leave us a rating on the App Store!
+              <p>
+              <p>
+              %a.btn.btn-large{ href: @review_url}
+                Leave a Rating
           - else
             %h3{width: "100%", id: "#gift-credit-create-ok"}
               Thank you for your order! Your thank-you-note has been sent.
@@ -31,7 +31,7 @@
         - else
           - if @is_self
             %h3{width: "100%", id: "#gift-credit-create-ok"}
-              Your 10 free credits have been added!
+              Your 10 bonus credits have been added!
             %h4
               If you enjoyed #{@app.name}, please leave us a rating on the App Store!
               <p>

@@ -20,24 +20,26 @@ class GiftCreditsController
       $("#purchase-button").show()
       self.selected_package_id = $("#purchase-form input:radio[name=credit_package_id]:checked").val()
       self.selected_package_credits = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-credits")
+      self.selected_package_bonus = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-bonus")
       self.selected_package_price = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-price")
       self.selected_package_icon = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-icon")
       self.is_self = $("#purchase-form").attr("data-is-self") == "true"
       self.use_plans = $("#purchase-form").attr("data-use-plans") == "true"
       self.is_promo = $("#purchase-form").attr("data-use-plans") == "true"
+      bonus_credits = parseInt(self.selected_package_bonus || "0") + (if self.is_promo then 10 else 0)
 
       if self.selected_package_id == ""
         mixpanel.track("gift_credits_package_selected")
 
         if self.is_self
-          $("#purchase-button").val("Get your 10 free credits").show()
+          $("#purchase-button").val("Get your #{bonus_credits} bonus credits").show()
         else
           $("#purchase-button").val("Thank #{$("body").attr("data-sender-name")} for your card").show()
       else
         mixpanel.track("gift_credits_package_selected")
 
         if self.is_self
-          $("#purchase-button").val("Purchase #{self.selected_package_credits} credits#{ if self.is_promo then " + 10 free credits" else ""}").show()
+          $("#purchase-button").val("Purchase #{self.selected_package_credits} credits#{ if bonus_credits > 0 then " + #{bonus_credits} bonus credits" else ""}").show()
         else
           $("#purchase-button").val("Purchase #{self.selected_package_credits} credits for #{$("body").attr("data-sender-name")}").show()
 
@@ -45,6 +47,7 @@ class GiftCreditsController
     self = this
     self.selected_package_id = null
     self.selected_package_credits = null
+    self.selected_package_bonus = 0
     self.selected_package_price = null
     self.selected_package_icon = null
     self.sync_with_selected_package()
