@@ -6,23 +6,28 @@
     .description.lead= @tagline
     =image_tag "#{@app.name}/InviteHandCard.png", width: 208, height: 267
   .span6{ class: "offset4 header hide-on-signed-in" }
-    .description.lead
-      Log in to get #{@promo.credits} credits.
-    .description.lead
-      Worth #{@number_of_free_cards} <b>free</b> cards!
+    - if @promo
+      .description.lead
+        Log in to get #{@promo.credits} credits.
+      .description.lead
+        Worth #{@number_of_free_cards} <b>free</b> cards!
     %div{ :class => "fb-login-button", "data-show-faces" => "false", "data-width" => 300, "data-max-rows" => 1, "size" => "xlarge", "scope" => @config.fb_permissions.join(",")}
   .span6{ class: "offset4 header hide-on-signed-in" }
     %div{ :class => "fb-facepile", "data-width" => 300, "data-max-rows" => 1, "data-colorscheme" => "dark"}
   .span6{ class: "offset4 header show-on-signed-in", style: "display: none" }
-    - if @promo.state == :pending
-      .description.lead.my-name
-      .description.lead
-        Redeem your promo code for #{@promo.credits} credits!
-        %p
-          %form{ action: "/apps/#{params[:app_id]}/promo", method: "POST", id: "ready-form" }
-            %input{ type: "hidden", name: "facebook_token", class: "facebook-token" }
-            %input{ type: "hidden", name: "promo_code", value: params[:promo_code] }
-            %input{ type: "submit", name: "redeem", value: "redeem", class: "btn" }
+    - if @promo
+      - if @promo.state == :pending
+        .description.lead.my-name
+        .description.lead
+          Redeem your promo code for #{@promo.credits} credits!
+          %p
+            %form{ action: "/apps/#{params[:app_id]}/promo", method: "POST", id: "ready-form" }
+              %input{ type: "hidden", name: "facebook_token", class: "facebook-token" }
+              %input{ type: "hidden", name: "promo_code", value: params[:promo_code] }
+              %input{ type: "submit", name: "redeem", value: "redeem", class: "btn" }
+      - else
+        .description.lead
+          Sorry, this promo code has already been redeemed.
     - else
       .description.lead
-        Sorry, this promo code has already been redeemed.
+        Sorry, this isn't a valid link.

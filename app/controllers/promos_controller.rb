@@ -10,8 +10,13 @@ class PromosController < ApplicationController
     @title = @config.page_title
     @tagline = @config.page_tagline
     
+    @number_of_free_cards = 0
     @promo = CreditPromo.where(uid: params[:promo_code]).first
-    @number_of_free_cards = @promo.credits / (@config.processing_credits + @config.card_credits)
+
+    if @promo
+      @number_of_free_cards = @promo.credits / (@config.processing_credits + @config.card_credits)
+    end
+
     @meta_image = view_context.image_path("#{@app.name}/InviteHandCard.png")
     @meta_creator = @app.name
     @disable_itunes_link = true
