@@ -40,12 +40,14 @@ class OutgoingEmailTask < ActiveRecord::Base
     email_class = EMAIL_CLASS_MAP[self.email_type]
 
     mailer_klass = nil
+    notifier_klass = nil
 
     case email_class
     when :reminders
       mailer_klass = ReminderMailer
     when :drip
       mailer_klass = DripMailer
+      notifier_klass = DripNotifier
     when :thank_you
       mailer_klass = ThankYouMailer
     else
@@ -53,22 +55,36 @@ class OutgoingEmailTask < ActiveRecord::Base
     end
 
     params = { outgoing_email_task: self }.merge(self.email_args)
-    mail = mailer_klass.send(self.email_type, params)
+    email_ok = true
+    notification_ok = true
 
-    if mail
+    if mailer_klass && mailer_klass.respond_to?(self.email_type)
+      email_ok = false
+
       begin
-        mail.deliver
+        mail = mailer_klass.send(self.email_type, params)
+        mail.try(:deliver)
+        email_ok = true
       rescue Exception => e
-        OutgoingEmailTask.transaction_with_retry do
-          self.state = :failed
-        end
+        Airbrake.notify_or_ignore(e, parameters: {})
       end
+    end
 
-      OutgoingEmailTask.transaction_with_retry do
-        self.state = :sent
+    if notifier_klass && notifier_klass.respond_to?(self.email_type)
+      notification_ok = false
+
+      begin
+        notifier_klass.send(self.email_type, params)
+        notification_ok = true
+      rescue Exception => e
+        Airbrake.notify_or_ignore(e, parameters: {})
       end
-    else
-      OutgoingEmailTask.transaction_with_retry do
+    end
+
+    OutgoingEmailTask.transaction_with_retry do
+      if email_ok && notification_ok
+        self.state = :sent
+      else
         self.state = :failed
       end
     end
