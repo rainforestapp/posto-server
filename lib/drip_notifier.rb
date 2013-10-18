@@ -28,7 +28,7 @@ class DripNotifier
     text = text.gsub(/NUMBER_OF_FREE_CARDS/, number_of_free_cards == 1 ? "a" : number_of_free_cards.to_s)
     text = text.gsub(/ENTITY/, config.entity.pluralize(number_of_free_cards))
 
-    user.send_notification!(text, app: app)
+    user.send_notification(text, app: app)
     true
   end
 end
