@@ -18,17 +18,17 @@ class DripNotifier
   private
 
   def self.send_drip_notification(text, params)
-    @user = User.find(params[:user_id])
-    @app = App.find(params[:app_id])
-    @config = CONFIG.for_app(@app)
+    user = User.find(params[:user_id])
+    app = App.find(params[:app_id])
+    config = CONFIG.for_app(app)
 
-    @number_of_free_cards = (@user.credits_for_app(@app) / @config.card_credits).floor.to_i
-    return false if @number_of_free_cards <= 0
+    number_of_free_cards = (user.credits_for_app(app) / config.card_credits).floor.to_i
+    return false if number_of_free_cards <= 0
 
-    text = text.gsub(/NUMBER_OF_FREE_CARDS/, @number_of_free_cards == 1 ? "a" : @number_of_free_cards.to_s)
-    text = text.gsub(/ENTITY/, @config.entity.pluralize(@number_of_free_cards))
+    text = text.gsub(/NUMBER_OF_FREE_CARDS/, number_of_free_cards == 1 ? "a" : number_of_free_cards.to_s)
+    text = text.gsub(/ENTITY/, config.entity.pluralize(number_of_free_cards))
 
-    @user.send_notification!(text, app: app)
+    user.send_notification!(text, app: app)
     true
   end
 end

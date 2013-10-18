@@ -1,3 +1,5 @@
+require "drip_notifier"
+
 class OutgoingEmailTask < ActiveRecord::Base
   include AppendOnlyModel
   include HasOneAudited
