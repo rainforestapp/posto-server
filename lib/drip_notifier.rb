@@ -4,11 +4,11 @@ class DripNotifier
   end
 
   def self.drip_3_day(params)
-    send_drip_notification("You've still got NUMBER_OF_FREE_CARDS free ENTITY you can send. Go for it!", params)
+    send_drip_notification("You've still got NUMBER_OF_FREE_CARDS free ENTITY to send. Go for it!", params)
   end
 
   def self.drip_1_week(params)
-    send_drip_notification("Just a reminder, we still owe you NUMBER_OF_FREE_CARDS free ENTITY. You can mail it to anyone in the US!", params)
+    send_drip_notification("Just a reminder, we still owe you NUMBER_OF_FREE_CARDS free ENTITY. Mail it to anyone in the US!", params)
   end
 
   def self.drip_2_week(params)
