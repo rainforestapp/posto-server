@@ -37,8 +37,12 @@ class ThankYouMailer < ActionMailer::Base
 
     @header_text = subject
 
-    mail(to: recipient_email_address,
-         from: @config.from_thank_you_email,
-         subject: subject)
+    if recipient_email_address
+      mail(to: recipient_email_address,
+          from: @config.from_thank_you_email,
+          subject: subject)
+    else
+      return nil
+    end
   end
 end
