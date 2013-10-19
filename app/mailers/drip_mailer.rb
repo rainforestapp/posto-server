@@ -99,8 +99,12 @@ class DripMailer < ActionMailer::Base
       recipient_address = @user.user_profile.email
     end
 
-    mail(to: recipient_address,
-         from: @config.from_reminder_email,
-         subject: subject)
+    if recipient_address
+      mail(to: recipient_address,
+          from: @config.from_reminder_email,
+          subject: subject)
+    else
+      return nil
+    end
   end
 end
