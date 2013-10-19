@@ -24,7 +24,7 @@ class GiftCreditsController < ApplicationController
       @sender_profile = @sender.user_profile
       @title = "babygrams: Thank #{@sender_name} for your babygram"
       @postcard_subject = @card_order.card_design.postcard_subject
-      @postcard_subject_first_name = @postcard_subject && @postcard_subject[:name].split(" ").first
+      @postcard_subject_first_name = @postcard_subject && @postcard_subject[:name] && @postcard_subject[:name].split(" ").first
       @recipient_name = @card_printing.recipient_user.try(:user_profile).try(:name) || ""
 
       @credits = @sender.credits_for_app(@app)
