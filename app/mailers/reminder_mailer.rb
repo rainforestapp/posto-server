@@ -60,8 +60,12 @@ class ReminderMailer < ActionMailer::Base
     @target_url = "http://#{@app.domain}/email_clicks/#{@task.try(:uid)}"
     @unsubscribe_url = "http://#{@app.domain}/unsubscribes/#{@task.try(:uid)}"
 
-    mail(to: recipient_address,
-         from: @config.from_reminder_email,
-         subject: "#{@subject_first_name} is #{@age} old! Happy birthday from #{@app.name}.")
+    if recipient_address
+      mail(to: recipient_address,
+          from: @config.from_reminder_email,
+          subject: "#{@subject_first_name} is #{@age} old! Happy birthday from #{@app.name}.")
+    else
+      return nil
+    end
   end
 end
