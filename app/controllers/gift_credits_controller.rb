@@ -247,14 +247,16 @@ class GiftCreditsController < ApplicationController
 
         email_args[:credit_order_id] = @credit_order.credit_order_id if @credit_order
 
-        OutgoingEmailTask.transaction_with_retry do
-          OutgoingEmailTask.create(workload_id: SecureRandom.hex,
-                                  workload_index: 0,
-                                  email_type: :thank_you,
-                                  email_args: email_args,
-                                  email_variant: "default",
-                                  app_id: @app.app_id,
-                                  recipient_user_id: @giftee.user_id).send!
+        if @card_printing.card_order.order_sender_user.user_profile.email
+          OutgoingEmailTask.transaction_with_retry do
+            OutgoingEmailTask.create(workload_id: SecureRandom.hex,
+                                    workload_index: 0,
+                                    email_type: :thank_you,
+                                    email_args: email_args,
+                                    email_variant: "default",
+                                    app_id: @app.app_id,
+                                    recipient_user_id: @giftee.user_id).send!
+          end
         end
 
         begin
