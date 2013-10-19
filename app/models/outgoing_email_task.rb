@@ -69,8 +69,11 @@ class OutgoingEmailTask < ActiveRecord::Base
 
       begin
         mail = mailer_klass.send(self.email_type, params)
-        mail.try(:deliver)
-        email_ok = true
+
+        if mail
+          mail.deliver
+          email_ok = true
+        end
       rescue Exception => e
         Airbrake.notify_or_ignore(e, parameters: {})
       end
