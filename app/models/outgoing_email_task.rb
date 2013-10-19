@@ -10,8 +10,12 @@ class OutgoingEmailTask < ActiveRecord::Base
   EMAIL_CLASS_MAP = {
     birthday_reminder: :reminders,
     drip_1_day: :drip,
+    drip_3_day: :drip,
     drip_1_week: :drip,
+    drip_2_week: :drip,
     drip_3_week: :drip,
+    drip_4_week: :drip,
+    drip_6_week: :drip,
     drip_8_week: :drip,
     drip_12_week: :drip,
     drip_welcome: :drip,

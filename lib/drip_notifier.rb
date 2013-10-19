@@ -1,20 +1,20 @@
 class DripNotifier
-  def self.drip_1_day(params)
-    send_drip_notification("Hey there! You still have credit to send NUMBER_OF_FREE_CARDS free ENTITY. We promise they'll love it :)", params)
-  end
-
-  def self.drip_3_day(params)
-    send_drip_notification("You've still got NUMBER_OF_FREE_CARDS free ENTITY to send. Go for it!", params)
-  end
-
-  def self.drip_1_week(params)
-    send_drip_notification("Just a reminder, we still owe you NUMBER_OF_FREE_CARDS free ENTITY. Mail it to anyone in the US!", params)
-  end
-
-  def self.drip_2_week(params)
-    send_drip_notification("It's been a while, but it's not too late to send the free ENTITY we promised you. It'll be great, we promise :)", params)
-  end
-
+#  def self.drip_1_day(params)
+#    send_drip_notification("Hey there! You still have credit to send NUMBER_OF_FREE_CARDS free ENTITY. We promise they'll love it :)", params)
+#  end
+#
+#  def self.drip_3_day(params)
+#    send_drip_notification("You've still got NUMBER_OF_FREE_CARDS free ENTITY to send. Go for it!", params)
+#  end
+#
+#  def self.drip_1_week(params)
+#    send_drip_notification("Just a reminder, we still owe you NUMBER_OF_FREE_CARDS free ENTITY. Mail it to anyone in the US!", params)
+#  end
+#
+#  def self.drip_2_week(params)
+#    send_drip_notification("It's been a while, but it's not too late to send the free ENTITY we promised you. It'll be great, we promise :)", params)
+#  end
+#
   private
 
   def self.send_drip_notification(text, params)
