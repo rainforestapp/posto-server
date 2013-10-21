@@ -16,7 +16,10 @@
               We'll refill your credits every month.
       - else
         %h3{width: "100%"}
-          Thank #{@sender_profile.first_name} for your card of #{@postcard_subject_first_name}!
+          - if @postcard_subject_first_name
+            Thank #{@sender_profile.first_name} for your card of #{@postcard_subject_first_name}!
+          - else
+            Thank #{@sender_profile.first_name} for your card!
         %h4{width: "100%"}
           .div
             Send #{@sender_profile.first_name} a thank-you-note to let #{@sender_profile.direct_object_pronoun} know that you enjoyed your card!
@@ -48,7 +51,11 @@
         .controls
           %div{ style: "color: #666; font-size: 1.5em; font-family: \"Neuton\", sans-serif; padding-bottom: 12px;" }
             - if @is_self
-              Keep friends and family up to date on #{@postcard_subject_first_name}!<br/>
+              - if @postcard_subject_first_name
+                Keep friends and family up to date on #{@postcard_subject_first_name}!<br/>
+              - else
+                Keep friends and family up to date!<br/>
+                
               - if @use_plans
                 Save up to #{@max_savings}% per card!
               - else 
