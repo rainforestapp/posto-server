@@ -46,9 +46,13 @@ class DripMailer < ActionMailer::Base
 
     @promo_url = "https://secure.babygra.ms/ref/#{promo.uid}"
 
-    mail(to: recipient_address,
-         from: "Greg Fodor <gfodor@babygra.ms>",
-         subject: subject)
+    if recipient_email_address
+      mail(to: recipient_address,
+          from: "Greg Fodor <gfodor@babygra.ms>",
+          subject: subject)
+    else
+      return nil
+    end
   end
 
   def drip_1_day(params)
