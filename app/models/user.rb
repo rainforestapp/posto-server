@@ -602,11 +602,11 @@ class User < ActiveRecord::Base
   end
 
   def last_card_order
-    self.card_orders.sort_by(&:created_at)[-1]
+    self.card_orders.sort_by(&:created_at).select { |o| !o.is_promo }[-1]
   end
 
   def first_order
-    self.card_orders.sort_by(&:created_at)[0]
+    self.card_orders.sort_by(&:created_at).select { |o| !o.is_promo }[0]
   end
 
   def is_opted_out_of_email_class?(email_class)
