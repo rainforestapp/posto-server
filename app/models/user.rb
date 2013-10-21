@@ -99,6 +99,17 @@ class User < ActiveRecord::Base
     end
   end
 
+  def refresh_user_profile!
+    return self unless self.facebook_token.try(:token)
+
+    begin
+      return User.first_or_create_with_facebook_token(self.facebook_token.token)
+    rescue Exception => e
+      # Just in case token expired, etc.
+      return self
+    end
+  end
+
   def create_and_publish_image_file!(file_path, *args)
     options = args.extract_options!
     raise "Missing argument: app" unless options[:app]

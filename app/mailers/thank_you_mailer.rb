@@ -23,6 +23,8 @@ class ThankYouMailer < ActionMailer::Base
       end
     end
 
+    @recipient.refresh_user_profile!
+
     recipient_email_address = @recipient.user_profile.try(:email)
 
     if Rails.env == "development"

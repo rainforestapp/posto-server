@@ -10,6 +10,8 @@ class DripMailer < ActionMailer::Base
     return if @user.is_opted_out_of_email_class?(:drip)
     return unless @app == App.babygrams
 
+    @user.refresh_user_profile!
+
     @config = CONFIG.for_app(@app)
 
     recipient_address = "gfodor@gmail.com"
