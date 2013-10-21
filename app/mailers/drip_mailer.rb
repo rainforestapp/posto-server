@@ -46,7 +46,7 @@ class DripMailer < ActionMailer::Base
 
     @promo_url = "https://secure.babygra.ms/ref/#{promo.uid}"
 
-    if recipient_email_address
+    if recipient_address
       mail(to: recipient_address,
           from: "Greg Fodor <gfodor@babygra.ms>",
           subject: subject)
