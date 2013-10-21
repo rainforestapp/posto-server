@@ -170,7 +170,7 @@ class User < ActiveRecord::Base
   end
 
   def has_sent_orders?
-    self.card_orders.reject { |o| o.is_promo }.size > 0
+    self.card_orders.reject(&:is_promo).size > 0
   end
 
   def self.user_id_for_facebook_id(facebook_id)
@@ -602,11 +602,11 @@ class User < ActiveRecord::Base
   end
 
   def last_card_order
-    self.card_orders.sort_by(&:created_at).select { |o| !o.is_promo }[-1]
+    self.card_orders.sort_by(&:created_at).reject(&:is_promo)[-1]
   end
 
   def first_order
-    self.card_orders.sort_by(&:created_at).select { |o| !o.is_promo }[0]
+    self.card_orders.sort_by(&:created_at).reject(&:is_promo)[0]
   end
 
   def is_opted_out_of_email_class?(email_class)
