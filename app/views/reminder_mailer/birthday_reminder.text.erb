@@ -1,5 +1,9 @@
 Happy <%= @age %> birthday to <%= @subject_first_name %>!
 
+<% if @credit_promo %>
+We hope your recipients enjoyed their babygram. Enjoy a free gift of <%= @credit_promo.credits %> credits.
+<% else %>
 We hope your recipients enjoyed their babygram. Send another babygram to mark this important milestone:
+<% end %>
 
 <%= @target_url %>

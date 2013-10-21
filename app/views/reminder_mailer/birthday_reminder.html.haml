@@ -1,24 +1,31 @@
 %div{style: "width: 95%; margin: auto; border-radius: 8px; background-color: #f8f8f8; margin-top: 20px; padding: 8px;"}
   %div
-    - if @card_design.card_preview_composition
+    - if @card_design.try(:card_preview_composition)
       %div{style: "padding-top: 20px; text-align: center;"}
         %a{href: @target_url}
           %img{style: "border: 1px solid #aaa", src: @card_design.card_preview_composition.treated_card_preview_image.public_url, width: 200}
     %div{style: "font-size: 20px; text-align: center; color: #444444; font-weight: bold; padding-top: 16px;"}
       Happy #{@age_singular} birthday to #{@subject_first_name}!
   %div{style: "font-size: 16px; text-align: center; color: #666666; padding-top: 10px; padding-left: 8px; padding-right: 8px;"}
-    - if @last_names.size == 1
-      We hope #{@last_names[0]} enjoyed #{@last_recipient_profile.try(:possessive_pronoun) || "their"} babygram.&nbsp;
-    - elsif @last_names.size > 1
-      We hope #{@last_names.to_sentence} enjoyed their babygrams.&nbsp;
+    - if @last_names
+      - if @last_names.size == 1
+        We hope #{@last_names[0]} enjoyed #{@last_recipient_profile.try(:possessive_pronoun) || "their"} babygram.&nbsp;
+      - elsif @last_names.size > 1
+        We hope #{@last_names.to_sentence} enjoyed their babygrams.&nbsp;
 
-    %a{style: "color: #{@gender_color}", href: @target_url} Send #{@last_names.size > 1 ? "them " : ""} another babygram
+    - if @credit_promo
+      We'd like you to have a gift of #{@credit_promo.credits} free credits. Save up #{@config.card_credits} credits to send a free card.
+    - else
+      %a{style: "color: #{@gender_color}", href: @target_url} Send #{@last_names.size > 1 ? "them " : ""} another babygram
 
-    to mark this important milestone!
+      to mark this important milestone!
   %div{style: "font-size: 18px; text-align: center; color: #444444; padding-top: 14px;"}
     %a{href: @target_url, style: "text-decoration:none; color: white;"}
       %div{style: "background-color: #{@gender_color}; width: 225px; margin: auto; font-weight: bold; padding: 16px; margin-top: 12px; border-radius: 8px;"}
-        Send another babygram
+        - if @credit_promo
+          Get #{@credit_promo.credits} free credits
+        - else
+          Send another babygram
   %div{style: "font-size: 18px; text-align: center; color: #444444; padding-top: 10px;"}
 
 %div{style: "font-size: 14px; text-align: center; color: #aaa; padding-top: 14px; padding-bottom: 10px;"}

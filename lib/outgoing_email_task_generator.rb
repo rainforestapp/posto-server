@@ -89,36 +89,30 @@ class OutgoingEmailTaskGenerator
     # map user_id 
     {}.tap do |reminder_map|
       # Super lame algorithm
-      CardDesign.all(order: "card_design_id asc").each do |card_design|
-        next unless card_design.postcard_subject
-        postcard_subject = card_design.postcard_subject
-        birthday = postcard_subject[:birthday]
-        next unless birthday
-        next unless postcard_subject[:subject_type] == "baby"
+      PostcardSubject.all.each do |postcard_subject|
+        next unless postcard_subject.state == :active
+        next unless postcard_subject.app == App.babygrams
 
-        birthday = Chronic.parse(birthday).to_time
-        next unless card_design.app == App.babygrams
+        # Don't send if they are a subscriber
+        next if postcard_subject.user.credit_plan_id_for_app(postcard_subject.app)
 
-        # Don't spam people with credits or plans
-        next if card_design.author_user.credit_plan_id_for_app(card_design.app)
-        next if card_design.author_user.credits_for_app(card_design.app) > 0
+        next unless postcard_subject.birthday
+        next unless postcard_subject.postcard_subject_type == :baby
+        next if postcard_subject.user.is_opted_out_of_email_class?(:reminders)
 
-        author = card_design.author_user
+        birthday = postcard_subject.birthday
+
         config = CONFIG.for_app(card_design.app)
 
         config.baby_birthday_reminders.each do |reminder|
           reminder_date = birthday.advance(months: reminder[:months], weeks: reminder[:weeks]).to_date
 
           if reminder_date == today
-            unless author.is_opted_out_of_email_class?(:reminders)
-              unless author.last_card_order && author.last_card_order.created_at > Time.now - config.min_baby_birthday_reminder_delay_days.days
-                reminder_map[card_design.author_user_id] = { 
-                  app_id: card_design.app_id, 
-                  email_type: :birthday_reminder,
-                  email_args: { card_design_id: card_design.card_design_id } 
-                }
-              end
-            end
+            reminder_map[postcard_subject.user_id] = { 
+              app_id: postcard_subject.app_id, 
+              email_type: :birthday_reminder,
+              email_args: { postcard_subject_id: postcard_subject.postcard_subject_id } 
+            }
           end
         end
       end

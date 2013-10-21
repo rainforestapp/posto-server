@@ -84,6 +84,9 @@ class EmailActivities
     # Hack send flash here
     AdminMailer.daily_flash.deliver
 
+    # Hack do migrations here until new version is out
+    User.all.each { |u| u.migrate_postcard_subjects! unless u.user_id == 11 }
+
     tasks = OutgoingEmailTaskGenerator.new.generate_tasks!
 
     if tasks.size == 0

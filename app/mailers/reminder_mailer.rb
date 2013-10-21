@@ -5,12 +5,18 @@ class ReminderMailer < ActionMailer::Base
   layout "email_action"
 
   def birthday_reminder(params)
-    @card_design = CardDesign.find(params[:card_design_id])
+    @postcard_subject = PostcardSubject.find(params[:postcard_subject_id])
+    return unless @postcard_subject
+
+    @card_design = @postcard_subject.user.authored_card_designs.select do |d|
+      d.postcard_subject && d.postcard_subject[:name] == @postcard_subject.name
+    end.last
+
     @task = params[:outgoing_email_task]
 
-    @app = @card_design.app
+    @app = @postcard_subject.app
     @config = CONFIG.for_app(@app)
-    @author = @card_design.author_user
+    @author = @postcard_subject.user
 
     return if @author.is_opted_out_of_email_class?(:reminders)
 
@@ -35,21 +41,14 @@ class ReminderMailer < ActionMailer::Base
 
     @gender_color = "#5FB5E5"
 
-    if @card_design.postcard_subject
-      if @card_design.postcard_subject[:name]
-        @subject_first_name = @card_design.postcard_subject[:name].split(/\s+/)[0]
-      else
-        @subject_first_name = "your baby"
-      end
+    @subject_first_name = @postcard_subject.name.split(/\s+/)[0]
 
-      if @card_design.postcard_subject[:gender] == "girl"
-        @gender_color = "#EB6C9A"
-      end
-
-      birthday = Chronic.parse(@card_design.postcard_subject[:birthday])
-      @age = DateHelper.printable_age(Time.now, birthday - 2.days, true)
-      @age_singular = DateHelper.printable_age(Time.now, birthday - 2.days, false)
+    if @postcard_subject.gender == "girl"
+      @gender_color = "#EB6C9A"
     end
+
+    @age = DateHelper.printable_age(Time.now, @postcard_subject.birthday - 2.days, true)
+    @age_singular = DateHelper.printable_age(Time.now, @postcard_subject.birthday - 2.days, false)
 
     recipient_address = "gfodor@gmail.com"
 
@@ -60,11 +59,21 @@ class ReminderMailer < ActionMailer::Base
 
     @target_url = "http://#{@app.domain}/email_clicks/#{@task.try(:uid)}"
     @unsubscribe_url = "http://#{@app.domain}/unsubscribes/#{@task.try(:uid)}"
+    @subject = "#{@subject_first_name} is #{@age} old! Happy birthday from #{@app.name}."
+
+    if (@config.baby_birthday_bonus_credits || 0) > 0
+      @subject = "#{@subject_first_name} is #{@age} old! Here's a free gift from #{@app.name}."
+
+      @credit_promo = CreditPromo.create!(app_id: @app.app_id, 
+                                         credits: @config.baby_birthday_bonus_credits, 
+                                         credit_promo_type: :birthday_reminder,
+                                         intended_recipient_user_id: @author.user_id)
+
+      @target_url = "http://#{@app.domain}/gift_credits/#{@credit_promo.uid}?postcard_subject_id=#{@postcard_subject.postcard_subject_id}"
+    end
 
     if recipient_address
-      mail(to: recipient_address,
-          from: @config.from_reminder_email,
-          subject: "#{@subject_first_name} is #{@age} old! Happy birthday from #{@app.name}.")
+      mail(to: recipient_address, from: @config.from_reminder_email, subject: @subject)
     else
       return nil
     end
