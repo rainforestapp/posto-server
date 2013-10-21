@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
   has_many :credit_orders
   has_many :credit_journal_entries
   has_many :credit_plan_memberships, order: "created_at desc"
+  has_many :postcard_subjects
 
   attr_accessible :uid
 
@@ -616,6 +617,54 @@ class User < ActiveRecord::Base
   def opt_out_of_email_class!(email_class)
     opt_out = EmailOptOut.where(recipient_user_id: self.user_id, email_class: email_class).first_or_create!
     opt_out.state = :opted_out
+  end
+
+  def migrate_postcard_subjects!
+    postcard_subjects = self.card_orders.where(app_id: App.babygrams.app_id).map(&:card_design).map(&:postcard_subject).flatten.uniq
+    self.set_postcard_subjects(postcard_subjects, app: App.babygrams)
+  end
+
+  def set_postcard_subjects(subjects, *args)
+    options = args.extract_options!
+    raise "Missing app" unless options[:app]
+
+    subject_map = {}
+
+    # Look up existing
+    subjects.each do |subject|
+      existing = self.postcard_subjects.where(name: subject[:name],
+                                              postcard_subject_type: subject[:subject_type],
+                                              gender: subject[:gender],
+                                              app_id: options[:app].app_id)
+
+      existing.each do |existing_subject|
+        if existing_subject.birthday == subject[:birthday] &&
+           existing_subject.state == :active
+          subject_map[subject] = existing_subject
+        end
+      end
+    end
+
+    # Remove those missing
+    to_remove = Set.new
+
+    self.postcard_subjects.reload.each do |subject|
+      unless subject_map.values.include?(subject)
+        to_remove << subject
+      end
+    end
+
+    to_remove.each { |s| s.state = :removed }
+
+    subjects.each do |subject|
+      next if subject_map[subject]
+
+      self.postcard_subjects.create(name: subject[:name],
+                                    birthday: subject[:birthday],
+                                    postcard_subject_type: subject[:subject_type],
+                                    gender: subject[:gender],
+                                    app_id: options[:app].app_id)
+    end
   end
 
   private 

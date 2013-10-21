@@ -207,6 +207,8 @@ CONFIG = SampleableConfig.define do
 
     baby_birthday_reminder_recipient_placeholder "family and friends"
 
+    baby_birthday_bonus_credits 5
+
     baby_birthday_reminders [
       #{ weeks: 2, months: 0, notification: "FIRST is two weeks old today! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 2 weeks old!" },
       { weeks: 0, months: 1, notification: "One month old already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm a month old!" },

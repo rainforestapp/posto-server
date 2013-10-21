@@ -42,7 +42,7 @@ class DripMailer < ActionMailer::Base
       end
     end
 
-    promo = CreditPromo.create!(app_id: @app.app_id, credits: @config.card_credits)
+    promo = CreditPromo.create!(app_id: @app.app_id, credits: @config.card_credits, credit_promo_type: :ad_hoc)
 
     @promo_url = "https://secure.babygra.ms/ref/#{promo.uid}"
 

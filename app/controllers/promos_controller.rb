@@ -44,16 +44,9 @@ class PromosController < ApplicationController
     user = User.first_or_create_with_facebook_token(facebook_token)
 
     if user
-      if promo && promo.state == :pending
-
+      if promo
         User.transaction_with_retry do
-          if user
-            promo.granted_to_user_id = user.user_id
-            promo.save!
-            promo.state = :granted
-
-            user.add_credits!(promo.credits, app: app, source_type: :promo, source_id: promo.credit_promo_id)
-          end
+          promo.grant_to!(user)
         end
       end
 
