@@ -130,9 +130,9 @@ CONFIG = SampleableConfig.define do
     mixpanel_revenue_enabled false
     page_title "babygrams: send amazing printed photos in the mail"
     page_tagline "Send amazing printed photos in the mail."
-    from_email "babygrams orders <orders@babygra.ms>"
-    from_reminder_email "babygrams <support@babygra.ms>"
-    from_thank_you_email "babygrams <support@babygra.ms>"
+    from_email "babygrams orders <orders@babygramsapp.com>"
+    from_reminder_email "babygrams <support@babygramsapp.com>"
+    from_thank_you_email "babygrams <support@babygramsapp.com>"
     facebook_app_id ENV["BABYCARDS_FB_API_KEY"]
     facebook_api_secret ENV["BABYCARDS_FB_API_SECRET"]
     fb_permissions ["email", "user_location", "user_photos", "user_relationships", "friends_photos", "friends_location", "friends_relationships"]
@@ -199,7 +199,7 @@ CONFIG = SampleableConfig.define do
     open_graph_object "postcard"
     open_graph_endpoint "https://graph.facebook.com/me/sendbabycards:mail"
     recipient_sort_by_last_name true
-    referral_credits 10
+    referral_credits 5
     order_submitted_invite_prompt_message "Thank you for your order. You can earn more credits to send free cards by inviting other parents."
     ask_for_last_recipients true
     allow_lowercase_caption true
