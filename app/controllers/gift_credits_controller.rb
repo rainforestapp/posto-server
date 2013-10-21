@@ -1,3 +1,5 @@
+require "date_helper"
+
 class GiftCreditsController < ApplicationController
   include ForceSsl
 
@@ -9,23 +11,196 @@ class GiftCreditsController < ApplicationController
     @title = "babygrams: enter your babygram code"
   end
 
+  class CardPrintingGiftCreditOrigin
+    def initialize(card_printing)
+      @card_printing = card_printing
+      @card_order = card_printing.card_order
+      @app = @card_order.app
+    end
+
+    def is_promo
+      @card_order.is_promo
+    end
+
+    def is_self
+      @card_order.order_sender_user == @card_printing.recipient_user
+    end
+
+    def has_plan
+      self.is_self && @card_order.order_sender_user.credit_plan_id_for_app(@app)
+    end
+
+    def sender
+      @card_order.order_sender_user
+    end
+
+    def postcard_subject
+      @card_order.card_design.postcard_subject
+    end
+
+    def postcard_subject_first_name
+      self.postcard_subject && self.postcard_subject[:name] && self.postcard_subject[:name].split(" ").first
+    end
+
+    def recipient_user
+      @card_printing.recipient_user
+    end
+
+    def recipient_name
+      @card_printing.recipient_user.try(:user_profile).try(:name) || ""
+    end
+
+    def app
+      @app
+    end
+
+    def image_url
+      @card_printing.card_printing_composition.jpg_card_front_image.public_ssl_url
+    end
+
+    def post_id_name
+      "card_printing_id"
+    end
+
+    def post_id_value
+      @card_printing.card_printing_id
+    end
+
+    def bonus_credits
+      if self.is_promo
+        CONFIG.for_app(@app).card_credits
+      else
+        0
+      end
+    end
+
+    def redeem_promo!
+      @card_order.redeem_promo!
+    end
+
+    def main_message
+      "We hope you enjoyed<br/>your #{CONFIG.for_app(@app).entity}!"
+    end
+  end
+
+  class CreditPromoGiftCreditOrigin
+    def initialize(credit_promo, postcard_subject)
+      @credit_promo = credit_promo
+      @postcard_subject = postcard_subject
+
+      @user = @credit_promo.intended_recipient_user
+      @app = @credit_promo.app
+
+      if @postcard_subject
+        raise "mismatch" unless @credit_promo.app == @postcard_subject.app
+        raise "mismatch" unless @credit_promo.intended_recipient_user == @postcard_subject.user
+      end
+    end
+
+    def is_promo
+      true
+    end
+
+    def is_self
+      true
+    end
+
+    def has_plan
+      self.is_self && @user.credit_plan_id_for_app(@app)
+    end
+
+    def sender
+      @user
+    end
+
+    def postcard_subject
+      @postcard_subject
+    end
+
+    def postcard_subject_first_name
+      @postcard_subject[:name].split(" ").first
+    end
+
+    def recipient_user
+      @user
+    end
+
+    def recipient_name
+      @user.try(:user_profile).try(:name) || ""
+    end
+
+    def app
+      @app
+    end
+
+    def image_url
+      return @image_url if @image_url
+
+      @user.card_orders.each do |order|
+        if !postcard_subject ||
+           (order.card_design.postcard_subject && order.card_design.postcard_subject[:name] == @postcard_subject.name)
+          @image_url = order.card_printings[0].card_printing_composition.try(:jpg_card_front_image).try(:public_ssl_url)
+        end
+      end
+
+      return @image_url || "https://s3-us-west-1.amazonaws.com/posto-assets/babygrams/#{@postcard_subject.try(:gender) || "boy"}_card.png"
+    end
+
+    def post_id_name
+      "credit_promo_uid"
+    end
+
+    def post_id_value
+      @credit_promo.uid
+    end
+
+    def bonus_credits
+      @credit_promo.credits
+    end
+
+    def redeem_promo!
+      @credit_promo.grant_to!(@user)
+    end
+
+    def main_message
+      age = DateHelper.printable_age(Time.now, @postcard_subject.birthday - 2.days, true)
+      "#{self.postcard_subject_first_name} is #{age} old!"
+    end
+  end
+
   def show
     @app = App.by_name(params[:app_id])
 
     @config = CONFIG.for_app(@app)
-    @card_printing = CardPrinting.find_by_lookup_number(params[:id].to_i)
+    card_printing = CardPrinting.find_by_lookup_number(params[:id].to_i)
 
-    if @card_printing && @card_printing.card_order.app == @app
-      @card_order = @card_printing.card_order
-      @is_promo = @card_order.is_promo
-      @is_self = @card_order.order_sender_user == @card_printing.recipient_user
-      @has_plan = @is_self && @card_order.order_sender_user.credit_plan_id_for_app(@app)
-      @sender = @card_order.order_sender_user
+    if card_printing
+      @origin = CardPrintingGiftCreditOrigin.new(card_printing)
+    else
+      credit_promo = CreditPromo.where(uid: params[:id]).first
+      postcard_subject = PostcardSubject.find(params[:postcard_subject_id])
+
+      if credit_promo && postcard_subject
+        @origin = CreditPromoGiftCreditOrigin.new(credit_promo, postcard_subject)
+      end
+    end
+
+    if @origin && @origin.app == @app
+      @is_promo = @origin.is_promo
+      @is_self = @origin.is_self
+      @has_plan = @origin.has_plan
+      @sender = @origin.sender
       @sender_profile = @sender.user_profile
-      @title = "babygrams: Thank #{@sender_name} for your babygram"
-      @postcard_subject = @card_order.card_design.postcard_subject
-      @postcard_subject_first_name = @postcard_subject && @postcard_subject[:name] && @postcard_subject[:name].split(" ").first
-      @recipient_name = @card_printing.recipient_user.try(:user_profile).try(:name) || ""
+
+      if @is_self
+        @title = "babygrams: Thank you for using #{@app.name}"
+      else
+        @title = "babygrams: Thank #{@sender_name} for your babygram"
+      end
+
+      @postcard_subject = @origin.postcard_subject
+      @postcard_subject_first_name = @origin.postcard_subject_first_name
+      @recipient_name = @origin.recipient_name
 
       @credits = @sender.credits_for_app(@app)
 
@@ -57,8 +232,11 @@ class GiftCreditsController < ApplicationController
 
     respond_to do |format|
       format.json do 
-        if @card_printing
-          render json: { card_printing_id: @card_printing.card_printing_id }
+        if @origin
+          out = {}
+          out[@origin.post_id_name.to_sym] = @origin.post_id_value
+
+          render json: out
         else
           render json: { }
         end
@@ -71,12 +249,20 @@ class GiftCreditsController < ApplicationController
   end
 
   def create
-    @card_printing = CardPrinting.find(params[:card_printing_id])
-    return head :bad_request unless @card_printing
+    if params[:card_printing_id]
+      card_printing = CardPrinting.find(params[:card_printing_id])
 
-    @card_order = @card_printing.card_order
-    @is_promo = @card_order.is_promo
-    @is_self = @card_order.order_sender_user == @card_printing.recipient_user
+      if card_printing
+        @origin = CardPrintingGiftCreditOrigin.new(card_printing)
+      end
+    elsif params[:credit_promo_uid]
+      @origin = CreditPromoGiftCreditOrigin.new(CreditPromo.where(uid: params[:credit_promo_uid]).first, nil)
+    end
+
+    return head :bad_request unless @origin
+
+    @is_promo = @origin.is_promo
+    @is_self = @origin.is_self
 
     unless @is_self
       name = params[:name]
@@ -277,8 +463,8 @@ class GiftCreditsController < ApplicationController
       end
     end
 
-    if @success && @card_order.is_promo
-      @card_order.redeem_promo!
+    if @success && @origin.is_promo
+      @origin.redeem_promo!
     end
 
     render

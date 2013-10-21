@@ -383,7 +383,7 @@ CREATE TABLE `credit_journal_entries` (
   PRIMARY KEY (`credit_journal_entry_id`),
   KEY `index_credit_journal_entries_on_user_id` (`user_id`),
   KEY `index_credit_journal_entries_on_source_type_and_source_id` (`source_type`,`source_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `credit_orders` (
   `credit_order_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -399,7 +399,7 @@ CREATE TABLE `credit_orders` (
   PRIMARY KEY (`credit_order_id`),
   KEY `index_credit_orders_on_user_id` (`user_id`),
   KEY `index_credit_orders_on_gifter_person_id` (`gifter_person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `credit_plan_membership_states` (
   `credit_plan_membership_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -411,7 +411,7 @@ CREATE TABLE `credit_plan_membership_states` (
   `meta` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`credit_plan_membership_state_id`),
   KEY `index_credit_plan_membership_states_on_credit_plan_membership_id` (`credit_plan_membership_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `credit_plan_memberships` (
   `credit_plan_membership_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -426,7 +426,7 @@ CREATE TABLE `credit_plan_memberships` (
   PRIMARY KEY (`credit_plan_membership_id`),
   KEY `index_credit_plan_memberships_on_user_id` (`user_id`),
   KEY `index_credit_plan_memberships_on_created_at` (`created_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `credit_plan_payment_states` (
   `credit_plan_payment_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -462,7 +462,7 @@ CREATE TABLE `credit_promo_states` (
   `meta` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`credit_promo_state_id`),
   KEY `index_credit_promo_states_on_credit_promo_id` (`credit_promo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `credit_promos` (
   `credit_promo_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -479,7 +479,7 @@ CREATE TABLE `credit_promos` (
   PRIMARY KEY (`credit_promo_id`),
   KEY `index_credit_promos_on_uid` (`uid`),
   KEY `index_credit_promos_on_granted_to_user_id` (`granted_to_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `delayed_promo_card_states` (
   `delayed_promo_card_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -710,7 +710,7 @@ CREATE TABLE `stripe_cards` (
   `meta` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`stripe_card_id`),
   UNIQUE KEY `index_stripe_cards_on_fingerprint_and_exp_month_and_exp_year` (`fingerprint`,`exp_month`,`exp_year`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `stripe_customer_card_states` (
   `stripe_customer_card_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -735,7 +735,7 @@ CREATE TABLE `stripe_customer_cards` (
   PRIMARY KEY (`stripe_customer_card_id`),
   KEY `index_stripe_customer_cards_on_stripe_customer_id` (`stripe_customer_id`),
   KEY `index_stripe_customer_cards_on_stripe_card_id` (`stripe_card_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `stripe_customers` (
   `stripe_customer_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -750,7 +750,7 @@ CREATE TABLE `stripe_customers` (
   KEY `index_stripe_customers_on_stripe_customer_id` (`stripe_customer_id`),
   KEY `index_stripe_customers_on_latest` (`latest`),
   KEY `index_stripe_customers_on_stripe_id` (`stripe_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `transaction_line_items` (
   `transaction_line_item_id` bigint(20) NOT NULL AUTO_INCREMENT,

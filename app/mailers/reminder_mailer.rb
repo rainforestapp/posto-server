@@ -69,7 +69,7 @@ class ReminderMailer < ActionMailer::Base
                                          credit_promo_type: :birthday_reminder,
                                          intended_recipient_user_id: @author.user_id)
 
-      @target_url = "http://#{@app.domain}/gift_credits/#{@credit_promo.uid}?postcard_subject_id=#{@postcard_subject.postcard_subject_id}"
+      @target_url = "http://#{@app.domain}/apps/#{@app.name}/gift_credits/#{@credit_promo.uid}?postcard_subject_id=#{@postcard_subject.postcard_subject_id}"
     end
 
     if recipient_address

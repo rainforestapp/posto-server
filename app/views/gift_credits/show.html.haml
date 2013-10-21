@@ -1,15 +1,16 @@
 .row.gift-page
   .span4
     .left-panel
-      = image_tag @card_printing.card_printing_composition.jpg_card_front_image.public_ssl_url, width: 299
+      = image_tag @origin.image_url, width: 299
 
       - if @is_self
         %h3{width: "100%"}
-          We hope you enjoyed<br/>your #{@config.entity}!
+          :plain
+            #{@origin.main_message}
         %h4{width: "100%"}
           .div
             - if @is_promo
-              As an additional free gift, get 10 bonus credits.<br/>
+              As a free gift, get #{@origin.bonus_credits} free credits.<br/>
 
             Buy additional credits and save up to #{@max_savings}%!<br/>
             - if @use_plans
@@ -25,9 +26,9 @@
             Send #{@sender_profile.first_name} a thank-you-note to let #{@sender_profile.direct_object_pronoun} know that you enjoyed your card!
 
   .purchase-form
-    %form{ :id => "purchase-form", :class => "form-horizontal", :method => "POST", :action => "/apps/#{@app.name}/gift_credits", "data-is-self" => @is_self.to_s, "data-use-plans" => @use_plans.to_s, "data-is-promo" => @is_promo.to_s }
+    %form{ :id => "purchase-form", :class => "form-horizontal", :method => "POST", :action => "/apps/#{@app.name}/gift_credits", "data-is-self" => @is_self.to_s, "data-use-plans" => @use_plans.to_s, "data-is-promo" => @is_promo.to_s, "data-bonus-credits" => @origin.bonus_credits }
       %input{type: "hidden", name: "giftee_user_id", id: "giftee_user_id", value: @sender.user_id }
-      %input{type: "hidden", name: "card_printing_id", id: "card_printing_id", value: @card_printing.card_printing_id }
+      %input{type: "hidden", name: @origin.post_id_name, id: @origin.post_id_name, value: @origin.post_id_value }
       - unless @is_self
         .control-group{ id: "name-controls" }
           %label.control-label{ for: "name" }
@@ -52,9 +53,9 @@
           %div{ style: "color: #666; font-size: 1.5em; font-family: \"Neuton\", sans-serif; padding-bottom: 12px;" }
             - if @is_self
               - if @postcard_subject_first_name
-                Keep friends and family up to date on #{@postcard_subject_first_name}!<br/>
+                Keep friends and family up to date on #{@postcard_subject_first_name}.<br/>
               - else
-                Keep friends and family up to date!<br/>
+                Keep friends and family up to date.<br/>
                 
               - if @use_plans
                 Save up to #{@max_savings}% per card!
@@ -68,7 +69,7 @@
               - if @credit_key_name == :credit_plan_id
                 #{package[:credits]} credits per month for #{number_to_currency(package[:price].to_f / 100)}/mo
                 - if @is_promo || (package[:bonus] && package[:bonus] > 0)
-                  (+#{(@is_promo ? 10 : 0) + (package[:bonus] || 0)} <b>bonus</b>)
+                  (+#{@origin.bonus_credits + (package[:bonus] || 0)} <b>bonus</b>)
               - else
                 #{package[:credits]} credits for #{number_to_currency(package[:price].to_f / 100)}
               %span{style: "font-style: italic; font-size: 0.9em; font-weight: bold; color: #0cf;"}
@@ -88,7 +89,7 @@
                   Don't purchase credits for #{@sender_profile.first_name}.
                 - else
                   - if @is_promo
-                    Just redeem my 10 bonus credits.
+                    Just redeem my #{@origin.bonus_credits} free credits.
 
               - unless @is_self
                 %div{ style: "color: #666; font-size: 1.0em; font-family: \"Neuton\", sans-serif; padding-top: 4px;" }

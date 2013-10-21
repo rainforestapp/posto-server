@@ -25,14 +25,15 @@ class GiftCreditsController
       self.selected_package_icon = $("#purchase-form input:radio[name=credit_package_id]:checked").attr("data-icon")
       self.is_self = $("#purchase-form").attr("data-is-self") == "true"
       self.use_plans = $("#purchase-form").attr("data-use-plans") == "true"
-      self.is_promo = $("#purchase-form").attr("data-use-plans") == "true"
-      bonus_credits = parseInt(self.selected_package_bonus || "0") + (if self.is_promo then 10 else 0)
+      self.is_promo = $("#purchase-form").attr("data-is-promo") == "true"
+      self.bonus_credits = parseInt($("#purchase-form").attr("data-bonus-credits"))
+      bonus_credits = parseInt(self.selected_package_bonus || "0") + self.bonus_credits
 
       if self.selected_package_id == ""
         mixpanel.track("gift_credits_package_selected")
 
         if self.is_self
-          $("#purchase-button").val("Get your #{bonus_credits} bonus credits").show()
+          $("#purchase-button").val("Get your #{bonus_credits} free credits").show()
         else
           $("#purchase-button").val("Thank #{$("body").attr("data-sender-name")} for your card").show()
       else
