@@ -10,6 +10,10 @@ module Api
           card_design: [ :original_full_photo_image, :edited_full_photo_image, 
                          :composed_full_photo_image, { card_preview_compositions: :treated_card_preview_image }], 
           card_printings: [{recipient_user: :user_profiles }]) 
+
+        @card_orders = @card_orders.select do |card_order|
+          card_order.try(:card_design).try(:card_preview_composition).try(:treated_card_preview_image)
+        end
       end
 
       def create
