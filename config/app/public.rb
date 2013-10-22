@@ -209,6 +209,13 @@ CONFIG = SampleableConfig.define do
 
     baby_birthday_bonus_credits 5
 
+    drip_reminders [
+      { days: 1, message: "Hey there! You still have credit to send NUMBER_OF_FREE_CARDS free ENTITY. We promise they'll love it :)" },
+      { days: 3, message: "You've still got NUMBER_OF_FREE_CARDS free ENTITY to send. Go for it!" },
+      { days: 6, message: "Just a reminder, we still owe you NUMBER_OF_FREE_CARDS free ENTITY. Mail it to anyone in the US!" },
+      { days: 10, message: "It's been a while, but it's not too late to send the free ENTITY we promised you. It'll be great, we promise :)" }
+    ]
+
     baby_birthday_reminders [
       #{ weeks: 2, months: 0, notification: "FIRST is two weeks old today! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 2 weeks old!" },
       { weeks: 0, months: 1, notification: "One month old already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm a month old!", bonus_notification: "Happy 1 month birthday to FIRST! Tap for some free credits from babygrams." },
@@ -479,6 +486,8 @@ CONFIG = SampleableConfig.define do
   birthday_reminder_hour 12
   birthday_reminder_minute 30
   birthday_reminder_version 1
+  drip_reminder_hour 11
+  drip_reminder_minute 30
   birthday_reminder_update_message "Your birthday reminders have been updated. You now have NUMBER reminders."
   birthday_reminder_post_checkout_nag_header "Set Reminders"
   birthday_reminder_post_checkout_nag_action "Set Up"
