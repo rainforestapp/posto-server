@@ -155,9 +155,9 @@ CONFIG = SampleableConfig.define do
     nag_action "Update"
     nag_target "itms://itunes.apple.com/us/app/babygrams/id634710276?ls=1&mt=8"
     share_caption "Check out this photo I sent of SUBJECT_NAME with #babygrams!"
-    invite_sms_message "I've been using this app to mail printed pictures from my phone, it's awesome! LINK"
-    invite_sms_message_with_name "I've been using this app to mail printed pictures of FIRST_NAME from my phone, it's awesome! LINK"
-    invite_share_message "#babygrams lets you send amazing printed photos in the mail. check it out!"
+    invite_sms_message "I've been using this app to mail photo postcards from my phone, it's awesome! LINK"
+    invite_sms_message_with_name "I've been using this app to mail *real* photo postcards of FIRST_NAME from my phone, it's awesome! LINK"
+    invite_share_message "#babygrams lets you send amazing *real* photo postcards. check it out!"
     invite_url_prefix "http://babygramsapp.com/ref"
     invite_share_image "http://www.lulcards.com/images/iphone.png"
     invite_disabled false
