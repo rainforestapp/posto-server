@@ -211,41 +211,44 @@ CONFIG = SampleableConfig.define do
 
     baby_birthday_reminders [
       #{ weeks: 2, months: 0, notification: "FIRST is two weeks old today! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 2 weeks old!" },
-      { weeks: 0, months: 1, notification: "One month old already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm a month old!" },
+      { weeks: 0, months: 1, notification: "One month old already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm a month old!", bonus_notification: "Happy 1 month birthday to FIRST! Tap for some free credits from babygrams." },
       #{ weeks: 2, months: 1, notification: "FIRST is already six weeks! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 6 weeks old!" },
-      { weeks: 0, months: 2, notification: "It's FIRST's 2 month birthday today! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 2 month birthday!" },
+      { weeks: 0, months: 2, notification: "It's FIRST's 2 month birthday today! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 2 month birthday!", bonus_notification: "Happy 2 month birthday to FIRST! Tap for some free credits from babygrams."  },
       #{ weeks: 2, months: 2, notification: "FIRST is already ten weeks! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 10 weeks old!" },
-      { weeks: 0, months: 3, notification: "Three months old already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm 3 months old!" },
+      { weeks: 0, months: 3, notification: "Three months old already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm 3 months old!", bonus_notification: "Happy 3 month birthday to FIRST! Tap for some free credits from babygrams."  },
       #{ weeks: 2, months: 3, notification: "FIRST is 14 weeks old today! Mail a photo to share the news with RECIPIENTS.", message: "I'm 14 weeks old!" },
-      { weeks: 0, months: 4, notification: "It's FIRST's 4 month birthday! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 4 month birthday!" },
+      { weeks: 0, months: 4, notification: "It's FIRST's 4 month birthday! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 4 month birthday!", bonus_notification: "Happy 4 month old birthday to FIRST! Tap for some free credits from babygrams."  },
       #{ weeks: 2, months: 4, notification: "FIRST is already 18 weeks! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 18 weeks old!" },
-      { weeks: 0, months: 5, notification: "FIRST is 5 months old today! Mail a photo to share the news with RECIPIENTS.", message: "I'm 5 months old!" },
+      { weeks: 0, months: 5, notification: "FIRST is 5 months old today! Mail a photo to share the news with RECIPIENTS.", message: "I'm 5 months old!", bonus_notification: "Happy 5 month birthday to FIRST! Tap for some free credits from babygrams."  },
       #{ weeks: 2, months: 5, notification: "FIRST is already 5 and a half months! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 22 weeks old!" },
-      { weeks: 0, months: 6, notification: "FIRST is six months old! Mail a photo to RECIPIENTS for this big milestone.", message: "I'm 6 months old!" },
+      { weeks: 0, months: 6, notification: "FIRST is six months old! Mail a photo to RECIPIENTS for this big milestone.", message: "I'm 6 months old!", bonus_notification: "Happy 6 month birthday to FIRST! Tap for some free credits from babygrams."  },
       #{ weeks: 2, months: 6, notification: "FIRST is already six and a half months! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 6 and 1/2 months old!" },
-      { weeks: 0, months: 7, notification: "FIRST is 7 months old today! Mail a photo to share the news with RECIPIENTS.", message: "I'm 7 months old!" },
-      { weeks: 0, months: 8, notification: "It's FIRST's 8 month birthday! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 8 month birthday!" },
-      { weeks: 0, months: 9, notification: "Nine months old already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm 9 months old!" },
-      { weeks: 0, months: 10, notification: "FIRST is 10 months! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 10 months old!" },
-      { weeks: 0, months: 11, notification: "FIRST is almost a year old! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 11 months old!" },
-      { weeks: 0, months: 12, notification: "Happy 1st birthday to FIRST! Send a birthday photo to RECIPIENTS to mark this special day!", message: "Happy 1st birthday to me!" },
-      { weeks: 0, months: 13, notification: "13 months already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm 13 months old!" },
-      { weeks: 0, months: 14, notification: "It's FIRST's 14 month birthday! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 14 month birthday!" },
-      { weeks: 0, months: 15, notification: "15 months old already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm 15 months old!" },
-      { weeks: 0, months: 16, notification: "It's FIRST's 16 month birthday! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 16 month birthday!" },
-      { weeks: 0, months: 17, notification: "FIRST is 17 months old today! Mail a photo to share the news with RECIPIENTS.", message: "I'm 17 months old!" },
-      { weeks: 0, months: 18, notification: "FIRST is a year and half! Mail a photo to RECIPIENTS for this big milestone.", message: "I'm one and a half!" },
-      { weeks: 0, months: 19, notification: "FIRST is 19 months! Mail a photo to share the news with RECIPIENTS.", message: "I'm 19 months old!" },
-      { weeks: 0, months: 20, notification: "It's FIRST's 20 month birthday! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 20 month birthday!" },
-      { weeks: 0, months: 21, notification: "21 months already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm 21 months old!" },
-      { weeks: 0, months: 22, notification: "FIRST is 22 months old today! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 22 months old!" },
-      { weeks: 0, months: 23, notification: "FIRST is almost two! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 23 months old!" },
-      { weeks: 0, months: 24, notification: "Happy 2nd birthday to FIRST! Send a birthday photo to RECIPIENTS to mark this special day!", message: "Happy 2nd birthday to me!" },
+      { weeks: 0, months: 7, notification: "FIRST is 7 months old today! Mail a photo to share the news with RECIPIENTS.", message: "I'm 7 months old!", bonus_notification: "Happy 7 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 8, notification: "It's FIRST's 8 month birthday! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 8 month birthday!", bonus_notification: "Happy 8 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 9, notification: "Nine months old already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm 9 months old!", bonus_notification: "Happy 9 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 10, notification: "FIRST is 10 months! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 10 months old!", bonus_notification: "Happy 10 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 11, notification: "FIRST is almost a year old! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 11 months old!", bonus_notification: "Happy 11 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 12, notification: "Happy 1st birthday to FIRST! Send a birthday photo to RECIPIENTS to mark this special day!", message: "Happy 1st birthday to me!", bonus_notification: "Happy 1st birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 13, notification: "13 months already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm 13 months old!", bonus_notification: "Happy 13 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 14, notification: "It's FIRST's 14 month birthday! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 14 month birthday!", bonus_notification: "Happy 14 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 15, notification: "15 months old already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm 15 months old!", bonus_notification: "Happy 15 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 16, notification: "It's FIRST's 16 month birthday! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 16 month birthday!", bonus_notification: "Happy 16 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 17, notification: "FIRST is 17 months old today! Mail a photo to share the news with RECIPIENTS.", message: "I'm 17 months old!", bonus_notification: "Happy 17 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 18, notification: "FIRST is a year and half! Mail a photo to RECIPIENTS for this big milestone.", message: "I'm one and a half!", bonus_notification: "Happy 1 and half year birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 19, notification: "FIRST is 19 months! Mail a photo to share the news with RECIPIENTS.", message: "I'm 19 months old!", bonus_notification: "Happy 19 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 20, notification: "It's FIRST's 20 month birthday! Mail a new photo to RECIPIENTS to mark the occasion.", message: "It's my 20 month birthday!", bonus_notification: "Happy 20 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 21, notification: "21 months already? Mail a photo of FIRST to RECIPIENTS before PRONOUN grows up on you!", message: "I'm 21 months old!", bonus_notification: "Happy 21 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 22, notification: "FIRST is 22 months old today! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 22 months old!", bonus_notification: "Happy 22 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 23, notification: "FIRST is almost two! Mail a photo to share this milestone with RECIPIENTS.", message: "I'm 23 months old!", bonus_notification: "Happy 23 month birthday to FIRST! Tap for some free credits from babygrams."  },
+      { weeks: 0, months: 24, notification: "Happy 2nd birthday to FIRST! Send a birthday photo to RECIPIENTS to mark this special day!", message: "Happy 2nd birthday to me!", bonus_notification: "Happy 2nd birthday to FIRST! Tap for some free credits from babygrams."  },
     ]
 
     reminder_app_url "babycards://reminder"
     baby_birthday_reminder_switch "Remind me to share milestones"
     baby_birthday_remind_when_no_credits true
+    baby_birthday_remind_go_to_bonus_disabled false
+    baby_birthday_remind_bonus_url "https://secure.babygra.ms/apps/babygrams/birthday_gift_credits"
+
     processing_fee 0
     card_fee 199
     processing_credits 0

@@ -20,6 +20,7 @@ Posto::Application.routes.draw do
     resource :promo
     resources :gift_credits
     resources :sms_onboard_messages
+    resources :birthday_gift_credits
   end
 
   namespace :api, defaults: { format: 'json' } do

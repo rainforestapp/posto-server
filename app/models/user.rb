@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   has_many :credit_journal_entries
   has_many :credit_plan_memberships, order: "created_at desc"
   has_many :postcard_subjects
+  has_many :intended_credit_promos, foreign_key: "intended_recipient_user_id", class_name: "CreditPromo", order: "created_at desc"
 
   attr_accessible :uid
 
