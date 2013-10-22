@@ -17,7 +17,7 @@ class CardOrder < ActiveRecord::Base
   has_audited_state_through :card_order_state
   has_one_audited :card_order_credit_allocation
 
-  after_create :update_author_promo_bit
+  after_create :update_author_order_info
 
   def mark_as_cancelled!
     self.card_printings.each(&:mark_as_cancelled!)
@@ -200,10 +200,17 @@ class CardOrder < ActiveRecord::Base
     end
   end
 
-  def update_author_promo_bit
-    unless order_sender_user.sent_promo_card
-      order_sender_user.sent_promo_card = true
-      order_sender_user.save!
+  def update_author_order_info
+    if self.is_promo
+      unless order_sender_user.sent_promo_card
+        order_sender_user.sent_promo_card = true
+        order_sender_user.save!
+      end
+    else
+      unless order_sender_user.first_order_at
+        order_sender_user.first_order_at = self.created_at
+        order_sender_user.save!
+      end
     end
   end
 

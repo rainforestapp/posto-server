@@ -35,9 +35,6 @@ module Api
               end
             end
 
-            @current_user.sent_promo_card = true
-            @current_user.save!
-
             create_order = false
           end
 
@@ -48,13 +45,6 @@ module Api
 
           if create_order 
             order = @current_user.create_order_from_payload!(payload, is_promo: is_promo)
-
-            unless is_promo
-              if @current_user.first_order_at.nil?
-                @current_user.first_order_at = order.created_at
-                @current_user.save!
-              end
-            end
 
             order.execute_workflow! if Rails.env == "production"
           end
