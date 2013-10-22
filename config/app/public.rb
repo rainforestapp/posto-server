@@ -314,7 +314,7 @@ CONFIG = SampleableConfig.define do
       }
     })
 
-    promo_note "Thanks for trying Babygrams! We hope this finds a special place on your fridge :) Feedback? E-mail us at gfodor@babygra.ms!"
+    promo_note "Thanks for trying Babygrams! We hope this finds a special place on your fridge :) Feedback? E-mail us at support@babygra.ms!"
     promo_sender_name "Babygrams"
     promo_profile_image_url "http://s3-us-west-1.amazonaws.com/posto-assets/babygrams/AppIcon120x120%402x.png"
     self_send_enabled true

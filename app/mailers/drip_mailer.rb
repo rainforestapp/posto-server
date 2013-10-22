@@ -48,7 +48,7 @@ class DripMailer < ActionMailer::Base
 
     if recipient_address
       mail(to: recipient_address,
-          from: "Greg Fodor <gfodor@babygra.ms>",
+          from: "Greg Fodor <gfodor@babygramsapp.com>",
           subject: subject)
     else
       return nil
