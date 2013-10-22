@@ -141,6 +141,7 @@ CONFIG = SampleableConfig.define do
     fb_basic_photo_permissions ["user_photos"]
     fb_relationship_permissions ["user_relationships", "friends_relationships"]
     itunes_url "itms://itunes.apple.com/us/app/babygrams/id634710276?ls=1&mt=8"
+    itunes_review_url "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=634710276&pageNumber=0&sortOrdering=1&type=Purple+Software&mt=8"
     sms_onboard_message "Send your first babygram for free! Download the app here: http://itunes.apple.com/us/app/babygrams/id634710276?ls=1&mt=8"
     marketing_url "http://babygra.ms"
     kill_message "babygrams is unavailable."
@@ -170,6 +171,12 @@ CONFIG = SampleableConfig.define do
     subject_default_name_girl "(Ex. Mary Elizabeth)"
     subject_name_field_label "Your child's first & middle name:"
     subject_birthday_field_label "@@@'s birthday:"
+
+    rate_prompt_delay_days 10
+    rate_prompt_header "Rate Babygrams"
+    rate_prompt_message "Thanks for trying babygrams. Can you take a second to rate the app? It would help us out a lot."
+    rate_prompt_cancel_action "Not Now"
+    rate_prompt_action "Rate App"
 
     tutorial_connect do
       variant 1, "tutor_button_verify", {
