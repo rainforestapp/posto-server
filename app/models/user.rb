@@ -171,7 +171,7 @@ class User < ActiveRecord::Base
   end
 
   def has_sent_orders?
-    self.card_orders.reject(&:is_promo).size > 0
+    !!self.first_order_at
   end
 
   def self.user_id_for_facebook_id(facebook_id)
