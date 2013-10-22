@@ -86,7 +86,7 @@ CREATE TABLE `api_keys` (
   KEY `index_api_keys_on_user_id` (`user_id`),
   KEY `index_api_keys_on_token` (`token`),
   KEY `index_api_keys_on_latest` (`latest`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `apps` (
   `app_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -383,7 +383,7 @@ CREATE TABLE `credit_journal_entries` (
   PRIMARY KEY (`credit_journal_entry_id`),
   KEY `index_credit_journal_entries_on_user_id` (`user_id`),
   KEY `index_credit_journal_entries_on_source_type_and_source_id` (`source_type`,`source_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `credit_orders` (
   `credit_order_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -411,7 +411,7 @@ CREATE TABLE `credit_plan_membership_states` (
   `meta` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`credit_plan_membership_state_id`),
   KEY `index_credit_plan_membership_states_on_credit_plan_membership_id` (`credit_plan_membership_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `credit_plan_memberships` (
   `credit_plan_membership_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -462,7 +462,7 @@ CREATE TABLE `credit_promo_states` (
   `meta` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`credit_promo_state_id`),
   KEY `index_credit_promo_states_on_credit_promo_id` (`credit_promo_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `credit_promos` (
   `credit_promo_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -479,7 +479,7 @@ CREATE TABLE `credit_promos` (
   PRIMARY KEY (`credit_promo_id`),
   KEY `index_credit_promos_on_uid` (`uid`),
   KEY `index_credit_promos_on_granted_to_user_id` (`granted_to_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `delayed_promo_card_states` (
   `delayed_promo_card_state_id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -855,6 +855,7 @@ CREATE TABLE `users` (
   `signup_credits_awarded` tinyint(1) DEFAULT NULL,
   `sent_promo_card` tinyint(1) DEFAULT NULL,
   `redeemed_promo_card` tinyint(1) DEFAULT NULL,
+  `first_order_at` datetime DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `index_users_on_facebook_id` (`facebook_id`),
   KEY `index_users_on_uid` (`uid`)
@@ -1041,3 +1042,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131021040322');
 INSERT INTO schema_migrations (version) VALUES ('20131021040632');
 
 INSERT INTO schema_migrations (version) VALUES ('20131021061539');
+
+INSERT INTO schema_migrations (version) VALUES ('20131022071519');

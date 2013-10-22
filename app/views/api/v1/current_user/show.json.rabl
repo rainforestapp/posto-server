@@ -1,5 +1,5 @@
 object @current_user
-attributes :user_id, :facebook_id, :payment_info_state, :uid, :sent_promo_card
+attributes :user_id, :facebook_id, :payment_info_state, :uid, :sent_promo_card, :first_order_at
 
 node(:current_credits) do
   { "lulcards" => @current_user.credits_for_app(App.lulcards),
