@@ -428,12 +428,13 @@ class GiftCreditsController < ApplicationController
       if @gifter
         email_args = { person_id: @gifter.person_id,
                       app_id: @app.app_id,
-                      card_printing_id: @card_printing.card_printing_id,
                       note: note }
+
+        email_args[@origin.post_id_name.to_sym] = @origin.post_id_value
 
         email_args[:credit_order_id] = @credit_order.credit_order_id if @credit_order
 
-        if @card_printing.card_order.order_sender_user.user_profile.email
+        if @giftee.try(:user_profile).try(:email)
           OutgoingEmailTask.transaction_with_retry do
             OutgoingEmailTask.create(workload_id: SecureRandom.hex,
                                     workload_index: 0,

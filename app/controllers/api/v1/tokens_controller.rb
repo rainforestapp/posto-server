@@ -6,7 +6,7 @@ module Api
     class TokensController < ApplicationController
       respond_to :json
 
-      TOKEN_CACHE_KEY_PREFIX = :api_key_by_token_with_user_4
+      TOKEN_CACHE_KEY_PREFIX = :api_key_by_token_with_user_5
 
       def self.clear_token_cache_for_user_id(user_id)
         ApiKey.where(user_id: user_id).each do |api_key|
