@@ -293,7 +293,7 @@ CONFIG = SampleableConfig.define do
 
     use_credit_plans true
     use_pay_as_you_go false
-    pay_as_you_go_grandfather_max_user_id 7000
+    pay_as_you_go_grandfather_max_user_id 6820
 
     frame_types "all"
 
