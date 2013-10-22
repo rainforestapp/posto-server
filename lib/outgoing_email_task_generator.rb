@@ -102,7 +102,7 @@ class OutgoingEmailTaskGenerator
 
         birthday = postcard_subject.birthday
 
-        config = CONFIG.for_app(card_design.app)
+        config = CONFIG.for_app(postcard_subject.app)
 
         config.baby_birthday_reminders.each do |reminder|
           reminder_date = birthday.advance(months: reminder[:months], weeks: reminder[:weeks]).to_date
