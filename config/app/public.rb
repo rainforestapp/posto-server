@@ -221,6 +221,7 @@ CONFIG = SampleableConfig.define do
       { days: 3, message: "You've still got NUMBER_OF_FREE_CARDS free ENTITY to send. Go for it!" },
       { days: 6, message: "Just a reminder, we still owe you NUMBER_OF_FREE_CARDS free ENTITY. Mail it to anyone in the US!" },
       { days: 10, message: "It's been a while, but it's not too late to send the free ENTITY we promised you. It'll be great, we promise :)" }
+      { days: 14, message: "Don't forget, you can still send NUMBER_OF_FREE_CARDS free ENTITY. They'll love it!" }
     ]
 
     baby_birthday_reminders [
